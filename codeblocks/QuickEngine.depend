@@ -1612,3 +1612,657 @@
 	<glm/gtc/matrix_transform.hpp>
 	<glm/gtc/constants.hpp>
 
+1521047311 source:w:\projects\quickengine\include\glad\glad.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"glad.h"
+	<windows.h>
+	<dlfcn.h>
+
+1521047311 w:\projects\quickengine\include\glad\glad.h
+	<windows.h>
+	<stddef.h>
+	<KHR/khrplatform.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1521047311 w:\projects\quickengine\include\khr\khrplatform.h
+	<sys/cdefs.h>
+	<stdint.h>
+	<inttypes.h>
+	<stdint.h>
+
+1521047311 source:w:\projects\quickengine\include\glm\detail\glm.cpp
+	<glm/glm.hpp>
+	<glm/gtc/quaternion.hpp>
+	<glm/gtx/dual_quaternion.hpp>
+
+1521047311 w:\projects\quickengine\include\glm\glm.hpp
+	"detail/_fixes.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\_fixes.hpp
+	<cmath>
+
+1521047311 w:\projects\quickengine\include\glm\fwd.hpp
+	"detail/type_int.hpp"
+	"detail/type_float.hpp"
+	"detail/type_vec.hpp"
+	"detail/type_mat.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_int.hpp
+	"setup.hpp"
+	<type_traits>
+	<cstdint>
+
+1521047311 w:\projects\quickengine\include\glm\detail\setup.hpp
+	<cassert>
+	<cstddef>
+	<cuda.h>
+	<intrin.h>
+	<immintrin.h>
+	<immintrin.h>
+	<smmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+	<__config>
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_float.hpp
+	"setup.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec.hpp
+	"precision.hpp"
+	"type_int.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\precision.hpp
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat.hpp
+	"precision.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\vec2.hpp
+	"detail/type_vec2.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec2.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\_swizzle.hpp
+
+1521047311 w:\projects\quickengine\include\glm\detail\_swizzle_func.hpp
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec2.inl
+
+1521047311 w:\projects\quickengine\include\glm\vec3.hpp
+	"detail/type_vec3.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec3.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec3.inl
+
+1521047311 w:\projects\quickengine\include\glm\vec4.hpp
+	"detail/type_vec4.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec4.hpp
+	"setup.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec4.inl
+	"type_vec4_sse2.inl"
+	"type_vec4_avx.inl"
+	"type_vec4_avx2.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec4_sse2.inl
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec4_avx.inl
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec4_avx2.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat2x2.hpp
+	"detail/type_mat2x2.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat2x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x2.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat2x2.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat2x3.hpp
+	"detail/type_mat2x3.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat2x3.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x3.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat2x3.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat2x4.hpp
+	"detail/type_mat2x4.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat2x4.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat2x4.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat2x4.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat3x2.hpp
+	"detail/type_mat3x2.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat3x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x2.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat3x2.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat3x3.hpp
+	"detail/type_mat3x3.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat3x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x3.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat3x3.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat3x4.hpp
+	"detail/type_mat3x4.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat3x4.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat3x4.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat3x4.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat4x2.hpp
+	"detail/type_mat4x2.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat4x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x2.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat4x2.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat4x3.hpp
+	"detail/type_mat4x3.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat4x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x3.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat4x3.inl
+
+1521047311 w:\projects\quickengine\include\glm\mat4x4.hpp
+	"detail/type_mat4x4.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat4x4.hpp
+	"../fwd.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_mat4x4.inl
+
+1521047311 w:\projects\quickengine\include\glm\trigonometric.hpp
+	"detail/func_trigonometric.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_trigonometric.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"func_trigonometric.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\detail\_vectorize.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec1.hpp
+	"../fwd.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_vec1.inl
+
+1521047311 w:\projects\quickengine\include\glm\exponential.hpp
+	"detail/func_exponential.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_exponential.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<cmath>
+	"func_exponential.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_exponential.inl
+	"func_vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cmath>
+	<cassert>
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_vector_relational.hpp
+	"precision.hpp"
+	"setup.hpp"
+	"func_vector_relational.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_vector_relational.inl
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\common.hpp
+	"detail/func_common.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_common.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"type_int.hpp"
+	"_fixes.hpp"
+	"func_common.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_common.inl
+	"func_vector_relational.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\packing.hpp
+	"detail/func_packing.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_packing.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"func_packing.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_packing.inl
+	"func_common.hpp"
+	"type_half.hpp"
+	"../fwd.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\type_half.inl
+
+1521047311 w:\projects\quickengine\include\glm\geometric.hpp
+	"detail/func_geometric.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_geometric.hpp
+	"type_vec3.hpp"
+	"func_geometric.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_geometric.inl
+	"func_exponential.hpp"
+	"func_common.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_float.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\matrix.hpp
+	"detail/func_matrix.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_matrix.hpp
+	"../detail/precision.hpp"
+	"../detail/setup.hpp"
+	"../detail/type_mat.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	"func_matrix.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\vector_relational.hpp
+	"detail/func_vector_relational.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\integer.hpp
+	"detail/func_integer.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_integer.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"func_common.hpp"
+	"func_vector_relational.hpp"
+	"func_integer.inl"
+
+1521047311 w:\projects\quickengine\include\glm\detail\func_integer.inl
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_int.hpp"
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\gtc\quaternion.hpp
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"quaternion.inl"
+
+1521047311 w:\projects\quickengine\include\glm\gtc\constants.hpp
+	"../detail/setup.hpp"
+	"constants.inl"
+
+1521047311 w:\projects\quickengine\include\glm\gtc\constants.inl
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\gtc\quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	<limits>
+
+1521047311 w:\projects\quickengine\include\glm\gtx\dual_quaternion.hpp
+	"../glm.hpp"
+	"../gtc/constants.hpp"
+	"../gtc/quaternion.hpp"
+	"dual_quaternion.inl"
+
+1521047311 w:\projects\quickengine\include\glm\gtx\dual_quaternion.inl
+	"../geometric.hpp"
+	<limits>
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\camera.cpp
+	"Camera.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\camera.h
+	<stdio.h>
+	<math.h>
+	"glm\glm.hpp"
+	"glm\gtc\type_ptr.hpp"
+	"glm\gtc\matrix_transform.hpp"
+
+1521047311 w:\projects\quickengine\include\glm\gtc\type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1521047311 w:\projects\quickengine\include\glm\gtc\type_ptr.inl
+	<cstring>
+
+1521047311 w:\projects\quickengine\include\glm\gtc\matrix_transform.hpp
+	"../mat4x4.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"matrix_transform.inl"
+
+1521047311 w:\projects\quickengine\include\glm\gtc\matrix_transform.inl
+	"../geometric.hpp"
+	"../trigonometric.hpp"
+	"../matrix.hpp"
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\engine.cpp
+	"engine.h"
+	"object.h"
+	"settings.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\engine.h
+	"glad\glad.h"
+	"camera.h"
+	<list>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"object.h"
+	"material.h"
+	"texture.h"
+	"shader.h"
+	"material.h"
+	"camera.h"
+	"mesh.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\object.h
+	"glad\glad.h"
+	"glm\glm.hpp"
+	"engine.h"
+	"material.h"
+	"mesh.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\material.h
+	<string>
+	<fstream>
+	<list>
+	<fstream>
+	<vector>
+	<iostream>
+	<sstream>
+	<vector>
+	<io.h>
+	"texture.h"
+	"string_helper.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\texture.h
+	"settings.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\settings.h
+
+1521047311 w:\projects\quickengine\src\graphics\core\string_helper.h
+	<string>
+	<fstream>
+	<list>
+	<fstream>
+	<vector>
+	<iostream>
+	<sstream>
+	<vector>
+
+1521047311 w:\projects\quickengine\src\graphics\core\mesh.h
+	"material.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\shader.h
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\engine_lol.cpp
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\engine_utils.cpp
+	"string_helper.h"
+	<time.h>
+	<direct.h>
+	<fstream>
+	"engine.h"
+	"glad\glad.h"
+	"test_model.h"
+	"max_model.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\test_model.h
+	"object.h"
+	"model_loader.h"
+	"engine.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\model_loader.h
+	<fstream>
+	<list>
+	<fstream>
+	<vector>
+	<iostream>
+	<sstream>
+	<vector>
+	<cstring>
+	<io.h>
+	"engine.h"
+	"string_helper.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\max_model.h
+	"object.h"
+	"model_loader.h"
+	"engine.h"
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\main.cpp
+	"Main.h"
+	"settings.h"
+
+1521047311 w:\projects\quickengine\src\graphics\core\main.h
+	<stdio.h>
+	"glad\glad.h"
+	"glfw\glfw3.h"
+	"engine.h"
+	"il\il.h"
+	"settings.h"
+
+1521062124 w:\projects\quickengine\include\glfw\glfw3.h
+	<stddef.h>
+	<stdint.h>
+	<OpenGL/gl3.h>
+	<OpenGL/gl3ext.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/glcorearb.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	<GLES3/gl31.h>
+	<GLES2/gl2ext.h>
+	<vulkan/vulkan.h>
+	<GL/gl.h>
+	<GL/glext.h>
+	<GL/glu.h>
+
+1521047311 w:\projects\quickengine\include\il\il.h
+	<stdio.h>
+	<wchar.h>
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\material.cpp
+	"engine.h"
+	"material.h"
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\model_loader.cpp
+	"model_loader.h"
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\shader.cpp
+	"glad\glad.h"
+	"engine.h"
+	"shader.h"
+	<string.h>
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\string_helper.cpp
+	"string_helper.h"
+
+1521047311 source:w:\projects\quickengine\src\graphics\core\texture.cpp
+	"engine.h"
+	"texture.h"
+	"il\il.h"
+	"il\ilu.h"
+
+1521047311 w:\projects\quickengine\include\il\ilu.h
+	<IL/il.h>
+

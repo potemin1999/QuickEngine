@@ -24,5 +24,5 @@ void main(){
 	//v_ViewPosition = v_Position;//u_V*u_M*vec4(a_pos,1.0);
 	//u_V*vec4(a_pos,1.0) ;//v_Position;
     v_UV = a_uv;
-	v_Normal = u_V*vec4(a_norm,1.0);
+	v_Normal = vec4(normalize( (u_V*vec4(a_norm,1.0)).xyz),1.0);
 }

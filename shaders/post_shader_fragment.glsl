@@ -1,11 +1,11 @@
-#version 330 core
-
-precision highp float;
+#version 440 core
 
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_explicit_uniform_location : require
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack: enable
+
+precision highp float;
 
 //#define MAX_POINT_LIGHTS 256;
 
@@ -27,7 +27,6 @@ uniform int u_FXAA;
 uniform int u_DrawingMode;
 uniform float u_Gamma;
 
-
 layout(location = 0) uniform sampler2D u_AlbedoSpecTex;
 layout(location = 1) uniform sampler2D u_NormalTex;
 layout(location = 2) uniform sampler2D u_PositionTex;
@@ -43,9 +42,6 @@ float mainsample_weight = 1.0;
 float sample_weight = 0.5;
 float sample_sum = 3;
 bool multisampling = false;
-
-
-
 
 vec4 color_fxaa(in sampler2D texture,vec2 uv,vec2 screen_size){
   vec4 color = vec4(1.0);
@@ -87,8 +83,6 @@ vec4 color_fxaa(in sampler2D texture,vec2 uv,vec2 screen_size){
   return color;
 }
 
-
-
 vec4 color_msaa(in sampler2D texture,vec2 uv){
   //vec4 color = vec4(1.0);
   float sample_weight = 0.2;
@@ -101,13 +95,9 @@ vec4 color_msaa(in sampler2D texture,vec2 uv){
   return color;
 }
 
-
-
 vec4 color_simple(in sampler2D texture,vec2 uv){
   return texture2D(texture,uv);
 }
-
-
 
 vec4 get_color(in sampler2D texture,vec2 uv){
   if (u_FXAA==1){
@@ -119,8 +109,6 @@ vec4 get_color(in sampler2D texture,vec2 uv){
   }
 }
 
-
-
 vec4 get_supersampled_color(in sampler2D texture,vec2 uv_ss){
   vec4 color_lt = get_color(texture,uv_ss+vec2(0          ,0));
   vec4 color_rt = get_color(texture,uv_ss+vec2(u_PixelSize.x,0));
@@ -128,7 +116,6 @@ vec4 get_supersampled_color(in sampler2D texture,vec2 uv_ss){
   vec4 color_rb = get_color(texture,uv_ss+vec2(u_PixelSize.x,u_PixelSize.y));
   return (color_rb+color_lb+color_rt+color_lt)/4;
 }
-
 
 vec4 get_vignette_color(vec4 color,vec2 vignette_uv,float strength){
   float m1 = 2.0 - pow(2,            max(strength*(length(vignette_uv)-0.8),0)         );
@@ -176,7 +163,6 @@ float get_occlusion(vec2 uv){
 	return sum;
 }
 
-
 void main_draw(){
     if (u_SuperSampling==1)
         gl_Color = get_color(u_AlbedoSpecTex,uv);
@@ -192,6 +178,20 @@ void main_draw(){
 	//gl_Color*=texture2D(u_OcclusionTex,uv).r;
 }
 
+void occlusion_draw(){
+     gl_Color = vec4(texture2D(u_OcclusionTex,uv).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y+u_PixelSize.y)).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y+u_PixelSize.y)).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y-u_PixelSize.y)).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y-u_PixelSize.y)).r);
+
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y)).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y)).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x,uv.y+u_PixelSize.y)).r);
+     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x,uv.y-u_PixelSize.y)).r);
+     gl_Color *= 0.111111;
+}
+
 void main(){
  // sampler2D u_AlbedoSpecTex = u_AlbedoSpecTex;
     if (u_DrawingMode==0){
@@ -205,9 +205,8 @@ void main(){
     }else if (u_DrawingMode==4){
         gl_Color = texture2D(u_DiffuseTex,uv);
     }else if (u_DrawingMode==5){
-        gl_Color = vec4(texture2D(u_OcclusionTex,uv).r);
+       occlusion_draw();
     }
-
     gl_Color.rgb = pow(gl_Color.rgb,vec3(1.0/u_Gamma));
  // gl_Color *= texture2D(u_NormalTex,uv);
   //gl_Color *= texture2D(u_PositionTex,uv);

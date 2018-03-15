@@ -5,7 +5,7 @@
 		<Option title="QuickEngine" />
 		<Option platforms="Windows;Unix;" />
 		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option compiler="cygwin" />
 		<Build>
 			<Target title="Debug">
 				<Option platforms="Windows;Unix;" />
@@ -13,7 +13,7 @@
 				<Option object_output="../obj/Debug/" />
 				<Option external_deps="../libs/DevIL.lib;../libs/ILUT.lib;../libs/ILU.lib;../libs/glfw3.lib;../libs/glew32.lib;" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="cygwin" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -32,22 +32,29 @@
 				<Option output="../QuickEngine" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../obj/Release/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="cygwin" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-m64" />
+					<Add option="-std=gnu++11 -lstdc++ -lpthread" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-static" />
+					<Add option="-m64" />
 					<Add library="../libs/DevIL.lib" />
 					<Add library="../libs/glew32.lib" />
-					<Add library="../libs/ILU.lib" />
-					<Add library="../libs/ILUT.lib" />
+					<Add library="../libs/ilu.lib" />
+					<Add library="../libs/ilut.lib" />
 					<Add library="../libs/glfw3dll.lib" />
+					<Add library="../libs/glfw3.dll" />
+					<Add library="../libs/DevIL.dll" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c11" />
 			<Add directory="../src" />
 			<Add directory="../libs" />
 			<Add directory="../include" />
@@ -222,35 +229,38 @@
 		<Unit filename="../shaders/shader_vertex.glsl" />
 		<Unit filename="../shaders/ssao_fragment_shader.glsl" />
 		<Unit filename="../shaders/ssao_vertex_shader.glsl" />
-		<Unit filename="../src/District.h" />
-		<Unit filename="../src/EngineUtils.h" />
-		<Unit filename="../src/camera.cpp" />
-		<Unit filename="../src/camera.h" />
-		<Unit filename="../src/engine.cpp" />
-		<Unit filename="../src/engine.h" />
-		<Unit filename="../src/engine_lol.cpp" />
-		<Unit filename="../src/engine_utils.cpp" />
-		<Unit filename="../src/glu.h" />
-		<Unit filename="../src/main.cpp" />
-		<Unit filename="../src/main.h" />
-		<Unit filename="../src/material.cpp" />
-		<Unit filename="../src/material.h" />
-		<Unit filename="../src/max_model.h" />
-		<Unit filename="../src/mesh.h" />
-		<Unit filename="../src/model_loader.cpp" />
-		<Unit filename="../src/model_loader.h" />
-		<Unit filename="../src/object.h" />
-		<Unit filename="../src/settings.h" />
-		<Unit filename="../src/shader.cpp" />
-		<Unit filename="../src/shader.h" />
-		<Unit filename="../src/string_helper.cpp" />
-		<Unit filename="../src/string_helper.h" />
-		<Unit filename="../src/test_model.h" />
-		<Unit filename="../src/texture.cpp" />
-		<Unit filename="../src/texture.h" />
+		<Unit filename="../src/graphics/Settings.h" />
+		<Unit filename="../src/graphics/core/District.h" />
+		<Unit filename="../src/graphics/core/EngineUtils.h" />
+		<Unit filename="../src/graphics/core/camera.cpp" />
+		<Unit filename="../src/graphics/core/camera.h" />
+		<Unit filename="../src/graphics/core/engine.cpp" />
+		<Unit filename="../src/graphics/core/engine.h" />
+		<Unit filename="../src/graphics/core/engine_lol.cpp" />
+		<Unit filename="../src/graphics/core/engine_utils.cpp" />
+		<Unit filename="../src/graphics/core/glu.h" />
+		<Unit filename="../src/graphics/core/main.cpp" />
+		<Unit filename="../src/graphics/core/main.h" />
+		<Unit filename="../src/graphics/core/material.cpp" />
+		<Unit filename="../src/graphics/core/material.h" />
+		<Unit filename="../src/graphics/core/max_model.h" />
+		<Unit filename="../src/graphics/core/mesh.h" />
+		<Unit filename="../src/graphics/core/model_loader.cpp" />
+		<Unit filename="../src/graphics/core/model_loader.h" />
+		<Unit filename="../src/graphics/core/object.h" />
+		<Unit filename="../src/graphics/core/settings.h" />
+		<Unit filename="../src/graphics/core/shader.cpp" />
+		<Unit filename="../src/graphics/core/shader.h" />
+		<Unit filename="../src/graphics/core/string_helper.cpp" />
+		<Unit filename="../src/graphics/core/string_helper.h" />
+		<Unit filename="../src/graphics/core/test_model.h" />
+		<Unit filename="../src/graphics/core/texture.cpp" />
+		<Unit filename="../src/graphics/core/texture.h" />
+		<Unit filename="../src/graphics/resource.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
