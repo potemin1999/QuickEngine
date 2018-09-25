@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(BUILD_NAME QuickEngine)
 set(BUILD_PATH ${PROJECT_SOURCE_DIR})
-include_directories("include")
+include_directories("${PROJECT_SOURCE_DIR}/include")
 
 if (MINGW)
      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc -lstdc++ -lpthread")
@@ -15,15 +15,15 @@ endif()
 
 set (EXECUTABLE_OUTPUT_PATH ${BUILD_PATH})
 
-include_directories("${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/src/main")
 
-set(GRAPH_PROJ "QeGraphics")
-add_subdirectory("src/graphics")
+set(CORE_PROJ "QeCore")
+add_subdirectory("src/main")
 
 add_executable(${BUILD_NAME} src/startwrap.cpp)
-#set_target_properties(${BUILD_NAME} PROPERTIES EXECUTABLE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}")
+#add_executable(${BUILD_NAME} src/startwrap.cpp ${CORE_SOURCE_FILES})
 
-target_link_libraries(${BUILD_NAME} ${GRAPH_PROJ})
+target_link_libraries(${BUILD_NAME} ${CORE_PROJ})
 
 
 

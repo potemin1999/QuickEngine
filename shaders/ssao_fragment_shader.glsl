@@ -1,6 +1,5 @@
 #version 440
 
-
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_explicit_uniform_location : require
 #extension GL_ARB_shading_language_420pack: enable
@@ -17,14 +16,17 @@ layout(location = 3) uniform sampler2D u_LightingTex;
 
 uniform vec2 u_PixelSize;
 
-uniform vec3 u_RandomMap[16];
+uniform vec3 u_RandomMap[32];
 uniform int u_Samples;
 uniform float u_ZFar;
 uniform float u_Aspect;
 uniform mat4 u_Projection;
 
 const float power = 0.32;
-const float radius = 0.08;
+const float radius = 0.12;
+//const float power = 1.28;
+//const float radius = 0.08;
+
 const vec2 noiseScale = vec2(1280.0/4.0, 720.0/4.0);
 
 in vec2 v_UV;
@@ -53,15 +55,15 @@ float get_occlusion(in sampler2D s_depth,in sampler2D s_position,in sampler2D s_
 	vec3 normal = texture(s_normal, uv).xyz*2.0-1.0;
 	int p = int((uv.x*97+normal.x*39+depth*72+pos.y*76)/u_PixelSize[0])%(u_Samples/2)
 	       +int((uv.y*43+normal.y*13+depth*78+pos.x*5)/u_PixelSize[1])%(u_Samples/2);
-	vec3 rvec = u_RandomMap[p]*2.0-1.0;
+	vec3 rvec = u_RandomMap[p];//*2.0-1.0;
 	vec3 tangent = normalize(rvec-normal*dot(rvec, normal));
 	vec3 bitangent = cross(tangent,normal);
 	mat3 rotate = mat3(tangent, bitangent, normal);
-	float acc = 0.0;
+	float acc = 0;//-u_Samples*0.5;
 
 	for (int i=0; i<u_Samples; i++) {
 		vec3 sampl = rotate*u_RandomMap[i];
-		//vec3 sampl = u_RandomMap[i];
+		// vec3 sampl = u_RandomMap[i];
 		sampl = sampl*radius+pos;
 		vec4 shift = u_Projection*vec4(sampl, 1.0);
 		shift.xy /= shift.w;
@@ -74,7 +76,7 @@ float get_occlusion(in sampler2D s_depth,in sampler2D s_position,in sampler2D s_
 		float rangeCheck = smoothstep(0.0, 1.0, radius/(abs(pos.z-sampleDepth)));//pow( dx*dx+dy*dy+dz*dz , 0.5 ));
 		acc += step(sampleDepth, sampl.z)*rangeCheck;
 	}
-	return pow(1.16-(acc/float(u_Samples)),power);
+	return pow(1-(acc/float(u_Samples)),power);
 	//return 1-acc/float(u_Samples);
 	//return 1.0-pow(acc/float(u_Samples),2.0);
 }

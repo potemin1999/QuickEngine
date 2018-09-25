@@ -129,7 +129,7 @@ vec4 draw_text(vec2 uv, vec2 col_str,vec2 screen_size){
   vec2 screen_symbol_size = vec2(screen_size.x/col_str.x,screen_size.y/col_str.y);
   vec2 screen_symbol_xy = vec2(uv.x+col*screen_symbol_size.x/screen_size.x,      (uv.y)+str*screen_symbol_size.y/screen_size.y);
   vec2 font_symbol_uv = vec2(  col_str.x*(uv.x-col/col_str.x)  ,   col_str.y*(uv.y-str/col_str.y)   );
-  return vec4(font_symbol_uv.x,   screen_symbol_xy.x/2  ,font_symbol_uv.y,max(font_symbol_uv.x,font_symbol_uv.y) );
+  return vec4(font_symbol_uv.x/2,   screen_symbol_xy.x/2  ,font_symbol_uv.y,max(font_symbol_uv.x,font_symbol_uv.y) );
 }
 
 /*
@@ -180,7 +180,7 @@ void main_draw(){
 
 void occlusion_draw(){
      gl_Color = vec4(texture2D(u_OcclusionTex,uv).r);
-     gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y+u_PixelSize.y)).r);
+     /*gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y+u_PixelSize.y)).r);
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y+u_PixelSize.y)).r);
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y-u_PixelSize.y)).r);
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y-u_PixelSize.y)).r);
@@ -189,7 +189,7 @@ void occlusion_draw(){
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y)).r);
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x,uv.y+u_PixelSize.y)).r);
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x,uv.y-u_PixelSize.y)).r);
-     gl_Color *= 0.111111;
+     gl_Color *= 0.111111;*/
 }
 
 void main(){
