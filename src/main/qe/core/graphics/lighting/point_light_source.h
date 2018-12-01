@@ -5,10 +5,10 @@
 #ifndef QUICKENGINE_POINT_LIGHT_SOURCE_H
 #define QUICKENGINE_POINT_LIGHT_SOURCE_H
 
-#include "graphics/defines.h"
+#include <qe/core/graphics/defines.h>
 #include "light_source.h"
 
-namespace QEGraphics {
+namespace QECore {
 
     class PointLightSource {
     private:

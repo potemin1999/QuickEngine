@@ -1,6 +1,10 @@
 <component name="ProjectDictionaryState">
   <dictionary name="ilya">
     <words>
+      <w>depthmap</w>
+      <w>framebuffer</w>
+      <w>fxaa</w>
+      <w>getcwd</w>
       <w>quickengine</w>
       <w>shaders</w>
     </words>

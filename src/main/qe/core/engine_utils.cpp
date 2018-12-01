@@ -4,8 +4,13 @@
 #include "qe/core/util/string_helper.h"
 //#include <direct.h>
 #include "engine.h"
+#include <qe/core/settings.h>
 #include "max_model.h"
+#include "floor_model.h"
+#include <unistd.h>
+#include <glm/gtc/matrix_transform.hpp>
 
+using namespace glm;
 using namespace QECore;
 
 int EU::init_utils(Engine* e) {
@@ -17,7 +22,10 @@ int EU::init_utils(Engine* e) {
 
 	glDepthFunc(GL_LEQUAL);
 	//glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	if (anisotropy>1) {
 		float* f_max = new float;
@@ -84,13 +92,27 @@ void EU::create_objects(Engine* e) {
     mm->mModelMatrix = mat4(1.0);
     mm->mModelMatrix = translate(mm->mModelMatrix, vec3(0, -3, - 2));
     e->addObject(mm);*/
-	for (int i = 0; i < 1; i++) {
-		for (int j = 0; j < 1; j++) {
+
+    auto m = new MaxModel();
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 10; j++) {
             Engine::checkGlError("pre max loading");
-			MaxModel* mm = new MaxModel();
+            auto mm = new Object();
+			mm->mesh_count = m->mesh_count;
+			mm->meshes = m->meshes;
 			mm->mModelMatrix = mat4(1.0);
-			mm->mModelMatrix = translate(mm->mModelMatrix, vec3(5*i+2, 0, 3*j+2));
+			mm->mModelMatrix = translate(mm->mModelMatrix, vec3(5*i+2, j, 3*j+2));
             e->addObject(mm);
 		}
 	}
+
+	printf("Gonna create this shit\n");
+    auto n = new FloorModel();
+    Engine::checkGlError("pre floor_01 loading\n");
+    auto nm = new Object();
+    nm->mesh_count = n->mesh_count;
+    nm->meshes = n->meshes;
+    nm->mModelMatrix = mat4(1.0);
+    e->addObject(nm);
+    printf("Shit created succesfully. Enjoy.\n");
 }

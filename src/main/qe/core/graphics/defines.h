@@ -29,7 +29,7 @@
 
 #endif
 
-namespace QEGraphics{
+namespace QECore{
     class Texture;
     class Framebuffer;
     class Shader;

@@ -1,5 +1,8 @@
-#include "texture_manager.h"
+#include "qe/core/graphics/util/texture_manager.h"
 #include "il/il.h"
+#include "qe/core/graphics/defines.h"
+#include "qe/core/settings.h"
+#include "qe/core/engine.h"
 
 using namespace QECore;
 
@@ -8,6 +11,7 @@ Texture TextureManager::loadTexture(char *full_filename) {
     auto *gl_id = new unsigned;
     ilGenImages(1, il_id);
     ilBindImage(*il_id);
+    printf("Loading texture from file \"%s\"\n", full_filename);
     ilLoadImage(full_filename);
     Engine::checkGlError("il gen/bind/load texture");
 #ifdef GRAPHICS_DEBUG
@@ -47,13 +51,4 @@ Texture TextureManager::loadTexture(char *full_filename) {
     delete gl_id;
     delete f_max;
     return t;
-}
-
-int TextureManager::useTexture(Texture *texture) {
-    ilBindImage((ILuint) texture->id);
-}
-
-int TextureManager::freeTexture(Texture *texture) {
-    ilBindImage(0);
-    ilDeleteImage((ILuint) texture->id);
 }

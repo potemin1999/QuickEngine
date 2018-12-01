@@ -1,7 +1,11 @@
 #include "qe/core/graphics/defines.h"
 #include "qe/core/engine.h"
+#include <fstream>
+#include <unistd.h>
+#include "qe/core/util/string_helper.h"
+#include <qe/core/util/utils.h>
 
-using namespace QEGraphics;
+using namespace QECore;
 
 Material MaterialManager::create_material(char *ambient) {
     Material m = Material();
@@ -21,7 +25,7 @@ Material *MaterialManager::load_material(char *path, const char *name, unsigned 
     string line;
 
     char path_c[1024];
-    getcwd(path_c, sizeof(path_c));
+    QECore::getEngineRootDir(path_c, sizeof(path_c));
     string _path = string(path_c);
     _path.append("/materials/");
     _path.append(path);

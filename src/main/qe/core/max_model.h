@@ -1,8 +1,8 @@
 #pragma once
 
 #include "qe/core/graphics/defines.h"
-#include "object.h"
-#include "model_loader.h"
+#include "qe/core/actors/object.h"
+#include "qe/core/actors/model_loader.h"
 #include "engine.h"
 
 class MaxModel : public Object {

@@ -5,7 +5,7 @@
 #extension GL_ARB_shading_language_420pack: enable
 #extension GL_ARB_separate_shader_objects : enable
 
-precision highp float;
+precision mediump float;
 
 layout(location = 0) out float o_Occlusion;
 
@@ -16,14 +16,14 @@ layout(location = 3) uniform sampler2D u_LightingTex;
 
 uniform vec2 u_PixelSize;
 
-uniform vec3 u_RandomMap[32];
+uniform vec3 u_RandomMap[24];
 uniform int u_Samples;
 uniform float u_ZFar;
 uniform float u_Aspect;
 uniform mat4 u_Projection;
 
-const float power = 0.32;
-const float radius = 0.12;
+const float power = 0.8;
+const float radius = 0.32;
 //const float power = 1.28;
 //const float radius = 0.08;
 
@@ -40,7 +40,7 @@ float get_depth(in sampler2D s_depth,vec2 uv){
     return texture(s_depth,uv).x;
 }
 
-float get_occlusion(in sampler2D s_depth,in sampler2D s_position,in sampler2D s_normal,in sampler2D s_diffuse,vec2 uv){
+float get_occlusion(in sampler2D s_depth,in sampler2D s_position_,in sampler2D s_normal,in sampler2D s_diffuse_,vec2 uv){
 
 	float depth = texture(s_depth,uv).x;
 	//if (depth==1.0) discard;
@@ -56,6 +56,7 @@ float get_occlusion(in sampler2D s_depth,in sampler2D s_position,in sampler2D s_
 	int p = int((uv.x*97+normal.x*39+depth*72+pos.y*76)/u_PixelSize[0])%(u_Samples/2)
 	       +int((uv.y*43+normal.y*13+depth*78+pos.x*5)/u_PixelSize[1])%(u_Samples/2);
 	vec3 rvec = u_RandomMap[p];//*2.0-1.0;
+	rvec.z = rvec.z*2.0+1.0;
 	vec3 tangent = normalize(rvec-normal*dot(rvec, normal));
 	vec3 bitangent = cross(tangent,normal);
 	mat3 rotate = mat3(tangent, bitangent, normal);
@@ -63,20 +64,22 @@ float get_occlusion(in sampler2D s_depth,in sampler2D s_position,in sampler2D s_
 
 	for (int i=0; i<u_Samples; i++) {
 		vec3 sampl = rotate*u_RandomMap[i];
-		// vec3 sampl = u_RandomMap[i];
+		//vec3 sampl = u_RandomMap[p*i %u_Samples];
 		sampl = sampl*radius+pos;
 		vec4 shift = u_Projection*vec4(sampl, 1.0);
 		shift.xy /= shift.w;
 		shift.xy = shift.xy*0.5+0.5;
 
-		float sampleDepth = texture(s_depth, shift.xy).x*u_ZFar;
-		//float dz = abs(depth*u_ZFar-sampleDepth);
-		//float dx = abs(sample.x - pos.x);
-		//float dy = abs(sample.y - pos.y);
-		float rangeCheck = smoothstep(0.0, 1.0, radius/(abs(pos.z-sampleDepth)));//pow( dx*dx+dy*dy+dz*dz , 0.5 ));
-		acc += step(sampleDepth, sampl.z)*rangeCheck;
+		float sampleDepth = texture(s_depth, vec2(shift.x/v_Scale.x,shift.y/v_Scale.y)).x*u_ZFar;
+		float dz = depth*u_ZFar-sampleDepth;
+		float dx = sampl.x - pos.x;
+		float dy = sampl.y - pos.y;
+		float rangeCheck = smoothstep(0.0, 1.0, (radius*radius)/(dx*dx+dy*dy+dz*dz));//  (abs( depth*u_ZFar /*pos.z*/-sampleDepth)));//);
+		//float rangeCheck = smoothstep(0.0, 1.0, radius/abs( depth*u_ZFar /*pos.z*/-sampleDepth));
+		acc += step( sampleDepth,sampl.z )*rangeCheck;
 	}
-	return pow(1-(acc/float(u_Samples)),power);
+	return pow(1.0 - acc/float(u_Samples),power);
+	//return acc/float(u_Samples);
 	//return 1-acc/float(u_Samples);
 	//return 1.0-pow(acc/float(u_Samples),2.0);
 }
@@ -97,8 +100,9 @@ void main(){
     //vec4 depth_color = vec4(depth.x,depth.x,depth.x,1.0);
 
 
-    float occlusion = get_occlusion(u_DepthTex,u_PositionTex,u_NormalTex,u_LightingTex,v_UV*v_Scale);
+    float occlusion = get_occlusion(u_DepthTex,u_PositionTex,u_NormalTex,u_LightingTex,v_UV);//vec2(v_UV.x/v_Scale.x,v_UV.y/v_Scale.y));
 	o_Occlusion = occlusion;
+	//o_Occlusion = texture(u_,v_UV).x;
     //o_Occlusion = depth_color;//+0.005*texture(u_NormalTex,v_UV)+0.005*texture(u_PositionTex,v_UV);
 }
 

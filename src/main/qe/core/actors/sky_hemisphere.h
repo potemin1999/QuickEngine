@@ -7,7 +7,7 @@
 
 #include <qe/core/actors/actor.h>
 
-namespace QEGraphics {
+namespace QECore {
 
     class SkyHemisphere : Actor {
     public:

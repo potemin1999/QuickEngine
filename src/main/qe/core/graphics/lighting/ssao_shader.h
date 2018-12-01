@@ -5,9 +5,9 @@
 #ifndef QUICKENGINE_SSAO_SHADER_H
 #define QUICKENGINE_SSAO_SHADER_H
 
-#include "graphics/core/basic/shader.h"
+#include <qe/core/graphics/basic/shader.h>
 
-namespace QEGraphics{
+namespace QECore{
 
     class SSAOShader: Shader{
 

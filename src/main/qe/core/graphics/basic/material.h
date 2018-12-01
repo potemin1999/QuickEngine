@@ -7,15 +7,17 @@
 
 #include "qe/core/graphics/defines.h"
 
-using namespace QEGraphics;
+using namespace QECore;
 
-namespace QEGraphics {
+namespace QECore {
 
     class Material {
     public:
+
         char *name;
         Texture *t_Ambient;
         Texture *t_Normal;
+
     };
 
 }

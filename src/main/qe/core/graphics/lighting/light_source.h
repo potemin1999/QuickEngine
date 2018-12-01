@@ -5,11 +5,11 @@
 #ifndef QUICKENGINE_LIGHT_SOURCE_H
 #define QUICKENGINE_LIGHT_SOURCE_H
 
-#include "glm\glm.hpp"
+#include <glm/glm.hpp>
 
 using namespace glm;
 
-namespace QEGraphics {
+namespace QECore {
 
     class LightSource {
     private:

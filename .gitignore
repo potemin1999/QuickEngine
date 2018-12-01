@@ -1,5 +1,10 @@
 cmake-build-debug/
 cmake-build-release/
-lib**
+**.so
+**.dll
 QuickEngine**
 settings.ini
+build/
+.idea/
+libs/*.a
+.vs/

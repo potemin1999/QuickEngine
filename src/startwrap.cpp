@@ -2,7 +2,9 @@
 // Created by Ilya on 3/15/2018.
 //
 
-int main(int argc,char** args){
+#include <boot.h>
+
+int main(int argc, char** args){
     return run_engine();
 }
 

@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "engine_context.h"
-#include "object.h"
+#include "qe/core/engine_context.h"
+#include "qe/core/actors/object.h"
 #include <qe/core/graphics/defines.h>
 #include <qe/core/graphics/renderer.h>
 #include <qe/core/graphics/basic/camera.h>
@@ -21,51 +21,33 @@
 #include <qe/core/input/input_event_manager.h>
 #include <qe/core/input/input_key.h>
 #include <qe/core/util/log.h>
-#include "mesh.h"
+#include "qe/core/actors/mesh.h"
 
 using namespace std;
-using namespace QEInput;
+using namespace QECore;
 
 
 namespace QECore {
 
     class Engine {
     public:
+
         Engine();
 
         ~Engine();
 
         EngineContext *context;
+        RenderDataStorage *renderDataStorage;
         Renderer *renderer;
         InputEventManager *inputManager;
         Camera *camera;
         vector<Object *> objects;
         vector<Material *> materials;
-        vector<QEGraphics::Texture *> textures;
-
-        GeometryPass *p_GeometryPass;
-        DeferredLightingPass *p_DeferredLightingPass;
-        SSAOPass *p_SSAOPass;
-        PostPass *p_PostPass;
-
-        //unsigned int* mFBO_tex = new unsigned[2];
-
-        float *v_PixelSize = new float[2];
-        float *v_ScreenSize = new float[2];
-        float *v_SSAOScale = new float[2];
-        int *v_SSAOSize = new int[2];
-        int *v_SSAOSamples = new int;
-
-        float *v_Vignette = new float;
-        float *v_Brightness = new float;
-        float *v_PostBrightness = new float;
-        int *v_DrawingMode = new int;
-        int *v_FXAA = new int;
-        float *v_Gamma = new float;
-
+        vector<QECore::Texture *> textures;
 
         int width = 10;
         int height = 10;
+        int anisotropy = 8;
         float forward_speed = 3.8f;
         float backward_speed = 2.8f;
         float strafe_speed = 3.2f;
@@ -95,10 +77,6 @@ namespace QECore {
 
         static void checkGlError(const char *tag);
 
-    private:
-        float speed_up = 0;
-        float speed_forward = 0;
-        float speed_right = 0;
     };
 
 
@@ -115,11 +93,18 @@ namespace QECore {
 
     class EngineContextImpl : public EngineContext {
     private:
-        Engine *engine;
-    public:
-        EngineContextImpl(Engine *_engine) { engine = _engine; }
 
-        InputEventManager *getInputEventManager() { return engine->inputManager; }
+        Engine *engine;
+
+    public:
+
+        explicit EngineContextImpl(Engine *_engine) {
+            engine = _engine;
+        }
+
+        InputEventManager *getInputEventManager() override {
+            return engine->inputManager;
+        }
     };
 
 }

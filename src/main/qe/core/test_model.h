@@ -1,7 +1,7 @@
 #pragma once
 
-#include "object.h"
-#include "model_loader.h"
+#include "qe/core/actors/object.h"
+#include "qe/core/actors/model_loader.h"
 #include "engine.h"
 
 class TestModel : public Object {

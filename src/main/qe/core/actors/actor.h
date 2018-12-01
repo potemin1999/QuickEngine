@@ -5,10 +5,13 @@
 #ifndef QUICKENGINE_ACTOR_H
 #define QUICKENGINE_ACTOR_H
 
-namespace QEGraphics {
+#include <qe/core/actors/object.h>
 
-    class Actor {
+namespace QECore {
+
+    class Actor : Object{
 
     };
+
 }
 #endif //QUICKENGINE_ACTOR_H

@@ -5,7 +5,7 @@
 using namespace QECore;
 
 int supersampling = 1;
-int anisotropy = 8;
+int anisotropy = 16;
 
 
 void Engine::checkGlError(const char *tag) {
@@ -18,24 +18,16 @@ void Engine::checkGlError(const char *tag) {
 Engine::Engine() {
     log("created new engine\n");
     inputManager = new InputEventManager();
-    p_GeometryPass = new GeometryPass();
-    p_DeferredLightingPass = new DeferredLightingPass();
-    p_SSAOPass = new SSAOPass();
-    p_PostPass = new PostPass();
     context = new EngineContextImpl(this);
+    renderDataStorage = new RenderDataStorage();
     renderer = new Renderer(context);
 }
 
 Engine::~Engine() {
     log("deleting engine\n");
     delete renderer;
-    delete p_PostPass;
-    delete p_SSAOPass;
-    delete p_DeferredLightingPass;
-    delete p_GeometryPass;
     delete inputManager;
     delete context;
-
     delete camera;
 
     for (int i = 0; i < objects.size(); i++) {
@@ -48,84 +40,29 @@ Engine::~Engine() {
         delete textures[i];
     }
 
-    delete v_PixelSize;
-    delete v_ScreenSize;
-    delete v_SSAOScale;
-    delete v_SSAOSize;
-    delete v_SSAOSamples;
-    delete v_Brightness;
-    delete v_PostBrightness;
-    delete v_DrawingMode;
-    delete v_FXAA;
-    delete v_Gamma;
 }
 
 void Engine::init() {
     int i_eu = EU::init_utils(this);
     log("init engine utils %i \n", i_eu);
     camera = new Camera();
-    camera->farZ = 10.0f;
-    camera->nearZ = 0.01f;
-    camera->fovy = 30.14159f / 3.0f;
-    float p[] = {0.0f, 0.0f, 0.0f};
-    float v[] = {0.0f, 0.0f, 1.0f};
-    float u[] = {0.0f, 1.0f, 0.0f};
-    camera->position_camera(p, v, u);
 
-    *v_Vignette = 1.0f;
-    *v_Brightness = 1.0f;
-    *v_PostBrightness = 1.0f;
-    *v_FXAA = 1;
-    *v_DrawingMode = 0;
-    *v_Gamma = 1.0;
-    *v_SSAOSamples = 32;
+    auto p = glm::vec3(0.0f, 0.0f, 0.0f);
+    auto v = glm::vec3(0.0f, 0.0f, 1.0f);
+    auto u = glm::vec3(0.0f, 1.0f, 0.0f);
+    camera->setCameraPosition(p, v, u);
+    camera->setTrackVerticalAxis(true);
 
-    GeometryPassInitData geometryPassInitData;
-    geometryPassInitData.objects = &objects;
-    geometryPassInitData.camera = &camera;
-    geometryPassInitData.v_Brightness = &v_Brightness;
-    p_GeometryPass->init(&geometryPassInitData);
+    renderDataStorage->set("с_CurrentWorldCamera",camera);
+    renderDataStorage->set("objects",&objects);
 
-    DeferredLightingPassInitData deferredLightingPassInitData;
-    deferredLightingPassInitData.v_PixelSize = &v_PixelSize;
-    deferredLightingPassInitData.t_PositionTex = p_GeometryPass->getPositionTex();
-    deferredLightingPassInitData.t_NormalTex = p_GeometryPass->getNormalTex();
-    deferredLightingPassInitData.t_AlbedoTex = p_GeometryPass->getAlbedoTex();
-    p_DeferredLightingPass->init(&deferredLightingPassInitData);
-
-    SSAOPassInitData ssaoPassInitData;
-    ssaoPassInitData.v_SSAOScale = &v_SSAOScale;
-    ssaoPassInitData.v_PixelSize = &v_PixelSize;
-    ssaoPassInitData.v_SSAOSamples = &v_SSAOSamples;
-    ssaoPassInitData.camera = &camera;
-    ssaoPassInitData.t_Depthmap = p_GeometryPass->getDepthmap();
-    ssaoPassInitData.t_LightingTex = p_GeometryPass->getPositionTex();
-    ssaoPassInitData.t_PositionTex = p_GeometryPass->getPositionTex();
-    ssaoPassInitData.t_NormalTex = p_GeometryPass->getNormalTex();
-    p_SSAOPass->init(&ssaoPassInitData);
-
-    PostPassInitData postPassInitData;
-    postPassInitData.v_PixelSize = &v_PixelSize;
-    postPassInitData.v_ScreenSize = &v_ScreenSize;
-    postPassInitData.v_Gamma = &v_Gamma;
-    postPassInitData.v_FXAA = &v_FXAA;
-    postPassInitData.v_Vignette = &v_Vignette;
-    postPassInitData.v_PostBrightness = &v_PostBrightness;
-    postPassInitData.v_DrawingMode = &v_DrawingMode;
-    postPassInitData.t_AlbedoTex = p_GeometryPass->getAlbedoTex();
-    postPassInitData.t_NormalTex = p_GeometryPass->getNormalTex();
-    postPassInitData.t_PositionTex = p_GeometryPass->getPositionTex();
-    postPassInitData.t_OcclusionTex = p_SSAOPass->getOcclusionTexture();
-    p_PostPass->init(&postPassInitData);
+    renderer->init(renderDataStorage);
 }
 
 
 void Engine::compileShaders() {
     log("shader compiling started\n");
-    p_GeometryPass->compileShaders();
-    p_DeferredLightingPass->compileShaders();
-    p_SSAOPass->compileShaders();
-    p_PostPass->compileShaders();
+    renderer->compileShaders();
     log("shader program binded\n");
 //#ifdef GRAPHICS_DEBUG
     dumpUniforms();
@@ -150,22 +87,8 @@ void Engine::resize(int w, int h) {
         w *= supersampling;
         h *= supersampling;
     }
-    camera->setPerspective(((float) w) / ((float) h), 1.0f, 40.0f);
-    int m_offset = sizeof(unsigned);
-    v_PixelSize[0] = 1.0f / ((float) (w));
-    v_PixelSize[1] = 1.0f / ((float) (h));
-    v_ScreenSize[0] = (float) w;
-    v_ScreenSize[1] = (float) h;
-    v_SSAOSize[0] = w;
-    v_SSAOSize[1] = h;
-    v_SSAOScale[0] = v_ScreenSize[0] / v_SSAOSize[0];
-    v_SSAOScale[1] = v_ScreenSize[1] / v_SSAOSize[1];
-
-    p_GeometryPass->onResize(w, h);
-    p_DeferredLightingPass->onResize(w, h);
-    p_SSAOPass->onResize(w, h);
-    p_PostPass->onResize(w, h);
-
+    camera->setPerspective(((float) w) / ((float) h), 1.0f, 4000.0f);
+    renderer->onResize(w,h);
     if (supersampling != 1) {
         w /= supersampling;
         h /= supersampling;
@@ -173,20 +96,15 @@ void Engine::resize(int w, int h) {
 }
 
 void Engine::draw(float dT) {
-    if (request_forward & !request_backward) camera->moveCamera(forward_speed * dT);
-    if (request_backward & !request_forward) camera->moveCamera(-backward_speed * dT);
-    if (request_right & !request_left) camera->moveStrafe(strafe_speed * dT);
-    if (request_left & !request_right) camera->moveStrafe(-strafe_speed * dT);
-    if (request_up & !request_down) camera->moveCameraUp(dT);
-    if (request_down & !request_up) camera->moveCameraUp(-dT);
-    camera->look();
-
-    p_GeometryPass->doDraw();
-    p_DeferredLightingPass->doDraw();
-    p_SSAOPass->doDraw();
-    p_PostPass->doDraw();
-
-    glFlush();
+    inputManager->processDelayedEvents();
+    if (request_forward & !request_backward) camera->moveCameraForward(forward_speed * dT);
+    if (request_backward & !request_forward) camera->moveCameraForward(-backward_speed * dT);
+    if (request_right & !request_left) camera->moveCameraRight(strafe_speed * dT);
+    if (request_left & !request_right) camera->moveCameraRight(-strafe_speed * dT);
+    if (request_up & !request_down) camera->moveCameraUp(2*dT);
+    if (request_down & !request_up) camera->moveCameraUp(-dT*2);
+    camera->updateLook();
+    renderer->doRender();
 }
 
 

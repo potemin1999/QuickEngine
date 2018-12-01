@@ -1,77 +1,44 @@
 cmake_minimum_required(VERSION 3.8)
 
 set(CORE_SOURCE_FILES
-        ../../include/glad/glad.h ../../include/glad/glad.cpp
-        ../../include/glfw/glfw3.h
-        ../../include/il/il.h
-        ../../include/il/ilut.h
-        ../../include/il/ilu.h
-        #settings.h
-        qe/core/graphics/basic/camera.h
+        ${PROJECT_SOURCE_DIR}/libs/include/glad/glad.cpp
         qe/core/graphics/basic/camera.cpp
-        qe/core/engine.h
         qe/core/engine.cpp
         qe/core/engine_utils.cpp
-        qe/core/main.h
         qe/core/main.cpp
-        qe/core/graphics/materials/material_manager.h
         qe/core/graphics/materials/material_manager.cpp
-        qe/core/max_model.h
-        qe/core/test_model.h
-        qe/core/mesh.h
-        qe/core/model_loader.h
-        qe/core/model_loader.cpp
-        qe/core/graphics/util/shader_manager.h
+        qe/core/actors/model_loader.cpp
         qe/core/graphics/util/shader_manager.cpp
-        qe/core/util/string_helper.h
         qe/core/util/string_helper.cpp
-        qe/core/settings.h
-        qe/core/object.h
-        qe/core/graphics/renderer.h
         qe/core/graphics/renderer.cpp
-        qe/core/graphics/defines.h
-        qe/core/graphics/basic/framebuffer.h
-        qe/core/graphics/basic/texture.h
-        qe/core/graphics/basic/shader.h
-        qe/core/graphics/basic/render_pass.h
-        qe/core/graphics/lighting/ssao_shader.h
-        qe/core/graphics/geometry/geometry_pass.h
-        qe/core/graphics/lighting/ssao_pass.h
-        qe/core/graphics/effects/post_pass.h
-        qe/core/graphics/lighting/deferred_lighing_pass.h
-        qe/core/graphics/lighting/light_source.h
-        qe/core/graphics/lighting/point_light_source.h
-        qe/core/graphics/lighting/directional_light_source.h
-        qe/core/graphics/util/texture_manager.h
         qe/core/graphics/util/texture_manager.cpp
-        qe/core/actors/sky_hemisphere.h
-        qe/core/actors/actor.h
-        boot.h
-        qe/core/input/input_event.h
-        qe/core/input/input_receiver.h
-        qe/core/input/input_event_manager.h
         qe/core/input/input_event_manager.cpp
-        qe/core/graphics/basic/material.h
-        qe/core/util/random.h
         qe/core/world/world.cpp
-        qe/core/world/world.h
-        qe/core/input/input_processing_result.h
-        qe/core/graphics/renderer_input.cpp
-        qe/core/input/input_key.h
-        qe/core/util/log.h
-        qe/core/engine_context.h
+        qe/core/graphics/effects/post_pass.cpp
+        qe/core/graphics/basic/shader.cpp
+        qe/core/graphics/basic/framebuffer.cpp
+        qe/core/graphics/basic/texture.cpp
+        qe/core/graphics/geometry/geometry_pass.cpp
+        qe/core/graphics/lighting/deferred_lighting_pass.cpp
+        qe/core/graphics/lighting/ssao_pass.cpp
+        qe/core/graphics/util/render_data_storage.cpp
+        qe/core/util/utils.cpp
+        qe/core/util/utils.h
+        qe/core/actors/object.cpp
         )
 
 set(GPR "${PROJECT_SOURCE_DIR}/libs")
+set(EXECUTABLE_OUTPUT_PATH ${BIN_BUILD_PATH})
 
 add_library(${CORE_PROJ} SHARED ${CORE_SOURCE_FILES})
 target_include_directories(${CORE_PROJ} PRIVATE "${PROJECT_SOURCE_DIR}/src/main")
+target_include_directories(${CORE_PROJ} PRIVATE "${PROJECT_SOURCE_DIR}/include/main")
 
 set_target_properties(${CORE_PROJ}
         PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-        LIBRARY_OUTPUT_DIRECTORY "${BUILD_PATH}"
-        RUNTIME_OUTPUT_DIRECTORY "${BUILD_PATH}"
+        LIBRARY_OUTPUT_DIRECTORY "${BIN_BUILD_PATH}"
+        RUNTIME_OUTPUT_DIRECTORY "${BIN_BUILD_PATH}"
         )
 
 #target_compile_options(Engine PUBLIC "-static -static-libgcc -static-libstdc++")
@@ -111,12 +78,17 @@ target_link_libraries(${CORE_PROJ} devil)
 #
 
 if (WIN32)
-    configure_file(${GPR}/devil.dll ${BUILD_PATH}/libDevIL.dll COPYONLY)
-    configure_file(${GPR}/glfw3.dll ${BUILD_PATH}/libGLFW3.dll COPYONLY)
+    configure_file(${GPR}/devil.dll ${BIN_BUILD_PATH}/DevIL.dll COPYONLY)
+    configure_file(${GPR}/glfw3.dll ${BIN_BUILD_PATH}/glfw3.dll COPYONLY)
 endif (WIN32)
 if (UNIX)
-    configure_file(${GPR}/devil.so ${BUILD_PATH}/libDevIL.so COPYONLY)
-    configure_file(${GPR}/glfw3.so ${BUILD_PATH}/libGLFW3.so COPYONLY)
+    configure_file(${GPR}/devil.so ${BIN_BUILD_PATH}/libDevIL.so COPYONLY)
+    configure_file(${GPR}/glfw3.so ${BIN_BUILD_PATH}/libGLFW3.so COPYONLY)
 endif (UNIX)
-configure_file(qe/settings.ini ${BUILD_PATH}/settings.ini COPYONLY)
+configure_file(qe/settings.ini ${BIN_BUILD_PATH}/settings.ini COPYONLY)
+
+file(COPY ${PROJECT_SOURCE_DIR}/materials/ DESTINATION ${BUILD_PATH}/materials/)
+file(COPY ${PROJECT_SOURCE_DIR}/textures/ DESTINATION ${BUILD_PATH}/textures/)
+file(COPY ${PROJECT_SOURCE_DIR}/models/ DESTINATION ${BUILD_PATH}/models/)
+file(COPY ${PROJECT_SOURCE_DIR}/shaders/ DESTINATION ${BUILD_PATH}/shaders/)
 

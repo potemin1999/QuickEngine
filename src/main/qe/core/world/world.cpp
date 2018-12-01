@@ -2,7 +2,7 @@
 // Created by ilya on 9/24/18.
 //
 
-#include "world.h"
+#include "qe/core/world/world.h"
 
 using namespace QECore;
 

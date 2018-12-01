@@ -5,7 +5,7 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack: enable
 
-precision highp float;
+precision mediump float;
 
 //#define MAX_POINT_LIGHTS 256;
 
@@ -21,6 +21,7 @@ uniform PointLight point_lights[MAX_POINT_LIGHTS];
 uniform int u_SuperSampling;
 uniform float u_Vignette;
 uniform float u_Brightness;
+uniform vec2 u_SSAOScale;
 uniform vec2 u_PixelSize;
 uniform vec2 u_ScreenSize;
 uniform int u_FXAA;
@@ -118,8 +119,12 @@ vec4 get_supersampled_color(in sampler2D texture,vec2 uv_ss){
 }
 
 vec4 get_vignette_color(vec4 color,vec2 vignette_uv,float strength){
-  float m1 = 2.0 - pow(2,            max(strength*(length(vignette_uv)-0.8),0)         );
-  return color*m1;
+  //vec4 o_color = color;
+  float m1 = 2.0 - pow(1.5,            max((strength+1.0)*(length(vignette_uv)-0.6),0)         );
+  float m2 = m1*pow(length(color),0.1);
+  vec4 res_color = vec4(1.0);
+  res_color.rgb = mix(color.rgb,color.rgb*m1,strength);
+  return res_color;
 }
 
 vec4 draw_text(vec2 uv, vec2 col_str,vec2 screen_size){
@@ -155,12 +160,13 @@ float get_occlusion(vec2 uv){
 */
 
 float get_occlusion(vec2 uv){
-    float c1 = texture2D(u_OcclusionTex,vec2(uv.x+0.2*u_PixelSize.x,uv.y                )).x;
+    return texture2D(u_OcclusionTex,uv).x;
+    /*float c1 = texture2D(u_OcclusionTex,vec2(uv.x+0.2*u_PixelSize.x,uv.y                )).x;
 	float c2 = texture2D(u_OcclusionTex,vec2(uv.x                ,uv.y+0.2*u_PixelSize.y)).x;
 	float c3 = texture2D(u_OcclusionTex,vec2(uv.x-0.2*u_PixelSize.x,uv.y                )).x;
 	float c4 = texture2D(u_OcclusionTex,vec2(uv.x                ,uv.y-0.2*u_PixelSize.y)).x;
-	float sum = (c1+c2+c3+c4)/4;
-	return sum;
+	float sum = (c1+c2+c3+c4)/4;*/
+	//return sum;
 }
 
 void main_draw(){
@@ -179,6 +185,7 @@ void main_draw(){
 }
 
 void occlusion_draw(){
+     //gl_Color = vec4(texture2D(u_OcclusionTex,vec2(uv.x/u_SSAOScale.x,uv.y/u_SSAOScale.y)).r);
      gl_Color = vec4(texture2D(u_OcclusionTex,uv).r);
      /*gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x+u_PixelSize.x,uv.y+u_PixelSize.y)).r);
      gl_Color += vec4(texture(u_OcclusionTex,vec2(uv.x-u_PixelSize.x,uv.y+u_PixelSize.y)).r);

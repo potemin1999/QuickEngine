@@ -5,27 +5,32 @@
 #define QUICKENGINE_INPUT_EVENT_MANAGER_H
 
 #include <vector>
-#include "input_event.h"
-#include "input_receiver.h"
+#include <qe/core/input/input_event.h>
+#include <qe/core/input/input_receiver.h>
 
 using namespace std;
 
-namespace QEInput {
+namespace QECore {
 
     class InputEventManager {
     private:
+
+        vector<InputEvent*> events;
         vector<InputReceiver *> receivers;
+
+        int processInputEvent(InputEvent *event);
+
     public:
+
         void registerInputReceiver(InputReceiver *receiver);
 
         void unregisterInputReceiver(InputReceiver *receiver);
 
-        int processInputEvent(InputEvent *event);
+        void injectInputEvent(InputEvent* event);
+
+        void processDelayedEvents();
+
     };
 
-    class InputEventManagerProvider {
-    public:
-        virtual InputEventManager *getInputEventManager();
-    };
 }
 #endif //QUICKENGINE_INPUT_EVENT_MANAGER_H

@@ -18,7 +18,9 @@ out vec2 v_Scale;
 
 void main(){
     gl_Position = vec4(a_pos,1.0);
+    float posx = a_pos.x/v_Scale.x;
+    float posy = a_pos.y/v_Scale.y;
 	v_Scale = u_Scale;
-    v_UV = vec2(0.5*(a_pos.x+1),0.5*(a_pos.y+1));
-  	v_ViewRay = vec3(-a_pos.x*u_Aspect*tan(u_Fov/2), -a_pos.y*tan(u_Fov/2), 1.0);
+    v_UV = vec2(0.5*(a_pos.x+1)/v_Scale.x,0.5*(a_pos.y+1)/v_Scale.y);
+  	v_ViewRay = vec3(-a_pos.x*u_Aspect*tan(u_Fov*0.5), -a_pos.y*tan(u_Fov*0.5), 1.0);
 }

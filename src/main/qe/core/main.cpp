@@ -6,25 +6,14 @@
 #define KEY_A 65
 #define KEY_S 83
 #define KEY_D 68
-#define KEY_E 69
-#define KEY_Q 81
-#define KEY_MINUS 45
-#define KEY_0 48
-#define KEY_1 49
-#define KEY_2 50
-#define KEY_3 51
-#define KEY_4 52
-#define KEY_5 53
-#define KEY_GAMMA_PLUS 39
-#define KEY_GAMMA_MINUS 59
 #define KEY_BRACKET_RIGHT 93
 #define KEY_BRACKET_LEFT 91
 
 using namespace QECore;
 
 int multisampling = 1;
-int window_width = 1600;
-int window_height = 1000;
+int window_width = 1200;
+int window_height = 800;
 
 GLFWwindow* window;
 Engine* engine;
@@ -33,8 +22,8 @@ bool key_backward = false;
 bool key_right = true;
 bool key_left = false;
 double xpos, ypos;
-bool fullscreen = true;
-bool lock_mouse = true;
+bool fullscreen = false;
+bool lock_mouse = false;
 
 
 
@@ -56,28 +45,28 @@ void resize(GLFWwindow* w, int width, int height) {
 
 void key_up(int key) {
 	printf("key up : %i\n", key);
-    InputEvent event{};
-    event.keyAction = QEInputActionCode::ACTION_UP;
-    event.keyCode = key;
-    engine->inputManager->processInputEvent(&event);
+    auto event = new InputEvent();
+    event->keyAction = QECore::ACTION_UP;
+    event->keyCode = key;
+    engine->inputManager->injectInputEvent(event);
 	switch (key){
-	case KEY_E: {
+	/*case KEY_E: {
 		*(engine->v_Vignette) += 0.1f;
 		break;
 	}
 	case KEY_Q: {
 		*(engine->v_Vignette) -= 0.1f;
 		break;
-	}
+	}*/
 	case KEY_BRACKET_RIGHT: {
-		*(engine->v_Brightness) += 0.1f;
+		engine->renderer->v_Brightness += 0.1f;
 		break;
 	}
 	case KEY_BRACKET_LEFT: {
-		*(engine->v_Brightness) -= 0.1f;
+		engine->renderer->v_Brightness -= 0.1f;
 		break;
 	}
-	case KEY_MINUS: {
+	/*case KEY_MINUS: {
 		*(engine->v_DrawingMode) = 0;
 		break;
 	}
@@ -89,7 +78,7 @@ void key_up(int key) {
 		*(engine->v_DrawingMode) = 1;
 		break;
 	}
-	case KEY_GAMMA_PLUS: {
+	/*case KEY_GAMMA_PLUS: {
 		*(engine->v_Gamma) += 0.1f;
 		break;
 	}
@@ -116,7 +105,7 @@ void key_up(int key) {
 	case KEY_0 | KEY_1 | KEY_2 | KEY_3 | KEY_4 :{
 		*(engine->v_DrawingMode) = key-47;
 		break;
-	}
+	}*/
 	case KEY_ESC: {
 		exit(0xc105ed);
 		break;
@@ -160,11 +149,19 @@ void key_up(int key) {
 
 void key_down(int key) {
 	printf("key down : %i\n", key);
-    InputEvent event;
-    event.keyAction = QEInputActionCode::ACTION_DOWN;
-    event.keyCode = key;
-    engine->inputManager->processInputEvent(&event);
+    auto event = new InputEvent();
+    event->keyAction = QECore::ACTION_DOWN;
+    event->keyCode = key;
+    engine->inputManager->injectInputEvent(event);
 	switch (key) {
+	    case KEY_ARROW_RIGHT:{
+	        engine->camera->addCameraRotation(0,0,0.1f);
+			break;
+		}
+        case KEY_ARROW_LEFT:{
+            engine->camera->addCameraRotation(0,0,-0.1f);
+            break;
+        }
 	case 341: {
 		engine->request_down = 1;
 		break;
@@ -246,19 +243,26 @@ void loop() {
 		float lT = 0;
 		float cT = 0;
 		float dT = 0;
+		float mouseDx = 0;
+		float mouseDy = 0;
 		while (!glfwWindowShouldClose(window)) {
 			dT = (cT = float(glfwGetTime())) - lT;
 			lT = cT;
 			glfwGetCursorPos(window, &xpos, &ypos);
-            engine->camera->rotateViewRight(0.001f * (window_width / 2 - float(xpos)));
-            engine->camera->rotateViewUp(0.001f * (window_height / 2 - float(ypos)));
-			glfwSetCursorPos(window, window_width / 2, window_height / 2);
+            mouseDx = (float)xpos - (window_width  * 0.5f);
+            mouseDy = (window_height * 0.5f) - (float)ypos;
+            //printf("mouse dx : %f, mouse dy : %f\n",mouseDx,mouseDy);
+            //engine->camera->yaw += 0.001f * mouseDx;
+            //engine->camera->pitch +=0.001f * mouseDy;
+            engine->camera->addCameraRotation(0.001f * mouseDy,0.001f * mouseDx,0);
+			glfwSetCursorPos(window, window_width * 0.5f, window_height * 0.5f);
+			glfwPollEvents();
 
 			engine->draw(dT);
-			glfwPollEvents();
+
 			glfwSwapBuffers(window);
 		}
-	}catch(exception e){
+	}catch(exception& e){
 		printf("FATAL LOOP EXCEPTION : %s",e.what());
 	}
 }
@@ -282,10 +286,10 @@ int main_graphics(void){
     //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
-	glfwWindowHint(GLFW_RED_BITS, 16);
-	glfwWindowHint(GLFW_GREEN_BITS, 16);
-	glfwWindowHint(GLFW_BLUE_BITS, 16);
+	//glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
+	//glfwWindowHint(GLFW_RED_BITS, 16);
+	//glfwWindowHint(GLFW_GREEN_BITS, 16);
+	//glfwWindowHint(GLFW_BLUE_BITS, 16);
 	//glfwWindowHint(GLFW_REFRESH_RATE, 200);
 
 	//if (multisampling > 1) {
@@ -323,10 +327,10 @@ int main_graphics(void){
 		printf("glad is not loaded!\n");
 		return -1;
 	}else printf("OpenGL %d.%d loaded\n", GLVersion.major, GLVersion.minor);
-    if (monitor)
+    /*if (monitor)
 		glfwSwapInterval(1);
     else
-        glfwSwapInterval(2);
+        glfwSwapInterval(2);*/
 	glfwSetWindowSizeCallback(window, resize);
 	glfwSetKeyCallback(window, key);
 	glfwSetErrorCallback(error);
@@ -337,8 +341,8 @@ int main_graphics(void){
 	try {
 		init();
 		loop();
-	}catch(exception e){
-
+	}catch(exception& e){
+		printf(e.what());
 	}
 
     delete engine;

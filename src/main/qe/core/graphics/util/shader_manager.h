@@ -4,6 +4,7 @@ using namespace QECore;
 
 class ShaderManager {
 public:
+
     static Shader *create_shader_program(char *vertex_path, char *fragment_path);
 
     static int get_uniform(Shader *program, char *name);
@@ -21,4 +22,5 @@ public:
     static int use_shader_program(int program);
 
     static int use_shader_program(Shader *shader);
+
 };
