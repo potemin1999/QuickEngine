@@ -1,5 +1,6 @@
 #pragma once
-#include "object.h"
+
+#include "gameobject.h"
 
 class District {
 public:

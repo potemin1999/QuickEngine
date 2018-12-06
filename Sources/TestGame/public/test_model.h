@@ -1,6 +1,6 @@
 #pragma once
 
-#include "object.h"
+#include "gameobject.h"
 #include "model_loader.h"
 #include "engine.h"
 #include <glm/glm.hpp>

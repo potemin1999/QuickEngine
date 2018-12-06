@@ -25,7 +25,7 @@ void ModelLoader::load_object(Object *container, char *path, char *name) {
 	string just_path = string(path_c).append(path);
 
 	if (!file) {
-		printf("couldn't open model file \"models\\%s\"\n",_path.data());// string(path).c_str(), string(name).c_str());
+        printf("couldn't open model file \"%s\"\n", _path.data());// string(path).c_str(), string(name).c_str());
 		return;
 	}
 	struct vert {

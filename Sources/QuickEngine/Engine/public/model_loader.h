@@ -1,6 +1,6 @@
 #pragma once
 
-#include "object.h"
+#include "gameobject.h"
 #include <fstream>
 #include <list>
 #include <fstream>

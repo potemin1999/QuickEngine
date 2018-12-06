@@ -13,7 +13,7 @@ using namespace glm;
 using namespace QECore;
 
 int EU::init_utils(Engine *e) {
-    e->checkGlError("eu pre init");
+    QECore::Engine::checkGlError("eu pre init");
     glEnable(GL_DEPTH_TEST);
     glClearColor(0, 0, 0, 1);
     glDepthFunc(GL_LEQUAL);
@@ -78,33 +78,5 @@ void EU::genVBOandVAO(float arr[], int size, int &verts) {
 }
 
 void EU::create_objects(Engine *e) {
-    //TestModel* tm = new TestModel();
-    //e->addObject(tm);
-    /*MaxModel* mm = new MaxModel();
-    mm->mModelMatrix = mat4(1.0);
-    mm->mModelMatrix = translate(mm->mModelMatrix, vec3(0, -3, - 2));
-    e->addObject(mm);*/
 
-    auto m = new MaxModel();
-    for (int i = 0; i < 50; i++) {
-        for (int j = 0; j < 10; j++) {
-            Engine::checkGlError("pre max loading");
-            auto mm = new Object();
-            mm->mesh_count = m->mesh_count;
-            mm->meshes = m->meshes;
-            mm->mModelMatrix = mat4(1.0);
-            mm->mModelMatrix = translate(mm->mModelMatrix, vec3(5 * i + 2, j, 3 * j + 2));
-            e->addObject(mm);
-        }
-    }
-
-    printf("Gonna create this shit\n");
-    auto n = new FloorModel();
-    Engine::checkGlError("pre floor_01 loading\n");
-    auto nm = new Object();
-    nm->mesh_count = n->mesh_count;
-    nm->meshes = n->meshes;
-    nm->mModelMatrix = mat4(1.0);
-    e->addObject(nm);
-    printf("Shit created succesfully. Enjoy.\n");
 }

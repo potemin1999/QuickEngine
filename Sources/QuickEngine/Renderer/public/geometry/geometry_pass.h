@@ -5,7 +5,7 @@
 #ifndef QUICKENGINE_GEOMETRYPASS_H
 #define QUICKENGINE_GEOMETRYPASS_H
 
-#include "object.h"
+#include "gameobject.h"
 #include "camera.h"
 #include "framebuffer.h"
 #include "shader.h"

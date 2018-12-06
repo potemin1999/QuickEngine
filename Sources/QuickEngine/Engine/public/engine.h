@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "engine_context.h"
-#include "object.h"
+#include "gameobject.h"
 #include "renderer.h"
 #include "camera.h"
 #include "texture.h"
@@ -16,6 +16,9 @@
 #include "input/input_key.h"
 #include <util/log.h>
 #include "mesh.h"
+
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
 
 using namespace std;
 using namespace QECore;
@@ -39,6 +42,12 @@ namespace QECore {
         vector<Material *> materials;
         vector<QECore::Texture *> textures;
 
+        btBroadphaseInterface *broadphaseInterface;
+        btDefaultCollisionConfiguration *collisionConfiguration;
+        btCollisionDispatcher *collisionDispatcher;
+        btSequentialImpulseConstraintSolver *constraintSolver;
+        btDiscreteDynamicsWorld *dynamicsWorld;
+
         int width = 10;
         int height = 10;
         int anisotropy = 8;
@@ -54,6 +63,8 @@ namespace QECore {
         bool request_backward = false;
 
         void init();
+
+        void initPhysics();
 
         void compileShaders();
 

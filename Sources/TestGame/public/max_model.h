@@ -1,7 +1,7 @@
 #pragma once
 
 #include "defines.h"
-#include "object.h"
+#include "gameobject.h"
 #include "model_loader.h"
 
 class MaxModel : public Object {

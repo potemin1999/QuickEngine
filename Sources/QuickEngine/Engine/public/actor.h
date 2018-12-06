@@ -5,7 +5,7 @@
 #ifndef QUICKENGINE_ACTOR_H
 #define QUICKENGINE_ACTOR_H
 
-#include "object.h"
+#include "gameobject.h"
 
 namespace QECore {
 

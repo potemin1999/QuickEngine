@@ -9,7 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 #include <texture.h>
-#include <object.h>
+#include <gameobject.h>
 
 
 GeometryPass::GeometryPass(EngineContext *context) : RenderPass(context) {

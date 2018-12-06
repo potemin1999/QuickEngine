@@ -1,3 +1,6 @@
+
+#include <engine.h>
+
 #include "../public/engine.h"
 
 #define DEBUG_DRAW 1
@@ -30,14 +33,14 @@ Engine::~Engine() {
     delete context;
     delete camera;
 
-    for (int i = 0; i < objects.size(); i++) {
-        delete objects[i];
+    for (auto &object : objects) {
+        delete object;
     }
-    for (int i = 0; i < materials.size(); i++) {
-        delete materials[i];
+    for (auto &material : materials) {
+        delete material;
     }
-    for (int i = 0; i < textures.size(); i++) {
-        delete textures[i];
+    for (auto &texture : textures) {
+        delete texture;
     }
 
 }
@@ -45,18 +48,24 @@ Engine::~Engine() {
 void Engine::init() {
     int i_eu = EU::init_utils(this);
     log("init engine utils %i \n", i_eu);
+
+    printf("initialising physics...\n");
+    initPhysics();
+    printf("physics initialised.\n");
+
     camera = new Camera();
 
-    auto p = glm::vec3(0.0f, 0.0f, 0.0f);
+    auto p = glm::vec3(0.0f, 2.0f, 0.0f);
     auto v = glm::vec3(0.0f, 0.0f, 1.0f);
     auto u = glm::vec3(0.0f, 1.0f, 0.0f);
     camera->setCameraPosition(p, v, u);
     camera->setTrackVerticalAxis(true);
 
-    renderDataStorage->set("с_CurrentWorldCamera",camera);
-    renderDataStorage->set("objects",&objects);
+    renderDataStorage->set("с_CurrentWorldCamera", camera);
+    renderDataStorage->set("objects", &objects);
 
     renderer->init(renderDataStorage);
+    printf("engine initialized.");
 }
 
 
@@ -88,7 +97,7 @@ void Engine::resize(int w, int h) {
         h *= supersampling;
     }
     camera->setPerspective(((float) w) / ((float) h), 1.0f, 4000.0f);
-    renderer->onResize(w,h);
+    renderer->onResize(w, h);
     if (supersampling != 1) {
         w /= supersampling;
         h /= supersampling;
@@ -101,8 +110,8 @@ void Engine::draw(float dT) {
     if (request_backward & !request_forward) camera->moveCameraForward(-backward_speed * dT);
     if (request_right & !request_left) camera->moveCameraRight(strafe_speed * dT);
     if (request_left & !request_right) camera->moveCameraRight(-strafe_speed * dT);
-    if (request_up & !request_down) camera->moveCameraUp(2*dT);
-    if (request_down & !request_up) camera->moveCameraUp(-dT*2);
+    if (request_up & !request_down) camera->moveCameraUp(2 * dT);
+    if (request_down & !request_up) camera->moveCameraUp(-dT * 2);
     camera->updateLook();
     renderer->doRender();
 }
@@ -118,4 +127,16 @@ Engine *Engine::getInstance() {
         engine = new Engine();
     }
     return engine;
+}
+
+void Engine::initPhysics() {
+    broadphaseInterface = new btDbvtBroadphase();
+    collisionConfiguration = new btDefaultCollisionConfiguration();
+    collisionDispatcher = new btCollisionDispatcher(collisionConfiguration);
+    constraintSolver = new btSequentialImpulseConstraintSolver();
+    dynamicsWorld = new btDiscreteDynamicsWorld(collisionDispatcher, broadphaseInterface, constraintSolver,
+                                                collisionConfiguration);
+
+    // set default Earth gravitation
+    dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
 }
