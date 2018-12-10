@@ -76,7 +76,3 @@ void EU::genVBOandVAO(float arr[], int size, int &verts) {
     Engine::checkGlError("get vbo and vao");
     verts = vao1;
 }
-
-void EU::create_objects(Engine *e) {
-
-}

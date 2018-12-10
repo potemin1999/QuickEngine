@@ -104,12 +104,12 @@ void Renderer::onResize(int width, int height) {
     v_PixelSize[1] = 1.0f / ((float) (height));
     v_ScreenSize[0] = (float) width;
     v_ScreenSize[1] = (float) height;
-    v_SSAOSize[0] = (int)(width * 1);
-    v_SSAOSize[1] = (int)(height * 1);
+    v_SSAOSize[0] = width * 1;
+    v_SSAOSize[1] = height * 1;
     v_SSAOScale[0] = v_SSAOSize[0] / v_ScreenSize[0];
     v_SSAOScale[1] = v_SSAOSize[1] / v_ScreenSize[1];
-    for (int i = 0; i < pipelineList->size(); i++) {
-        (*pipelineList)[i]->renderPass->onResize(width, height);
+    for (auto &i : *pipelineList) {
+        i->renderPass->onResize(width, height);
     }
 }
 
@@ -126,8 +126,8 @@ void Renderer::detachCurrentWorld() {
 }
 
 void Renderer::doRender() {
-    for (int i = 0; i < pipelineList->size(); i++) {
-        (*pipelineList)[i]->renderPass->doDraw();
+    for (auto &i : *pipelineList) {
+        i->renderPass->doDraw();
     }
 }
 

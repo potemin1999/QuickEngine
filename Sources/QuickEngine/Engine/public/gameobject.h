@@ -11,6 +11,10 @@ using namespace glm;
 namespace QECore {
 
     class Object {
+    private:
+        float mass = 0;
+        glm::vec3 pos = glm::vec3(0, 0, 0);
+        glm::vec3 rot = glm::vec3(0, 0, 0);
     public:
 
         Object();
@@ -19,11 +23,19 @@ namespace QECore {
 
         Mesh *meshes;
         unsigned long mesh_count;
-        mat4 mModelMatrix;
-        btRigidBody *rigidBody;
+        btRigidBody *rigidBody = nullptr;
 
-        void *getModelMatrix();
+        void setPos(glm::vec3 pos);
 
+        glm::vec3 getPos();
+
+        void setRotation(glm::vec3 rot);
+
+        glm::vec3 getRotation();
+
+        float getMass();
+
+        void setMass(float mass);
     };
 
 }

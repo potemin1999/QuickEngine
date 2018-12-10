@@ -1,5 +1,7 @@
 #include "main.h"
 #include "boot.h"
+#include "floor_model.h"
+#include "falling_floor_model.h"
 
 #define KEY_ESC 256
 #define KEY_SPACE 32
@@ -43,20 +45,12 @@ void resize(GLFWwindow *w, int width, int height) {
 }
 
 void key_up(int key) {
-    printf("key up : %i\n", key);
+    printf("key up: %i\n", key);
     auto event = new InputEvent();
     event->keyAction = QECore::ACTION_UP;
     event->keyCode = key;
     engine->inputManager->injectInputEvent(event);
     switch (key) {
-        /*case KEY_E: {
-            *(engine->v_Vignette) += 0.1f;
-            break;
-        }
-        case KEY_Q: {
-            *(engine->v_Vignette) -= 0.1f;
-            break;
-        }*/
         case KEY_BRACKET_RIGHT: {
             engine->renderer->v_Brightness += 0.1f;
             break;
@@ -65,81 +59,42 @@ void key_up(int key) {
             engine->renderer->v_Brightness -= 0.1f;
             break;
         }
-            /*case KEY_MINUS: {
-                *(engine->v_DrawingMode) = 0;
-                break;
-            }
-            case KEY_0: {
-                *(engine->v_DrawingMode) = 0;
-                break;
-            }
-            case KEY_1: {
-                *(engine->v_DrawingMode) = 1;
-                break;
-            }
-            /*case KEY_GAMMA_PLUS: {
-                *(engine->v_Gamma) += 0.1f;
-                break;
-            }
-            case KEY_GAMMA_MINUS: {
-                *(engine->v_Gamma) -= 0.1f;
-                break;
-            }
-            case KEY_2: {
-                *(engine->v_DrawingMode) = 2;
-                break;
-            }
-            case KEY_3: {
-                *(engine->v_DrawingMode) = 3;
-                break;
-            }
-            case KEY_4: {
-                *(engine->v_DrawingMode) = 4;
-                break;
-            }
-            case KEY_5: {
-                *(engine->v_DrawingMode) = 5;
-                break;
-            }
-            case KEY_0 | KEY_1 | KEY_2 | KEY_3 | KEY_4 :{
-                *(engine->v_DrawingMode) = key-47;
-                break;
-            }*/
+
         case KEY_ESC: {
             exit(0xc105ed);
             break;
         }
         case 341: {
-            engine->request_down = 0;
+            engine->request_down = false;
             break;
         }
         case KEY_SPACE: {
-            engine->request_up = 0;
+            engine->request_up = false;
             //exit(0xdeadbeef);
             break;
         }
         case KEY_W: {
             //engine->forward_speed = 0;
             key_forward = false;
-            engine->request_forward = 0;
+            engine->request_forward = false;
             break;
         }
         case KEY_A: {
             //engine->strafe_speed = 0;
             key_left = false;
-            engine->request_left = 0;
+            engine->request_left = false;
             break;
         }
         case KEY_S: {
             //engine->forward_speed = 0;
             key_backward = false;
-            engine->request_backward = 0;
+            engine->request_backward = false;
             break;
         }
         case KEY_D: {
             //engine->strafe_speed = 0;
             key_right = false;
-            engine->request_right = 0;
+            engine->request_right = false;
             break;
         }
         default:
@@ -163,38 +118,38 @@ void key_down(int key) {
             break;
         }
         case 341: {
-            engine->request_down = 1;
+            engine->request_down = true;
             break;
         }
         case KEY_SPACE: {
-            engine->request_up = 1;
+            engine->request_up = true;
             break;
         }
         case KEY_W: {
             if (key_backward) key_backward = false;
             key_forward = true;
-            engine->request_forward = 1;
+            engine->request_forward = true;
             //engine->forward_speed = 1;
             break;
         }
         case KEY_A: {
             if (key_right) key_right = false;
             key_left = true;
-            engine->request_left = 1;
+            engine->request_left = true;
             //engine->strafe_speed = -1;
             break;
         }
         case KEY_S: {
             if (key_forward) key_forward = false;
             key_backward = true;
-            engine->request_backward = 1;
+            engine->request_backward = true;
             //engine->forward_speed = -1;
             break;
         }
         case KEY_D: {
             if (key_left) key_left = false;
             key_right = true;
-            engine->request_right = 1;
+            engine->request_right = true;
             //engine->strafe_speed = 1;
             break;
         }
@@ -222,8 +177,14 @@ void init() {
         engine->init();
         check_gl_error("init");
 
-        engine->createWorld();
-        check_gl_error("create world");
+
+        // init camera
+        auto p = glm::vec3(0.0f, 2.0f, 0.0f);
+        auto v = glm::vec3(0.0f, 0.0f, 1.0f);
+        auto u = glm::vec3(0.0f, 1.0f, 0.0f);
+        engine->camera->setCameraPosition(p, v, u);
+        engine->camera->setTrackVerticalAxis(true);
+
 
         engine->resize(window_width, window_height);
         check_gl_error("resize");
@@ -231,28 +192,27 @@ void init() {
         engine->compileShaders();
         check_gl_error("compile shaders");
 
-
-
         // init world
         printf("Gonna create this shitty world\n");
 
         // add max
         auto m = new MaxModel();
-        Engine::checkGlError("pre max loading");
         auto mm = new Object();
         mm->mesh_count = m->mesh_count;
         mm->meshes = m->meshes;
-        mm->mModelMatrix = mat4(1.0);
+        mm->setPos(glm::vec3(0.0f, 2.0f, 0.0f));
         engine->addObject(mm);
 
         // add floor
         auto n = new FloorModel();
-        Engine::checkGlError("pre floor_01 loading\n");
-        auto nm = new Object();
-        nm->mesh_count = n->mesh_count;
-        nm->meshes = n->meshes;
-        nm->mModelMatrix = mat4(1.0);
-        engine->addObject(nm);
+        n->setPos(glm::vec3(0.0f, -1.0f, 0.0f));
+        engine->addObject(n);
+
+        // add falling floor
+        auto n1 = new FallingFloorModel();
+        n1->setPos(glm::vec3(0.0f, 0.0f, 0.0f));
+        engine->addObject(n1);
+
         printf("Shit created successfully. Enjoy.\n");
     } catch (exception &e) {
         printf("FATAL INIT EXCEPTION : %s\n", e.what());
@@ -279,7 +239,7 @@ void loop() {
             glfwSetCursorPos(window, window_width * 0.5f, window_height * 0.5f);
             glfwPollEvents();
 
-            engine->draw(dT);
+            engine->tick(dT);
 
             glfwSwapBuffers(window);
         }
@@ -339,11 +299,9 @@ int main_graphics() {
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         printf("glad is not loaded!\n");
         return -1;
-    } else printf("OpenGL %d.%d loaded\n", GLVersion.major, GLVersion.minor);
-    /*if (monitor)
-		glfwSwapInterval(1);
-    else
-        glfwSwapInterval(2);*/
+    } else
+        printf("OpenGL %d.%d loaded\n", GLVersion.major, GLVersion.minor);
+
     glfwSetWindowSizeCallback(window, resize);
     glfwSetKeyCallback(window, key);
     glfwSetErrorCallback(error);
@@ -355,7 +313,7 @@ int main_graphics() {
         init();
         loop();
     } catch (exception &e) {
-        printf(e.what());
+        printf("%s\n", e.what());
     }
 
     delete engine;

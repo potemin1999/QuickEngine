@@ -2,6 +2,7 @@
 #include <engine.h>
 
 #include "../public/engine.h"
+#include <chrono>
 
 #define DEBUG_DRAW 1
 
@@ -53,19 +54,15 @@ void Engine::init() {
     initPhysics();
     printf("physics initialised.\n");
 
+    printf("initialising camera...\n");
     camera = new Camera();
-
-    auto p = glm::vec3(0.0f, 2.0f, 0.0f);
-    auto v = glm::vec3(0.0f, 0.0f, 1.0f);
-    auto u = glm::vec3(0.0f, 1.0f, 0.0f);
-    camera->setCameraPosition(p, v, u);
-    camera->setTrackVerticalAxis(true);
-
     renderDataStorage->set("с_CurrentWorldCamera", camera);
+    printf("camera initialized.\n");
+
     renderDataStorage->set("objects", &objects);
 
     renderer->init(renderDataStorage);
-    printf("engine initialized.");
+    printf("engine initialized.\n");
 }
 
 
@@ -80,10 +77,6 @@ void Engine::compileShaders() {
 
 void Engine::dumpUniforms() {
 
-}
-
-void Engine::createWorld() {
-    EU::create_objects(this);
 }
 
 void Engine::resize(int w, int h) {
@@ -104,7 +97,9 @@ void Engine::resize(int w, int h) {
     }
 }
 
-void Engine::draw(float dT) {
+void Engine::tick(float dT) {
+
+
     inputManager->processDelayedEvents();
     if (request_forward & !request_backward) camera->moveCameraForward(forward_speed * dT);
     if (request_backward & !request_forward) camera->moveCameraForward(-backward_speed * dT);
@@ -112,6 +107,9 @@ void Engine::draw(float dT) {
     if (request_left & !request_right) camera->moveCameraRight(-strafe_speed * dT);
     if (request_up & !request_down) camera->moveCameraUp(2 * dT);
     if (request_down & !request_up) camera->moveCameraUp(-dT * 2);
+
+    dynamicsWorld->stepSimulation(dT);
+
     camera->updateLook();
     renderer->doRender();
 }
@@ -119,6 +117,10 @@ void Engine::draw(float dT) {
 
 void Engine::addObject(Object *o) {
     objects.push_back(o);
+    if (o->rigidBody != nullptr) {
+        printf("Adding rigidBody to dynamics world\n");
+        dynamicsWorld->addRigidBody(o->rigidBody);
+    }
 }
 
 Engine *Engine::getInstance() {

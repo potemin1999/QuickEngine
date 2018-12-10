@@ -59,7 +59,7 @@ namespace QECore {
         void moveCameraRight(float distance);
 
 
-        void *getVPMatrix();
+        glm::mat4 *getVPMatrix();
 
         const float *getViewMatrixPtr();
 

@@ -84,36 +84,41 @@ void GeometryPass::doDraw() {
     s_MainShader->uniform1f("u_Brightness", *v_Brightness);
     s_MainShader->uniform3fv("u_CamPos", 1, camera->getPosition());
     s_MainShader->uniformMatrix4fv("u_View", 1, false, camera->getViewMatrixPtr());
-    mat4 *mVP = (mat4 *) camera->getVPMatrix();
+    glm::mat4 mVP = *camera->getVPMatrix();
 
-    for (int j = 0; j < (*objects).size(); j++) {
-        Object *o = (*objects)[j];
+    // TODO: rewrite this shit
+    for (auto o : *objects) {
         for (int i = 0; i < o->mesh_count; i++) {
             Mesh *m = (o->meshes + i);
-            mat4 *mM = (mat4 *) o->getModelMatrix();
-            s_MainShader->uniformMatrix4fv("u_MVP", 1, false, glm::value_ptr(*mVP * *mM));
-            if (true) {
-                s_MainShader->uniform1i("u_AmbientTex", 0);
-                glActiveTexture(GL_TEXTURE0);
-                if (m->material->t_Ambient == nullptr) {
-                    //printf("ERROR: mesh object %s has null ambient texture\n", m->name);
-                    continue;
-                } else {
-                    glBindTexture(GL_TEXTURE_2D, m->material->t_Ambient->id);
-                    //printf(" ambient texture binded on link %i\n", m->material->t_Ambient->id);
-                }
-                s_MainShader->uniform1i("u_NormalTex", 1);
-                //glUniform1i(*u_MainNormalTex, 1);
-                glActiveTexture(GL_TEXTURE1);
-                if (m->material->t_Normal != nullptr) {
-                    glBindTexture(GL_TEXTURE_2D, m->material->t_Normal->id);
-                    //printf(" normal texture binded on link %i\n", m->material->t_Ambient->id);
-                } else {
-                    continue;
-                    //printf(" normal texture binded on link %i\n", m->material->t_Ambient->id);
-                }
+            glm::mat4 mM;
+
+            mM = glm::mat4(1.0f);
+            mM = glm::translate(mM, o->getPos());
+            // TODO: add rotation
+
+            s_MainShader->uniformMatrix4fv("u_MVP", 1, false, glm::value_ptr(mVP * mM));
+
+            s_MainShader->uniform1i("u_AmbientTex", 0);
+            glActiveTexture(GL_TEXTURE0);
+            if (m->material->t_Ambient == nullptr) {
+                //printf("ERROR: mesh object %s has null ambient texture\n", m->name);
+                continue;
+            } else {
+                glBindTexture(GL_TEXTURE_2D, m->material->t_Ambient->id);
+                //printf(" ambient texture binded on link %i\n", m->material->t_Ambient->id);
             }
-            glBindVertexArray((GLuint)m->data);
+            s_MainShader->uniform1i("u_NormalTex", 1);
+            //glUniform1i(*u_MainNormalTex, 1);
+            glActiveTexture(GL_TEXTURE1);
+            if (m->material->t_Normal != nullptr) {
+                glBindTexture(GL_TEXTURE_2D, m->material->t_Normal->id);
+                //printf(" normal texture binded on link %i\n", m->material->t_Ambient->id);
+            } else {
+                continue;
+                //printf(" normal texture binded on link %i\n", m->material->t_Ambient->id);
+            }
+
+            glBindVertexArray((GLuint) m->data);
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);

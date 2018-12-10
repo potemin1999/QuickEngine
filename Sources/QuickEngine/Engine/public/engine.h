@@ -68,11 +68,9 @@ namespace QECore {
 
         void compileShaders();
 
-        void createWorld();
-
         void resize(int w, int h);
 
-        void draw(float dT);
+        void tick(float dT);
 
         void addObject(Object *o);
 
@@ -92,8 +90,6 @@ namespace QECore {
         static string load_string(char *filename);
 
         static void genVBOandVAO(float arr[], int len, int &vertVAO);
-
-        static void create_objects(Engine *e);
     };
 
     class EngineContextImpl : public EngineContext {

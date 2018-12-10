@@ -206,7 +206,7 @@ void Camera::updateLook() {
     data->mVPMatrix = data->mProjectionMatrix * data->mViewMatrix;
 }
 
-void *Camera::getVPMatrix() {
+glm::mat4 *Camera::getVPMatrix() {
     return &(data->mVPMatrix);
 }
 

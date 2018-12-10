@@ -2,22 +2,15 @@
 #define _QECORE_H_
 
 #include <stdio.h>
-//#include <tchar.h>
-
 
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
-
-//#include <gl\GLU.h>
 
 #include "engine.h"
 #include "boot.h"
 #include "il/il.h"
 
 #include "max_model.h"
-//#include "test_model.h"
-#include "floor_model.h"
-//#include "il\ilu.h"
 
 #include "settings.h"
 
