@@ -1,6 +1,6 @@
 #pragma once
 
-using namespace QECore;
+using namespace QE;
 
 class ShaderManager {
 public:

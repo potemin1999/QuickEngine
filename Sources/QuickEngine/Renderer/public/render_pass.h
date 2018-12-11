@@ -6,10 +6,10 @@
 #define QUICKENGINE_RENDER_PASS_H
 
 #include "util/render_data_storage.h"
-#include "engine_context.h"
-#include "world.h"
+#include "EngineContext.h"
+#include "World.h"
 
-namespace QECore {
+namespace QE {
 
     class RenderPass {
 

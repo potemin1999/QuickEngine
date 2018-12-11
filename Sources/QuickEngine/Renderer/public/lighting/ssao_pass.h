@@ -5,14 +5,14 @@
 #ifndef QUICKENGINE_SSAO_PASS_H
 #define QUICKENGINE_SSAO_PASS_H
 
-#include "camera.h"
+#include "Camera.h"
 #include "defines.h"
 #include "render_pass.h"
 #include "shader.h"
-#include "framebuffer.h"
-#include "texture.h"
+#include "Framebuffer.h"
+#include "Texture.h"
 
-namespace QECore {
+namespace QE {
 
     class SSAOPass : public RenderPass {
 

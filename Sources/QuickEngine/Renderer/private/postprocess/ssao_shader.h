@@ -7,7 +7,7 @@
 
 #include "shader.h"
 
-namespace QECore {
+namespace QE {
 
     class SSAOShader : Shader {
 

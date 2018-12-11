@@ -3,13 +3,13 @@
 //
 
 #include <geometry/geometry_pass.h>
-#include <util/log.h>
+#include <util/Log.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
-#include <texture.h>
-#include <gameobject.h>
+#include <Texture.h>
+#include <GameObject.h>
 
 
 GeometryPass::GeometryPass(EngineContext *context) : RenderPass(context) {

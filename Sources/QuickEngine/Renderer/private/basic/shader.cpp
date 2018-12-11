@@ -4,21 +4,21 @@
 
 #include "shader.h"
 #include "defines.h"
-#include "util/log.h"
-#include "util/utils.h"
+#include "util/Log.h"
+#include "util/Utils.h"
 #include <fstream>
 #include <map>
 #include <unistd.h>
 #include <cstring>
 #include "opengl.h"
 
-using namespace QECore;
+using namespace QE;
 
-namespace QECore {
+namespace QE {
     namespace ShaderImpl {
         std::string loadSource(char *filename) {
             char path[1024];
-            QECore::getEngineRootDir(path, sizeof(char) * 1024);
+            QE::getEngineRootDir(path, sizeof(char) * 1024);
             std::string _path = std::string(path);
             _path.append("/");
             _path.append(filename);

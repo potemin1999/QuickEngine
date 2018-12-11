@@ -5,7 +5,7 @@
 #ifndef QUICKENGINE_SHADER_H
 #define QUICKENGINE_SHADER_H
 
-namespace QECore {
+namespace QE {
 
     class Shader {
 

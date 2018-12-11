@@ -1,20 +1,13 @@
-//
-// Created by Ilya on 3/16/2018.
-//
-
-#ifndef QUICKENGINE_POST_PASS_H
-#define QUICKENGINE_POST_PASS_H
+#pragma once
 
 #include "render_pass.h"
-#include "framebuffer.h"
+#include "Framebuffer.h"
 #include "shader.h"
-#include "texture.h"
-#include "input/input_key.h"
-#include "input/input_processing_result.h"
+#include "Texture.h"
+#include "input/InputKey.h"
+#include "input/InputProcessingResult.h"
 
-using namespace QECore;
-
-namespace QECore {
+namespace QE {
 
     class PostPass : public RenderPass {
 
@@ -44,9 +37,7 @@ namespace QECore {
                 {-1.0f, -1.0f, 0.0f,
                  1.0f, -1.0f, 0.0f,
                  1.0f, 1.0f, 0.0f,
-                 -1.0f, 1.0f, 0.0f,};
-        //{-1.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-        //          1.0f, 1.0f, 0.0f, 1.0f, -1.0f, 0.0f, -1.0f, -1.0f, 0.0f};
+                 -1.0f, 1.0f, 0.0f};
 
     public:
 
@@ -71,7 +62,7 @@ namespace QECore {
 
         public:
 
-            PostPassInputReceiver(PostPass *_parent) : InputReceiver() {
+            explicit PostPassInputReceiver(PostPass *_parent) : InputReceiver() {
                 parent = _parent;
             }
 
@@ -82,4 +73,3 @@ namespace QECore {
     };
 
 }
-#endif //QUICKENGINE_POST_PASS_H

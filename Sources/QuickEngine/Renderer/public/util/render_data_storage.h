@@ -5,7 +5,7 @@
 #ifndef QUICKENGINE_RENDER_DATA_STORAGE_H
 #define QUICKENGINE_RENDER_DATA_STORAGE_H
 
-namespace QECore {
+namespace QE {
 
     class RenderDataStorage {
     private:

@@ -3,10 +3,10 @@
 //
 
 #include "util/render_data_storage.h"
-#include "util/log.h"
-#include "util/strmap.h"
+#include "util/Log.h"
+#include "util/Strmap.h"
 
-using namespace QECore;
+using namespace QE;
 
 
 RenderDataStorage::RenderDataStorage() {

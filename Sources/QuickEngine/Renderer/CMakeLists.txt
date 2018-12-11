@@ -2,16 +2,16 @@ set(RENDERER "QeRenderer")
 set(RENDERER_SOURCE_DIR "${QUICK_ENGINE_SOURCE_DIR}/Renderer")
 set(RENDERER_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/libs/include/glad/glad.cpp
-        private/basic/framebuffer.cpp
+        private/basic/Framebuffer.cpp
         private/basic/shader.cpp
-        private/basic/texture.cpp
+        private/basic/Texture.cpp
         private/effects/post_pass.cpp
         private/geometry/geometry_pass.cpp
         private/lighting/deferred_lighting_pass.cpp
         private/postprocess/ssao_pass.cpp
         private/util/render_data_storage.cpp
         private/util/shader_manager.cpp
-        private/util/texture_manager.cpp
+        private/util/TextureManager.cpp
         private/renderer.cpp
         )
 

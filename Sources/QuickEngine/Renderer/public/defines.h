@@ -21,7 +21,7 @@
 
 #endif
 
-namespace QECore {
+namespace QE {
     class Texture;
 
     class Framebuffer;

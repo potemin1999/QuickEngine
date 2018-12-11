@@ -5,7 +5,7 @@
 #include "lighting/deferred_lighing_pass.h"
 #include <glad/glad.h>
 
-using namespace QECore;
+using namespace QE;
 
 DeferredLightingPass::DeferredLightingPass(EngineContext *context) : RenderPass(context) {
     attachmentsConst = new unsigned[1]{GL_COLOR_ATTACHMENT4};

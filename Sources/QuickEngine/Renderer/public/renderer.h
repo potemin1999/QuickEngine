@@ -5,22 +5,22 @@
 #ifndef QUICKENGINE_RENDERER_H
 #define QUICKENGINE_RENDERER_H
 
-#include "engine_context.h"
-#include "util/log.h"
+#include "EngineContext.h"
+#include "util/Log.h"
 #include "render_pass.h"
 #include "effects/post_pass.h"
 #include "geometry/geometry_pass.h"
 #include "lighting/deferred_lighing_pass.h"
 #include "lighting/ssao_pass.h"
-#include "input/input_event_manager.h"
-#include "input/input_receiver.h"
-#include "world.h"
-#include "util/list.h"
-#include "util/strmap.h"
+#include "input/InputEventManager.h"
+#include "input/InputReceiver.h"
+#include "World.h"
+#include "util/List.h"
+#include "util/Strmap.h"
 #include "util/render_data_storage.h"
 #include <vector>
 
-namespace QECore {
+namespace QE {
 
     namespace RendererImpl {
         class RendererInputReceiver;

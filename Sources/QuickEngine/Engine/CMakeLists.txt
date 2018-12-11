@@ -1,16 +1,16 @@
 set(ENGINE "QeEngine")
 set(ENGINE_SOURCE_DIR "${QUICK_ENGINE_SOURCE_DIR}/Engine")
 set(ENGINE_SOURCE_FILES
-        private/actors/model_loader.cpp
-        private/actors/gameobject.cpp
-        private/input/input_event_manager.cpp
-        private/materials/material_manager.cpp
-        private/util/string_helper.cpp
-        private/util/utils.cpp
-        private/camera.cpp
-        private/engine.cpp
-        private/engine_utils.cpp
-        private/world.cpp
+        private/actors/ModelLoader.cpp
+        private/actors/GameObject.cpp
+        private/input/InputEventManager.cpp
+        private/materials/MaterialManager.cpp
+        private/util/StringHelper.cpp
+        private/util/Utils.cpp
+        private/Camera.cpp
+        private/Engine.cpp
+        private/EngineUtils.cpp
+        private/World.cpp
         )
 
 add_library(${ENGINE} SHARED ${ENGINE_SOURCE_FILES})

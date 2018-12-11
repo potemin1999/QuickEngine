@@ -4,10 +4,10 @@
 
 #include <glad/glad.h>
 #include "effects/post_pass.h"
-#include "util/log.h"
+#include "util/Log.h"
 #include "glfw/glfw3.h"
 
-using namespace QECore;
+using namespace QE;
 
 PostPass::PostPass(EngineContext *context) : RenderPass(context) {
     engineContext = context;
@@ -105,7 +105,7 @@ void PostPass::onResize(int width, int height) {
 }
 
 InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *event) {
-    if (event->keyAction == QECore::ACTION_DOWN) {
+    if (event->keyAction == QE::ACTION_DOWN) {
         return INPUT_NOT_PROCESSED;
     }
     switch (event->keyCode) {

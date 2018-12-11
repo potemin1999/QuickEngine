@@ -5,13 +5,13 @@
 #ifndef QUICKENGINE_GEOMETRYPASS_H
 #define QUICKENGINE_GEOMETRYPASS_H
 
-#include "gameobject.h"
-#include "camera.h"
-#include "framebuffer.h"
+#include "GameObject.h"
+#include "Camera.h"
+#include "Framebuffer.h"
 #include "shader.h"
 #include "render_pass.h"
 
-namespace QECore {
+namespace QE {
 
     class GeometryPass : public RenderPass {
     private:

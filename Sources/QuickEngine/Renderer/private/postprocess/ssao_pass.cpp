@@ -3,8 +3,8 @@
 //
 
 #include "lighting/ssao_pass.h"
-#include "util/log.h"
-#include "util/utils.h"
+#include "util/Log.h"
+#include "util/Utils.h"
 #include "opengl.h"
 
 void SSAOPass::init(RenderDataStorage *storage) {
@@ -54,9 +54,9 @@ void SSAOPass::onResize(int width, int height) {
 
     log("random map:\n");
     for (int i = 0; i < *v_SSAOSamples; i++) {
-        float x = QECore::random(-1, 1);
-        float y = QECore::random(-1, 1);
-        float z = QECore::random(-1, 0);
+        float x = QE::random(-1, 1);
+        float y = QE::random(-1, 1);
+        float z = QE::random(-1, 0);
         float n = Camera::invSqrt(x * x + y * y + z * z);// *((i + 1.0f) / *v_SSAOSamples);
         float m = ((i + 1.0f) / (*v_SSAOSamples));// * ((i + 1.0f) / (*v_SSAOSamples)) ;
         v_SSAORandomMap[3 * i + 0] = x * n * m;

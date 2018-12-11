@@ -7,11 +7,11 @@
 
 #include "render_pass.h"
 #include "shader.h"
-#include "framebuffer.h"
+#include "Framebuffer.h"
 #include "shader.h"
-#include "texture.h"
+#include "Texture.h"
 
-namespace QECore {
+namespace QE {
 
     class DeferredLightingPass : public RenderPass {
 

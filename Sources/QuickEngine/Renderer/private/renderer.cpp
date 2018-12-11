@@ -4,7 +4,7 @@
 
 #include "renderer.h"
 
-using namespace QECore;
+using namespace QE;
 
 class RendererImpl::RendererInputReceiver : public InputReceiver {
 private:
@@ -53,7 +53,7 @@ Renderer::~Renderer() {
     delete inputListener;
     int size = (int) pipelineList->size();
     for (int i = size - 1; i >= 0; i--) {
-        QECore::RendererImpl::RenderPassContainer *passC = (*pipelineList)[i];
+        QE::RendererImpl::RenderPassContainer *passC = (*pipelineList)[i];
         pipelineList->erase(pipelineList->begin() + i);
         pipelineListNameMap->remove(passC->name);
         delete passC->renderPass;
