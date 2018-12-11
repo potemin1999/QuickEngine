@@ -2,7 +2,7 @@
 // Created by ilya on 9/26/18.
 //
 
-#include "lighting/deferred_lighing_pass.h"
+#include "lighting/DeferredLightingPass.h"
 #include <glad/glad.h>
 
 using namespace QE;

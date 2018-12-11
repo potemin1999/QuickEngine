@@ -1,11 +1,21 @@
 #include "util/TextureManager.h"
 #include "il/il.h"
-#include "defines.h"
+#include "Defines.h"
 #include "Engine.h"
 
 using namespace QE;
 
-Texture TextureManager::loadTexture(char *full_filename) {
+std::map<std::string, Texture *> QE::loadedTextures;
+
+Texture *TextureManager::loadTexture(std::string path) {
+    Texture *tex;
+    // return texture from cache if it is already loaded
+    if ((tex = loadedTextures[path]) != nullptr) {
+        return tex;
+    }
+
+    char *full_filename = (char *) (path.c_str());
+
     auto *il_id = new unsigned;
     auto *gl_id = new unsigned;
     ilGenImages(1, il_id);
@@ -21,8 +31,8 @@ Texture TextureManager::loadTexture(char *full_filename) {
     }
     glGenTextures(1, gl_id);
     glBindTexture(GL_TEXTURE_2D, *gl_id);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);//_MIPMAP_LINEAR);
 
@@ -40,15 +50,17 @@ Texture TextureManager::loadTexture(char *full_filename) {
     log("%i", ilGetInteger(IL_IMAGE_FORMAT));
     QuickEngine::checkGlError("tex image 2d texture");
     //glGenerateMipmap(GL_TEXTURE_2D);
-    Texture t = Texture();
+    auto t = new Texture();
     //t->source = new char[string(full_filename).length()];
-    t.width = ilGetInteger(IL_IMAGE_WIDTH);
-    t.height = ilGetInteger(IL_IMAGE_HEIGHT);
-    t.source = full_filename;
-    t.id = *gl_id;
+    t->width = ilGetInteger(IL_IMAGE_WIDTH);
+    t->height = ilGetInteger(IL_IMAGE_HEIGHT);
+    t->source = full_filename;
+    t->id = *gl_id;
     QuickEngine::checkGlError("load texture");
     delete il_id;
     delete gl_id;
     delete f_max;
+
+    loadedTextures[full_filename] = t;
     return t;
 }

@@ -1,6 +1,6 @@
 #include "glad/glad.h"
 #include "Engine.h"
-#include "shader_manager.h"
+#include "ShaderManager.h"
 
 
 int ShaderManager::loadVertexShader(char *v) {

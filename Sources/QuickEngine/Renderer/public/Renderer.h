@@ -7,17 +7,17 @@
 
 #include "EngineContext.h"
 #include "util/Log.h"
-#include "render_pass.h"
-#include "effects/post_pass.h"
-#include "geometry/geometry_pass.h"
-#include "lighting/deferred_lighing_pass.h"
-#include "lighting/ssao_pass.h"
+#include "RenderPass.h"
+#include "effects/PostPass.h"
+#include "geometry/GeometryPass.h"
+#include "lighting/DeferredLightingPass.h"
+#include "lighting/SSAOPass.h"
 #include "input/InputEventManager.h"
 #include "input/InputReceiver.h"
 #include "World.h"
 #include "util/List.h"
 #include "util/Strmap.h"
-#include "util/render_data_storage.h"
+#include "util/RenderDataStorage.h"
 #include <vector>
 
 namespace QE {

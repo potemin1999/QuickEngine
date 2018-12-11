@@ -5,10 +5,10 @@
 #ifndef QUICKENGINE_DEFERRED_LIGHING_PASS_H
 #define QUICKENGINE_DEFERRED_LIGHING_PASS_H
 
-#include "render_pass.h"
-#include "shader.h"
+#include "RenderPass.h"
+#include "Shader.h"
 #include "Framebuffer.h"
-#include "shader.h"
+#include "Shader.h"
 #include "Texture.h"
 
 namespace QE {

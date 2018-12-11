@@ -2,10 +2,10 @@
 // Created by ilya on 9/26/18.
 //
 
-#include "lighting/ssao_pass.h"
+#include "lighting/SSAOPass.h"
 #include "util/Log.h"
 #include "util/Utils.h"
-#include "opengl.h"
+#include "OpenGL.h"
 
 void SSAOPass::init(RenderDataStorage *storage) {
     log("ssao pass new init\n");

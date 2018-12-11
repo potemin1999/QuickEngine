@@ -2,15 +2,15 @@
 // Created by ilya on 9/26/18.
 //
 
-#include "shader.h"
-#include "defines.h"
+#include "Shader.h"
+#include "Defines.h"
 #include "util/Log.h"
 #include "util/Utils.h"
 #include <fstream>
 #include <map>
 #include <unistd.h>
 #include <cstring>
-#include "opengl.h"
+#include "OpenGL.h"
 
 using namespace QE;
 

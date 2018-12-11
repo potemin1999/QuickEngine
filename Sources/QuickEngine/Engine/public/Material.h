@@ -1,9 +1,4 @@
-//
-// Created by ilya on 9/24/18.
-//
-
-#ifndef QUICKENGINE_MATERIAL_H
-#define QUICKENGINE_MATERIAL_H
+#pragma once
 
 #include "Texture.h"
 
@@ -21,5 +16,3 @@ namespace QE {
     };
 
 }
-
-#endif //QUICKENGINE_MATERIAL_H

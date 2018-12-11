@@ -3,16 +3,16 @@ set(RENDERER_SOURCE_DIR "${QUICK_ENGINE_SOURCE_DIR}/Renderer")
 set(RENDERER_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/libs/include/glad/glad.cpp
         private/basic/Framebuffer.cpp
-        private/basic/shader.cpp
+        private/basic/Shader.cpp
         private/basic/Texture.cpp
-        private/effects/post_pass.cpp
-        private/geometry/geometry_pass.cpp
-        private/lighting/deferred_lighting_pass.cpp
-        private/postprocess/ssao_pass.cpp
-        private/util/render_data_storage.cpp
-        private/util/shader_manager.cpp
+        private/effects/PostPass.cpp
+        private/geometry/GeometryPass.cpp
+        private/lighting/DeferredLightingPass.cpp
+        private/postprocess/SSAOPass.cpp
+        private/util/RenderDataStorage.cpp
+        private/util/ShaderManager.cpp
         private/util/TextureManager.cpp
-        private/renderer.cpp
+        private/Renderer.cpp
         )
 
 add_library(${RENDERER} SHARED ${RENDERER_SOURCE_FILES})

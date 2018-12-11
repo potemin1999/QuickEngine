@@ -1,6 +1,6 @@
 #define ENGINE_UTILS_INIT_SUCCEED 0x00000000
 
-#include "defines.h"
+#include "Defines.h"
 #include "util/StringHelper.h"
 #include "Engine.h"
 #include "../../../TestGame/public/MaxModel.h"

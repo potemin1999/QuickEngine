@@ -3,9 +3,9 @@
 //
 
 #include "Framebuffer.h"
-#include "defines.h"
+#include "Defines.h"
 #include "util/Log.h"
-#include "opengl.h"
+#include "OpenGL.h"
 
 using namespace QE;
 

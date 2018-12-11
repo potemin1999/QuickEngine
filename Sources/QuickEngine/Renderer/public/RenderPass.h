@@ -5,7 +5,7 @@
 #ifndef QUICKENGINE_RENDER_PASS_H
 #define QUICKENGINE_RENDER_PASS_H
 
-#include "util/render_data_storage.h"
+#include "util/RenderDataStorage.h"
 #include "EngineContext.h"
 #include "World.h"
 

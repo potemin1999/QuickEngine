@@ -5,7 +5,7 @@
 #ifndef QUICKENGINE_SSAO_SHADER_H
 #define QUICKENGINE_SSAO_SHADER_H
 
-#include "shader.h"
+#include "Shader.h"
 
 namespace QE {
 

@@ -8,8 +8,8 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "Framebuffer.h"
-#include "shader.h"
-#include "render_pass.h"
+#include "Shader.h"
+#include "RenderPass.h"
 
 namespace QE {
 

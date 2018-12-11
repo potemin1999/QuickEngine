@@ -72,11 +72,6 @@ void loop() {
             lastTime = currentTime;
 
             glfwGetCursorPos(window, &engine->mouseX, &engine->mouseY);
-            mouseDx = (float) engine->mouseX - (engine->windowWidth * 0.5f);
-            mouseDy = (engine->windowHeight * 0.5f) - (float) engine->mouseY;
-
-            engine->camera->addCameraRotation(0.001f * mouseDy, 0.001f * mouseDx, 0);
-            glfwSetCursorPos(window, engine->windowWidth * 0.5f, engine->windowHeight * 0.5f);
             glfwPollEvents();
 
             // loop game itself

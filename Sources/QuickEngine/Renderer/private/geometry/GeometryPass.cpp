@@ -2,7 +2,7 @@
 // Created by ilya on 9/26/18.
 //
 
-#include <geometry/geometry_pass.h>
+#include <geometry/GeometryPass.h>
 #include <util/Log.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

@@ -6,9 +6,9 @@
 #define QUICKENGINE_SSAO_PASS_H
 
 #include "Camera.h"
-#include "defines.h"
-#include "render_pass.h"
-#include "shader.h"
+#include "Defines.h"
+#include "RenderPass.h"
+#include "Shader.h"
 #include "Framebuffer.h"
 #include "Texture.h"
 

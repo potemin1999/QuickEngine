@@ -1,9 +1,4 @@
-//
-// Created by Ilya on 3/15/2018.
-//
-
-#ifndef QUICKENGINE_TEXTURE_H
-#define QUICKENGINE_TEXTURE_H
+#pragma once
 
 namespace QE {
 
@@ -58,5 +53,3 @@ namespace QE {
     };
 
 }
-
-#endif //QUICKENGINE_TEXTURE_H

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "EngineContext.h"
 #include "GameObject.h"
-#include "renderer.h"
+#include "Renderer.h"
 #include "Camera.h"
 #include "Texture.h"
 #include "materials/MaterialManager.h"

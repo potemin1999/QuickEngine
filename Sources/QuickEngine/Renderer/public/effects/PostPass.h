@@ -1,8 +1,8 @@
 #pragma once
 
-#include "render_pass.h"
+#include "RenderPass.h"
 #include "Framebuffer.h"
-#include "shader.h"
+#include "Shader.h"
 #include "Texture.h"
 #include "input/InputKey.h"
 #include "input/InputProcessingResult.h"

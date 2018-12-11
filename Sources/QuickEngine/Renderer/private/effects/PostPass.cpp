@@ -3,7 +3,7 @@
 //
 
 #include <glad/glad.h>
-#include "effects/post_pass.h"
+#include "effects/PostPass.h"
 #include "util/Log.h"
 #include "glfw/glfw3.h"
 

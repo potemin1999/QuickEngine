@@ -1,8 +1,4 @@
-//
-// Created by ilya on 9/24/18.
-//
-
-#include "renderer.h"
+#include "Renderer.h"
 
 using namespace QE;
 

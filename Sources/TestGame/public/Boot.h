@@ -7,6 +7,7 @@
 
 #define WINDOW_CREATING_ERROR 0x89089089
 
+extern GLFWwindow *window;
 extern QuickEngine *engine;
 
 int runEngine();

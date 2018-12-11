@@ -5,7 +5,7 @@
 #include "MaxModel.h"
 
 void onInit() {
-// init camera
+    // init camera
     auto p = glm::vec3(0.0f, 2.0f, 0.0f);
     auto v = glm::vec3(0.0f, 0.0f, 1.0f);
     auto u = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -23,10 +23,13 @@ void onInit() {
     mm->setPos(glm::vec3(0.0f, 2.0f, 0.0f));
     engine->addObject(mm);
 
-    // add floor
-    auto n = new FloorModel();
-    n->setPos(glm::vec3(0.0f, -1.0f, 0.0f));
-    engine->addObject(n);
+    // create floor
+    for (int x = -5; x <= 5; x++)
+        for (int z = -5; z <= 5; z++) {
+            auto n = new FloorModel();
+            n->setPos(glm::vec3(x * 6, 0.0f, z * 6));
+            engine->addObject(n);
+        }
 
     // drop some crates
 //        int startX = -2, startY = 20, startZ = -2;
@@ -106,7 +109,7 @@ void onInit() {
                     }
                     case GLFW_KEY_SPACE: {
                         engine->camera->getAttachedTo()->rigidBody->applyForce(btVector3(0, 20, 0),
-                                                                               btVector3(0, 0, 1));
+                                                                               btVector3(0, 0, 0));
                         break;
                     }
                     default:
@@ -123,6 +126,12 @@ void onInit() {
 }
 
 void onTick(float deltaTime) {
+    float mouseDx = (float) engine->mouseX - (engine->windowWidth * 0.5f);
+    float mouseDy = (engine->windowHeight * 0.5f) - (float) engine->mouseY;
+
+    engine->camera->addCameraRotation(0.001f * mouseDy, 0.001f * mouseDx, 0);
+    glfwSetCursorPos(window, engine->windowWidth * 0.5f, engine->windowHeight * 0.5f);
+
     // update camera pos
     engine->camera->setPos(engine->camera->getAttachedTo()->getPos() + engine->camera->getOffsetPos());
     engine->tick(deltaTime);

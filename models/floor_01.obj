@@ -1,19 +1,19 @@
 # Exported by ZModeler 2.2.5 (Build 989) with Wave#
 
 mtllib floor_01.mtl
-v -100 0 -100
-v -100 0 100
-v 100 0 100
-v 100 0 -100
+v -3 0 -3
+v -3 0 3
+v 3 0 3
+v 3 0 -3
 
 
 vn 0 1 0
 
 
-vt 0   0
-vt 0   100
-vt 100 100
-vt 100 0
+vt 0 0
+vt 0 1
+vt 1 1
+vt 1 0
 
 
 usemtl floor_01
