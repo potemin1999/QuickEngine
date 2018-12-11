@@ -1,10 +1,24 @@
-//
-// Created by ilya on 9/24/18.
-//
+#pragma once
 
-#ifndef QUICKENGINE_BOOT_H
-#define QUICKENGINE_BOOT_H
+#include "Engine.h"
+#include "glad/glad.h"
+#include "glfw/glfw3.h"
+#include "il/il.h"
 
-int run_engine();
+#define WINDOW_CREATING_ERROR 0x89089089
 
-#endif //QUICKENGINE_BOOT_H
+extern QuickEngine *engine;
+
+int runEngine();
+
+extern int mainGraphics();
+
+extern void resize(GLFWwindow *w, int width, int height);
+
+extern void key(GLFWwindow *window, int key, int scancode, int action, int mods);
+
+extern void error(int error, const char *description);
+
+extern void init();
+
+extern void loop();

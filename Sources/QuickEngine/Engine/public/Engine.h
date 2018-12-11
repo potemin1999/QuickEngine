@@ -52,6 +52,9 @@ namespace QE {
         int height = 10;
         float deltaTime = 0;
 
+        double mouseX, mouseY;
+        int windowWidth = 1280, windowHeight = 800;
+
         void init();
 
         void initPhysics();

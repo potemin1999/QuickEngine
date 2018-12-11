@@ -10,10 +10,10 @@ v 100 0 -100
 vn 0 1 0
 
 
-vt 0 0
-vt 0 1
-vt 1 1
-vt 1 0
+vt 0   0
+vt 0   100
+vt 100 100
+vt 100 0
 
 
 usemtl floor_01

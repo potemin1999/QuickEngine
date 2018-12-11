@@ -3,8 +3,8 @@ set(TEST_GAME_SOURCE_DIR "${SOURCE_DIR}/TestGame")
 set(TEST_GAME_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/libs/include/glad/glad.cpp
         private/Main.cpp
-        private/StartWrap.cpp
-        public/Crate_01.h private/Player.cpp public/Player.h)
+        private/Wrapper.cpp
+        public/Crate_01.h private/Player.cpp public/Player.h public/Main.h)
 add_executable(${TEST_GAME} ${TEST_GAME_SOURCE_FILES})
 set_target_properties(${TEST_GAME}
         PROPERTIES
