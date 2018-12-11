@@ -4,15 +4,6 @@
 #include "falling_floor_model.h"
 #include "crate_01.h"
 
-#define KEY_ESC 256
-#define KEY_SPACE 32
-#define KEY_W 87
-#define KEY_A 65
-#define KEY_S 83
-#define KEY_D 68
-#define KEY_BRACKET_RIGHT 93
-#define KEY_BRACKET_LEFT 91
-
 using namespace QECore;
 
 int multisampling = 1;
@@ -41,90 +32,90 @@ void resize(GLFWwindow *w, int width, int height) {
     engine->resize(width, height);
 }
 
-void key_up(int key) {
-    printf("key up: %i\n", key);
-    auto event = new InputEvent();
-    event->keyAction = QECore::ACTION_UP;
-    event->keyCode = key;
-    engine->inputManager->injectInputEvent(event);
-    switch (key) {
-        case KEY_ESC: {
-            exit(0xc105ed);
-        }
-        case KEY_BRACKET_RIGHT: {
-            engine->renderer->v_Brightness += 0.1f;
-            break;
-        }
-        case KEY_BRACKET_LEFT: {
-            engine->renderer->v_Brightness -= 0.1f;
-            break;
-        }
-        case KEY_SPACE: {
-            break;
-        }
-        case KEY_W: {
-            break;
-        }
-        case KEY_A: {
-            break;
-        }
-        case KEY_S: {
-            break;
-        }
-        case KEY_D: {
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-void key_down(int key) {
-    float speed = 1;
-
-    auto event = new InputEvent();
-    event->keyAction = QECore::ACTION_DOWN;
-    event->keyCode = key;
-    engine->inputManager->injectInputEvent(event);
-
-
-    switch (key) {
-        case GLFW_KEY_SPACE: {
-            break;
-        }
-        case GLFW_KEY_W: {
-            engine->camera->getAttachedTo()->move(glm::vec3(0, 0, -speed * engine->deltaTime));
-            break;
-        }
-        case KEY_A: {
-            engine->camera->getAttachedTo()->move(glm::vec3(-speed * engine->deltaTime, 0, 0));
-            break;
-        }
-        case KEY_S: {
-            engine->camera->getAttachedTo()->move(glm::vec3(0, 0, speed * engine->deltaTime));
-            break;
-        }
-        case KEY_D: {
-            engine->camera->getAttachedTo()->move(glm::vec3(speed * engine->deltaTime, 0, 0));
-            break;
-        }
-    }
-}
-//
-//void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
-//    switch (action) {
-//        case 1: {
-//            engine->inputManager->injectInputEvent(new InputEvent{ACTION_DOWN, key});
+//void key_up(int key) {
+//    printf("key up: %i\n", key);
+//    auto event = new InputEvent();
+//    event->keyAction = QECore::ACTION_UP;
+//    event->keyCode = key;
+//    engine->inputManager->injectInputEvent(event);
+//    switch (key) {
+//        case KEY_ESC: {
+//            exit(0xc105ed);
+//        }
+//        case KEY_BRACKET_RIGHT: {
+//            engine->renderer->v_Brightness += 0.1f;
 //            break;
 //        }
-//        case 0: {
-//            engine->inputManager->injectInputEvent(new InputEvent{ACTION_UP, key});
+//        case KEY_BRACKET_LEFT: {
+//            engine->renderer->v_Brightness -= 0.1f;
+//            break;
+//        }
+//        case KEY_SPACE: {
+//            break;
+//        }
+//        case KEY_W: {
+//            break;
+//        }
+//        case KEY_A: {
+//            break;
+//        }
+//        case KEY_S: {
+//            break;
+//        }
+//        case KEY_D: {
 //            break;
 //        }
 //        default:
 //            break;
 //    }
 //}
+
+//void key_down(int key) {
+//    float speed = 1;
+//
+//    auto event = new InputEvent();
+//    event->keyAction = QECore::ACTION_DOWN;
+//    event->keyCode = key;
+//    engine->inputManager->injectInputEvent(event);
+//
+//
+//    switch (key) {
+//        case GLFW_KEY_SPACE: {
+//            break;
+//        }
+//        case GLFW_KEY_W: {
+//            engine->camera->getAttachedTo()->move(glm::vec3(0, 0, -speed * engine->deltaTime));
+//            break;
+//        }
+//        case KEY_A: {
+//            engine->camera->getAttachedTo()->move(glm::vec3(-speed * engine->deltaTime, 0, 0));
+//            break;
+//        }
+//        case KEY_S: {
+//            engine->camera->getAttachedTo()->move(glm::vec3(0, 0, speed * engine->deltaTime));
+//            break;
+//        }
+//        case KEY_D: {
+//            engine->camera->getAttachedTo()->move(glm::vec3(speed * engine->deltaTime, 0, 0));
+//            break;
+//        }
+//    }
+//}
+
+void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    switch (action) {
+        case 1: {
+            engine->inputManager->injectInputEvent(new InputEvent{key, ACTION_DOWN});
+            break;
+        }
+        case 0: {
+            engine->inputManager->injectInputEvent(new InputEvent{key, ACTION_UP});
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 void init() {
     try {
@@ -164,14 +155,14 @@ void init() {
         engine->addObject(n);
 
         // drop some crates
-        int startX = -2, startY = 20, startZ = -2;
-        for (int x = 0; x < 5; x++)
-            for (int y = 0; y < 5; y++)
-                for (int z = 0; z < 5; z++) {
-                    auto crate = new Crate_01();
-                    crate->setPos(glm::vec3(startX + x, startY + y, startZ + z));
-                    engine->addObject(crate);
-                }
+//        int startX = -2, startY = 20, startZ = -2;
+//        for (int x = 0; x < 5; x++)
+//            for (int y = 0; y < 5; y++)
+//                for (int z = 0; z < 5; z++) {
+//                    auto crate = new Crate_01();
+//                    crate->setPos(glm::vec3(startX + x, startY + y, startZ + z));
+//                    engine->addObject(crate);
+//                }
 
         // add crate
         auto c1 = new Crate_01();
@@ -181,6 +172,48 @@ void init() {
         // attach camera to crate
         engine->camera->attachTo(c1);
         engine->camera->setOffsetPos(glm::vec3(0, 2, 0));
+
+        // init input
+        class MainInputReceiver : public InputReceiver {
+            void onReceiverRegistered() override {
+                printf("Yay! InputReceiver registered!\n");
+            }
+
+            void onReceiverUnregistered() override {
+                printf("Yay! InputReceiver unregistered!\n");
+            }
+
+            InputProcessResult onInputEvent(InputEvent *event) override {
+                float speed = 2;
+
+                if (event->keyAction == ACTION_PRESSED)
+                    switch (event->keyCode) {
+                        case GLFW_KEY_SPACE: {
+                            break;
+                        }
+                        case GLFW_KEY_W: {
+                            engine->camera->getAttachedTo()->move(glm::vec3(0, 0, -speed * engine->deltaTime));
+                            break;
+                        }
+                        case GLFW_KEY_A: {
+                            engine->camera->getAttachedTo()->move(glm::vec3(-speed * engine->deltaTime, 0, 0));
+                            break;
+                        }
+                        case GLFW_KEY_S: {
+                            engine->camera->getAttachedTo()->move(glm::vec3(0, 0, speed * engine->deltaTime));
+                            break;
+                        }
+                        case GLFW_KEY_D: {
+                            engine->camera->getAttachedTo()->move(glm::vec3(speed * engine->deltaTime, 0, 0));
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+            };
+        };
+
+        engine->inputManager->registerInputReceiver(new MainInputReceiver);
 
         printf("Shit created successfully. Enjoy.\n");
     } catch (exception &e) {
@@ -256,7 +289,7 @@ int main_graphics() {
         //engine->resize(window_width, window_height);
         //camera->updateProjectionMatrix(float(window_width) / float(window_height));
     }
-    printf("width : %i \nheight : %i \n", window_width, window_height);
+    printf("width: %i\nheight: %i\n", window_width, window_height);
 
     if (!window) {
         printf("Couldn't create window");

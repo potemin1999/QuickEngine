@@ -1,9 +1,4 @@
-//
-// Created by ilya on 9/24/18.
-//
-
-#ifndef QUICKENGINE_INPUT_PROCESSING_RESULT_H
-#define QUICKENGINE_INPUT_PROCESSING_RESULT_H
+#pragma once
 
 namespace QECore {
 
@@ -14,4 +9,3 @@ namespace QECore {
     };
 
 }
-#endif //QUICKENGINE_INPUT_PROCESSING_RESULT_H

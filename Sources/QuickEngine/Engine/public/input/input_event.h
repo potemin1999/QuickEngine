@@ -1,9 +1,4 @@
-//
-// Created by ilya on 9/24/18.
-//
-
-#ifndef QUICKENGINE_INPUT_EVENT_H
-#define QUICKENGINE_INPUT_EVENT_H
+#pragma once
 
 #include "input_key.h"
 
@@ -15,4 +10,3 @@ namespace QECore {
     };
 
 }
-#endif //QUICKENGINE_INPUT_EVENT_H

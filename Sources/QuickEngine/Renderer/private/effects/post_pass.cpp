@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include "effects/post_pass.h"
 #include "util/log.h"
+#include "glfw/glfw3.h"
 
 using namespace QECore;
 
@@ -108,47 +109,47 @@ InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *eve
         return INPUT_NOT_PROCESSED;
     }
     switch (event->keyCode) {
-        case KEY_E: {
+        case GLFW_KEY_E: {
             *(parent->v_Vignette) += 0.1f;
             break;
         }
-        case KEY_Q: {
+        case GLFW_KEY_Q: {
             *(parent->v_Vignette) -= 0.1f;
             break;
         }
-        case KEY_MINUS: {
+        case GLFW_KEY_MINUS: {
             *(parent->v_DrawingMode) = 0;
             break;
         }
-        case KEY_0: {
+        case GLFW_KEY_0: {
             *(parent->v_DrawingMode) = 0;
             break;
         }
-        case KEY_1: {
+        case GLFW_KEY_1: {
             *(parent->v_DrawingMode) = 1;
             break;
         }
-        case KEY_COMMA: {
+        case GLFW_KEY_COMMA: {
             *(parent->v_Gamma) += 0.1f;
             break;
         }
-        case KEY_SEMICOLON: {
+        case GLFW_KEY_SEMICOLON: {
             *(parent->v_Gamma) -= 0.1f;
             break;
         }
-        case KEY_2: {
+        case GLFW_KEY_2: {
             *(parent->v_DrawingMode) = 2;
             break;
         }
-        case KEY_3: {
+        case GLFW_KEY_3: {
             *(parent->v_DrawingMode) = 3;
             break;
         }
-        case KEY_4: {
+        case GLFW_KEY_4: {
             *(parent->v_DrawingMode) = 4;
             break;
         }
-        case KEY_5: {
+        case GLFW_KEY_5: {
             *(parent->v_DrawingMode) = 5;
             break;
         }

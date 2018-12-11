@@ -50,10 +50,6 @@ namespace QECore {
 
         int width = 10;
         int height = 10;
-        int anisotropy = 8;
-        float forward_speed = 3.8f;
-        float backward_speed = 2.8f;
-        float strafe_speed = 3.2f;
         float deltaTime = 0;
 
         void init();

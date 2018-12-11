@@ -1,8 +1,4 @@
-//
-// Created by ilya on 9/24/18.
-//
-#ifndef QUICKENGINE_INPUT_EVENT_MANAGER_H
-#define QUICKENGINE_INPUT_EVENT_MANAGER_H
+#pragma once
 
 #include <vector>
 #include "input/input_event.h"
@@ -15,8 +11,9 @@ namespace QECore {
     class InputEventManager {
     private:
 
-        vector<InputEvent *> events;
+        vector<InputEvent *> keyDownEvents, keyUpEvents;
         vector<InputReceiver *> receivers;
+        vector<int> pressedKeys;
 
         int processInputEvent(InputEvent *event);
 
@@ -33,4 +30,3 @@ namespace QECore {
     };
 
 }
-#endif //QUICKENGINE_INPUT_EVENT_MANAGER_H
