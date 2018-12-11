@@ -9,9 +9,8 @@ public:
     FloorModel() : GameObject() {
         ModelLoader::load_object(this, "", "floor_01.obj");
 
-        btQuaternion rotation;
-        glm::vec3 rot = this->getRotation();
-        rotation.setEulerZYX(rot.x, rot.y, rot.z);
+        glm::tquat rot = this->getRotation();
+        btQuaternion rotation(rot.x, rot.y, rot.z, rot.w);
 
         glm::vec3 pos = this->getPos();
         btVector3 position = btVector3(pos.x, pos.y, pos.z);

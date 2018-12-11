@@ -14,7 +14,7 @@ namespace QE {
     private:
         float mass = 0;
         glm::vec3 pos = glm::vec3(0, 0, 0);
-        glm::vec3 rot = glm::vec3(0, 0, 0);
+        glm::tquat<float> rot;
     public:
 
         GameObject();
@@ -29,15 +29,17 @@ namespace QE {
 
         glm::vec3 getPos();
 
-        void setRotation(glm::vec3 rot);
+        void setRotation(glm::tquat<float> rot);
 
-        glm::vec3 getRotation();
+        glm::tquat<float> getRotation();
 
         float getMass();
 
         void setMass(float mass);
 
         void move(glm::vec3 offset);
+
+        glm::mat4 getModelMatrix();
     };
 
 }

@@ -36,14 +36,21 @@ glm::vec3 GameObject::getPos() {
     }
 }
 
-void GameObject::setRotation(glm::vec3 rot) {
-    // TODO: implement
-//    this->rot = rot;
+void GameObject::setRotation(glm::tquat<float> rot) {
+    // TODO: check if it works
+    this->rot = rot;
+    if (rigidBody) {
+        rigidBody->getWorldTransform().setRotation(btQuaternion(rot.x, rot.y, rot.z, rot.w));
+    }
 }
 
-glm::vec3 GameObject::getRotation() {
-    // TODO: implement
-    return rot;
+glm::tquat<float> GameObject::getRotation() {
+    // TODO: check if it works
+    if (rigidBody) {
+        btQuaternion rotation = rigidBody->getWorldTransform().getRotation();
+        return glm::quat(rotation.w(), rotation.x(), rotation.y(), rotation.z());
+    } else
+        return rot;
 }
 
 float GameObject::getMass() {
@@ -60,4 +67,27 @@ void GameObject::setMass(float mass) {
 
 void GameObject::move(glm::vec3 offset) {
     setPos(getPos() + offset);
+}
+
+glm::mat4 GameObject::getModelMatrix() {
+    glm::mat4 m(0);
+    const btMatrix3x3 &basis = rigidBody->getWorldTransform().getBasis();
+    // rotation
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            m[c][r] = basis[r][c];
+        }
+    }
+    // translation
+    btVector3 origin = rigidBody->getWorldTransform().getOrigin();
+    m[3][0] = origin.getX();
+    m[3][1] = origin.getY();
+    m[3][2] = origin.getZ();
+    // unit scale
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    m[3][3] = 1.0f;
+    return m;
+
 }

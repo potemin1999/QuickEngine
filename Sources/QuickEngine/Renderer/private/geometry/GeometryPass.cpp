@@ -92,16 +92,21 @@ void GeometryPass::doDraw() {
             Mesh *m = (o->meshes + i);
             glm::mat4 mM;
 
-            mM = glm::mat4(1.0f);
-            mM = glm::translate(mM, o->getPos());
-            // TODO: add rotation
+            if (o->rigidBody)
+                mM = o->getModelMatrix();
+            else {
+                // TODO: reformat this and add rotation support
+                mM = glm::mat4(1);
+                mM = glm::translate(mM, o->getPos());
+            }
 
-            s_MainShader->uniformMatrix4fv("u_MVP", 1, false, glm::value_ptr(mVP * mM));
+            glm::mat4 mat = mVP * mM;
+            s_MainShader->uniformMatrix4fv("u_MVP", 1, false, glm::value_ptr(mat));
 
             s_MainShader->uniform1i("u_AmbientTex", 0);
             glActiveTexture(GL_TEXTURE0);
             if (m->material->t_Ambient == nullptr) {
-                //printf("ERROR: mesh object %s has null ambient texture\n", m->name);
+//                printf("ERROR: mesh object %s has null ambient texture\n", m->name);
                 continue;
             } else {
                 glBindTexture(GL_TEXTURE_2D, m->material->t_Ambient->id);
