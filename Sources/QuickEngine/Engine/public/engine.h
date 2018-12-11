@@ -38,7 +38,7 @@ namespace QECore {
         Renderer *renderer;
         InputEventManager *inputManager;
         Camera *camera;
-        vector<Object *> objects;
+        vector<GameObject *> objects;
         vector<Material *> materials;
         vector<QECore::Texture *> textures;
 
@@ -54,13 +54,7 @@ namespace QECore {
         float forward_speed = 3.8f;
         float backward_speed = 2.8f;
         float strafe_speed = 3.2f;
-
-        bool request_up = false;
-        bool request_down = false;
-        bool request_left = false;
-        bool request_right = false;
-        bool request_forward = false;
-        bool request_backward = false;
+        float deltaTime = 0;
 
         void init();
 
@@ -72,7 +66,7 @@ namespace QECore {
 
         void tick(float dT);
 
-        void addObject(Object *o);
+        void addObject(GameObject *o);
 
         void dumpUniforms();
 

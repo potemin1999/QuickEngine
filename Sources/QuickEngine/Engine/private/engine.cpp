@@ -98,15 +98,9 @@ void Engine::resize(int w, int h) {
 }
 
 void Engine::tick(float dT) {
-
+    this->deltaTime = dT;
 
     inputManager->processDelayedEvents();
-    if (request_forward & !request_backward) camera->moveCameraForward(forward_speed * dT);
-    if (request_backward & !request_forward) camera->moveCameraForward(-backward_speed * dT);
-    if (request_right & !request_left) camera->moveCameraRight(strafe_speed * dT);
-    if (request_left & !request_right) camera->moveCameraRight(-strafe_speed * dT);
-    if (request_up & !request_down) camera->moveCameraUp(2 * dT);
-    if (request_down & !request_up) camera->moveCameraUp(-dT * 2);
 
     dynamicsWorld->stepSimulation(dT);
 
@@ -115,7 +109,7 @@ void Engine::tick(float dT) {
 }
 
 
-void Engine::addObject(Object *o) {
+void Engine::addObject(GameObject *o) {
     objects.push_back(o);
     if (o->rigidBody != nullptr) {
         printf("Adding rigidBody to dynamics world\n");

@@ -19,19 +19,19 @@ namespace QECore {
 
         virtual ~RenderPass() = default;
 
-        virtual void init(RenderDataStorage *storage){};
+        virtual void init(RenderDataStorage *storage) {};
 
-        virtual void compileShaders(){};
+        virtual void compileShaders() {};
 
-        virtual void onWorldAttached(World* world){};
+        virtual void onWorldAttached(World *world) {};
 
-        virtual void onResize(int width, int height){};
+        virtual void onResize(int width, int height) {};
 
-        virtual void onWorldDetached(World* world){};
+        virtual void onWorldDetached(World *world) {};
 
-        virtual void onCameraUpdated(Camera* camera){};
+        virtual void onCameraUpdated(Camera *camera) {};
 
-        virtual void doDraw(){};
+        virtual void doDraw() {};
 
     };
 }

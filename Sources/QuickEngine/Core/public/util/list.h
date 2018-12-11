@@ -9,7 +9,7 @@
 
 namespace QECore {
 
-    template <typename T>
+    template<typename T>
     using List = std::vector<T>;
 
 }

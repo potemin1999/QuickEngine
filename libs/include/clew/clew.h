@@ -2051,7 +2051,7 @@ typedef CL_API_ENTRY cl_int(CL_API_CALL *
                                       cl_bool /* enable */,
                                       cl_command_queue_properties * /* old_properties */) CL_API_SUFFIX__VERSION_1_0;
 
-/* Memory Object APIs */
+/* Memory GameObject APIs */
 typedef CL_API_ENTRY cl_mem(CL_API_CALL *
         PFNCLCREATEBUFFER)(cl_context /* context */,
                            cl_mem_flags /* flags */,
@@ -2143,7 +2143,7 @@ typedef CL_API_ENTRY cl_int(CL_API_CALL *
                              void * /* param_value */,
                              size_t * /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
 
-/* Program Object APIs  */
+/* Program GameObject APIs  */
 typedef CL_API_ENTRY cl_program(CL_API_CALL *
         PFNCLCREATEPROGRAMWITHSOURCE)(cl_context /* context */,
                                       cl_uint /* count */,
@@ -2192,7 +2192,7 @@ typedef CL_API_ENTRY cl_int(CL_API_CALL *
                                   void * /* param_value */,
                                   size_t * /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
 
-/* Kernel Object APIs */
+/* Kernel GameObject APIs */
 typedef CL_API_ENTRY cl_kernel(CL_API_CALL *
         PFNCLCREATEKERNEL)(cl_program /* program */,
                            const char * /* kernel_name */,
@@ -2231,7 +2231,7 @@ typedef CL_API_ENTRY cl_int(CL_API_CALL *
                                      void * /* param_value */,
                                      size_t * /* param_value_size_ret */) CL_API_SUFFIX__VERSION_1_0;
 
-// Event Object APIs
+// Event GameObject APIs
 typedef CL_API_ENTRY cl_int(CL_API_CALL *
         PFNCLWAITFOREVENTS)(cl_uint /* num_events */,
                             const cl_event * /* event_list */) CL_API_SUFFIX__VERSION_1_0;

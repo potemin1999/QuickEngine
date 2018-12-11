@@ -3,8 +3,10 @@
  */
 
 #include "camera.h"
-#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <camera.h>
+
+
 #include "util/log.h"
 
 using namespace QECore;
@@ -171,10 +173,6 @@ void Camera::setCameraPosition(const glm::vec3 &pos, const glm::vec3 &view, cons
     data->mPos = glm::vec3(pos);
     data->mView = glm::vec3(viewAt ? view - pos : view);
     data->mUp = glm::vec3(up);
-    normalize(data->mView);
-    log("set  position x:%f y:%f z:%f\n", data->mPos.x, data->mPos.y, data->mPos.z);
-    log("set   updateLook at x:%f y:%f z:%f\n", data->mView.x, data->mView.y, data->mView.z);
-    log("set up vector x:%f y:%f z:%f\n", data->mUp.x, data->mUp.y, data->mUp.z);
 }
 
 void Camera::setCameraPosition(const glm::vec3 &pos, const glm::vec3 &view, const glm::vec3 &up) {
@@ -236,4 +234,24 @@ const float Camera::getFov() {
 
 const float Camera::getAspect() {
     return data->aspect;
+}
+
+void Camera::attachTo(GameObject *object) {
+    this->attachedTo = object;
+}
+
+GameObject *Camera::getAttachedTo() {
+    return this->attachedTo;
+}
+
+glm::vec3 Camera::getOffsetPos() {
+    return this->offset;
+}
+
+void Camera::setOffsetPos(glm::vec3 offset) {
+    this->offset = offset;
+}
+
+void Camera::setPos(glm::vec3 pos) {
+    data->mPos = pos;
 }

@@ -18,10 +18,10 @@ DeferredLightingPass::~DeferredLightingPass() {
 }
 
 void DeferredLightingPass::init(RenderDataStorage *storage) {
-    v_PixelSize = (float*) storage->get("v_PixelSize");
-    t_AlbedoTex = (Texture*) storage->get("t_Albedo");
-    t_NormalTex = (Texture*) storage->get("t_Normal");
-    t_PositionTex = (Texture*) storage->get("t_Position");
+    v_PixelSize = (float *) storage->get("v_PixelSize");
+    t_AlbedoTex = (Texture *) storage->get("t_Albedo");
+    t_NormalTex = (Texture *) storage->get("t_Normal");
+    t_PositionTex = (Texture *) storage->get("t_Position");
     unsigned int post_vbo;
     glGenBuffers(1, &post_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, post_vbo);
@@ -32,10 +32,10 @@ void DeferredLightingPass::init(RenderDataStorage *storage) {
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
     t_DefLightTex = new Texture(GL_RGBA8, GL_RGBA);
-    storage->set("t_DefLighting",t_DefLightTex);
+    storage->set("t_DefLighting", t_DefLightTex);
 }
 
-void DeferredLightingPass::compileShaders()  {
+void DeferredLightingPass::compileShaders() {
     s_LightShader = new Shader("shaders/light_vertex_shader.glsl", "shaders/light_fragment_shader.glsl");
     s_LightShader->compile();
     s_LightShader->uniform("u_PixelSize");
@@ -44,7 +44,7 @@ void DeferredLightingPass::compileShaders()  {
     s_LightShader->uniform("u_PositionTex");
 }
 
-void DeferredLightingPass::onResize(int width, int height)  {
+void DeferredLightingPass::onResize(int width, int height) {
     if (f_DefLightFramebuffer) {
         f_DefLightFramebuffer->free();
         delete f_DefLightFramebuffer;

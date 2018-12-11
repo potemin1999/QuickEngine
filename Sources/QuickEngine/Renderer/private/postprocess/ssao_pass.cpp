@@ -9,14 +9,14 @@
 
 void SSAOPass::init(RenderDataStorage *storage) {
     log("ssao pass new init\n");
-    camera = (Camera*) storage->require("с_CurrentWorldCamera");
-    v_PixelSize = (float*) storage->require("v_PixelSize");
-    v_SSAOScale = (float*) storage->require("v_SSAOScale");
-    v_SSAOSamples = (int*) storage->require("v_SSAOSamples");
+    camera = (Camera *) storage->require("с_CurrentWorldCamera");
+    v_PixelSize = (float *) storage->require("v_PixelSize");
+    v_SSAOScale = (float *) storage->require("v_SSAOScale");
+    v_SSAOSamples = (int *) storage->require("v_SSAOSamples");
     t_Depthmap = (Texture *) storage->require("t_Depthmap");
     t_LightingTex = (Texture *) storage->require("t_DefLighting");
-    t_NormalTex = (Texture*) storage->require("t_Normal");
-    t_PositionTex = (Texture*) storage->require("t_Position");
+    t_NormalTex = (Texture *) storage->require("t_Normal");
+    t_PositionTex = (Texture *) storage->require("t_Position");
 
     t_OcclusionTex = new Texture(GL_R8, GL_RED);
     unsigned int post_vbo;
@@ -29,7 +29,7 @@ void SSAOPass::init(RenderDataStorage *storage) {
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
 
-    storage->set("t_Occlusion",t_OcclusionTex);
+    storage->set("t_Occlusion", t_OcclusionTex);
 }
 
 SSAOPass::SSAOPass(EngineContext *context) : RenderPass(context) {
@@ -71,7 +71,7 @@ void SSAOPass::onResize(int width, int height) {
     f_SSAOFramebuffer = new Framebuffer();
     // else
     // f_SSAOFramebuffer->use();
-    t_OcclusionTex->setSize(width*v_SSAOScale[0], height*v_SSAOScale[1]);
+    t_OcclusionTex->setSize(width * v_SSAOScale[0], height * v_SSAOScale[1]);
     t_OcclusionTex->setData(0, GL_FLOAT);
     t_OcclusionTex->setFilters(GL_NEAREST, GL_NEAREST);
     f_SSAOFramebuffer->attach(GL_COLOR_ATTACHMENT4, t_OcclusionTex);

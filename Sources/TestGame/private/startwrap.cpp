@@ -4,7 +4,7 @@
 
 #include "../public/boot.h"
 
-int main(int argc, char** args){
+int main(int argc, char **args) {
     return run_engine();
 }
 

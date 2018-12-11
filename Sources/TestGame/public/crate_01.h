@@ -4,10 +4,10 @@
 #include "gameobject.h"
 #include "model_loader.h"
 
-class FloorModel : public GameObject {
+class Crate_01 : public GameObject {
 public:
-    FloorModel() : GameObject() {
-        ModelLoader::load_object(this, "", "floor_01.obj");
+    Crate_01() : GameObject() {
+        ModelLoader::load_object(this, "", "crate_01.obj");
 
         btQuaternion rotation;
         glm::vec3 rot = this->getRotation();
@@ -18,15 +18,15 @@ public:
 
         // init construction info here
         btDefaultMotionState *motionState = new btDefaultMotionState(btTransform(rotation, position));
-        btCollisionShape *shape = new btBoxShape(btVector3(100, 0, 100));
+        btCollisionShape *shape = new btBoxShape(btVector3(0.5, 0.5, 0.5));
 
-        btScalar bodyMass = 0;
+        btScalar bodyMass = 1;
         btVector3 bodyInertia;
         shape->calculateLocalInertia(bodyMass, bodyInertia);
 
         btRigidBody::btRigidBodyConstructionInfo info(bodyMass, motionState, shape, bodyInertia);
 
-        info.m_restitution = 0.1f;
+        info.m_restitution = 0.5f;
         info.m_friction = 0.5f;
 
         rigidBody = new btRigidBody(info);

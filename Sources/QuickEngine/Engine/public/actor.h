@@ -9,7 +9,7 @@
 
 namespace QECore {
 
-    class Actor : Object{
+    class Actor : GameObject {
 
     };
 

@@ -5,13 +5,13 @@
 #ifndef QUICKENGINE_UTILS_H
 #define QUICKENGINE_UTILS_H
 
-namespace QECore{
+namespace QECore {
 
     float random(float min, float max);
 
-    void getcwd(char* buffer,int size);
+    void getcwd(char *buffer, int size);
 
-    void getEngineRootDir(char* buffer,int size);
+    void getEngineRootDir(char *buffer, int size);
 
 };
 #endif //QUICKENGINE_UTILS_H

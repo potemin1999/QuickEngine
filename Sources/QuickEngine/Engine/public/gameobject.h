@@ -10,16 +10,16 @@ using namespace glm;
 
 namespace QECore {
 
-    class Object {
+    class GameObject {
     private:
         float mass = 0;
         glm::vec3 pos = glm::vec3(0, 0, 0);
         glm::vec3 rot = glm::vec3(0, 0, 0);
     public:
 
-        Object();
+        GameObject();
 
-        ~Object();
+        ~GameObject();
 
         Mesh *meshes;
         unsigned long mesh_count;
@@ -36,6 +36,8 @@ namespace QECore {
         float getMass();
 
         void setMass(float mass);
+
+        void move(glm::vec3 offset);
     };
 
 }

@@ -24,6 +24,7 @@ namespace QECore {
 
     namespace RendererImpl {
         class RendererInputReceiver;
+
         class RenderPassContainer;
     }
 
@@ -35,8 +36,8 @@ namespace QECore {
         EngineContext *context;
         World *world;
 
-        StrMap<int>* pipelineListNameMap;
-        List<RendererImpl::RenderPassContainer*>* pipelineList;
+        StrMap<int> *pipelineListNameMap;
+        List<RendererImpl::RenderPassContainer *> *pipelineList;
 
         /*RenderPass *p_GeometryPass;
         RenderPass *p_DeferredLightingPass;
@@ -67,9 +68,9 @@ namespace QECore {
 
         void init(RenderDataStorage *storage);
 
-        void addRenderPass(const char* passName,RenderPass* renderPass);
+        void addRenderPass(const char *passName, RenderPass *renderPass);
 
-        void removeRenderPass(const char* passName);
+        void removeRenderPass(const char *passName);
 
         void compileShaders();
 

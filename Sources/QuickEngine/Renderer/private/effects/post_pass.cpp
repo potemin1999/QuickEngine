@@ -20,19 +20,19 @@ PostPass::~PostPass() {
     delete s_PostShader;
 }
 
-void PostPass::init(RenderDataStorage* storage){
-    v_PixelSize = (float*) storage->require("v_PixelSize");
-    v_ScreenSize = (float*) storage->require("v_ScreenSize");
-    v_Vignette = (float*) storage->require("v_Vignette");
-    v_PostBrightness = (float*) storage->require("v_PostBrightness");
-    v_Gamma = (float*) storage->require("v_Gamma");
-    v_FXAA = (int*) storage->require("v_FXAA");
-    v_SSAOScale = (float*) storage->require("v_SSAOScale");
-    v_DrawingMode = (int*) storage->require("v_DrawingMode");
-    t_AlbedoTex = (Texture*) storage->require("t_Albedo");
-    t_NormalTex = (Texture*) storage->require("t_Normal");
-    t_PositionTex = (Texture*) storage->require("t_Position");
-    t_OcclusionTex = (Texture*) storage->require("t_Occlusion");
+void PostPass::init(RenderDataStorage *storage) {
+    v_PixelSize = (float *) storage->require("v_PixelSize");
+    v_ScreenSize = (float *) storage->require("v_ScreenSize");
+    v_Vignette = (float *) storage->require("v_Vignette");
+    v_PostBrightness = (float *) storage->require("v_PostBrightness");
+    v_Gamma = (float *) storage->require("v_Gamma");
+    v_FXAA = (int *) storage->require("v_FXAA");
+    v_SSAOScale = (float *) storage->require("v_SSAOScale");
+    v_DrawingMode = (int *) storage->require("v_DrawingMode");
+    t_AlbedoTex = (Texture *) storage->require("t_Albedo");
+    t_NormalTex = (Texture *) storage->require("t_Normal");
+    t_PositionTex = (Texture *) storage->require("t_Position");
+    t_OcclusionTex = (Texture *) storage->require("t_Occlusion");
 
     unsigned int post_vbo;
     glGenBuffers(1, &post_vbo);
@@ -45,7 +45,7 @@ void PostPass::init(RenderDataStorage* storage){
     glBindVertexArray(0);
 }
 
-void PostPass::compileShaders(){
+void PostPass::compileShaders() {
     s_PostShader = new Shader("shaders/post_shader_vertex.glsl", "shaders/post_shader_fragment.glsl");
     s_PostShader->compile();
     s_PostShader->uniform("u_DrawingMode");
@@ -64,10 +64,10 @@ void PostPass::compileShaders(){
     s_PostShader->uniform("u_OcclusionTex");
 }
 
-void PostPass::doDraw(){
+void PostPass::doDraw() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     s_PostShader->use();
-    glClear( ((unsigned)GL_COLOR_BUFFER_BIT) | ((unsigned)GL_DEPTH_BUFFER_BIT) );
+    glClear(((unsigned) GL_COLOR_BUFFER_BIT) | ((unsigned) GL_DEPTH_BUFFER_BIT));
     s_PostShader->uniform1i("u_AlbedoSpecTex", 0);
     glActiveTexture(GL_TEXTURE0);
     t_AlbedoTex->use();
@@ -85,7 +85,7 @@ void PostPass::doDraw(){
     t_OcclusionTex->use();
     s_PostShader->uniform2f("u_PixelSize", v_PixelSize[0], v_PixelSize[1]);
     s_PostShader->uniform2f("u_ScreenSize", v_ScreenSize[0], v_ScreenSize[1]);
-    s_PostShader->uniform2f("u_SSAOScale",v_SSAOScale[0],v_SSAOScale[1]);
+    s_PostShader->uniform2f("u_SSAOScale", v_SSAOScale[0], v_SSAOScale[1]);
     s_PostShader->uniform1i("u_SuperSampling", 1);
     s_PostShader->uniform1f("u_Vignette", *v_Vignette);
     s_PostShader->uniform1f("u_Brightness", *v_PostBrightness);
@@ -103,8 +103,8 @@ void PostPass::onResize(int width, int height) {
     log("post pass resize\n");
 }
 
-InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *event){
-    if (event->keyAction==QECore::ACTION_DOWN) {
+InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *event) {
+    if (event->keyAction == QECore::ACTION_DOWN) {
         return INPUT_NOT_PROCESSED;
     }
     switch (event->keyCode) {
@@ -152,11 +152,13 @@ InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *eve
             *(parent->v_DrawingMode) = 5;
             break;
         }
-        /*case KEY_0 | KEY_1 | KEY_2 | KEY_3 | KEY_4 : {
-            *(parent->v_DrawingMode) = event->keyCode - 47;
+            /*case KEY_0 | KEY_1 | KEY_2 | KEY_3 | KEY_4 : {
+                *(parent->v_DrawingMode) = event->keyCode - 47;
+                break;
+            }*/
+        default: {
             break;
-        }*/
-        default:{break;}
+        }
     }
     return INPUT_PROCESSED;
 }

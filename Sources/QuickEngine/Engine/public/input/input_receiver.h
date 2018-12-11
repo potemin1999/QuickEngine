@@ -12,13 +12,13 @@ namespace QECore {
 
     class InputReceiver {
     public:
-        
+
         virtual void onReceiverRegistered() {}
 
         virtual void onReceiverUnregistered() {}
 
         virtual InputProcessResult onInputEvent(InputEvent *event) = 0;
-        
+
     };
 
 }

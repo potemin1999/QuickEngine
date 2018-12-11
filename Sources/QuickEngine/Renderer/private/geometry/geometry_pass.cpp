@@ -28,7 +28,7 @@ void GeometryPass::init(RenderDataStorage *storage) {
     t_Normal = new Texture(GL_RGBA8, GL_RGBA);
     t_Position = new Texture(GL_RGBA8, GL_RGBA);
     camera = (Camera *) storage->require("с_CurrentWorldCamera");
-    objects = (vector<Object *> *) storage->require("objects");
+    objects = (vector<GameObject *> *) storage->require("objects");
     v_Brightness = (float *) storage->require("v_Brightness");
     storage->set("t_Depthmap", t_Depthmap);
     storage->set("t_Albedo", t_Albedo);

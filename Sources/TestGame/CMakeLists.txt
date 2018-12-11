@@ -4,7 +4,7 @@ set(TEST_GAME_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/libs/include/glad/glad.cpp
         private/main.cpp
         private/startwrap.cpp
-        )
+        public/crate_01.h private/player.cpp public/player.h)
 add_executable(${TEST_GAME} ${TEST_GAME_SOURCE_FILES})
 set_target_properties(${TEST_GAME}
         PROPERTIES

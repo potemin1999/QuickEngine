@@ -9,7 +9,7 @@ using namespace QECore;
 
 void InputEventManager::registerInputReceiver(QECore::InputReceiver *receiver) {
     receivers.push_back(receiver);
-    log("added input receiver at %p\n",receiver);
+    log("added input receiver at %p\n", receiver);
 }
 
 void InputEventManager::unregisterInputReceiver(QECore::InputReceiver *receiver) {

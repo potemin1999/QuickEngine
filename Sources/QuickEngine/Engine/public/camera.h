@@ -1,14 +1,17 @@
-
-#ifndef CAMERA
-#define CAMERA
+#pragma once
 
 #include <glm/gtx/quaternion.hpp>
+#include "gameobject.h"
 
 namespace QECore {
 
     class CameraData;
 
     class Camera {
+
+    private:
+        GameObject *attachedTo;
+        glm::vec3 offset = glm::vec3(0, 0, 0);
 
     public:
 
@@ -19,8 +22,6 @@ namespace QECore {
         CameraData *data;
 
         void setPerspective(float aspect, float fovy, float farZ);
-
-    public:
 
         static float invSqrt(float x);
 
@@ -39,22 +40,24 @@ namespace QECore {
          * set camera position, view vector and up vector
          */
 
-        void setCameraPosition(const glm::vec3 &pos, const glm::vec3 &view, const glm::vec3 &up,bool viewAt);
+        void setCameraPosition(const glm::vec3 &pos, const glm::vec3 &view, const glm::vec3 &up, bool viewAt);
 
         void setCameraPosition(const glm::vec3 &pos, const glm::vec3 &view, const glm::vec3 &up);
 
+        void setPos(glm::vec3 pos);
+
         /*
-         * move camera forward on distance
+         * move camera forward by distance
          */
         void moveCameraForward(float distance);
 
         /*
-         * move camera up on distance
+         * move camera up by distance
          */
         void moveCameraUp(float distance);
 
         /*
-         * move camera right on distance
+         * move camera right by distance
          */
         void moveCameraRight(float distance);
 
@@ -75,14 +78,14 @@ namespace QECore {
 
         const float getAspect();
 
+        void attachTo(GameObject *object);
 
+        GameObject *getAttachedTo();
+
+        glm::vec3 getOffsetPos();
+
+        void setOffsetPos(glm::vec3 offset);
     };
 
 }
-
-
-#endif
-
-
-
 

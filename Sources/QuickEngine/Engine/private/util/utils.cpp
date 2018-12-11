@@ -67,14 +67,14 @@ void QECore::getEngineRootDir(char *buffer, int size) {
     for (auto i = length; i >= 0; --i) {
         if (  /**start if*/
 #ifndef _WIN32
-            buffer[i] == '/'
+buffer[i] == '/'
 #else
             buffer[i] == '\\'
 #endif
             /**end if*/) {
             last_slash = (int) i;
             break;
-        }else{
+        } else {
             buffer[i] = 0;
         }
     }

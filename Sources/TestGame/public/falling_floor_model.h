@@ -4,9 +4,9 @@
 #include "gameobject.h"
 #include "model_loader.h"
 
-class FallingFloorModel : public Object {
+class FallingFloorModel : public GameObject {
 public:
-    FallingFloorModel() : Object() {
+    FallingFloorModel() : GameObject() {
         ModelLoader::load_object(this, "", "floor_01.obj");
 
         btQuaternion rotation;

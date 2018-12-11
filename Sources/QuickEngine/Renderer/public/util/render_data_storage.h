@@ -29,7 +29,7 @@ namespace QECore {
 
         void *get(const char *key);
 
-        void *require(const char* key);
+        void *require(const char *key);
 
     };
 

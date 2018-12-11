@@ -4,19 +4,19 @@
 #include "gameobject.h"
 #include "model_loader.h"
 
-class MaxModel : public Object {
+class MaxModel : public GameObject {
 public:
-	MaxModel() : Object() {
-		//		mat.tex = 0;
+    MaxModel() : GameObject() {
+        //		mat.tex = 0;
 
         //ModelLoader::load_OBJ("models\\floating_crystal.obj", meshes->data, meshes->vert_count);
 
         ModelLoader::load_object(this, "characters/max/", "max_caulfield.obj");
 
 #ifdef GRAPHICs_DEBUG
-		for (int i = 0; i < mesh_count; i++) {
-			printf("    mesh[%i] name %s\n", i, (meshes + i)->name);
-		}
+        for (int i = 0; i < mesh_count; i++) {
+            printf("    mesh[%i] name %s\n", i, (meshes + i)->name);
+        }
 #endif
 
         //meshes->material = MaterialManager::create_material("textures\\grass_a.png", "textures\\river_rock_n.png");
@@ -27,5 +27,5 @@ public:
         ModelLoader::load_OBJ("models\\max_caulfield.obj", meshes->data, meshes->vert_count);
         meshes->material = MaterialManager::create_material("textures\\max_suit.dds", "textures\\river_rock_n.png");
         mesh_count = 1;*/
-	};
+    };
 };

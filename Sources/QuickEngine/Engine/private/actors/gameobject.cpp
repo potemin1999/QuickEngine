@@ -6,16 +6,16 @@
 
 #include "gameobject.h"
 
-Object::Object() {
+GameObject::GameObject() {
 
 }
 
-Object::~Object() {
+GameObject::~GameObject() {
     mesh_count = 0;
     delete meshes;
 }
 
-void Object::setPos(glm::vec3 pos) {
+void GameObject::setPos(glm::vec3 pos) {
     this->pos = pos;
 
     if (rigidBody) {
@@ -26,7 +26,7 @@ void Object::setPos(glm::vec3 pos) {
     }
 }
 
-glm::vec3 Object::getPos() {
+glm::vec3 GameObject::getPos() {
     if (rigidBody) {
         btTransform transform = rigidBody->getWorldTransform();
         btVector3 pos = transform.getOrigin();
@@ -36,24 +36,28 @@ glm::vec3 Object::getPos() {
     }
 }
 
-void Object::setRotation(glm::vec3 rot) {
+void GameObject::setRotation(glm::vec3 rot) {
     // TODO: implement
 //    this->rot = rot;
 }
 
-glm::vec3 Object::getRotation() {
+glm::vec3 GameObject::getRotation() {
     // TODO: implement
     return rot;
 }
 
-float Object::getMass() {
+float GameObject::getMass() {
     return mass;
 }
 
 // TODO: check why it crashes engine
-void Object::setMass(float mass) {
+void GameObject::setMass(float mass) {
     this->mass = mass;
     btVector3 bodyInertia;
     rigidBody->getCollisionShape()->calculateLocalInertia(mass, bodyInertia);
     rigidBody->setMassProps(mass, bodyInertia);
+}
+
+void GameObject::move(glm::vec3 offset) {
+    setPos(getPos() + offset);
 }

@@ -12,6 +12,7 @@
 #endif
 #ifdef _WIN32*/
 #include <string>
+
 #define STORAGE_KEY_TYPE std::string
 //#endif
 
@@ -29,21 +30,21 @@ namespace QECore {
         std::map<Key, T> data;
 
     public:
-        T &operator[](const char* k){
+        T &operator[](const char *k) {
 //#ifdef _WIN32
             std::string sKey(k);
             return data[sKey];
 //#else
- //           return data[k];
+            //           return data[k];
 ///#endif
         }
 
-        void remove(const char* k){
+        void remove(const char *k) {
 //#ifdef _WIN32
             std::string sKey(k);
             data.erase(sKey);
 //#else
-  //          data.erase(k);
+            //          data.erase(k);
 //#endif
         }
 

@@ -10,15 +10,17 @@
 using namespace QECore;
 
 namespace QECore {
-    
+
     class EngineContext {
     public:
 
         EngineContext() = default;
+
         virtual ~EngineContext() = default;
+
         virtual InputEventManager *getInputEventManager() = 0;
-        
+
     };
-    
+
 }
 #endif //QUICKENGINE_ENGINE_CONTEXT_H

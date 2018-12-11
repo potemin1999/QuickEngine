@@ -22,7 +22,7 @@ namespace QECore {
         Texture *t_Normal = nullptr;
         Texture *t_Position = nullptr;
         Shader *s_MainShader = nullptr;
-        vector<Object *> *objects = nullptr;
+        vector<GameObject *> *objects = nullptr;
         Camera *camera = nullptr;
         float *v_Brightness = nullptr;
         unsigned *attachmentConst = nullptr;

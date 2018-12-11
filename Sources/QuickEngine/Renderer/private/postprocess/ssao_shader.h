@@ -7,12 +7,12 @@
 
 #include "shader.h"
 
-namespace QECore{
+namespace QECore {
 
-    class SSAOShader: Shader{
+    class SSAOShader : Shader {
 
     public:
-        SSAOShader() : Shader("shaders/ssao_vertex_shader.glsl","shaders/ssao_fragment_shader.glsl"){
+        SSAOShader() : Shader("shaders/ssao_vertex_shader.glsl", "shaders/ssao_fragment_shader.glsl") {
 
         }
     };

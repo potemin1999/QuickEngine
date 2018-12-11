@@ -4,10 +4,12 @@
 
 #include <glad/glad.h>
 #include "texture.h"
+
 #ifdef DEBUG_TEXTURE
 #define DEBUG_TEXTURE_OUTPUT
 #include <iostream>
 #endif // DEBUG_TEXTURE
+
 #include "util/log.h"
 
 using namespace QECore;
@@ -28,7 +30,7 @@ Texture::Texture(int _width, int _height, int _format, int _internalFormat) {
     internalFormat = _internalFormat;
     gen(&pointer);
     bindTexture();
-    setSize(_width,_height);
+    setSize(_width, _height);
 }
 
 Texture::Texture(int _width, int _height, int _format, int _internalFormat, void *_data, int _data_type) {
@@ -36,16 +38,16 @@ Texture::Texture(int _width, int _height, int _format, int _internalFormat, void
     internalFormat = _internalFormat;
     gen(&pointer);
     bindTexture();
-    setSize(_width,_height);
-    setData(_data,_data_type);
+    setSize(_width, _height);
+    setData(_data, _data_type);
 }
 
 Texture::~Texture() = default;
 
 void Texture::setData(void *_data, int _data_type) {
     bindTexture();
-    glTexImage2D(GL_TEXTURE_2D,0,format,width,height,0,internalFormat,_data_type,_data);
-    log("creating texture with w:%d , h:%d\n",width,height);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, internalFormat, _data_type, _data);
+    log("creating texture with w:%d , h:%d\n", width, height);
     loaded = true;
 }
 
@@ -63,8 +65,8 @@ void Texture::setFilters(int _min_filter, int _mag_filter) {
 }
 
 void Texture::gen(unsigned int *pointer) {
-    glGenTextures(1,pointer);
-    log("generated new texture with pointer = %u\n",*pointer);
+    glGenTextures(1, pointer);
+    log("generated new texture with pointer = %u\n", *pointer);
 }
 
 int Texture::bindTexture() {
@@ -74,7 +76,7 @@ int Texture::bindTexture() {
     return 0;
 }
 
-void Texture::use(){
+void Texture::use() {
     bindTexture();
 }
 
@@ -82,7 +84,7 @@ bool Texture::isLoaded() {
     return loaded;
 }
 
-int Texture::free(){
+int Texture::free() {
     if (!pointer) return -1;
     glDeleteTextures(1, &pointer);
     return 0;

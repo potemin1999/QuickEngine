@@ -18,9 +18,9 @@ namespace QECore {
 
     public:
 
-        World(){}
+        World() {}
 
-        ~World(){}
+        ~World() {}
 
         Camera *getCurrentCamera() {
             return currentCamera;

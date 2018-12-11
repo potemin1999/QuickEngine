@@ -7,7 +7,7 @@
 
 #include "input_key.h"
 
-namespace QECore{
+namespace QECore {
 
     struct InputEvent {
         int keyCode;

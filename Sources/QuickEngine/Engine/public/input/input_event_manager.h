@@ -15,7 +15,7 @@ namespace QECore {
     class InputEventManager {
     private:
 
-        vector<InputEvent*> events;
+        vector<InputEvent *> events;
         vector<InputReceiver *> receivers;
 
         int processInputEvent(InputEvent *event);
@@ -26,7 +26,7 @@ namespace QECore {
 
         void unregisterInputReceiver(InputReceiver *receiver);
 
-        void injectInputEvent(InputEvent* event);
+        void injectInputEvent(InputEvent *event);
 
         void processDelayedEvents();
 
