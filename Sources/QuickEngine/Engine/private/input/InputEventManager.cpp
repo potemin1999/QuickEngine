@@ -1,8 +1,6 @@
-//
-// Created by ilya on 9/24/18.
-//
-
 #include <cstdio>
+#include <input/InputEventManager.h>
+
 #include "input/InputEventManager.h"
 #include "util/Log.h"
 
@@ -24,14 +22,14 @@ void InputEventManager::unregisterInputReceiver(QE::InputReceiver *receiver) {
     }
 }
 
-void InputEventManager::injectInputEvent(QE::InputEvent *event) {
-    if (event->keyAction == ACTION_DOWN) {
+void InputEventManager::injectKeyInputEvent(QE::KeyInputEvent *event) {
+    if (event->keyAction == ACTION_PRESS) {
         // save key down event for triggering
         keyDownEvents.push_back(event);
 
         pressedKeys.push_back(event->keyCode);
 
-    } else if (event->keyAction == ACTION_UP) {
+    } else if (event->keyAction == ACTION_RELEASE) {
         // save key up event for triggering
         keyUpEvents.push_back(event);
 
@@ -40,30 +38,98 @@ void InputEventManager::injectInputEvent(QE::InputEvent *event) {
                 pressedKeys.erase(pressedKeys.begin() + i);
             }
         }
+    } else if (event->keyAction == ACTION_REPEAT) {
+        keyRepeatEvents.push_back(event);
     }
 }
 
+void InputEventManager::injectMouseInputEvent(QE::MouseInputEvent *event) {
+    if (event->action == ACTION_PRESS) {
+        // save key down event for triggering
+        mouseDownEvents.push_back(event);
+
+        pressedMouseButtons.push_back(event->button);
+    } else if (event->action == ACTION_RELEASE) {
+        // save key up event for triggering
+        mouseUpEvents.push_back(event);
+
+        for (int i = 0; i < pressedMouseButtons.size(); i++) {
+            if (pressedMouseButtons[i] == event->button) {
+                pressedMouseButtons.erase(pressedMouseButtons.begin() + i);
+            }
+        }
+    }
+}
+
+void InputEventManager::injectCharInputEvent(CharInputEvent *event) {
+    charEvents.push_back(event);
+}
+
 void InputEventManager::processDelayedEvents() {
+    // process keyboard events
     for (auto &event : keyDownEvents) {
-        processInputEvent(event);
+        processKeyInputEvent(event);
         delete event;
     }
     keyDownEvents.clear();
 
+    for (auto &event : keyRepeatEvents) {
+        processKeyInputEvent(event);
+        delete event;
+    }
+    keyRepeatEvents.clear();
+
+    for (auto &event : charEvents) {
+        processCharInputEvent(event);
+        delete event;
+    }
+    charEvents.clear();
+
     for (int key: pressedKeys) {
-        InputEvent event{key, ACTION_PRESSED};
-        processInputEvent(&event);
+        KeyInputEvent event{key, ACTION_PRESSED};
+        processKeyInputEvent(&event);
     }
 
     for (auto &event : keyUpEvents) {
-        processInputEvent(event);
+        processKeyInputEvent(event);
         delete event;
     }
     keyUpEvents.clear();
+
+
+    // process mouse events
+    for (auto &event : mouseDownEvents) {
+        processMouseInputEvent(event);
+        delete event;
+    }
+    mouseDownEvents.clear();
+
+    for (int key: pressedMouseButtons) {
+        MouseInputEvent event{key, ACTION_PRESSED};
+        processMouseInputEvent(&event);
+    }
+
+    for (auto &event : mouseUpEvents) {
+        processMouseInputEvent(event);
+        delete event;
+    }
+    mouseUpEvents.clear();
 }
 
-int InputEventManager::processInputEvent(QE::InputEvent *event) {
+int InputEventManager::processKeyInputEvent(QE::KeyInputEvent *event) {
     for (auto &receiver : receivers) {
-        InputProcessResult result = receiver->onInputEvent(event);
+        InputProcessResult result = receiver->onKeyInputEvent(event);
+    }
+}
+
+int InputEventManager::processMouseInputEvent(MouseInputEvent *event) {
+    for (auto &receiver : receivers) {
+        InputProcessResult result = receiver->onMouseInputEvent(event);
+    }
+}
+
+void InputEventManager::processCharInputEvent(CharInputEvent *event) {
+    for (auto &receiver : receivers) {
+        InputProcessResult result = receiver->onCharInputEvent(event);
     }
 }

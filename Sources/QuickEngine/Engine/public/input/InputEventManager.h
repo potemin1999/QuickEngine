@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include "input/InputEvent.h"
 #include "input/InputReceiver.h"
 
 using namespace std;
@@ -11,11 +10,15 @@ namespace QE {
     class InputEventManager {
     private:
 
-        vector<InputEvent *> keyDownEvents, keyUpEvents;
+        vector<KeyInputEvent *> keyDownEvents, keyUpEvents, keyRepeatEvents;
+        vector<MouseInputEvent *> mouseDownEvents, mouseUpEvents;
+        vector<CharInputEvent *> charEvents;
         vector<InputReceiver *> receivers;
-        vector<int> pressedKeys;
+        vector<int> pressedKeys, pressedMouseButtons;
 
-        int processInputEvent(InputEvent *event);
+        int processKeyInputEvent(KeyInputEvent *event);
+
+        int processMouseInputEvent(MouseInputEvent *event);
 
     public:
 
@@ -23,10 +26,15 @@ namespace QE {
 
         void unregisterInputReceiver(InputReceiver *receiver);
 
-        void injectInputEvent(InputEvent *event);
+        void injectKeyInputEvent(KeyInputEvent *event);
+
+        void injectMouseInputEvent(MouseInputEvent *event);
+
+        void injectCharInputEvent(CharInputEvent *event);
 
         void processDelayedEvents();
 
+        void processCharInputEvent(CharInputEvent *event);
     };
 
 }

@@ -18,27 +18,24 @@ void check_gl_error(const char *tag) {
     }
 }
 
-void error(int error, const char *description) {
+void errorCallback(int error, const char *description) {
     printf("error : %i \n %s \n", error, description);
 }
 
-void resize(GLFWwindow *w, int width, int height) {
+void resizeCallback(GLFWwindow *w, int width, int height) {
     engine->resize(width, height);
 }
 
-void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    switch (action) {
-        case 1: {
-            engine->inputManager->injectInputEvent(new InputEvent{key, ACTION_DOWN});
-            break;
-        }
-        case 0: {
-            engine->inputManager->injectInputEvent(new InputEvent{key, ACTION_UP});
-            break;
-        }
-        default:
-            break;
-    }
+void mouseCallback(GLFWwindow *w, int button, int action, int mods) {
+    engine->inputManager->injectMouseInputEvent(new MouseInputEvent{button, action, mods});
+}
+
+void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    engine->inputManager->injectKeyInputEvent(new KeyInputEvent{key, action, mods});
+}
+
+void charCallback(GLFWwindow *w, unsigned int codepoint) {
+    engine->inputManager->injectCharInputEvent(new CharInputEvent{codepoint});
 }
 
 void init() {
@@ -106,19 +103,15 @@ int mainGraphics() {
     //iluInit();
     //ilSetInteger(IL_KEEP_DXTC_DATA, IL_TRUE);
 
-    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-    const GLFWvidmode *vidmode = glfwGetVideoMode(monitor);
-
     if (fullscreen) {
+        GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode *vidmode = glfwGetVideoMode(monitor);
+
         engine->windowWidth = vidmode->width;
         engine->windowHeight = vidmode->height;
         window = glfwCreateWindow(engine->windowWidth, engine->windowHeight, "QuickEngine", monitor, NULL);
-        //engine->resize(window_width, window_height);
-        //camera->updateProjectionMatrix(float(vidmode->width) / float(vidmode->height));
     } else {
         window = glfwCreateWindow(engine->windowWidth, engine->windowHeight, "QuickEngine", NULL, NULL);
-        //engine->resize(window_width, window_height);
-        //camera->updateProjectionMatrix(float(window_width) / float(window_height));
     }
     printf("width: %i\nheight: %i\n", engine->windowWidth, engine->windowHeight);
 
@@ -128,16 +121,22 @@ int mainGraphics() {
 
         return WINDOW_CREATING_ERROR;
     }
+
     glfwMakeContextCurrent(window);
+
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         printf("glad is not loaded!\n");
         return -1;
     } else
         printf("OpenGL %d.%d loaded\n", GLVersion.major, GLVersion.minor);
 
-    glfwSetWindowSizeCallback(window, resize);
-    glfwSetKeyCallback(window, key);
-    glfwSetErrorCallback(error);
+    glfwSetWindowSizeCallback(window, resizeCallback);
+    glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseCallback);
+    glfwSetCharCallback(window, charCallback);
+
+    glfwSetErrorCallback(errorCallback);
+
     glfwShowWindow(window);
     if (lock_mouse)
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

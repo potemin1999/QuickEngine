@@ -1,6 +1,8 @@
 #pragma once
 
-#include "InputEvent.h"
+#include "KeyInputEvent.h"
+#include "MouseInputEvent.h"
+#include "CharInputEvent.h"
 #include "InputProcessingResult.h"
 
 namespace QE {
@@ -12,7 +14,11 @@ namespace QE {
 
         virtual void onReceiverUnregistered() {}
 
-        virtual InputProcessResult onInputEvent(InputEvent *event) = 0;
+        virtual InputProcessResult onKeyInputEvent(KeyInputEvent *event) = 0;
+
+        virtual InputProcessResult onMouseInputEvent(MouseInputEvent *event) = 0;
+
+        virtual InputProcessResult onCharInputEvent(CharInputEvent *event) = 0;
 
     };
 

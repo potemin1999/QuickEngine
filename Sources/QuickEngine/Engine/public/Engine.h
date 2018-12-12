@@ -13,7 +13,7 @@
 #include "materials/MaterialManager.h"
 #include "util/TextureManager.h"
 #include <input/InputEventManager.h>
-#include "input/InputKey.h"
+#include "input/Input.h"
 #include <util/Log.h>
 #include "Mesh.h"
 
@@ -52,6 +52,7 @@ namespace QE {
         int height = 10;
         float deltaTime = 0;
 
+        bool lockCursor = true;
         double mouseX, mouseY;
         int windowWidth = 1280, windowHeight = 800;
 

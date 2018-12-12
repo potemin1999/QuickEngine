@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Defines.h"
 #include "GameObject.h"
 #include "ModelLoader.h"
 

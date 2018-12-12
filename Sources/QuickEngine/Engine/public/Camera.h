@@ -61,6 +61,7 @@ namespace QE {
          */
         void moveCameraRight(float distance);
 
+        glm::vec3 getForward();
 
         glm::mat4 *getVPMatrix();
 

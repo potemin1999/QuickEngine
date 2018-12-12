@@ -4,7 +4,7 @@
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "input/InputKey.h"
+#include "input/Input.h"
 #include "input/InputProcessingResult.h"
 
 namespace QE {
@@ -54,19 +54,23 @@ namespace QE {
         void doDraw() override;
 
     private:
-
         class PostPassInputReceiver : InputReceiver {
-        private:
 
+        private:
             PostPass *parent;
 
         public:
-
             explicit PostPassInputReceiver(PostPass *_parent) : InputReceiver() {
                 parent = _parent;
             }
 
-            virtual InputProcessResult onInputEvent(InputEvent *event);
+        private:
+            InputProcessResult onCharInputEvent(CharInputEvent *event) override;
+
+        public:
+            virtual InputProcessResult onKeyInputEvent(KeyInputEvent *event);
+
+            virtual InputProcessResult onMouseInputEvent(MouseInputEvent *event);
 
         };
 
