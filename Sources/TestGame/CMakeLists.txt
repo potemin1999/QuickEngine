@@ -10,6 +10,38 @@ set(TEST_GAME_SOURCE_FILES
 SET(NANOGUI_SOURCE_FILES
         nanogui/ext/nanovg/src/nanovg.c
 
+#        nanogui/src/button.cpp
+#        nanogui/src/checkbox.cpp
+#        nanogui/src/colorpicker.cpp
+#        nanogui/src/colorwheel.cpp
+#        nanogui/src/combobox.cpp
+#        nanogui/src/common.cpp
+##        nanogui/src/darwin.mm
+#        nanogui/src/example_icons.cpp
+#        nanogui/src/glcanvas.cpp
+#        nanogui/src/glutil.cpp
+#        nanogui/src/graph.cpp
+#        nanogui/src/imagepanel.cpp
+#        nanogui/src/imageview.cpp
+#        nanogui/src/label.cpp
+#        nanogui/src/layout.cpp
+#        nanogui/src/messagedialog.cpp
+#        nanogui/src/nanogui_resources.cpp
+#        nanogui/src/popup.cpp
+#        nanogui/src/popupbutton.cpp
+#        nanogui/src/progressbar.cpp
+#        nanogui/src/screen.cpp
+#        nanogui/src/serializer.cpp
+#        nanogui/src/slider.cpp
+#        nanogui/src/stackedwidget.cpp
+#        nanogui/src/tabheader.cpp
+#        nanogui/src/tabwidget.cpp
+#        nanogui/src/textbox.cpp
+#        nanogui/src/theme.cpp
+#        nanogui/src/vscrollpanel.cpp
+#        nanogui/src/widget.cpp
+#        nanogui/src/window.cpp
+
         nanogui/include/nanogui/glutil.h
         nanogui/include/nanogui/common.h
         nanogui/include/nanogui/widget.h

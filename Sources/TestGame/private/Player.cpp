@@ -4,10 +4,23 @@
 #include "Boot.h"
 #include "glfw/glfw3.h"
 #include "Crate_01.h"
+#include "FloorModel.h"
 
 bool lockCursor = true;
 
 Player::Player(World *world) : GameObject(world) {
+    // create portable world
+    portableWorld = new World(1);
+    engine->addWorld(portableWorld);
+    // create floor in second world
+    for (int x = -5; x <= 5; x++)
+        for (int z = -5; z <= 5; z++) {
+            auto n = new FloorModel(portableWorld);
+            n->setPos(glm::vec3(x * 6, 0.0f, z * 6));
+            portableWorld->addObject(n);
+        }
+
+
     ModelLoader::load_object(this, "", "crate_01.obj");
 
     glm::tquat rot = this->getRotation();
@@ -54,6 +67,19 @@ Player::Player(World *world) : GameObject(world) {
                         // return mouse to center on cursor relock to prevent rotation jump
                         if (engine->lockCursor)
                             glfwSetCursorPos(window, engine->windowWidth * 0.5f, engine->windowHeight * 0.5f);
+                        break;
+                    }
+                    case GLFW_KEY_TAB: {
+                        auto player = (Player *) (engine->camera->getAttachedTo());
+                        player->isInSecondWorld = !player->isInSecondWorld;
+                        if (player->isInSecondWorld) {
+                            player->moveToWorld(engine->getWorld(1));
+                            engine->renderer->attachWorld(engine->getWorld(1));
+                        } else {
+                            player->moveToWorld(engine->getWorld(0));
+                            engine->renderer->attachWorld(engine->getWorld(0));
+                        }
+
                         break;
                     }
                     default:
@@ -133,4 +159,9 @@ Player::Player(World *world) : GameObject(world) {
     };
     engine->inputManager->registerInputReceiver(new MainInputReceiver);
 
+}
+
+void Player::moveToWorld(World *world) {
+    this->getWorld()->removeObject(this);
+    world->addObject(this);
 }

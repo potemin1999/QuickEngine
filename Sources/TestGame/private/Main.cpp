@@ -6,14 +6,13 @@
 #include "NowhereSign_01.h"
 #include "Player.h"
 
-//#include <nanogui/nanogui.h>
+//#include "nanogui/nanogui.h"
 
 //nanogui::Screen *screen = nullptr;
 
 std::string strval = "A string";
 bool b = true;
-World *world1, *world2;
-bool isInSecondWorld = false;
+World *world1;
 
 void createObjects() {
     // create floor
@@ -39,16 +38,6 @@ void createObjects() {
     auto nowhereSign = new NowhereSign_01(world1);
     nowhereSign->setPos(glm::vec3(3, 0, 0));
     world1->addObject(nowhereSign);
-
-
-    // create floor in second world
-    for (int x = -5; x <= 5; x++)
-        for (int z = -5; z <= 5; z++) {
-            auto n = new FloorModel(world1);
-            n->setPos(glm::vec3(x * 6, 0.0f, z * 6));
-            world2->addObject(n);
-        }
-
 
 
     auto player = new Player(world1);
