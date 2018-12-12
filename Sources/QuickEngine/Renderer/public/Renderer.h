@@ -30,8 +30,6 @@ namespace QE {
 
     class Renderer {
     private:
-
-        RendererImpl::RendererInputReceiver *inputListener;
         RenderDataStorage *renderDataStorage;
         EngineContext *context;
         World *world;

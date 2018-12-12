@@ -2,22 +2,6 @@
 
 using namespace QE;
 
-class RendererImpl::RendererInputReceiver : public InputReceiver {
-private:
-
-    Renderer *parent;
-
-public:
-
-    explicit RendererInputReceiver(Renderer *renderer) {
-        parent = renderer;
-    }
-
-    InputProcessResult onInputEvent(InputEvent *event) override {
-        printf("received input action %d with keycode %d\n", event->keyAction, event->keyCode);
-    }
-
-};
 
 class RendererImpl::RenderPassContainer {
 public:
@@ -35,9 +19,7 @@ public:
 Renderer::Renderer(EngineContext *_context) {
     pipelineList = new List<RendererImpl::RenderPassContainer *>();
     pipelineListNameMap = new StrMap<int>();
-    inputListener = new RendererImpl::RendererInputReceiver(this);
     context = _context;
-    //context->getInputEventManager()->registerInputReceiver(inputListener);
     addRenderPass("GeometryPass", new GeometryPass(context));
     addRenderPass("DeferredLightingPass", new DeferredLightingPass(context));
     addRenderPass("SSAOPass", new SSAOPass(context));
@@ -45,8 +27,6 @@ Renderer::Renderer(EngineContext *_context) {
 }
 
 Renderer::~Renderer() {
-    //context->getInputEventManager()->unregisterInputReceiver(inputListener);
-    delete inputListener;
     int size = (int) pipelineList->size();
     for (int i = size - 1; i >= 0; i--) {
         QE::RendererImpl::RenderPassContainer *passC = (*pipelineList)[i];

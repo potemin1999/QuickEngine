@@ -259,3 +259,7 @@ void Camera::setPos(glm::vec3 pos) {
 glm::tquat<float> Camera::getQOrientation() {
     return data->qOrientation;
 }
+
+glm::vec3 Camera::getForward() {
+    glm::vec3 dir = glm::normalize(glm::conjugate(getQOrientation()) * glm::vec3(0, 0, -1));
+}

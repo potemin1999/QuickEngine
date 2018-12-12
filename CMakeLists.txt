@@ -10,6 +10,8 @@ set(BUILD_NAME QuickEngine)
 set(BUILD_PATH ${PROJECT_SOURCE_DIR}/build)
 set(BIN_BUILD_PATH ${PROJECT_SOURCE_DIR}/build/bin)
 include_directories("${PROJECT_SOURCE_DIR}/libs/include")
+include_directories("Sources/TestGame/nanogui/include/nanovg")
+include_directories("${PROJECT_SOURCE_DIR}/libs/includeRakNet")
 
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc -lstdc++ -lpthread")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++")

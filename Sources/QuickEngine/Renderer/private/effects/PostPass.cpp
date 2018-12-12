@@ -3,6 +3,8 @@
 //
 
 #include <glad/glad.h>
+#include <effects/PostPass.h>
+
 #include "effects/PostPass.h"
 #include "util/Log.h"
 #include "glfw/glfw3.h"
@@ -104,8 +106,8 @@ void PostPass::onResize(int width, int height) {
     log("post pass resize\n");
 }
 
-InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *event) {
-    if (event->keyAction == QE::ACTION_DOWN) {
+InputProcessResult PostPass::PostPassInputReceiver::onKeyInputEvent(KeyInputEvent *event) {
+    if (event->keyAction == QE::ACTION_PRESS) {
         return INPUT_NOT_PROCESSED;
     }
     switch (event->keyCode) {
@@ -162,4 +164,12 @@ InputProcessResult PostPass::PostPassInputReceiver::onInputEvent(InputEvent *eve
         }
     }
     return INPUT_PROCESSED;
+}
+
+InputProcessResult PostPass::PostPassInputReceiver::onMouseInputEvent(MouseInputEvent *event) {
+    return INPUT_NOT_PROCESSED;
+}
+
+InputProcessResult PostPass::PostPassInputReceiver::onCharInputEvent(CharInputEvent *event) {
+    return INPUT_NOT_PROCESSED;
 }

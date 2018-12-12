@@ -17,7 +17,7 @@ public:
 
         // init construction info here
         btDefaultMotionState *motionState = new btDefaultMotionState(btTransform(rotation, position));
-        btCollisionShape *shape = new btBoxShape(btVector3(100, 0, 100));
+        btCollisionShape *shape = new btBoxShape(btVector3(3, 0, 3));
 
         btScalar bodyMass = 0;
         btVector3 bodyInertia;

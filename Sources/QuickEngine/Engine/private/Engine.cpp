@@ -112,7 +112,6 @@ void QuickEngine::tick(float dT) {
 void QuickEngine::addObject(GameObject *o) {
     objects.push_back(o);
     if (o->rigidBody != nullptr) {
-        printf("Adding rigidBody to dynamics world\n");
         dynamicsWorld->addRigidBody(o->rigidBody);
     }
 }
