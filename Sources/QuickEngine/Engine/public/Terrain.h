@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 class Terrain : GameObject {
-    Terrain();
+    Terrain(World *world);
 
 
 };

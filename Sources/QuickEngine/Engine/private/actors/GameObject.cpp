@@ -6,8 +6,8 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject() {
-
+GameObject::GameObject(World *world) {
+    this->world = world;
 }
 
 GameObject::~GameObject() {
@@ -90,4 +90,12 @@ glm::mat4 GameObject::getModelMatrix() {
     m[3][3] = 1.0f;
     return m;
 
+}
+
+uint64 GameObject::getID() {
+    return this->id;
+}
+
+World *GameObject::getWorld() {
+    return this->world;
 }

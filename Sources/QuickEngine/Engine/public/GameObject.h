@@ -4,20 +4,24 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Mesh.h"
+#include "World.h"
 #include <btBulletDynamicsCommon.h>
 
-using namespace glm;
 
 namespace QE {
+    class World;
 
     class GameObject {
     private:
+        uint64_t id;
         float mass = 0;
         glm::vec3 pos = glm::vec3(0, 0, 0);
         glm::tquat<float> rot;
+        World *world;
+
     public:
 
-        GameObject();
+        GameObject(World *world);
 
         ~GameObject();
 
@@ -40,6 +44,14 @@ namespace QE {
         void move(glm::vec3 offset);
 
         glm::mat4 getModelMatrix();
+
+        uint64_t getID();
+
+        void tick(float dT) {};
+
+        World *getWorld();
     };
 
 }
+
+using namespace glm;

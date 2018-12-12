@@ -6,7 +6,7 @@
 
 class FloorModel : public GameObject {
 public:
-    FloorModel() : GameObject() {
+    FloorModel(World *world) : GameObject(world) {
         ModelLoader::load_object(this, "", "floor_01.obj");
 
         glm::tquat rot = this->getRotation();

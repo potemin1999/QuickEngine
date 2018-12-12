@@ -1,13 +1,9 @@
-//
-// Created by Ilya on 3/15/2018.
-//
-
-#ifndef QUICKENGINE_RENDER_PASS_H
-#define QUICKENGINE_RENDER_PASS_H
+#pragma once
 
 #include "util/RenderDataStorage.h"
 #include "EngineContext.h"
 #include "World.h"
+#include "Camera.h"
 
 namespace QE {
 
@@ -35,4 +31,3 @@ namespace QE {
 
     };
 }
-#endif //QUICKENGINE_RENDER_PASS_H

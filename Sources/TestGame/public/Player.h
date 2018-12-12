@@ -4,6 +4,6 @@
 
 class Player : public GameObject {
 public:
-    Player();
+    Player(World *world);
 };
 

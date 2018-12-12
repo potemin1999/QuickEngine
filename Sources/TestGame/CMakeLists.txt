@@ -79,7 +79,9 @@ target_include_directories(${TEST_GAME} PRIVATE "${SOURCE_DIR}/QuickEngine/Core/
 target_include_directories(${TEST_GAME} PRIVATE "${SOURCE_DIR}/QuickEngine/Engine/public")
 target_include_directories(${TEST_GAME} PRIVATE "${SOURCE_DIR}/QuickEngine/Renderer/public")
 target_include_directories(${TEST_GAME} PRIVATE "${TEST_GAME_SOURCE_DIR}/public")
+target_link_libraries(${TEST_GAME} QeCore)
 target_link_libraries(${TEST_GAME} QeEngine)
+target_link_libraries(${TEST_GAME} QeRenderer)
 target_link_libraries(${TEST_GAME} ${CMAKE_DL_LIBS})
 
 

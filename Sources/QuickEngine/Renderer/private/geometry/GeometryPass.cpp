@@ -12,8 +12,9 @@
 #include <GameObject.h>
 
 
-GeometryPass::GeometryPass(EngineContext *context) : RenderPass(context) {
+GeometryPass::GeometryPass(EngineContext *context, Renderer *renderer) : RenderPass(context) {
     attachmentConst = new unsigned[3]{GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+    this->renderer = renderer;
 }
 
 GeometryPass::~GeometryPass() {
@@ -28,7 +29,6 @@ void GeometryPass::init(RenderDataStorage *storage) {
     t_Normal = new Texture(GL_RGBA8, GL_RGBA);
     t_Position = new Texture(GL_RGBA8, GL_RGBA);
     camera = (Camera *) storage->require("с_CurrentWorldCamera");
-    objects = (vector<GameObject *> *) storage->require("objects");
     v_Brightness = (float *) storage->require("v_Brightness");
     storage->set("t_Depthmap", t_Depthmap);
     storage->set("t_Albedo", t_Albedo);
@@ -87,7 +87,9 @@ void GeometryPass::doDraw() {
     glm::mat4 mVP = *camera->getVPMatrix();
 
     // TODO: rewrite this shit
-    for (auto o : *objects) {
+    for (auto &obj : *renderer->getWorld()->getObjects()) {
+        auto o = obj.second;
+
         for (int i = 0; i < o->mesh_count; i++) {
             Mesh *m = (o->meshes + i);
             glm::mat4 mM;

@@ -1,37 +1,49 @@
-//
-// Created by ilya on 9/24/18.
-//
+#pragma once
 
-#ifndef QUICKENGINE_WORLD_H
-#define QUICKENGINE_WORLD_H
-
-#include "Camera.h"
+#include <map>
+#include "GameObject.h"
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
 
 using namespace QE;
 
 namespace QE {
+    class GameObject;
 
     class World {
     private:
+        uint64_t id;
+        std::map<uint64_t, GameObject *> *objects;
 
-        Camera *currentCamera;
+        btBroadphaseInterface *broadphaseInterface;
+        btDefaultCollisionConfiguration *collisionConfiguration;
+        btCollisionDispatcher *collisionDispatcher;
+        btSequentialImpulseConstraintSolver *constraintSolver;
+        btDiscreteDynamicsWorld *dynamicsWorld;
 
     public:
 
-        World() {}
+        World(uint64_t id);
 
-        ~World() {}
+        ~World();
 
-        Camera *getCurrentCamera() {
-            return currentCamera;
-        }
+        void onCreate();
 
-        virtual void onCreate();
+        void onDestroy();
 
-        virtual void onDestroy();
+        void addObject(GameObject *object);
 
+        void removeObject(GameObject *object);
+
+        void setID(uint64_t id);
+
+        void tick(float dT);
+
+        uint64_t getID();
+
+        void initPhysics();
+
+        std::map<uint64_t, GameObject *> *getObjects();
     };
 
 }
-
-#endif //QUICKENGINE_WORLD_H

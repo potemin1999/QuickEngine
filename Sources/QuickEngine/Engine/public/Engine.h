@@ -16,9 +16,8 @@
 #include "input/Input.h"
 #include <util/Log.h>
 #include "Mesh.h"
-
-#include <btBulletDynamicsCommon.h>
-#include <btBulletCollisionCommon.h>
+#include <map>
+#include "World.h"
 
 using namespace std;
 using namespace QE;
@@ -38,15 +37,10 @@ namespace QE {
         Renderer *renderer;
         InputEventManager *inputManager;
         Camera *camera;
-        vector<GameObject *> objects;
         vector<Material *> materials;
         vector<QE::Texture *> textures;
+        std::map<uint64, World *> worlds;
 
-        btBroadphaseInterface *broadphaseInterface;
-        btDefaultCollisionConfiguration *collisionConfiguration;
-        btCollisionDispatcher *collisionDispatcher;
-        btSequentialImpulseConstraintSolver *constraintSolver;
-        btDiscreteDynamicsWorld *dynamicsWorld;
 
         int width = 10;
         int height = 10;
@@ -58,15 +52,11 @@ namespace QE {
 
         void init();
 
-        void initPhysics();
-
         void compileShaders();
 
         void resize(int w, int h);
 
         void tick(float dT);
-
-        void addObject(GameObject *o);
 
         void dumpUniforms();
 
@@ -74,6 +64,13 @@ namespace QE {
 
         static void checkGlError(const char *tag);
 
+        void addWorld(World *world);
+
+        World *getWorld(uint64 id);
+
+        void removeWorld(World *world);
+
+        void removeWorld(uint64 id);
     };
 
 

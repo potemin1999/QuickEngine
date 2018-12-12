@@ -1,35 +1,32 @@
-//
-// Created by Ilya on 3/15/2018.
-//
-
-#ifndef QUICKENGINE_GEOMETRYPASS_H
-#define QUICKENGINE_GEOMETRYPASS_H
+#pragma once
 
 #include "GameObject.h"
 #include "Camera.h"
 #include "Framebuffer.h"
 #include "Shader.h"
 #include "RenderPass.h"
+#include "Renderer.h"
 
 namespace QE {
+    class Renderer;
 
     class GeometryPass : public RenderPass {
     private:
 
+        Renderer *renderer;
         Framebuffer *f_MainFramebuffer = nullptr;
         Texture *t_Depthmap = nullptr;
         Texture *t_Albedo = nullptr;
         Texture *t_Normal = nullptr;
         Texture *t_Position = nullptr;
         Shader *s_MainShader = nullptr;
-        vector<GameObject *> *objects = nullptr;
         Camera *camera = nullptr;
         float *v_Brightness = nullptr;
         unsigned *attachmentConst = nullptr;
 
     public:
 
-        explicit GeometryPass(EngineContext *context);
+        explicit GeometryPass(EngineContext *context, Renderer *renderer);
 
         ~GeometryPass() override;
 
@@ -61,4 +58,3 @@ namespace QE {
 
 
 }
-#endif //QUICKENGINE_GEOMETRYPASS_H

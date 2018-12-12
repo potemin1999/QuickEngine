@@ -7,7 +7,7 @@
 
 bool lockCursor = true;
 
-Player::Player() : GameObject() {
+Player::Player(World *world) : GameObject(world) {
     ModelLoader::load_object(this, "", "crate_01.obj");
 
     glm::tquat rot = this->getRotation();
@@ -104,11 +104,12 @@ Player::Player() : GameObject() {
                         glm::vec3 startPos = engine->camera->getAttachedTo()->getPos() + engine->camera->getOffsetPos();
                         glm::vec3 forward = engine->camera->getForward();
 
-                        auto crate = new Crate_01();
+                        World *world = engine->camera->getAttachedTo()->getWorld();
+                        auto crate = new Crate_01(world);
                         crate->setPos(startPos + forward);
                         crate->rigidBody->applyForce(btVector3(forward.x, forward.y, forward.z) * 10000,
                                                      btVector3(0, 0, 0));
-                        engine->addObject(crate);
+                        world->addObject(crate);
 
                         break;
                     }

@@ -10,5 +10,10 @@
     <libraryRoots>
       <file path="$PROJECT_DIR$/libs" />
     </libraryRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/Sources/TestGame/nanogui" />
+      <file path="$PROJECT_DIR$/build" />
+      <file path="$PROJECT_DIR$/libs/includeRakNet" />
+    </excludeRoots>
   </component>
 </project>

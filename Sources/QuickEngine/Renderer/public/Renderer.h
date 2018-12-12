@@ -1,9 +1,4 @@
-//
-// Created by ilya on 9/24/18.
-//
-
-#ifndef QUICKENGINE_RENDERER_H
-#define QUICKENGINE_RENDERER_H
+#pragma once
 
 #include "EngineContext.h"
 #include "util/Log.h"
@@ -32,7 +27,7 @@ namespace QE {
     private:
         RenderDataStorage *renderDataStorage;
         EngineContext *context;
-        World *world;
+        World *world = nullptr;
 
         StrMap<int> *pipelineListNameMap;
         List<RendererImpl::RenderPassContainer *> *pipelineList;
@@ -82,7 +77,7 @@ namespace QE {
 
         void destroy();
 
+        World *getWorld();
     };
 
 }
-#endif //QUICKENGINE_RENDERER_H

@@ -1,8 +1,7 @@
 
-#include <Engine.h>
-
 #include "Engine.h"
 #include <chrono>
+#include <vector>
 
 #define DEBUG_DRAW 1
 
@@ -34,8 +33,9 @@ QuickEngine::~QuickEngine() {
     delete context;
     delete camera;
 
-    for (auto &object : objects) {
-        delete object;
+    for (auto &world : worlds) {
+        worlds.erase(world.first);
+        delete world.second;
     }
     for (auto &material : materials) {
         delete material;
@@ -50,16 +50,10 @@ void QuickEngine::init() {
     int i_eu = EU::initUtils(this);
     log("init engine utils %i \n", i_eu);
 
-    printf("initialising physics...\n");
-    initPhysics();
-    printf("physics initialised.\n");
-
     printf("initialising camera...\n");
     camera = new Camera();
     renderDataStorage->set("с_CurrentWorldCamera", camera);
     printf("camera initialized.\n");
-
-    renderDataStorage->set("objects", &objects);
 
     renderer->init(renderDataStorage);
     printf("engine initialized.\n");
@@ -102,19 +96,14 @@ void QuickEngine::tick(float dT) {
 
     inputManager->processDelayedEvents();
 
-    dynamicsWorld->stepSimulation(dT);
+    for (auto &world : worlds) {
+        world.second->tick(dT);
+    }
 
     camera->updateLook();
     renderer->doRender();
 }
 
-
-void QuickEngine::addObject(GameObject *o) {
-    objects.push_back(o);
-    if (o->rigidBody != nullptr) {
-        dynamicsWorld->addRigidBody(o->rigidBody);
-    }
-}
 
 QuickEngine *QuickEngine::getInstance() {
     static QuickEngine *engine;
@@ -124,14 +113,18 @@ QuickEngine *QuickEngine::getInstance() {
     return engine;
 }
 
-void QuickEngine::initPhysics() {
-    broadphaseInterface = new btDbvtBroadphase();
-    collisionConfiguration = new btDefaultCollisionConfiguration();
-    collisionDispatcher = new btCollisionDispatcher(collisionConfiguration);
-    constraintSolver = new btSequentialImpulseConstraintSolver();
-    dynamicsWorld = new btDiscreteDynamicsWorld(collisionDispatcher, broadphaseInterface, constraintSolver,
-                                                collisionConfiguration);
+void QuickEngine::addWorld(World *world) {
+    this->worlds[world->getID()] = world;
+}
 
-    // set default Earth gravitation
-    dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
+World *QuickEngine::getWorld(uint64 id) {
+    return this->worlds[id];
+}
+
+void QuickEngine::removeWorld(World *world) {
+    this->worlds.erase(world->getID());
+}
+
+void QuickEngine::removeWorld(uint64 id) {
+    this->worlds.erase(id);
 }

@@ -159,5 +159,7 @@ int runEngine() {
 }
 
 int main(int argc, char **args) {
+    printf("Running from %s\n", args[0]);
+
     return runEngine();
 }

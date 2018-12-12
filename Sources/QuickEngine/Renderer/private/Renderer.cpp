@@ -1,3 +1,6 @@
+
+#include <Renderer.h>
+
 #include "Renderer.h"
 
 using namespace QE;
@@ -20,7 +23,7 @@ Renderer::Renderer(EngineContext *_context) {
     pipelineList = new List<RendererImpl::RenderPassContainer *>();
     pipelineListNameMap = new StrMap<int>();
     context = _context;
-    addRenderPass("GeometryPass", new GeometryPass(context));
+    addRenderPass("GeometryPass", new GeometryPass(context, this));
     addRenderPass("DeferredLightingPass", new DeferredLightingPass(context));
     addRenderPass("SSAOPass", new SSAOPass(context));
     addRenderPass("PostPass", new PostPass(context));
@@ -93,8 +96,8 @@ void Renderer::destroy() {
 
 }
 
-void Renderer::attachWorld(World *_world) {
-    world = _world;
+void Renderer::attachWorld(World *world) {
+    this->world = world;
 }
 
 void Renderer::detachCurrentWorld() {
@@ -102,9 +105,16 @@ void Renderer::detachCurrentWorld() {
 }
 
 void Renderer::doRender() {
+    if (!world)
+        return;
+
     for (auto &i : *pipelineList) {
         i->renderPass->doDraw();
     }
+}
+
+World *Renderer::getWorld() {
+    return this->world;
 }
 
 

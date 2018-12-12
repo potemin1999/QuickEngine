@@ -4,7 +4,7 @@
 #include <btBulletCollisionCommon.h>
 #include <bullet/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
-Terrain::Terrain() {
+Terrain::Terrain(World *world) : GameObject(world) {
 
 
 //    ModelLoader::load_object(this, "", "floor_01.obj");
