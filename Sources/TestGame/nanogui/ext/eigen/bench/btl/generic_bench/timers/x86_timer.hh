@@ -26,7 +26,6 @@
 #include <sys/times.h>
 //#include "system_time.h"
 #define u32 unsigned int
-
 #include <asm/msr.h>
 #include "utilities.h"
 #include <map>
@@ -46,186 +45,200 @@ class X86_Timer {
 
 public :
 
-    X86_Timer(void) : _frequency(FREQUENCY), _nb_sample(0) {
-        MESSAGE("X86_Timer Default Ctor");
+  X86_Timer( void ):_frequency(FREQUENCY),_nb_sample(0)
+  {
+    MESSAGE("X86_Timer Default Ctor");    
+  }
+
+  inline void start( void ){
+
+    rdtsc(_click_start.n32[0],_click_start.n32[1]);
+
+  }
+
+
+  inline void stop( void ){
+
+    rdtsc(_click_stop.n32[0],_click_stop.n32[1]);
+
+  }
+  
+
+  inline double frequency( void ){
+    return _frequency;
+  }
+
+  double get_elapsed_time_in_second( void ){
+
+    return (_click_stop.n64-_click_start.n64)/double(FREQUENCY);
+
+
+  }    
+
+  unsigned long long  get_click( void ){
+    
+    return (_click_stop.n64-_click_start.n64);
+
+  }    
+
+  inline void find_frequency( void ){
+
+    time_t initial, final;
+    int dummy=2;
+
+    initial = time(0);
+    start();
+    do {
+      dummy+=2;
     }
-
-    inline void start(void) {
-
-        rdtsc(_click_start.n32[0], _click_start.n32[1]);
-
+    while(time(0)==initial);
+    // On est au debut d'un cycle d'une seconde !!!
+    initial = time(0);
+    start();
+    do {
+      dummy+=2;
     }
+    while(time(0)==initial);
+    final=time(0);
+    stop();
+    //    INFOS("fine grained time : "<<  get_elapsed_time_in_second());
+    //  INFOS("coarse grained time : "<<  final-initial);
+    _frequency=_frequency*get_elapsed_time_in_second()/double(final-initial);
+    ///  INFOS("CPU frequency : "<<  _frequency);        
+
+  }
+
+  void  add_get_click( void ){
+       
+    _nb_sample++;
+    _counted_clicks[get_click()]++;
+    fill_history_clicks();
+
+  }    
+
+  void dump_statistics(string filemane){
+    
+    ofstream outfile (filemane.c_str(),ios::out) ;
+
+    std::map<unsigned long long , unsigned long long>::iterator itr;
+    for(itr=_counted_clicks.begin() ; itr!=_counted_clicks.end()  ; itr++)
+      {      
+      outfile  << (*itr).first << "  " << (*itr).second << endl ;       
+      }      
+    
+    outfile.close();
+
+  }
+
+  void dump_history(string filemane){
+    
+    ofstream outfile (filemane.c_str(),ios::out) ;
 
 
-    inline void stop(void) {
 
-        rdtsc(_click_stop.n32[0], _click_stop.n32[1]);
+    for(int i=0 ; i<_history_mean_clicks.size() ; i++)
+      {      
+	outfile  << i << " " 
+		 << _history_mean_clicks[i] << " " 
+		 << _history_shortest_clicks[i] << " " 
+		 << _history_most_occured_clicks[i] << endl ;
+      }      
+    
+    outfile.close();
 
-    }
-
-
-    inline double frequency(void) {
-        return _frequency;
-    }
-
-    double get_elapsed_time_in_second(void) {
-
-        return (_click_stop.n64 - _click_start.n64) / double(FREQUENCY);
-
-
-    }
-
-    unsigned long long get_click(void) {
-
-        return (_click_stop.n64 - _click_start.n64);
-
-    }
-
-    inline void find_frequency(void) {
-
-        time_t initial, final;
-        int dummy = 2;
-
-        initial = time(0);
-        start();
-        do {
-            dummy += 2;
-        } while (time(0) == initial);
-        // On est au debut d'un cycle d'une seconde !!!
-        initial = time(0);
-        start();
-        do {
-            dummy += 2;
-        } while (time(0) == initial);
-        final = time(0);
-        stop();
-        //    INFOS("fine grained time : "<<  get_elapsed_time_in_second());
-        //  INFOS("coarse grained time : "<<  final-initial);
-        _frequency = _frequency * get_elapsed_time_in_second() / double(final - initial);
-        ///  INFOS("CPU frequency : "<<  _frequency);
-
-    }
-
-    void add_get_click(void) {
-
-        _nb_sample++;
-        _counted_clicks[get_click()]++;
-        fill_history_clicks();
-
-    }
-
-    void dump_statistics(string filemane) {
-
-        ofstream outfile(filemane.c_str(), ios::out);
-
-        std::map<unsigned long long, unsigned long long>::iterator itr;
-        for (itr = _counted_clicks.begin(); itr != _counted_clicks.end(); itr++) {
-            outfile << (*itr).first << "  " << (*itr).second << endl;
-        }
-
-        outfile.close();
-
-    }
-
-    void dump_history(string filemane) {
-
-        ofstream outfile(filemane.c_str(), ios::out);
+  }
+     
 
 
-        for (int i = 0; i < _history_mean_clicks.size(); i++) {
-            outfile << i << " "
-                    << _history_mean_clicks[i] << " "
-                    << _history_shortest_clicks[i] << " "
-                    << _history_most_occured_clicks[i] << endl;
-        }
+  double get_mean_clicks( void ){
+    
+    std::map<unsigned long long,unsigned long long>::iterator itr;
+    
+    unsigned long long mean_clicks=0;
 
-        outfile.close();
+    for(itr=_counted_clicks.begin() ; itr!=_counted_clicks.end()  ; itr++)
+      {      
+	
+	mean_clicks+=(*itr).second*(*itr).first;
+      }      
 
-    }
+    return mean_clicks/double(_nb_sample);
 
+  }
 
-    double get_mean_clicks(void) {
+  double get_shortest_clicks( void ){
+    
+    return double((*_counted_clicks.begin()).first);
 
-        std::map<unsigned long long, unsigned long long>::iterator itr;
+  }
 
-        unsigned long long mean_clicks = 0;
+  void fill_history_clicks( void ){
 
-        for (itr = _counted_clicks.begin(); itr != _counted_clicks.end(); itr++) {
+    _history_mean_clicks.push_back(get_mean_clicks());
+    _history_shortest_clicks.push_back(get_shortest_clicks());
+    _history_most_occured_clicks.push_back(get_most_occured_clicks());
 
-            mean_clicks += (*itr).second * (*itr).first;
-        }
-
-        return mean_clicks / double(_nb_sample);
-
-    }
-
-    double get_shortest_clicks(void) {
-
-        return double((*_counted_clicks.begin()).first);
-
-    }
-
-    void fill_history_clicks(void) {
-
-        _history_mean_clicks.push_back(get_mean_clicks());
-        _history_shortest_clicks.push_back(get_shortest_clicks());
-        _history_most_occured_clicks.push_back(get_most_occured_clicks());
-
-    }
+  }
 
 
-    double get_most_occured_clicks(void) {
+  double get_most_occured_clicks( void ){
 
-        unsigned long long moc = 0;
-        unsigned long long max_occurence = 0;
+    unsigned long long moc=0;
+    unsigned long long max_occurence=0;
 
-        std::map<unsigned long long, unsigned long long>::iterator itr;
+    std::map<unsigned long long,unsigned long long>::iterator itr;
 
-        for (itr = _counted_clicks.begin(); itr != _counted_clicks.end(); itr++) {
+    for(itr=_counted_clicks.begin() ; itr!=_counted_clicks.end()  ; itr++)
+      {      
+	
+	if (max_occurence<=(*itr).second){
+	  max_occurence=(*itr).second;
+	  moc=(*itr).first;
+	}
+      }      
+    
+    return double(moc);    
 
-            if (max_occurence <= (*itr).second) {
-                max_occurence = (*itr).second;
-                moc = (*itr).first;
-            }
-        }
+  }
+  
+  void clear( void )
+  {
+    _counted_clicks.clear();
 
-        return double(moc);
+    _history_mean_clicks.clear();
+    _history_shortest_clicks.clear();
+    _history_most_occured_clicks.clear();
 
-    }
-
-    void clear(void) {
-        _counted_clicks.clear();
-
-        _history_mean_clicks.clear();
-        _history_shortest_clicks.clear();
-        _history_most_occured_clicks.clear();
-
-        _nb_sample = 0;
-    }
+    _nb_sample=0;
+  }
 
 
+    
 private :
+  
+  union
+  {
+    unsigned long int n32[2] ;
+    unsigned long long n64 ;
+  } _click_start;
 
-    union {
-        unsigned long int n32[2];
-        unsigned long long n64;
-    } _click_start;
+  union
+  {
+    unsigned long int n32[2] ;
+    unsigned long long n64 ;
+  } _click_stop;
 
-    union {
-        unsigned long int n32[2];
-        unsigned long long n64;
-    } _click_stop;
+  double _frequency ;
 
-    double _frequency;
+  map<unsigned long long,unsigned long long> _counted_clicks;
 
-    map<unsigned long long, unsigned long long> _counted_clicks;
+  vector<double> _history_mean_clicks;
+  vector<double> _history_shortest_clicks;
+  vector<double> _history_most_occured_clicks;
 
-    vector<double> _history_mean_clicks;
-    vector<double> _history_shortest_clicks;
-    vector<double> _history_most_occured_clicks;
+  unsigned long long _nb_sample;
 
-    unsigned long long _nb_sample;
-
+  
 
 };
 

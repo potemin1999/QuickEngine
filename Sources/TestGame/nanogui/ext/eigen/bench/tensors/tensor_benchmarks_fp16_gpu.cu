@@ -19,33 +19,20 @@
   BENCHMARK_RANGE(BM_##FUNC, 10, 5000);
 
 BM_FuncGPU(memcpy);
-
 BM_FuncGPU(typeCasting);
 //BM_FuncGPU(random);
 BM_FuncGPU(slicing);
-
 BM_FuncGPU(rowChip);
-
 BM_FuncGPU(colChip);
-
 BM_FuncGPU(shuffling);
-
 BM_FuncGPU(padding);
-
 BM_FuncGPU(striding);
-
 BM_FuncGPU(broadcasting);
-
 BM_FuncGPU(coeffWiseOp);
-
 BM_FuncGPU(algebraicFunc);
-
 BM_FuncGPU(transcendentalFunc);
-
 BM_FuncGPU(rowReduction);
-
 BM_FuncGPU(colReduction);
-
 BM_FuncGPU(fullReduction);
 
 
@@ -63,11 +50,8 @@ BM_FuncGPU(fullReduction);
 
 
 BM_FuncWithInputDimsGPU(contraction, N, N, N);
-
 BM_FuncWithInputDimsGPU(contraction, 64, N, N);
-
 BM_FuncWithInputDimsGPU(contraction, N, 64, N);
-
 BM_FuncWithInputDimsGPU(contraction, N, N, 64);
 
 

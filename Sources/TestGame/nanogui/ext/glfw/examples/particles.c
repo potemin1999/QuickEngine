@@ -25,8 +25,8 @@
 //========================================================================
 
 #if defined(_MSC_VER)
-// Make MS math.h define M_PI
-#define _USE_MATH_DEFINES
+ // Make MS math.h define M_PI
+ #define _USE_MATH_DEFINES
 #endif
 
 #include <stdlib.h>
@@ -54,7 +54,8 @@
 // Type definitions
 //========================================================================
 
-typedef struct {
+typedef struct
+{
     float x, y, z;
 } Vec3;
 
@@ -65,9 +66,10 @@ typedef struct {
 // on 32-bit boundaries, and is a multiple of 64 bits in total (6x32=3x64). If
 // it does not work, try using pragmas or whatever to force the structure to be
 // packed.
-typedef struct {
+typedef struct
+{
     GLfloat s, t;         // Texture coordinates
-    GLuint rgba;         // Color (four ubytes packed into an uint)
+    GLuint  rgba;         // Color (four ubytes packed into an uint)
     GLfloat x, y, z;      // Vertex coordinates
 } Vertex;
 
@@ -84,13 +86,13 @@ int wireframe;
 
 // Thread synchronization
 struct {
-    double t;         // Time (s)
-    float dt;        // Time since last frame (s)
-    int p_frame;   // Particle physics frame number
-    int d_frame;   // Particle draw frame number
-    cnd_t p_done;    // Condition: particle physics done
-    cnd_t d_done;    // Condition: particle draw done
-    mtx_t particles_lock; // Particles data sharing mutex
+    double    t;         // Time (s)
+    float     dt;        // Time since last frame (s)
+    int       p_frame;   // Particle physics frame number
+    int       d_frame;   // Particle draw frame number
+    cnd_t     p_done;    // Condition: particle physics done
+    cnd_t     d_done;    // Condition: particle draw done
+    mtx_t     particles_lock; // Particles data sharing mutex
 } thread_sync;
 
 
@@ -108,35 +110,35 @@ struct {
 GLuint particle_tex_id, floor_tex_id;
 
 // Particle texture (a simple spot)
-const unsigned char particle_texture[P_TEX_WIDTH * P_TEX_HEIGHT] = {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x11, 0x22, 0x22, 0x11, 0x00, 0x00,
-        0x00, 0x11, 0x33, 0x88, 0x77, 0x33, 0x11, 0x00,
-        0x00, 0x22, 0x88, 0xff, 0xee, 0x77, 0x22, 0x00,
-        0x00, 0x22, 0x77, 0xee, 0xff, 0x88, 0x22, 0x00,
-        0x00, 0x11, 0x33, 0x77, 0x88, 0x33, 0x11, 0x00,
-        0x00, 0x00, 0x11, 0x33, 0x22, 0x11, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+const unsigned char particle_texture[ P_TEX_WIDTH * P_TEX_HEIGHT ] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x11, 0x22, 0x22, 0x11, 0x00, 0x00,
+    0x00, 0x11, 0x33, 0x88, 0x77, 0x33, 0x11, 0x00,
+    0x00, 0x22, 0x88, 0xff, 0xee, 0x77, 0x22, 0x00,
+    0x00, 0x22, 0x77, 0xee, 0xff, 0x88, 0x22, 0x00,
+    0x00, 0x11, 0x33, 0x77, 0x88, 0x33, 0x11, 0x00,
+    0x00, 0x00, 0x11, 0x33, 0x22, 0x11, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 // Floor texture (your basic checkered floor)
-const unsigned char floor_texture[F_TEX_WIDTH * F_TEX_HEIGHT] = {
-        0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
-        0xff, 0xf0, 0xcc, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
-        0xf0, 0xcc, 0xee, 0xff, 0xf0, 0xf0, 0xf0, 0xf0, 0x30, 0x66, 0x30, 0x30, 0x30, 0x20, 0x30, 0x30,
-        0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xee, 0xf0, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
-        0xf0, 0xf0, 0xf0, 0xf0, 0xcc, 0xf0, 0xf0, 0xf0, 0x30, 0x30, 0x55, 0x30, 0x30, 0x44, 0x30, 0x30,
-        0xf0, 0xdd, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0x33, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
-        0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x60, 0x30,
-        0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0x33, 0x33, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
-        0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x33, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
-        0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x30, 0x30, 0xf0, 0xff, 0xf0, 0xf0, 0xdd, 0xf0, 0xf0, 0xff,
-        0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x55, 0x33, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0xf0,
-        0x30, 0x44, 0x66, 0x30, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
-        0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xaa, 0xf0, 0xf0, 0xcc, 0xf0,
-        0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xff, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0xdd, 0xf0,
-        0x30, 0x30, 0x30, 0x77, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
-        0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
+const unsigned char floor_texture[ F_TEX_WIDTH * F_TEX_HEIGHT ] = {
+    0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
+    0xff, 0xf0, 0xcc, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
+    0xf0, 0xcc, 0xee, 0xff, 0xf0, 0xf0, 0xf0, 0xf0, 0x30, 0x66, 0x30, 0x30, 0x30, 0x20, 0x30, 0x30,
+    0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xee, 0xf0, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
+    0xf0, 0xf0, 0xf0, 0xf0, 0xcc, 0xf0, 0xf0, 0xf0, 0x30, 0x30, 0x55, 0x30, 0x30, 0x44, 0x30, 0x30,
+    0xf0, 0xdd, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0x33, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
+    0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0xf0, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x60, 0x30,
+    0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0x33, 0x33, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x33, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x30, 0x30, 0xf0, 0xff, 0xf0, 0xf0, 0xdd, 0xf0, 0xf0, 0xff,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x55, 0x33, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0xf0,
+    0x30, 0x44, 0x66, 0x30, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xaa, 0xf0, 0xf0, 0xcc, 0xf0,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xff, 0xf0, 0xf0, 0xf0, 0xff, 0xf0, 0xdd, 0xf0,
+    0x30, 0x30, 0x30, 0x77, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
+    0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0, 0xf0,
 };
 
 
@@ -182,11 +184,11 @@ const unsigned char floor_texture[F_TEX_WIDTH * F_TEX_HEIGHT] = {
 
 // This structure holds all state for a single particle
 typedef struct {
-    float x, y, z;     // Position in space
-    float vx, vy, vz;  // Velocity vector
-    float r, g, b;     // Color of particle
+    float x,y,z;     // Position in space
+    float vx,vy,vz;  // Velocity vector
+    float r,g,b;     // Color of particle
     float life;      // Life of particle (1.0 = newborn, < 0.0 = dead)
-    int active;    // Tells if this particle is active
+    int   active;    // Tells if this particle is active
 } PARTICLE;
 
 // Global vectors holding all particles. We use two vectors for double
@@ -207,20 +209,21 @@ static float glow_pos[4];
 // Object material and fog configuration constants
 //========================================================================
 
-const GLfloat fountain_diffuse[4] = {0.7f, 1.f, 1.f, 1.f};
-const GLfloat fountain_specular[4] = {1.f, 1.f, 1.f, 1.f};
-const GLfloat fountain_shininess = 12.f;
-const GLfloat floor_diffuse[4] = {1.f, 0.6f, 0.6f, 1.f};
-const GLfloat floor_specular[4] = {0.6f, 0.6f, 0.6f, 1.f};
-const GLfloat floor_shininess = 18.f;
-const GLfloat fog_color[4] = {0.1f, 0.1f, 0.1f, 1.f};
+const GLfloat fountain_diffuse[4]  = { 0.7f, 1.f,  1.f,  1.f };
+const GLfloat fountain_specular[4] = {  1.f, 1.f,  1.f,  1.f };
+const GLfloat fountain_shininess   = 12.f;
+const GLfloat floor_diffuse[4]     = { 1.f,  0.6f, 0.6f, 1.f };
+const GLfloat floor_specular[4]    = { 0.6f, 0.6f, 0.6f, 1.f };
+const GLfloat floor_shininess      = 18.f;
+const GLfloat fog_color[4]         = { 0.1f, 0.1f, 0.1f, 1.f };
 
 
 //========================================================================
 // Print usage information
 //========================================================================
 
-static void usage(void) {
+static void usage(void)
+{
     printf("Usage: particles [-bfhs]\n");
     printf("Options:\n");
     printf(" -f   Run in full screen\n");
@@ -237,7 +240,8 @@ static void usage(void) {
 // Initialize a new particle
 //========================================================================
 
-static void init_particle(PARTICLE *p, double t) {
+static void init_particle(PARTICLE *p, double t)
+{
     float xy_angle, velocity;
 
     // Start position of particle is at the fountain blow-out
@@ -286,7 +290,8 @@ static void init_particle(PARTICLE *p, double t) {
 
 #define FOUNTAIN_R2 (FOUNTAIN_RADIUS+PARTICLE_SIZE/2)*(FOUNTAIN_RADIUS+PARTICLE_SIZE/2)
 
-static void update_particle(PARTICLE *p, float dt) {
+static void update_particle(PARTICLE *p, float dt)
+{
     // If the particle is not active, we need not do anything
     if (!p->active)
         return;
@@ -295,7 +300,8 @@ static void update_particle(PARTICLE *p, float dt) {
     p->life -= dt * (1.f / LIFE_SPAN);
 
     // Did the particle die?
-    if (p->life <= 0.f) {
+    if (p->life <= 0.f)
+    {
         p->active = 0;
         return;
     }
@@ -309,21 +315,24 @@ static void update_particle(PARTICLE *p, float dt) {
     p->z = p->z + p->vz * dt;
 
     // Simple collision detection + response
-    if (p->vz < 0.f) {
+    if (p->vz < 0.f)
+    {
         // Particles should bounce on the fountain (with friction)
         if ((p->x * p->x + p->y * p->y) < FOUNTAIN_R2 &&
-            p->z < (FOUNTAIN_HEIGHT + PARTICLE_SIZE / 2)) {
+            p->z < (FOUNTAIN_HEIGHT + PARTICLE_SIZE / 2))
+        {
             p->vz = -FRICTION * p->vz;
-            p->z = FOUNTAIN_HEIGHT + PARTICLE_SIZE / 2 +
-                   FRICTION * (FOUNTAIN_HEIGHT +
-                               PARTICLE_SIZE / 2 - p->z);
+            p->z  = FOUNTAIN_HEIGHT + PARTICLE_SIZE / 2 +
+                    FRICTION * (FOUNTAIN_HEIGHT +
+                    PARTICLE_SIZE / 2 - p->z);
         }
 
-            // Particles should bounce on the floor (with friction)
-        else if (p->z < PARTICLE_SIZE / 2) {
+        // Particles should bounce on the floor (with friction)
+        else if (p->z < PARTICLE_SIZE / 2)
+        {
             p->vz = -FRICTION * p->vz;
-            p->z = PARTICLE_SIZE / 2 +
-                   FRICTION * (PARTICLE_SIZE / 2 - p->z);
+            p->z  = PARTICLE_SIZE / 2 +
+                    FRICTION * (PARTICLE_SIZE / 2 - p->z);
         }
     }
 }
@@ -333,27 +342,32 @@ static void update_particle(PARTICLE *p, float dt) {
 // The main frame for the particle engine. Called once per frame.
 //========================================================================
 
-static void particle_engine(double t, float dt) {
+static void particle_engine(double t, float dt)
+{
     int i;
     float dt2;
 
     // Update particles (iterated several times per frame if dt is too large)
-    while (dt > 0.f) {
+    while (dt > 0.f)
+    {
         // Calculate delta time for this iteration
         dt2 = dt < MIN_DELTA_T ? dt : MIN_DELTA_T;
 
-        for (i = 0; i < MAX_PARTICLES; i++)
+        for (i = 0;  i < MAX_PARTICLES;  i++)
             update_particle(&particles[i], dt2);
 
         min_age += dt2;
 
         // Should we create any new particle(s)?
-        while (min_age >= BIRTH_INTERVAL) {
+        while (min_age >= BIRTH_INTERVAL)
+        {
             min_age -= BIRTH_INTERVAL;
 
             // Find a dead particle to replace with a new one
-            for (i = 0; i < MAX_PARTICLES; i++) {
-                if (!particles[i].active) {
+            for (i = 0;  i < MAX_PARTICLES;  i++)
+            {
+                if (!particles[i].active)
+                {
                     init_particle(&particles[i], t + min_age);
                     update_particle(&particles[i], min_age);
                     break;
@@ -372,19 +386,20 @@ static void particle_engine(double t, float dt) {
 //========================================================================
 
 #define BATCH_PARTICLES 70  // Number of particles to draw in each batch
-// (70 corresponds to 7.5 KB = will not blow
-// the L1 data cache on most CPUs)
+                            // (70 corresponds to 7.5 KB = will not blow
+                            // the L1 data cache on most CPUs)
 #define PARTICLE_VERTS  4   // Number of vertices per particle
 
-static void draw_particles(GLFWwindow *window, double t, float dt) {
+static void draw_particles(GLFWwindow* window, double t, float dt)
+{
     int i, particle_count;
     Vertex vertex_array[BATCH_PARTICLES * PARTICLE_VERTS];
-    Vertex *vptr;
+    Vertex* vptr;
     float alpha;
     GLuint rgba;
     Vec3 quad_lower_left, quad_lower_right;
     GLfloat mat[16];
-    PARTICLE *pptr;
+    PARTICLE* pptr;
 
     // Here comes the real trick with flat single primitive objects (s.c.
     // "billboards"): We must rotate the textured primitive so that it
@@ -421,7 +436,8 @@ static void draw_particles(GLFWwindow *window, double t, float dt) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     // Select particle texture
-    if (!wireframe) {
+    if (!wireframe)
+    {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, particle_tex_id);
     }
@@ -437,7 +453,8 @@ static void draw_particles(GLFWwindow *window, double t, float dt) {
     // Wait for particle physics thread to be done
     mtx_lock(&thread_sync.particles_lock);
     while (!glfwWindowShouldClose(window) &&
-           thread_sync.p_frame <= thread_sync.d_frame) {
+            thread_sync.p_frame <= thread_sync.d_frame)
+    {
         struct timespec ts;
         clock_gettime(CLOCK_REALTIME, &ts);
         ts.tv_nsec += 100000000;
@@ -456,68 +473,71 @@ static void draw_particles(GLFWwindow *window, double t, float dt) {
     vptr = vertex_array;
     pptr = particles;
 
-    for (i = 0; i < MAX_PARTICLES; i++) {
-        if (pptr->active) {
+    for (i = 0;  i < MAX_PARTICLES;  i++)
+    {
+        if (pptr->active)
+        {
             // Calculate particle intensity (we set it to max during 75%
             // of its life, then it fades out)
-            alpha = 4.f * pptr->life;
+            alpha =  4.f * pptr->life;
             if (alpha > 1.f)
                 alpha = 1.f;
 
             // Convert color from float to 8-bit (store it in a 32-bit
             // integer using endian independent type casting)
-            ((GLubyte *) &rgba)[0] = (GLubyte) (pptr->r * 255.f);
-            ((GLubyte *) &rgba)[1] = (GLubyte) (pptr->g * 255.f);
-            ((GLubyte *) &rgba)[2] = (GLubyte) (pptr->b * 255.f);
-            ((GLubyte *) &rgba)[3] = (GLubyte) (alpha * 255.f);
+            ((GLubyte*) &rgba)[0] = (GLubyte)(pptr->r * 255.f);
+            ((GLubyte*) &rgba)[1] = (GLubyte)(pptr->g * 255.f);
+            ((GLubyte*) &rgba)[2] = (GLubyte)(pptr->b * 255.f);
+            ((GLubyte*) &rgba)[3] = (GLubyte)(alpha * 255.f);
 
             // 3) Translate the quad to the correct position in modelview
             // space and store its parameters in vertex arrays (we also
             // store texture coord and color information for each vertex).
 
             // Lower left corner
-            vptr->s = 0.f;
-            vptr->t = 0.f;
+            vptr->s    = 0.f;
+            vptr->t    = 0.f;
             vptr->rgba = rgba;
-            vptr->x = pptr->x + quad_lower_left.x;
-            vptr->y = pptr->y + quad_lower_left.y;
-            vptr->z = pptr->z + quad_lower_left.z;
-            vptr++;
+            vptr->x    = pptr->x + quad_lower_left.x;
+            vptr->y    = pptr->y + quad_lower_left.y;
+            vptr->z    = pptr->z + quad_lower_left.z;
+            vptr ++;
 
             // Lower right corner
-            vptr->s = 1.f;
-            vptr->t = 0.f;
+            vptr->s    = 1.f;
+            vptr->t    = 0.f;
             vptr->rgba = rgba;
-            vptr->x = pptr->x + quad_lower_right.x;
-            vptr->y = pptr->y + quad_lower_right.y;
-            vptr->z = pptr->z + quad_lower_right.z;
-            vptr++;
+            vptr->x    = pptr->x + quad_lower_right.x;
+            vptr->y    = pptr->y + quad_lower_right.y;
+            vptr->z    = pptr->z + quad_lower_right.z;
+            vptr ++;
 
             // Upper right corner
-            vptr->s = 1.f;
-            vptr->t = 1.f;
+            vptr->s    = 1.f;
+            vptr->t    = 1.f;
             vptr->rgba = rgba;
-            vptr->x = pptr->x - quad_lower_left.x;
-            vptr->y = pptr->y - quad_lower_left.y;
-            vptr->z = pptr->z - quad_lower_left.z;
-            vptr++;
+            vptr->x    = pptr->x - quad_lower_left.x;
+            vptr->y    = pptr->y - quad_lower_left.y;
+            vptr->z    = pptr->z - quad_lower_left.z;
+            vptr ++;
 
             // Upper left corner
-            vptr->s = 0.f;
-            vptr->t = 1.f;
+            vptr->s    = 0.f;
+            vptr->t    = 1.f;
             vptr->rgba = rgba;
-            vptr->x = pptr->x - quad_lower_right.x;
-            vptr->y = pptr->y - quad_lower_right.y;
-            vptr->z = pptr->z - quad_lower_right.z;
-            vptr++;
+            vptr->x    = pptr->x - quad_lower_right.x;
+            vptr->y    = pptr->y - quad_lower_right.y;
+            vptr->z    = pptr->z - quad_lower_right.z;
+            vptr ++;
 
             // Increase count of drawable particles
-            particle_count++;
+            particle_count ++;
         }
 
         // If we have filled up one batch of particles, draw it as a set
         // of quads using glDrawArrays.
-        if (particle_count >= BATCH_PARTICLES) {
+        if (particle_count >= BATCH_PARTICLES)
+        {
             // The first argument tells which primitive type we use (QUAD)
             // The second argument tells the index of the first vertex (0)
             // The last argument is the vertex count
@@ -558,34 +578,36 @@ static void draw_particles(GLFWwindow *window, double t, float dt) {
 #define FOUNTAIN_SWEEP_STEPS 32
 
 static const float fountain_side[FOUNTAIN_SIDE_POINTS * 2] =
-        {
-                1.2f, 0.f, 1.f, 0.2f, 0.41f, 0.3f, 0.4f, 0.35f,
-                0.4f, 1.95f, 0.41f, 2.f, 0.8f, 2.2f, 1.2f, 2.4f,
-                1.5f, 2.7f, 1.55f, 2.95f, 1.6f, 3.f, 1.f, 3.f,
-                0.5f, 3.f, 0.f, 3.f
-        };
+{
+    1.2f, 0.f,  1.f, 0.2f,  0.41f, 0.3f, 0.4f, 0.35f,
+    0.4f, 1.95f, 0.41f, 2.f, 0.8f, 2.2f,  1.2f, 2.4f,
+    1.5f, 2.7f,  1.55f,2.95f, 1.6f, 3.f,  1.f, 3.f,
+    0.5f, 3.f,  0.f, 3.f
+};
 
 static const float fountain_normal[FOUNTAIN_SIDE_POINTS * 2] =
-        {
-                1.0000f, 0.0000f, 0.6428f, 0.7660f, 0.3420f, 0.9397f, 1.0000f, 0.0000f,
-                1.0000f, 0.0000f, 0.3420f, -0.9397f, 0.4226f, -0.9063f, 0.5000f, -0.8660f,
-                0.7660f, -0.6428f, 0.9063f, -0.4226f, 0.0000f, 1.00000f, 0.0000f, 1.00000f,
-                0.0000f, 1.00000f, 0.0000f, 1.00000f
-        };
+{
+    1.0000f, 0.0000f,  0.6428f, 0.7660f,  0.3420f, 0.9397f,  1.0000f, 0.0000f,
+    1.0000f, 0.0000f,  0.3420f,-0.9397f,  0.4226f,-0.9063f,  0.5000f,-0.8660f,
+    0.7660f,-0.6428f,  0.9063f,-0.4226f,  0.0000f,1.00000f,  0.0000f,1.00000f,
+    0.0000f,1.00000f,  0.0000f,1.00000f
+};
 
 
 //========================================================================
 // Draw a fountain
 //========================================================================
 
-static void draw_fountain(void) {
+static void draw_fountain(void)
+{
     static GLuint fountain_list = 0;
     double angle;
-    float x, y;
+    float  x, y;
     int m, n;
 
     // The first time, we build the fountain display list
-    if (!fountain_list) {
+    if (!fountain_list)
+    {
         fountain_list = glGenLists(1);
         glNewList(fountain_list, GL_COMPILE_AND_EXECUTE);
 
@@ -594,9 +616,11 @@ static void draw_fountain(void) {
         glMaterialf(GL_FRONT, GL_SHININESS, fountain_shininess);
 
         // Build fountain using triangle strips
-        for (n = 0; n < FOUNTAIN_SIDE_POINTS - 1; n++) {
+        for (n = 0;  n < FOUNTAIN_SIDE_POINTS - 1;  n++)
+        {
             glBegin(GL_TRIANGLE_STRIP);
-            for (m = 0; m <= FOUNTAIN_SWEEP_STEPS; m++) {
+            for (m = 0;  m <= FOUNTAIN_SWEEP_STEPS;  m++)
+            {
                 angle = (double) m * (2.0 * M_PI / (double) FOUNTAIN_SWEEP_STEPS);
                 x = (float) cos(angle);
                 y = (float) sin(angle);
@@ -607,7 +631,7 @@ static void draw_fountain(void) {
                            fountain_normal[n * 2 + 3]);
                 glVertex3f(x * fountain_side[n * 2 + 2],
                            y * fountain_side[n * 2 + 2],
-                           fountain_side[n * 2 + 3]);
+                           fountain_side[n * 2 +3 ]);
                 glNormal3f(x * fountain_normal[n * 2],
                            y * fountain_normal[n * 2],
                            fountain_normal[n * 2 + 1]);
@@ -620,7 +644,8 @@ static void draw_fountain(void) {
         }
 
         glEndList();
-    } else
+    }
+    else
         glCallList(fountain_list);
 }
 
@@ -629,35 +654,40 @@ static void draw_fountain(void) {
 // Recursive function for building variable tesselated floor
 //========================================================================
 
-static void tessellate_floor(float x1, float y1, float x2, float y2, int depth) {
+static void tessellate_floor(float x1, float y1, float x2, float y2, int depth)
+{
     float delta, x, y;
 
     // Last recursion?
     if (depth >= 5)
         delta = 999999.f;
-    else {
+    else
+    {
         x = (float) (fabs(x1) < fabs(x2) ? fabs(x1) : fabs(x2));
         y = (float) (fabs(y1) < fabs(y2) ? fabs(y1) : fabs(y2));
-        delta = x * x + y * y;
+        delta = x*x + y*y;
     }
 
     // Recurse further?
-    if (delta < 0.1f) {
+    if (delta < 0.1f)
+    {
         x = (x1 + x2) * 0.5f;
         y = (y1 + y2) * 0.5f;
-        tessellate_floor(x1, y1, x, y, depth + 1);
-        tessellate_floor(x, y1, x2, y, depth + 1);
-        tessellate_floor(x1, y, x, y2, depth + 1);
-        tessellate_floor(x, y, x2, y2, depth + 1);
-    } else {
+        tessellate_floor(x1, y1,  x,  y, depth + 1);
+        tessellate_floor(x, y1, x2,  y, depth + 1);
+        tessellate_floor(x1,  y,  x, y2, depth + 1);
+        tessellate_floor(x,  y, x2, y2, depth + 1);
+    }
+    else
+    {
         glTexCoord2f(x1 * 30.f, y1 * 30.f);
-        glVertex3f(x1 * 80.f, y1 * 80.f, 0.f);
+        glVertex3f(  x1 * 80.f, y1 * 80.f, 0.f);
         glTexCoord2f(x2 * 30.f, y1 * 30.f);
-        glVertex3f(x2 * 80.f, y1 * 80.f, 0.f);
+        glVertex3f(  x2 * 80.f, y1 * 80.f, 0.f);
         glTexCoord2f(x2 * 30.f, y2 * 30.f);
-        glVertex3f(x2 * 80.f, y2 * 80.f, 0.f);
+        glVertex3f(  x2 * 80.f, y2 * 80.f, 0.f);
         glTexCoord2f(x1 * 30.f, y2 * 30.f);
-        glVertex3f(x1 * 80.f, y2 * 80.f, 0.f);
+        glVertex3f(  x1 * 80.f, y2 * 80.f, 0.f);
     }
 }
 
@@ -668,16 +698,19 @@ static void tessellate_floor(float x1, float y1, float x2, float y2, int depth) 
 // low.
 //========================================================================
 
-static void draw_floor(void) {
+static void draw_floor(void)
+{
     static GLuint floor_list = 0;
 
-    if (!wireframe) {
+    if (!wireframe)
+    {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, floor_tex_id);
     }
 
     // The first time, we build the floor display list
-    if (!floor_list) {
+    if (!floor_list)
+    {
         floor_list = glGenLists(1);
         glNewList(floor_list, GL_COMPILE_AND_EXECUTE);
 
@@ -690,13 +723,14 @@ static void draw_floor(void) {
         glNormal3f(0.f, 0.f, 1.f);
         glBegin(GL_QUADS);
         tessellate_floor(-1.f, -1.f, 0.f, 0.f, 0);
-        tessellate_floor(0.f, -1.f, 1.f, 0.f, 0);
-        tessellate_floor(0.f, 0.f, 1.f, 1.f, 0);
-        tessellate_floor(-1.f, 0.f, 0.f, 1.f, 0);
+        tessellate_floor( 0.f, -1.f, 1.f, 0.f, 0);
+        tessellate_floor( 0.f,  0.f, 1.f, 1.f, 0);
+        tessellate_floor(-1.f,  0.f, 0.f, 1.f, 0);
         glEnd();
 
         glEndList();
-    } else
+    }
+    else
         glCallList(floor_list);
 
     glDisable(GL_TEXTURE_2D);
@@ -708,45 +742,22 @@ static void draw_floor(void) {
 // Position and configure light sources
 //========================================================================
 
-static void setup_lights(void) {
+static void setup_lights(void)
+{
     float l1pos[4], l1amb[4], l1dif[4], l1spec[4];
     float l2pos[4], l2amb[4], l2dif[4], l2spec[4];
 
     // Set light source 1 parameters
-    l1pos[0] = 0.f;
-    l1pos[1] = -9.f;
-    l1pos[2] = 8.f;
-    l1pos[3] = 1.f;
-    l1amb[0] = 0.2f;
-    l1amb[1] = 0.2f;
-    l1amb[2] = 0.2f;
-    l1amb[3] = 1.f;
-    l1dif[0] = 0.8f;
-    l1dif[1] = 0.4f;
-    l1dif[2] = 0.2f;
-    l1dif[3] = 1.f;
-    l1spec[0] = 1.f;
-    l1spec[1] = 0.6f;
-    l1spec[2] = 0.2f;
-    l1spec[3] = 0.f;
+    l1pos[0] =  0.f;  l1pos[1] = -9.f; l1pos[2] =   8.f;  l1pos[3] = 1.f;
+    l1amb[0] = 0.2f;  l1amb[1] = 0.2f;  l1amb[2] = 0.2f;  l1amb[3] = 1.f;
+    l1dif[0] = 0.8f;  l1dif[1] = 0.4f;  l1dif[2] = 0.2f;  l1dif[3] = 1.f;
+    l1spec[0] = 1.f; l1spec[1] = 0.6f; l1spec[2] = 0.2f; l1spec[3] = 0.f;
 
     // Set light source 2 parameters
-    l2pos[0] = -15.f;
-    l2pos[1] = 12.f;
-    l2pos[2] = 1.5f;
-    l2pos[3] = 1.f;
-    l2amb[0] = 0.f;
-    l2amb[1] = 0.f;
-    l2amb[2] = 0.f;
-    l2amb[3] = 1.f;
-    l2dif[0] = 0.2f;
-    l2dif[1] = 0.4f;
-    l2dif[2] = 0.8f;
-    l2dif[3] = 1.f;
-    l2spec[0] = 0.2f;
-    l2spec[1] = 0.6f;
-    l2spec[2] = 1.f;
-    l2spec[3] = 0.f;
+    l2pos[0] =  -15.f; l2pos[1] =  12.f; l2pos[2] = 1.5f; l2pos[3] =  1.f;
+    l2amb[0] =    0.f; l2amb[1] =   0.f; l2amb[2] =  0.f; l2amb[3] =  1.f;
+    l2dif[0] =   0.2f; l2dif[1] =  0.4f; l2dif[2] = 0.8f; l2dif[3] =  1.f;
+    l2spec[0] =  0.2f; l2spec[1] = 0.6f; l2spec[2] = 1.f; l2spec[3] = 0.f;
 
     glLightfv(GL_LIGHT1, GL_POSITION, l1pos);
     glLightfv(GL_LIGHT1, GL_AMBIENT, l1amb);
@@ -770,7 +781,8 @@ static void setup_lights(void) {
 // Main rendering function
 //========================================================================
 
-static void draw_scene(GLFWwindow *window, double t) {
+static void draw_scene(GLFWwindow* window, double t)
+{
     double xpos, ypos, zpos, angle_x, angle_y, angle_z;
     static double t_old = 0.0;
     float dt;
@@ -789,7 +801,7 @@ static void draw_scene(GLFWwindow *window, double t) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf((const GLfloat *) projection);
+    glLoadMatrixf((const GLfloat*) projection);
 
     // Setup camera
     glMatrixMode(GL_MODELVIEW);
@@ -804,10 +816,10 @@ static void draw_scene(GLFWwindow *window, double t) {
     glRotated(-angle_z, 0.0, 0.0, 1.0);
 
     // Translate camera
-    xpos = 15.0 * sin((M_PI / 180.0) * angle_z) +
-           2.0 * sin((M_PI / 180.0) * 3.1 * t);
+    xpos =  15.0 * sin((M_PI / 180.0) * angle_z) +
+             2.0 * sin((M_PI / 180.0) * 3.1 * t);
     ypos = -15.0 * cos((M_PI / 180.0) * angle_z) +
-           2.0 * cos((M_PI / 180.0) * 2.9 * t);
+             2.0 * cos((M_PI / 180.0) * 2.9 * t);
     zpos = 4.0 + 2.0 * cos((M_PI / 180.0) * 4.9 * t);
     glTranslated(-xpos, -ypos, -zpos);
 
@@ -846,7 +858,8 @@ static void draw_scene(GLFWwindow *window, double t) {
 // Window resize callback function
 //========================================================================
 
-static void resize_callback(GLFWwindow *window, int width, int height) {
+static void resize_callback(GLFWwindow* window, int width, int height)
+{
     glViewport(0, 0, width, height);
     aspect_ratio = height ? width / (float) height : 1.f;
 }
@@ -856,9 +869,12 @@ static void resize_callback(GLFWwindow *window, int width, int height) {
 // Key callback functions
 //========================================================================
 
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    if (action == GLFW_PRESS) {
-        switch (key) {
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (action == GLFW_PRESS)
+    {
+        switch (key)
+        {
             case GLFW_KEY_ESCAPE:
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
                 break;
@@ -878,15 +894,18 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 // Thread for updating particle physics
 //========================================================================
 
-static int physics_thread_main(void *arg) {
-    GLFWwindow *window = arg;
+static int physics_thread_main(void* arg)
+{
+    GLFWwindow* window = arg;
 
-    for (;;) {
+    for (;;)
+    {
         mtx_lock(&thread_sync.particles_lock);
 
         // Wait for particle drawing to be done
         while (!glfwWindowShouldClose(window) &&
-               thread_sync.p_frame > thread_sync.d_frame) {
+               thread_sync.p_frame > thread_sync.d_frame)
+        {
             struct timespec ts;
             clock_gettime(CLOCK_REALTIME, &ts);
             ts.tv_nsec += 100000000;
@@ -915,19 +934,23 @@ static int physics_thread_main(void *arg) {
 // main
 //========================================================================
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     int ch, width, height;
     thrd_t physics_thread = 0;
-    GLFWwindow *window;
-    GLFWmonitor *monitor = NULL;
+    GLFWwindow* window;
+    GLFWmonitor* monitor = NULL;
 
-    if (!glfwInit()) {
+    if (!glfwInit())
+    {
         fprintf(stderr, "Failed to initialize GLFW\n");
         exit(EXIT_FAILURE);
     }
 
-    while ((ch = getopt(argc, argv, "fh")) != -1) {
-        switch (ch) {
+    while ((ch = getopt(argc, argv, "fh")) != -1)
+    {
+        switch (ch)
+        {
             case 'f':
                 monitor = glfwGetPrimaryMonitor();
                 break;
@@ -937,23 +960,27 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (monitor) {
-        const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    if (monitor)
+    {
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
         glfwWindowHint(GLFW_RED_BITS, mode->redBits);
         glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
         glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
         glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-        width = mode->width;
+        width  = mode->width;
         height = mode->height;
-    } else {
-        width = 640;
+    }
+    else
+    {
+        width  = 640;
         height = 480;
     }
 
     window = glfwCreateWindow(width, height, "Particle Engine", monitor, NULL);
-    if (!window) {
+    if (!window)
+    {
         fprintf(stderr, "Failed to create GLFW window\n");
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -995,7 +1022,8 @@ int main(int argc, char **argv) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, F_TEX_WIDTH, F_TEX_HEIGHT,
                  0, GL_LUMINANCE, GL_UNSIGNED_BYTE, floor_texture);
 
-    if (glfwExtensionSupported("GL_EXT_separate_specular_color")) {
+    if (glfwExtensionSupported("GL_EXT_separate_specular_color"))
+    {
         glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL_EXT,
                       GL_SEPARATE_SPECULAR_COLOR_EXT);
     }
@@ -1005,7 +1033,7 @@ int main(int argc, char **argv) {
     wireframe = 0;
 
     // Set initial times
-    thread_sync.t = 0.0;
+    thread_sync.t  = 0.0;
     thread_sync.dt = 0.001f;
     thread_sync.p_frame = 0;
     thread_sync.d_frame = 0;
@@ -1014,14 +1042,16 @@ int main(int argc, char **argv) {
     cnd_init(&thread_sync.p_done);
     cnd_init(&thread_sync.d_done);
 
-    if (thrd_create(&physics_thread, physics_thread_main, window) != thrd_success) {
+    if (thrd_create(&physics_thread, physics_thread_main, window) != thrd_success)
+    {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
 
     glfwSetTime(0.0);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         draw_scene(window, glfwGetTime());
 
         glfwSwapBuffers(window);

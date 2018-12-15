@@ -1,7 +1,7 @@
 //=====================================================
 // File   :  STL_perf_analyzer.hh
 // Author :  L. Plagne <laurent.plagne@edf.fr)>        
-// Copyright (C) EDF R&D,  mar dï¿½c 3 18:59:35 CET 2002
+// Copyright (C) EDF R&D,  mar déc 3 18:59:35 CET 2002
 //=====================================================
 // 
 // This program is free software; you can redistribute it and/or
@@ -24,59 +24,59 @@
 #include "bench_parameter.hh"
 
 template<class ACTION>
-class STL_Perf_Analyzer {
-public:
-    STL_Perf_Analyzer(unsigned long long nb_sample = DEFAULT_NB_SAMPLE) : _nb_sample(nb_sample), _chronos() {
-        MESSAGE("STL_Perf_Analyzer Ctor");
-    };
+class STL_Perf_Analyzer{
+public:  
+  STL_Perf_Analyzer(unsigned long long nb_sample=DEFAULT_NB_SAMPLE):_nb_sample(nb_sample),_chronos()
+  {
+    MESSAGE("STL_Perf_Analyzer Ctor");
+  }; 
+  STL_Perf_Analyzer( const STL_Perf_Analyzer & ){
+    INFOS("Copy Ctor not implemented");
+    exit(0);
+  };
+  ~STL_Perf_Analyzer( void ){
+    MESSAGE("STL_Perf_Analyzer Dtor");
+  };
+  
+  
+  inline double eval_mflops(int size)
+  {
 
-    STL_Perf_Analyzer(const STL_Perf_Analyzer &) {
-        INFOS("Copy Ctor not implemented");
-        exit(0);
-    };
+    ACTION action(size);
 
-    ~STL_Perf_Analyzer(void) {
-        MESSAGE("STL_Perf_Analyzer Dtor");
-    };
+    _chronos.start_baseline(_nb_sample);
+      
+    do {
 
+      action.initialize();
+    } while (_chronos.check());
 
-    inline double eval_mflops(int size) {
+    double baseline_time=_chronos.get_time();
 
-        ACTION action(size);
+    _chronos.start(_nb_sample);
+    do {
+      action.initialize();
+      action.calculate();
+    } while (_chronos.check());
 
-        _chronos.start_baseline(_nb_sample);
+    double calculate_time=_chronos.get_time();
 
-        do {
-
-            action.initialize();
-        } while (_chronos.check());
-
-        double baseline_time = _chronos.get_time();
-
-        _chronos.start(_nb_sample);
-        do {
-            action.initialize();
-            action.calculate();
-        } while (_chronos.check());
-
-        double calculate_time = _chronos.get_time();
-
-        double corrected_time = calculate_time - baseline_time;
-
-        //    cout << size <<" "<<baseline_time<<" "<<calculate_time<<" "<<corrected_time<<" "<<action.nb_op_base() << endl;
-
-        return action.nb_op_base() / (corrected_time * 1000000.0);
-        //return action.nb_op_base()/(calculate_time*1000000.0);
-
-    }
-
+    double corrected_time=calculate_time-baseline_time;
+    
+    //    cout << size <<" "<<baseline_time<<" "<<calculate_time<<" "<<corrected_time<<" "<<action.nb_op_base() << endl;    
+    
+    return action.nb_op_base()/(corrected_time*1000000.0);
+    //return action.nb_op_base()/(calculate_time*1000000.0);
+    
+  }
 private:
 
-    STL_Timer _chronos;
-    unsigned long long _nb_sample;
+  STL_Timer _chronos;
+  unsigned long long _nb_sample;
 
-
+  
 };
 
-
+  
+  
 #endif

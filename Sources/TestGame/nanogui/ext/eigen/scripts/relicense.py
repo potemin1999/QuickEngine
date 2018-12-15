@@ -43,19 +43,17 @@ import sys
 
 exclusions = set(['relicense.py'])
 
-
 def update(text):
-    if text.find(lgpl3_header) == -1:
-        return text, False
-    return text.replace(lgpl3_header, mpl2_header), True
-
+  if text.find(lgpl3_header) == -1:
+    return text, False
+  return text.replace(lgpl3_header, mpl2_header), True
 
 rootdir = sys.argv[1]
 for root, sub_folders, files in os.walk(rootdir):
     for basename in files:
         if basename in exclusions:
-            print 'SKIPPED', filename
-            continue
+          print 'SKIPPED', filename
+          continue
         filename = os.path.join(root, basename)
         fo = file(filename)
         text = fo.read()
@@ -63,9 +61,9 @@ for root, sub_folders, files in os.walk(rootdir):
 
         text, updated = update(text)
         if updated:
-            fo = file(filename, "w")
-            fo.write(text)
-            fo.close()
-            print 'UPDATED', filename
+          fo = file(filename, "w")
+          fo.write(text)
+          fo.close()
+          print 'UPDATED', filename
         else:
-            print '       ', filename
+          print '       ', filename

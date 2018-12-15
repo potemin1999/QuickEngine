@@ -24,73 +24,78 @@
 #include "utilities.h"
 #include "timers/portable_timer.hh"
 
-template<class Action>
-class Portable_Perf_Analyzer {
+template <class Action>
+class Portable_Perf_Analyzer{
 public:
-    Portable_Perf_Analyzer() : _nb_calc(0), m_time_action(0), _chronos() {
-        MESSAGE("Portable_Perf_Analyzer Ctor");
-    };
+  Portable_Perf_Analyzer( ):_nb_calc(0), m_time_action(0), _chronos(){
+    MESSAGE("Portable_Perf_Analyzer Ctor");
+  };
+  Portable_Perf_Analyzer( const Portable_Perf_Analyzer & ){
+    INFOS("Copy Ctor not implemented");
+    exit(0);
+  };
+  ~Portable_Perf_Analyzer(){
+    MESSAGE("Portable_Perf_Analyzer Dtor");
+  };
 
-    Portable_Perf_Analyzer(const Portable_Perf_Analyzer &) {
-        INFOS("Copy Ctor not implemented");
-        exit(0);
-    };
-
-    ~Portable_Perf_Analyzer() {
-        MESSAGE("Portable_Perf_Analyzer Dtor");
-    };
-
-    BTL_DONT_INLINE double eval_mflops(int size) {
-        Action action(size);
+  BTL_DONT_INLINE double eval_mflops(int size)
+  {
+    Action action(size);
 
 //     action.initialize();
 //     time_action = time_calculate(action);
-        while (m_time_action < MIN_TIME) {
-            if (_nb_calc == 0) _nb_calc = 1;
-            else _nb_calc *= 2;
-            action.initialize();
-            m_time_action = time_calculate(action);
-        }
-
-        // optimize
-        for (int i = 1; i < BtlConfig::Instance.tries; ++i) {
-            Action _action(size);
-            std::cout << " " << _action.nb_op_base() * _nb_calc / (m_time_action * 1e6) << " ";
-            _action.initialize();
-            m_time_action = std::min(m_time_action, time_calculate(_action));
-        }
-
-        double time_action = m_time_action / (double(_nb_calc));
-
-        // check
-        if (BtlConfig::Instance.checkResults && size < 128) {
-            action.initialize();
-            action.calculate();
-            action.check_result();
-        }
-        return action.nb_op_base() / (time_action * 1e6);
+    while (m_time_action < MIN_TIME)
+    {
+      if(_nb_calc==0) _nb_calc = 1;
+      else            _nb_calc *= 2;
+      action.initialize();
+      m_time_action = time_calculate(action);
     }
 
-    BTL_DONT_INLINE double time_calculate(Action &action) {
-        // time measurement
-        action.calculate();
-        _chronos.start();
-        for (unsigned int ii = 0; ii < _nb_calc; ii++) {
-            action.calculate();
-        }
-        _chronos.stop();
-        return _chronos.user_time();
+    // optimize
+    for (int i=1; i<BtlConfig::Instance.tries; ++i)
+    {
+      Action _action(size);
+      std::cout << " " << _action.nb_op_base()*_nb_calc/(m_time_action*1e6) << " ";
+      _action.initialize();
+      m_time_action = std::min(m_time_action, time_calculate(_action));
     }
 
-    unsigned long long get_nb_calc() {
-        return _nb_calc;
+    double time_action = m_time_action / (double(_nb_calc));
+
+    // check
+    if (BtlConfig::Instance.checkResults && size<128)
+    {
+      action.initialize();
+      action.calculate();
+      action.check_result();
     }
+    return action.nb_op_base()/(time_action*1e6);
+  }
+
+  BTL_DONT_INLINE double time_calculate(Action & action)
+  {
+    // time measurement
+    action.calculate();
+    _chronos.start();
+    for (unsigned int ii=0;ii<_nb_calc;ii++)
+    {
+      action.calculate();
+    }
+    _chronos.stop();
+    return _chronos.user_time();
+  }
+
+  unsigned long long get_nb_calc()
+  {
+    return _nb_calc;
+  }
 
 
 private:
-    unsigned long long _nb_calc;
-    double m_time_action;
-    Portable_Timer _chronos;
+  unsigned long long _nb_calc;
+  double m_time_action;
+  Portable_Timer _chronos;
 
 };
 

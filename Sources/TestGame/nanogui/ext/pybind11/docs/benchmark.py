@@ -21,12 +21,12 @@ def generate_dummy_code_pybind11(nclasses=10):
         bindings += '    py::class_<cl%03i>(m, "cl%03i")\n' % (cl, cl)
         for fn in range(nfns):
             ret = random.randint(0, nclasses - 1)
-            params = [random.randint(0, nclasses - 1) for i in range(nargs)]
+            params  = [random.randint(0, nclasses - 1) for i in range(nargs)]
             decl += "    cl%03i *fn_%03i(" % (ret, fn)
             decl += ", ".join("cl%03i *" % p for p in params)
             decl += ");\n"
             bindings += '        .def("fn_%03i", &cl%03i::fn_%03i)\n' % \
-                        (fn, cl, fn)
+                (fn, cl, fn)
         decl += "};\n\n"
         bindings += '        ;\n'
 
@@ -55,12 +55,12 @@ def generate_dummy_code_boost(nclasses=10):
         bindings += '    py::class_<cl%03i>("cl%03i")\n' % (cl, cl)
         for fn in range(nfns):
             ret = random.randint(0, nclasses - 1)
-            params = [random.randint(0, nclasses - 1) for i in range(nargs)]
+            params  = [random.randint(0, nclasses - 1) for i in range(nargs)]
             decl += "    cl%03i *fn_%03i(" % (ret, fn)
             decl += ", ".join("cl%03i *" % p for p in params)
             decl += ");\n"
             bindings += '        .def("fn_%03i", &cl%03i::fn_%03i, py::return_value_policy<py::manage_new_object>())\n' % \
-                        (fn, cl, fn)
+                (fn, cl, fn)
         decl += "};\n\n"
         bindings += '        ;\n'
 
@@ -81,8 +81,8 @@ for codegen in [generate_dummy_code_pybind11, generate_dummy_code_boost]:
             f.write(codegen(nclasses))
         n1 = dt.datetime.now()
         os.system("g++ -Os -shared -rdynamic -undefined dynamic_lookup "
-                  "-fvisibility=hidden -std=c++14 test.cpp -I include "
-                  "-I /System/Library/Frameworks/Python.framework/Headers -o test.so")
+            "-fvisibility=hidden -std=c++14 test.cpp -I include "
+            "-I /System/Library/Frameworks/Python.framework/Headers -o test.so")
         n2 = dt.datetime.now()
         elapsed = (n2 - n1).total_seconds()
         size = os.stat('test.so').st_size

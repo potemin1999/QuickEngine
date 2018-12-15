@@ -1,7 +1,7 @@
 //=====================================================
 // File   :  mixed_perf_analyzer.hh
 // Author :  L. Plagne <laurent.plagne@edf.fr)>        
-// Copyright (C) EDF R&D,  mar dï¿½c 3 18:59:36 CET 2002
+// Copyright (C) EDF R&D,  mar déc 3 18:59:36 CET 2002
 //=====================================================
 // 
 // This program is free software; you can redistribute it and/or
@@ -27,41 +27,42 @@
 
 
 template<class Action>
-class Mixed_Perf_Analyzer {
+class Mixed_Perf_Analyzer{
+  
+public:  
+  Mixed_Perf_Analyzer( void ):_x86pa(),_ppa(),_use_ppa(true)
+  {
+    MESSAGE("Mixed_Perf_Analyzer Ctor");
+  }; 
+  Mixed_Perf_Analyzer( const Mixed_Perf_Analyzer & ){
+    INFOS("Copy Ctor not implemented");
+    exit(0);
+  };
+  ~Mixed_Perf_Analyzer( void ){
+    MESSAGE("Mixed_Perf_Analyzer Dtor");
+  };
+    
+  
+  inline double eval_mflops(int size)
+  {
 
-public:
-    Mixed_Perf_Analyzer(void) : _x86pa(), _ppa(), _use_ppa(true) {
-        MESSAGE("Mixed_Perf_Analyzer Ctor");
-    };
-
-    Mixed_Perf_Analyzer(const Mixed_Perf_Analyzer &) {
-        INFOS("Copy Ctor not implemented");
-        exit(0);
-    };
-
-    ~Mixed_Perf_Analyzer(void) {
-        MESSAGE("Mixed_Perf_Analyzer Dtor");
-    };
-
-
-    inline double eval_mflops(int size) {
-
-        double result = 0.0;
-        if (_use_ppa) {
-            result = _ppa.eval_mflops(size);
-            if (_ppa.get_nb_calc() > DEFAULT_NB_SAMPLE) { _use_ppa = false; }
-        } else {
-            result = _x86pa.eval_mflops(size);
-        }
-
-        return result;
+    double result=0.0;
+    if (_use_ppa){      
+      result=_ppa.eval_mflops(size);
+      if (_ppa.get_nb_calc()>DEFAULT_NB_SAMPLE){_use_ppa=false;}      
     }
+    else{      
+      result=_x86pa.eval_mflops(size);
+    }
+
+    return result;
+  }
 
 private:
 
-    Portable_Perf_Analyzer<Action> _ppa;
-    X86_Perf_Analyzer<Action> _x86pa;
-    bool _use_ppa;
+  Portable_Perf_Analyzer<Action> _ppa;
+  X86_Perf_Analyzer<Action> _x86pa;
+  bool _use_ppa;
 
 };
 

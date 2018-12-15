@@ -55,16 +55,12 @@ typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #include <windows.h>
 #else
-
 #include <stdint.h>
 #include <unistd.h>
-
 #endif
 
 #if __cplusplus > 199711 || EIGEN_COMP_MSVC >= 1900
-
 #include <random>
-
 #endif
 
 #ifdef _WIN32
@@ -72,9 +68,7 @@ typedef unsigned __int64 uint64_t;
 #elif defined(__APPLE__)
 #include <mach/mach_time.h>
 #else
-
 #include <time.h>
-
 #endif
 
 #if defined(EIGEN_USE_LIBXSMM)

@@ -40,23 +40,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void error_callback(int error, const char *description) {
+static void error_callback(int error, const char* description)
+{
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
     glViewport(0, 0, width, height);
 }
 
-static void window_close_callback(GLFWwindow *window) {
+static void window_close_callback(GLFWwindow* window)
+{
     printf("Close callback triggered\n");
 }
 
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
     if (action != GLFW_PRESS)
         return;
 
-    switch (key) {
+    switch (key)
+    {
         case GLFW_KEY_Q:
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -64,9 +69,10 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
-static GLFWwindow *open_window(int width, int height, GLFWmonitor *monitor) {
+static GLFWwindow* open_window(int width, int height, GLFWmonitor* monitor)
+{
     double base;
-    GLFWwindow *window;
+    GLFWwindow* window;
 
     base = glfwGetTime();
 
@@ -82,11 +88,14 @@ static GLFWwindow *open_window(int width, int height, GLFWmonitor *monitor) {
     glfwSetWindowCloseCallback(window, window_close_callback);
     glfwSetKeyCallback(window, key_callback);
 
-    if (monitor) {
+    if (monitor)
+    {
         printf("Opening full screen window on monitor %s took %0.3f seconds\n",
                glfwGetMonitorName(monitor),
                glfwGetTime() - base);
-    } else {
+    }
+    else
+    {
         printf("Opening regular window took %0.3f seconds\n",
                glfwGetTime() - base);
     }
@@ -94,15 +103,17 @@ static GLFWwindow *open_window(int width, int height, GLFWmonitor *monitor) {
     return window;
 }
 
-static void close_window(GLFWwindow *window) {
+static void close_window(GLFWwindow* window)
+{
     double base = glfwGetTime();
     glfwDestroyWindow(window);
     printf("Closing window took %0.3f seconds\n", glfwGetTime() - base);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     int count = 0;
-    GLFWwindow *window;
+    GLFWwindow* window;
 
     srand((unsigned int) time(NULL));
 
@@ -111,27 +122,33 @@ int main(int argc, char **argv) {
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    for (;;) {
+    for (;;)
+    {
         int width, height;
-        GLFWmonitor *monitor = NULL;
+        GLFWmonitor* monitor = NULL;
 
-        if (count % 2 == 0) {
+        if (count % 2 == 0)
+        {
             int monitorCount;
-            GLFWmonitor **monitors = glfwGetMonitors(&monitorCount);
+            GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
             monitor = monitors[rand() % monitorCount];
         }
 
-        if (monitor) {
-            const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+        if (monitor)
+        {
+            const GLFWvidmode* mode = glfwGetVideoMode(monitor);
             width = mode->width;
             height = mode->height;
-        } else {
+        }
+        else
+        {
             width = 640;
             height = 480;
         }
 
         window = open_window(width, height, monitor);
-        if (!window) {
+        if (!window)
+        {
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
@@ -142,7 +159,8 @@ int main(int argc, char **argv) {
 
         glfwSetTime(0.0);
 
-        while (glfwGetTime() < 5.0) {
+        while (glfwGetTime() < 5.0)
+        {
             glClear(GL_COLOR_BUFFER_BIT);
 
             glPushMatrix();
@@ -153,7 +171,8 @@ int main(int argc, char **argv) {
             glfwSwapBuffers(window);
             glfwPollEvents();
 
-            if (glfwWindowShouldClose(window)) {
+            if (glfwWindowShouldClose(window))
+            {
                 close_window(window);
                 printf("User closed window\n");
 

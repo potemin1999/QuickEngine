@@ -35,41 +35,47 @@
 
 #include "getopt.h"
 
-static const char *titles[] =
-        {
-                "Red",
-                "Green",
-                "Blue",
-                "Yellow"
-        };
+static const char* titles[] =
+{
+    "Red",
+    "Green",
+    "Blue",
+    "Yellow"
+};
 
-static const struct {
+static const struct
+{
     float r, g, b;
 } colors[] =
-        {
-                {0.95f, 0.32f, 0.11f},
-                {0.50f, 0.80f, 0.16f},
-                {0.f,   0.68f, 0.94f},
-                {0.98f, 0.74f, 0.04f}
-        };
+{
+    { 0.95f, 0.32f, 0.11f },
+    { 0.50f, 0.80f, 0.16f },
+    {   0.f, 0.68f, 0.94f },
+    { 0.98f, 0.74f, 0.04f }
+};
 
-static void usage(void) {
+static void usage(void)
+{
     printf("Usage: windows [-h] [-b]\n");
     printf("Options:\n");
     printf("  -b create decorated windows\n");
     printf("  -h show this help\n");
 }
 
-static void error_callback(int error, const char *description) {
+static void error_callback(int error, const char* description)
+{
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
     if (action != GLFW_PRESS)
         return;
 
-    switch (key) {
-        case GLFW_KEY_SPACE: {
+    switch (key)
+    {
+        case GLFW_KEY_SPACE:
+        {
             int xpos, ypos;
             glfwGetWindowPos(window, &xpos, &ypos);
             glfwSetWindowPos(window, xpos, ypos);
@@ -82,14 +88,17 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     int i, ch;
     int decorated = GLFW_FALSE;
     int running = GLFW_TRUE;
-    GLFWwindow *windows[4];
+    GLFWwindow* windows[4];
 
-    while ((ch = getopt(argc, argv, "bh")) != -1) {
-        switch (ch) {
+    while ((ch = getopt(argc, argv, "bh")) != -1)
+    {
+        switch (ch)
+        {
             case 'b':
                 decorated = GLFW_TRUE;
                 break;
@@ -110,11 +119,13 @@ int main(int argc, char **argv) {
     glfwWindowHint(GLFW_DECORATED, decorated);
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0;  i < 4;  i++)
+    {
         int left, top, right, bottom;
 
         windows[i] = glfwCreateWindow(200, 200, titles[i], NULL, NULL);
-        if (!windows[i]) {
+        if (!windows[i])
+        {
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
@@ -131,11 +142,13 @@ int main(int argc, char **argv) {
                          100 + (i >> 1) * (200 + top + bottom));
     }
 
-    for (i = 0; i < 4; i++)
+    for (i = 0;  i < 4;  i++)
         glfwShowWindow(windows[i]);
 
-    while (running) {
-        for (i = 0; i < 4; i++) {
+    while (running)
+    {
+        for (i = 0;  i < 4;  i++)
+        {
             glfwMakeContextCurrent(windows[i]);
             glClear(GL_COLOR_BUFFER_BIT);
             glfwSwapBuffers(windows[i]);

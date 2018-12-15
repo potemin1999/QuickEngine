@@ -33,21 +33,20 @@
 #ifndef EIGEN_TRIANGULAR_MATRIX_MATRIX_BLAS_H
 #define EIGEN_TRIANGULAR_MATRIX_MATRIX_BLAS_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
 
-        template<typename Scalar, typename Index,
-                int Mode, bool LhsIsTriangular,
-                int LhsStorageOrder, bool ConjugateLhs,
-                int RhsStorageOrder, bool ConjugateRhs,
-                int ResStorageOrder>
-        struct product_triangular_matrix_matrix_trmm :
-                product_triangular_matrix_matrix<Scalar, Index, Mode,
-                        LhsIsTriangular, LhsStorageOrder, ConjugateLhs,
-                        RhsStorageOrder, ConjugateRhs, ResStorageOrder, BuiltIn> {
-        };
+template <typename Scalar, typename Index,
+          int Mode, bool LhsIsTriangular,
+          int LhsStorageOrder, bool ConjugateLhs,
+          int RhsStorageOrder, bool ConjugateRhs,
+          int ResStorageOrder>
+struct product_triangular_matrix_matrix_trmm :
+       product_triangular_matrix_matrix<Scalar,Index,Mode,
+          LhsIsTriangular,LhsStorageOrder,ConjugateLhs,
+          RhsStorageOrder, ConjugateRhs, ResStorageOrder, BuiltIn> {};
 
 
 // try to go to BLAS specialization
@@ -66,21 +65,14 @@ struct product_triangular_matrix_matrix<Scalar,Index, Mode, LhsIsTriangular, \
   } \
 };
 
-        EIGEN_BLAS_TRMM_SPECIALIZE(double, true)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(double, false)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(dcomplex, true)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(dcomplex, false)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(float, true)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(float, false)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(scomplex, true)
-
-        EIGEN_BLAS_TRMM_SPECIALIZE(scomplex, false)
+EIGEN_BLAS_TRMM_SPECIALIZE(double, true)
+EIGEN_BLAS_TRMM_SPECIALIZE(double, false)
+EIGEN_BLAS_TRMM_SPECIALIZE(dcomplex, true)
+EIGEN_BLAS_TRMM_SPECIALIZE(dcomplex, false)
+EIGEN_BLAS_TRMM_SPECIALIZE(float, true)
+EIGEN_BLAS_TRMM_SPECIALIZE(float, false)
+EIGEN_BLAS_TRMM_SPECIALIZE(scomplex, true)
+EIGEN_BLAS_TRMM_SPECIALIZE(scomplex, false)
 
 // implements col-major += alpha * op(triangular) * op(general)
 #define EIGEN_BLAS_TRMM_L(EIGTYPE, BLASTYPE, EIGPREFIX, BLASPREFIX) \
@@ -188,13 +180,10 @@ struct product_triangular_matrix_matrix_trmm<EIGTYPE,Index,Mode,true, \
   } \
 };
 
-        EIGEN_BLAS_TRMM_L(double, double, d, d)
-
-        EIGEN_BLAS_TRMM_L(dcomplex, double, cd, z)
-
-        EIGEN_BLAS_TRMM_L(float, float, f, s)
-
-        EIGEN_BLAS_TRMM_L(scomplex, float, cf, c)
+EIGEN_BLAS_TRMM_L(double, double, d, d)
+EIGEN_BLAS_TRMM_L(dcomplex, double, cd, z)
+EIGEN_BLAS_TRMM_L(float, float, f, s)
+EIGEN_BLAS_TRMM_L(scomplex, float, cf, c)
 
 // implements col-major += alpha * op(general) * op(triangular)
 #define EIGEN_BLAS_TRMM_R(EIGTYPE, BLASTYPE, EIGPREFIX, BLASPREFIX) \
@@ -301,15 +290,12 @@ struct product_triangular_matrix_matrix_trmm<EIGTYPE,Index,Mode,false, \
   } \
 };
 
-        EIGEN_BLAS_TRMM_R(double, double, d, d)
+EIGEN_BLAS_TRMM_R(double, double, d, d)
+EIGEN_BLAS_TRMM_R(dcomplex, double, cd, z)
+EIGEN_BLAS_TRMM_R(float, float, f, s)
+EIGEN_BLAS_TRMM_R(scomplex, float, cf, c)
 
-        EIGEN_BLAS_TRMM_R(dcomplex, double, cd, z)
-
-        EIGEN_BLAS_TRMM_R(float, float, f, s)
-
-        EIGEN_BLAS_TRMM_R(scomplex, float, cf, c)
-
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

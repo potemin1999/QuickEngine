@@ -14,9 +14,9 @@
 
 
 namespace Eigen {
-
+    
     namespace internal {
-
+        
         /** \internal Low-level MINRES algorithm
          * \param mat The matrix A
          * \param rhs The right hand side vector b
@@ -28,33 +28,34 @@ namespace Eigen {
          */
         template<typename MatrixType, typename Rhs, typename Dest, typename Preconditioner>
         EIGEN_DONT_INLINE
-        void minres(const MatrixType &mat, const Rhs &rhs, Dest &x,
-                    const Preconditioner &precond, Index &iters,
-                    typename Dest::RealScalar &tol_error) {
+        void minres(const MatrixType& mat, const Rhs& rhs, Dest& x,
+                    const Preconditioner& precond, Index& iters,
+                    typename Dest::RealScalar& tol_error)
+        {
             using std::sqrt;
             typedef typename Dest::RealScalar RealScalar;
             typedef typename Dest::Scalar Scalar;
-            typedef Matrix<Scalar, Dynamic, 1> VectorType;
+            typedef Matrix<Scalar,Dynamic,1> VectorType;
 
             // Check for zero rhs
             const RealScalar rhsNorm2(rhs.squaredNorm());
-            if (rhsNorm2 == 0) {
+            if(rhsNorm2 == 0)
+            {
                 x.setZero();
                 iters = 0;
                 tol_error = 0;
                 return;
             }
-
+            
             // initialize
             const Index maxIters(iters);  // initialize maxIters to iters
             const Index N(mat.cols());    // the size of the matrix
-            const RealScalar threshold2(
-                    tol_error * tol_error * rhsNorm2); // convergence threshold (compared to residualNorm2)
-
+            const RealScalar threshold2(tol_error*tol_error*rhsNorm2); // convergence threshold (compared to residualNorm2)
+            
             // Initialize preconditioned Lanczos
             VectorType v_old(N); // will be initialized inside loop
-            VectorType v(VectorType::Zero(N)); //initialize v
-            VectorType v_new(rhs - mat * x); //initialize v_new
+            VectorType v( VectorType::Zero(N) ); //initialize v
+            VectorType v_new(rhs-mat*x); //initialize v_new
             RealScalar residualNorm2(v_new.squaredNorm());
             VectorType w(N); // will be initialized inside loop
             VectorType w_new(precond.solve(v_new)); // initialize w_new
@@ -74,9 +75,10 @@ namespace Eigen {
             VectorType p_old(VectorType::Zero(N)); // initialize p_old=0
             VectorType p(p_old); // initialize p=0
             RealScalar eta(1.0);
-
+                        
             iters = 0; // reset iters
-            while (iters < maxIters) {
+            while ( iters < maxIters )
+            {
                 // Preconditioned Lanczos
                 /* Note that there are 4 variants on the Lanczos algorithm. These are
                  * described in Paige, C. C. (1972). Computational variants of
@@ -93,67 +95,68 @@ namespace Eigen {
                 v = v_new; // update
                 w = w_new; // update
 //                const VectorType w(w_new); // NOT SURE IF CREATING w EVERY ITERATION IS EFFICIENT
-                v_new.noalias() = mat * w - beta * v_old; // compute v_new
+                v_new.noalias() = mat*w - beta*v_old; // compute v_new
                 const RealScalar alpha = v_new.dot(w);
-                v_new -= alpha * v; // overwrite v_new
+                v_new -= alpha*v; // overwrite v_new
                 w_new = precond.solve(v_new); // overwrite w_new
                 beta_new2 = v_new.dot(w_new); // compute beta_new
                 eigen_assert(beta_new2 >= 0.0 && "PRECONDITIONER IS NOT POSITIVE DEFINITE");
                 beta_new = sqrt(beta_new2); // compute beta_new
                 v_new /= beta_new; // overwrite v_new for next iteration
                 w_new /= beta_new; // overwrite w_new for next iteration
-
+                
                 // Givens rotation
-                const RealScalar r2 =
-                        s * alpha + c * c_old * beta; // s, s_old, c and c_old are still from previous iteration
-                const RealScalar r3 = s_old * beta; // s, s_old, c and c_old are still from previous iteration
-                const RealScalar r1_hat = c * alpha - c_old * s * beta;
-                const RealScalar r1 = sqrt(std::pow(r1_hat, 2) + std::pow(beta_new, 2));
+                const RealScalar r2 =s*alpha+c*c_old*beta; // s, s_old, c and c_old are still from previous iteration
+                const RealScalar r3 =s_old*beta; // s, s_old, c and c_old are still from previous iteration
+                const RealScalar r1_hat=c*alpha-c_old*s*beta;
+                const RealScalar r1 =sqrt( std::pow(r1_hat,2) + std::pow(beta_new,2) );
                 c_old = c; // store for next iteration
                 s_old = s; // store for next iteration
-                c = r1_hat / r1; // new cosine
-                s = beta_new / r1; // new sine
-
+                c=r1_hat/r1; // new cosine
+                s=beta_new/r1; // new sine
+                
                 // Update solution
                 p_oold = p_old;
 //                const VectorType p_oold(p_old); // NOT SURE IF CREATING p_oold EVERY ITERATION IS EFFICIENT
                 p_old = p;
-                p.noalias() = (w - r2 * p_old - r3 * p_oold) / r1; // IS NOALIAS REQUIRED?
-                x += beta_one * c * eta * p;
-
+                p.noalias()=(w-r2*p_old-r3*p_oold) /r1; // IS NOALIAS REQUIRED?
+                x += beta_one*c*eta*p;
+                
                 /* Update the squared residual. Note that this is the estimated residual.
                 The real residual |Ax-b|^2 may be slightly larger */
-                residualNorm2 *= s * s;
-
-                if (residualNorm2 < threshold2) {
+                residualNorm2 *= s*s;
+                
+                if ( residualNorm2 < threshold2)
+                {
                     break;
                 }
-
-                eta = -s * eta; // update eta
+                
+                eta=-s*eta; // update eta
                 iters++; // increment iteration number (for output purposes)
             }
-
+            
             /* Compute error. Note that this is the estimated error. The real 
              error |Ax-b|/|b| may be slightly larger */
             tol_error = std::sqrt(residualNorm2 / rhsNorm2);
         }
-
+        
     }
-
-    template<typename _MatrixType, int _UpLo = Lower,
-            typename _Preconditioner = IdentityPreconditioner>
+    
+    template< typename _MatrixType, int _UpLo=Lower,
+    typename _Preconditioner = IdentityPreconditioner>
     class MINRES;
-
+    
     namespace internal {
-
-        template<typename _MatrixType, int _UpLo, typename _Preconditioner>
-        struct traits<MINRES<_MatrixType, _UpLo, _Preconditioner> > {
+        
+        template< typename _MatrixType, int _UpLo, typename _Preconditioner>
+        struct traits<MINRES<_MatrixType,_UpLo,_Preconditioner> >
+        {
             typedef _MatrixType MatrixType;
             typedef _Preconditioner Preconditioner;
         };
-
+        
     }
-
+    
     /** \ingroup IterativeLinearSolvers_Module
      * \brief A minimal residual solver for sparse symmetric problems
      *
@@ -192,10 +195,11 @@ namespace Eigen {
      *
      * \sa class ConjugateGradient, BiCGSTAB, SimplicialCholesky, DiagonalPreconditioner, IdentityPreconditioner
      */
-    template<typename _MatrixType, int _UpLo, typename _Preconditioner>
-    class MINRES : public IterativeSolverBase<MINRES<_MatrixType, _UpLo, _Preconditioner> > {
-
-        typedef IterativeSolverBase <MINRES> Base;
+    template< typename _MatrixType, int _UpLo, typename _Preconditioner>
+    class MINRES : public IterativeSolverBase<MINRES<_MatrixType,_UpLo,_Preconditioner> >
+    {
+        
+        typedef IterativeSolverBase<MINRES> Base;
         using Base::matrix;
         using Base::m_error;
         using Base::m_iterations;
@@ -207,16 +211,14 @@ namespace Eigen {
         typedef typename MatrixType::Scalar Scalar;
         typedef typename MatrixType::RealScalar RealScalar;
         typedef _Preconditioner Preconditioner;
-
-        enum {
-            UpLo = _UpLo
-        };
-
+        
+        enum {UpLo = _UpLo};
+        
     public:
-
+        
         /** Default constructor. */
         MINRES() : Base() {}
-
+        
         /** Initialize the solver with matrix \a A for further \c Ax=b solving.
          *
          * This constructor is a shortcut for the default constructor followed
@@ -228,55 +230,57 @@ namespace Eigen {
          * matrix A, or modify a copy of A.
          */
         template<typename MatrixDerived>
-        explicit MINRES(const EigenBase <MatrixDerived> &A) : Base(A.derived()) {}
-
+        explicit MINRES(const EigenBase<MatrixDerived>& A) : Base(A.derived()) {}
+        
         /** Destructor. */
-        ~MINRES() {}
+        ~MINRES(){}
 
         /** \internal */
-        template<typename Rhs, typename Dest>
-        void _solve_with_guess_impl(const Rhs &b, Dest &x) const {
+        template<typename Rhs,typename Dest>
+        void _solve_with_guess_impl(const Rhs& b, Dest& x) const
+        {
             typedef typename Base::MatrixWrapper MatrixWrapper;
             typedef typename Base::ActualMatrixType ActualMatrixType;
             enum {
-                TransposeInput = (!MatrixWrapper::MatrixFree)
-                                 && (UpLo == (Lower | Upper))
-                                 && (!MatrixType::IsRowMajor)
-                                 && (!NumTraits<Scalar>::IsComplex)
+              TransposeInput  =   (!MatrixWrapper::MatrixFree)
+                              &&  (UpLo==(Lower|Upper))
+                              &&  (!MatrixType::IsRowMajor)
+                              &&  (!NumTraits<Scalar>::IsComplex)
             };
-            typedef typename internal::conditional<TransposeInput, Transpose<const ActualMatrixType>, ActualMatrixType const &>::type RowMajorWrapper;
-            EIGEN_STATIC_ASSERT(EIGEN_IMPLIES(MatrixWrapper::MatrixFree, UpLo == (Lower | Upper)),
-                                MATRIX_FREE_CONJUGATE_GRADIENT_IS_COMPATIBLE_WITH_UPPER_UNION_LOWER_MODE_ONLY);
-            typedef typename internal::conditional<UpLo == (Lower | Upper),
-                    RowMajorWrapper,
-                    typename MatrixWrapper::template ConstSelfAdjointViewReturnType<UpLo>::Type
-            >::type SelfAdjointWrapper;
+            typedef typename internal::conditional<TransposeInput,Transpose<const ActualMatrixType>, ActualMatrixType const&>::type RowMajorWrapper;
+            EIGEN_STATIC_ASSERT(EIGEN_IMPLIES(MatrixWrapper::MatrixFree,UpLo==(Lower|Upper)),MATRIX_FREE_CONJUGATE_GRADIENT_IS_COMPATIBLE_WITH_UPPER_UNION_LOWER_MODE_ONLY);
+            typedef typename internal::conditional<UpLo==(Lower|Upper),
+                                                  RowMajorWrapper,
+                                                  typename MatrixWrapper::template ConstSelfAdjointViewReturnType<UpLo>::Type
+                                            >::type SelfAdjointWrapper;
 
             m_iterations = Base::maxIterations();
             m_error = Base::m_tolerance;
             RowMajorWrapper row_mat(matrix());
-            for (int j = 0; j < b.cols(); ++j) {
+            for(int j=0; j<b.cols(); ++j)
+            {
                 m_iterations = Base::maxIterations();
                 m_error = Base::m_tolerance;
-
-                typename Dest::ColXpr xj(x, j);
+                
+                typename Dest::ColXpr xj(x,j);
                 internal::minres(SelfAdjointWrapper(row_mat), b.col(j), xj,
                                  Base::m_preconditioner, m_iterations, m_error);
             }
-
+            
             m_isInitialized = true;
             m_info = m_error <= Base::m_tolerance ? Success : NoConvergence;
         }
-
+        
         /** \internal */
-        template<typename Rhs, typename Dest>
-        void _solve_impl(const Rhs &b, MatrixBase <Dest> &x) const {
+        template<typename Rhs,typename Dest>
+        void _solve_impl(const Rhs& b, MatrixBase<Dest> &x) const
+        {
             x.setZero();
-            _solve_with_guess_impl(b, x.derived());
+            _solve_with_guess_impl(b,x.derived());
         }
-
+        
     protected:
-
+        
     };
 
 } // end namespace Eigen

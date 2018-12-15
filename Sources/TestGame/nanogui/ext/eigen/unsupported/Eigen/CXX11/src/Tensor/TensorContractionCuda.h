@@ -289,8 +289,8 @@ EigenContractionKernelInternal(const LhsMapper lhs, const RhsMapper rhs,
     prefetchIntoRegisters(base_k);
     writeRegToShmem();
 
-#undef prefetchIntoRegisters
-#undef writeRegToShmem
+    #undef prefetchIntoRegisters
+    #undef writeRegToShmem
 
     // wait for shared mem packing to be done before starting computation
     __syncthreads();
@@ -669,7 +669,7 @@ EigenFloatContractionKernelInternal16x16(const LhsMapper lhs, const RhsMapper rh
     __syncthreads();
 
     // Do the multiplies.
-#pragma unroll
+    #pragma unroll
     for (int koff = 0; koff < 16; koff ++) {
       // 32 x threads.
       float2 fl1 = lhs_shmem2[koff][threadIdx.x];
@@ -1042,7 +1042,7 @@ EigenFloatContractionKernelInternal(const LhsMapper lhs, const RhsMapper rhs,
     __syncthreads();
 
     // Do the multiplies.
-#pragma unroll
+    #pragma unroll
     for (int koff = 0; koff < 32; koff ++) {
       float2 a3 = lhs_shmem2[koff][threadIdx.x + (threadIdx.y % 4) * 8];
       float2 a4 = lhs_shmem2[koff + 32][threadIdx.x + (threadIdx.y % 4) * 8];

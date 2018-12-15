@@ -11,7 +11,7 @@ set(ENGINE_SOURCE_FILES
         private/Engine.cpp
         private/EngineUtils.cpp
         private/World.cpp
-        private/Terrain.cpp public/Terrain.h public/net/NetworkManager.cpp public/net/NetworkManager.h public/net/NetworkServer.cpp public/net/NetworkServer.h public/net/NetworkClient.cpp public/net/NetworkClient.h)
+        private/Terrain.cpp public/Terrain.h public/net/NetworkManager.cpp public/net/NetworkManager.h public/net/NetworkServer.cpp public/net/NetworkServer.h public/net/NetworkClient.cpp public/net/NetworkClient.h public/net/Message.cpp public/net/Message.h public/net/ServerMessageHandler.cpp public/net/ServerMessageHandler.h public/net/ClientMessageHandler.cpp public/net/ClientMessageHandler.h)
 
 add_library(${ENGINE} SHARED ${ENGINE_SOURCE_FILES})
 set_target_properties(${ENGINE} PROPERTIES POSITION_INDEPENDENT_CODE ON)

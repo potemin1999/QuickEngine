@@ -20,29 +20,35 @@
 #ifndef INIT_FUNCTION_HH
 #define INIT_FUNCTION_HH
 
-double simple_function(int index) {
-    return index;
+double simple_function(int index)
+{
+  return index;
 }
 
-double simple_function(int index_i, int index_j) {
-    return index_i + index_j;
+double simple_function(int index_i, int index_j)
+{
+  return index_i+index_j;
 }
 
-double pseudo_random(int /*index*/) {
-    return std::rand() / double(RAND_MAX);
+double pseudo_random(int /*index*/)
+{
+  return std::rand()/double(RAND_MAX);
 }
 
-double pseudo_random(int /*index_i*/, int /*index_j*/) {
-    return std::rand() / double(RAND_MAX);
+double pseudo_random(int /*index_i*/, int /*index_j*/)
+{
+  return std::rand()/double(RAND_MAX);
 }
 
 
-double null_function(int /*index*/) {
-    return 0.0;
+double null_function(int /*index*/)
+{
+  return 0.0;
 }
 
-double null_function(int /*index_i*/, int /*index_j*/) {
-    return 0.0;
+double null_function(int /*index_i*/, int /*index_j*/)
+{
+  return 0.0;
 }
 
 #endif

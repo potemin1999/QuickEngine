@@ -12,8 +12,9 @@
 
 #include "datatypes.h"
 
-/* Subroutine */ int srotm_(integer *n, real *sx, integer *incx, real *sy,
-                            integer *incy, real *sparam) {
+/* Subroutine */ int srotm_(integer *n, real *sx, integer *incx, real *sy, 
+	integer *incy, real *sparam)
+{
     /* Initialized data */
 
     static real zero = 0.f;
@@ -94,47 +95,47 @@
 
     sflag = sparam[1];
     if (*n <= 0 || sflag + two == zero) {
-        goto L140;
+	goto L140;
     }
-    if (!(*incx == *incy && *incx > 0)) {
-        goto L70;
+    if (! (*incx == *incy && *incx > 0)) {
+	goto L70;
     }
 
     nsteps = *n * *incx;
     if (sflag < 0.f) {
-        goto L50;
+	goto L50;
     } else if (sflag == 0) {
-        goto L10;
+	goto L10;
     } else {
-        goto L30;
+	goto L30;
     }
-    L10:
+L10:
     sh12 = sparam[4];
     sh21 = sparam[3];
     i__1 = nsteps;
     i__2 = *incx;
     for (i__ = 1; i__2 < 0 ? i__ >= i__1 : i__ <= i__1; i__ += i__2) {
-        w = sx[i__];
-        z__ = sy[i__];
-        sx[i__] = w + z__ * sh12;
-        sy[i__] = w * sh21 + z__;
+	w = sx[i__];
+	z__ = sy[i__];
+	sx[i__] = w + z__ * sh12;
+	sy[i__] = w * sh21 + z__;
 /* L20: */
     }
     goto L140;
-    L30:
+L30:
     sh11 = sparam[2];
     sh22 = sparam[5];
     i__2 = nsteps;
     i__1 = *incx;
     for (i__ = 1; i__1 < 0 ? i__ >= i__2 : i__ <= i__2; i__ += i__1) {
-        w = sx[i__];
-        z__ = sy[i__];
-        sx[i__] = w * sh11 + z__;
-        sy[i__] = -w + sh22 * z__;
+	w = sx[i__];
+	z__ = sy[i__];
+	sx[i__] = w * sh11 + z__;
+	sy[i__] = -w + sh22 * z__;
 /* L40: */
     }
     goto L140;
-    L50:
+L50:
     sh11 = sparam[2];
     sh12 = sparam[4];
     sh21 = sparam[3];
@@ -142,74 +143,74 @@
     i__1 = nsteps;
     i__2 = *incx;
     for (i__ = 1; i__2 < 0 ? i__ >= i__1 : i__ <= i__1; i__ += i__2) {
-        w = sx[i__];
-        z__ = sy[i__];
-        sx[i__] = w * sh11 + z__ * sh12;
-        sy[i__] = w * sh21 + z__ * sh22;
+	w = sx[i__];
+	z__ = sy[i__];
+	sx[i__] = w * sh11 + z__ * sh12;
+	sy[i__] = w * sh21 + z__ * sh22;
 /* L60: */
     }
     goto L140;
-    L70:
+L70:
     kx = 1;
     ky = 1;
     if (*incx < 0) {
-        kx = (1 - *n) * *incx + 1;
+	kx = (1 - *n) * *incx + 1;
     }
     if (*incy < 0) {
-        ky = (1 - *n) * *incy + 1;
+	ky = (1 - *n) * *incy + 1;
     }
 
     if (sflag < 0.f) {
-        goto L120;
+	goto L120;
     } else if (sflag == 0) {
-        goto L80;
+	goto L80;
     } else {
-        goto L100;
+	goto L100;
     }
-    L80:
+L80:
     sh12 = sparam[4];
     sh21 = sparam[3];
     i__2 = *n;
     for (i__ = 1; i__ <= i__2; ++i__) {
-        w = sx[kx];
-        z__ = sy[ky];
-        sx[kx] = w + z__ * sh12;
-        sy[ky] = w * sh21 + z__;
-        kx += *incx;
-        ky += *incy;
+	w = sx[kx];
+	z__ = sy[ky];
+	sx[kx] = w + z__ * sh12;
+	sy[ky] = w * sh21 + z__;
+	kx += *incx;
+	ky += *incy;
 /* L90: */
     }
     goto L140;
-    L100:
+L100:
     sh11 = sparam[2];
     sh22 = sparam[5];
     i__2 = *n;
     for (i__ = 1; i__ <= i__2; ++i__) {
-        w = sx[kx];
-        z__ = sy[ky];
-        sx[kx] = w * sh11 + z__;
-        sy[ky] = -w + sh22 * z__;
-        kx += *incx;
-        ky += *incy;
+	w = sx[kx];
+	z__ = sy[ky];
+	sx[kx] = w * sh11 + z__;
+	sy[ky] = -w + sh22 * z__;
+	kx += *incx;
+	ky += *incy;
 /* L110: */
     }
     goto L140;
-    L120:
+L120:
     sh11 = sparam[2];
     sh12 = sparam[4];
     sh21 = sparam[3];
     sh22 = sparam[5];
     i__2 = *n;
     for (i__ = 1; i__ <= i__2; ++i__) {
-        w = sx[kx];
-        z__ = sy[ky];
-        sx[kx] = w * sh11 + z__ * sh12;
-        sy[ky] = w * sh21 + z__ * sh22;
-        kx += *incx;
-        ky += *incy;
+	w = sx[kx];
+	z__ = sy[ky];
+	sx[kx] = w * sh11 + z__ * sh12;
+	sy[ky] = w * sh21 + z__ * sh22;
+	kx += *incx;
+	ky += *incy;
 /* L130: */
     }
-    L140:
+L140:
     return 0;
 } /* srotm_ */
 

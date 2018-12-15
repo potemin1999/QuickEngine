@@ -24,62 +24,64 @@
 #include "bench_parameter.hh"
 
 template<class ACTION>
-class X86_Perf_Analyzer {
+class X86_Perf_Analyzer{
 public:
-    X86_Perf_Analyzer(unsigned long long nb_sample = DEFAULT_NB_SAMPLE) : _nb_sample(nb_sample), _chronos() {
-        MESSAGE("X86_Perf_Analyzer Ctor");
-        _chronos.find_frequency();
-    };
+  X86_Perf_Analyzer( unsigned long long nb_sample=DEFAULT_NB_SAMPLE):_nb_sample(nb_sample),_chronos()
+  {
+    MESSAGE("X86_Perf_Analyzer Ctor");
+    _chronos.find_frequency();
+  };
+  X86_Perf_Analyzer( const X86_Perf_Analyzer & ){
+    INFOS("Copy Ctor not implemented");
+    exit(0);
+  };
+  ~X86_Perf_Analyzer( void ){
+    MESSAGE("X86_Perf_Analyzer Dtor");
+  };
 
-    X86_Perf_Analyzer(const X86_Perf_Analyzer &) {
-        INFOS("Copy Ctor not implemented");
-        exit(0);
-    };
 
-    ~X86_Perf_Analyzer(void) {
-        MESSAGE("X86_Perf_Analyzer Dtor");
-    };
+  inline double eval_mflops(int size)
+  {
 
+    ACTION action(size);
 
-    inline double eval_mflops(int size) {
+    int nb_loop=5;
+    double calculate_time=0.0;
+    double baseline_time=0.0;
 
-        ACTION action(size);
+    for (int j=0 ; j < nb_loop ; j++){
 
-        int nb_loop = 5;
-        double calculate_time = 0.0;
-        double baseline_time = 0.0;
+      _chronos.clear();
 
-        for (int j = 0; j < nb_loop; j++) {
+      for(int i=0 ; i < _nb_sample  ; i++)
+      {
+        _chronos.start();
+        action.initialize();
+        action.calculate();
+        _chronos.stop();
+        _chronos.add_get_click();
+      }
 
-            _chronos.clear();
+      calculate_time += double(_chronos.get_shortest_clicks())/_chronos.frequency();
 
-            for (int i = 0; i < _nb_sample; i++) {
-                _chronos.start();
-                action.initialize();
-                action.calculate();
-                _chronos.stop();
-                _chronos.add_get_click();
-            }
+      if (j==0) action.check_result();
 
-            calculate_time += double(_chronos.get_shortest_clicks()) / _chronos.frequency();
+      _chronos.clear();
 
-            if (j == 0) action.check_result();
+      for(int i=0 ; i < _nb_sample  ; i++)
+      {
+        _chronos.start();
+        action.initialize();
+        _chronos.stop();
+        _chronos.add_get_click();
 
-            _chronos.clear();
+      }
 
-            for (int i = 0; i < _nb_sample; i++) {
-                _chronos.start();
-                action.initialize();
-                _chronos.stop();
-                _chronos.add_get_click();
+      baseline_time+=double(_chronos.get_shortest_clicks())/_chronos.frequency();
 
-            }
+    }
 
-            baseline_time += double(_chronos.get_shortest_clicks()) / _chronos.frequency();
-
-        }
-
-        double corrected_time = (calculate_time - baseline_time) / double(nb_loop);
+    double corrected_time = (calculate_time-baseline_time)/double(nb_loop);
 
 
 //     INFOS("_nb_sample="<<_nb_sample);
@@ -89,17 +91,18 @@ public:
 
 //    cout << size <<" "<<baseline_time<<" "<<calculate_time<<" "<<corrected_time<<" "<<action.nb_op_base() << endl;
 
-        return action.nb_op_base() / (corrected_time * 1000000.0);
-        //return action.nb_op_base()/(calculate_time*1000000.0);
-    }
+    return action.nb_op_base()/(corrected_time*1000000.0);
+    //return action.nb_op_base()/(calculate_time*1000000.0);
+  }
 
 private:
 
-    X86_Timer _chronos;
-    unsigned long long _nb_sample;
+  X86_Timer _chronos;
+  unsigned long long _nb_sample;
 
 
 };
+
 
 
 #endif

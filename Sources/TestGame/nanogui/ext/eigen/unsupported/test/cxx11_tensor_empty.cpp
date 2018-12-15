@@ -12,26 +12,29 @@
 #include <Eigen/CXX11/Tensor>
 
 
-static void test_empty_tensor() {
-    Tensor<float, 2> source;
-    Tensor<float, 2> tgt1 = source;
-    Tensor<float, 2> tgt2(source);
-    Tensor<float, 2> tgt3;
-    tgt3 = tgt1;
-    tgt3 = tgt2;
+static void test_empty_tensor()
+{
+  Tensor<float, 2> source;
+  Tensor<float, 2> tgt1 = source;
+  Tensor<float, 2> tgt2(source);
+  Tensor<float, 2> tgt3;
+  tgt3 = tgt1;
+  tgt3 = tgt2;
 }
 
-static void test_empty_fixed_size_tensor() {
-    TensorFixedSize<float, Sizes<0> > source;
-    TensorFixedSize<float, Sizes<0> > tgt1 = source;
-    TensorFixedSize<float, Sizes<0> > tgt2(source);
-    TensorFixedSize<float, Sizes<0> > tgt3;
-    tgt3 = tgt1;
-    tgt3 = tgt2;
+static void test_empty_fixed_size_tensor()
+{
+  TensorFixedSize<float, Sizes<0> > source;
+  TensorFixedSize<float, Sizes<0> > tgt1 = source;
+  TensorFixedSize<float, Sizes<0> > tgt2(source);
+  TensorFixedSize<float, Sizes<0> > tgt3;
+  tgt3 = tgt1;
+  tgt3 = tgt2;
 }
 
 
-void test_cxx11_tensor_empty() {
-    CALL_SUBTEST(test_empty_tensor());
-    CALL_SUBTEST(test_empty_fixed_size_tensor());
+void test_cxx11_tensor_empty()
+{
+   CALL_SUBTEST(test_empty_tensor());
+   CALL_SUBTEST(test_empty_fixed_size_tensor());
 }

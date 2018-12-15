@@ -8,7 +8,7 @@
 
 using namespace Eigen;
 
-void foo(CV_QUALIFIER float *ptr, DenseIndex size) {
+void foo(CV_QUALIFIER float *ptr, DenseIndex size){
     Map<ArrayXf> m(ptr, size);
 }
 

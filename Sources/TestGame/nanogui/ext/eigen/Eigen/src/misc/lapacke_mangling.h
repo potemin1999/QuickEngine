@@ -9,7 +9,7 @@
 #elif defined(LAPACK_GLOBAL_PATTERN_MC) || defined(NOCHANGE)
 #define LAPACK_GLOBAL(lcname,UCNAME)  lcname
 #else
-#define LAPACK_GLOBAL(lcname, UCNAME)  lcname##_
+#define LAPACK_GLOBAL(lcname,UCNAME)  lcname##_
 #endif
 #endif
 

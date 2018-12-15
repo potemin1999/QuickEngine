@@ -37,9 +37,10 @@
 
 // Cocoa-specific per-joystick data
 //
-typedef struct _GLFWjoydeviceNS {
-    GLFWbool present;
-    char name[256];
+typedef struct _GLFWjoydeviceNS
+{
+    GLFWbool        present;
+    char            name[256];
 
     IOHIDDeviceRef deviceRef;
 
@@ -47,20 +48,20 @@ typedef struct _GLFWjoydeviceNS {
     CFMutableArrayRef buttonElements;
     CFMutableArrayRef hatElements;
 
-    float *axes;
-    unsigned char *buttons;
+    float*          axes;
+    unsigned char*  buttons;
 } _GLFWjoydeviceNS;
 
 // Cocoa-specific joystick API data
 //
-typedef struct _GLFWjoystickNS {
+typedef struct _GLFWjoystickNS
+{
     _GLFWjoydeviceNS js[GLFW_JOYSTICK_LAST + 1];
 
     IOHIDManagerRef managerRef;
 } _GLFWjoystickNS;
 
 void _glfwInitJoysticksNS(void);
-
 void _glfwTerminateJoysticksNS(void);
 
 #endif // _glfw3_cocoa_joystick_h_

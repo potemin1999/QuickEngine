@@ -8,8 +8,8 @@ set(TEST_GAME_SOURCE_FILES
 
 
 SET(NANOGUI_SOURCE_FILES
-        nanogui/ext/nanovg/src/nanovg.c
-
+#        nanogui/ext/nanovg/src/nanovg.c
+#
 #        nanogui/src/button.cpp
 #        nanogui/src/checkbox.cpp
 #        nanogui/src/colorpicker.cpp
@@ -17,7 +17,6 @@ SET(NANOGUI_SOURCE_FILES
 #        nanogui/src/combobox.cpp
 #        nanogui/src/common.cpp
 ##        nanogui/src/darwin.mm
-#        nanogui/src/example_icons.cpp
 #        nanogui/src/glcanvas.cpp
 #        nanogui/src/glutil.cpp
 #        nanogui/src/graph.cpp
@@ -41,43 +40,46 @@ SET(NANOGUI_SOURCE_FILES
 #        nanogui/src/vscrollpanel.cpp
 #        nanogui/src/widget.cpp
 #        nanogui/src/window.cpp
-
-        nanogui/include/nanogui/glutil.h
-        nanogui/include/nanogui/common.h
-        nanogui/include/nanogui/widget.h
-        nanogui/include/nanogui/theme.h
-        nanogui/include/nanogui/layout.h
-        nanogui/include/nanogui/screen.h
-        nanogui/include/nanogui/label.h
-        nanogui/include/nanogui/window.h
-        nanogui/include/nanogui/popup.h
-        nanogui/include/nanogui/checkbox.h
-        nanogui/include/nanogui/button.h
-        nanogui/include/nanogui/popupbutton.h
-        nanogui/include/nanogui/combobox.h
-        nanogui/include/nanogui/progressbar.h
-        nanogui/include/nanogui/slider.h
-        nanogui/include/nanogui/messagedialog.h
-        nanogui/include/nanogui/textbox.h
-        nanogui/include/nanogui/imagepanel.h
-        nanogui/include/nanogui/imageview.h
-        nanogui/include/nanogui/vscrollpanel.h
-        nanogui/include/nanogui/colorwheel.h
-        nanogui/include/nanogui/colorpicker.h
-        nanogui/include/nanogui/graph.h
-        nanogui/include/nanogui/stackedwidget.h
-        nanogui/include/nanogui/tabheader.h
-        nanogui/include/nanogui/tabwidget.h
-        nanogui/include/nanogui/glcanvas.h
-        nanogui/include/nanogui/formhelper.h
-        nanogui/include/nanogui/toolbutton.h
-        nanogui/include/nanogui/opengl.h
-        nanogui/include/nanogui/nanogui.h
-        nanogui/include/nanogui/serializer/core.h
-        nanogui/include/nanogui/serializer/opengl.h
-        nanogui/include/nanogui/serializer/sparse.h
+#
+#        nanogui/include/nanogui/glutil.h
+#        nanogui/include/nanogui/common.h
+#        nanogui/include/nanogui/widget.h
+#        nanogui/include/nanogui/theme.h
+#        nanogui/include/nanogui/layout.h
+#        nanogui/include/nanogui/screen.h
+#        nanogui/include/nanogui/label.h
+#        nanogui/include/nanogui/window.h
+#        nanogui/include/nanogui/popup.h
+#        nanogui/include/nanogui/checkbox.h
+#        nanogui/include/nanogui/button.h
+#        nanogui/include/nanogui/popupbutton.h
+#        nanogui/include/nanogui/combobox.h
+#        nanogui/include/nanogui/progressbar.h
+#        nanogui/include/nanogui/slider.h
+#        nanogui/include/nanogui/messagedialog.h
+#        nanogui/include/nanogui/textbox.h
+#        nanogui/include/nanogui/imagepanel.h
+#        nanogui/include/nanogui/imageview.h
+#        nanogui/include/nanogui/vscrollpanel.h
+#        nanogui/include/nanogui/colorwheel.h
+#        nanogui/include/nanogui/colorpicker.h
+#        nanogui/include/nanogui/graph.h
+#        nanogui/include/nanogui/stackedwidget.h
+#        nanogui/include/nanogui/tabheader.h
+#        nanogui/include/nanogui/tabwidget.h
+#        nanogui/include/nanogui/glcanvas.h
+#        nanogui/include/nanogui/formhelper.h
+#        nanogui/include/nanogui/toolbutton.h
+#        nanogui/include/nanogui/opengl.h
+#        nanogui/include/nanogui/nanogui.h
+#        nanogui/include/nanogui/serializer/core.h
+#        nanogui/include/nanogui/serializer/opengl.h
+#        nanogui/include/nanogui/serializer/sparse.h
         )
 
+include_directories("nanogui/ext/coro")
+include_directories("nanogui/ext/eigen")
+include_directories("nanogui/ext/nanovg/src")
 include_directories("nanogui/include")
 
 add_executable(${TEST_GAME} ${NANOGUI_SOURCE_FILES} ${TEST_GAME_SOURCE_FILES})

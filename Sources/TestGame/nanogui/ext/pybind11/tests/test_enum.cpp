@@ -45,24 +45,24 @@ test_initializer enums([](py::module &m) {
     m.def("test_scoped_enum", &test_scoped_enum);
 
     py::enum_<UnscopedEnum>(m, "UnscopedEnum", py::arithmetic())
-            .value("EOne", EOne)
-            .value("ETwo", ETwo)
-            .export_values();
+        .value("EOne", EOne)
+        .value("ETwo", ETwo)
+        .export_values();
 
     py::enum_<ScopedEnum>(m, "ScopedEnum", py::arithmetic())
-            .value("Two", ScopedEnum::Two)
-            .value("Three", ScopedEnum::Three);
+        .value("Two", ScopedEnum::Two)
+        .value("Three", ScopedEnum::Three);
 
     py::enum_<Flags>(m, "Flags", py::arithmetic())
-            .value("Read", Flags::Read)
-            .value("Write", Flags::Write)
-            .value("Execute", Flags::Execute)
-            .export_values();
+        .value("Read", Flags::Read)
+        .value("Write", Flags::Write)
+        .value("Execute", Flags::Execute)
+        .export_values();
 
-    py::class_ <ClassWithUnscopedEnum> exenum_class(m, "ClassWithUnscopedEnum");
+    py::class_<ClassWithUnscopedEnum> exenum_class(m, "ClassWithUnscopedEnum");
     exenum_class.def_static("test_function", &ClassWithUnscopedEnum::test_function);
     py::enum_<ClassWithUnscopedEnum::EMode>(exenum_class, "EMode")
-            .value("EFirstMode", ClassWithUnscopedEnum::EFirstMode)
-            .value("ESecondMode", ClassWithUnscopedEnum::ESecondMode)
-            .export_values();
+        .value("EFirstMode", ClassWithUnscopedEnum::EFirstMode)
+        .value("ESecondMode", ClassWithUnscopedEnum::ESecondMode)
+        .export_values();
 });

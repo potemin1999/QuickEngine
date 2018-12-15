@@ -6,9 +6,9 @@
 #include "NowhereSign_01.h"
 #include "Player.h"
 
-//#include "nanogui/nanogui.h"
+#include "nanogui/nanogui.h"
 
-//nanogui::Screen *screen = nullptr;
+nanogui::Screen *screen = nullptr;
 
 std::string strval = "A string";
 bool b = true;
@@ -58,53 +58,53 @@ void initCamera() {
 }
 
 void initGUI() {
-//    screen = new nanogui::Screen(window);
-//    auto gui = new nanogui::FormHelper(screen);
-//    nanogui::ref<nanogui::Window> window1 = gui->addWindow(Eigen::Vector2i(10, 10), "Form helper example");
-//    gui->addGroup("Basic types");
-//    gui->addVariable("String", strval, true);
-//    gui->addVariable("Boolean", b);
-//    gui->addGroup("Other widgets");
-//    gui->addButton("A button", []() {
-//        printf("Gonna output text\n");
-//        printf("Button pressed. String value: %s\n", strval.c_str());
-//    });
-//
-//    class GUIInputReceiver : public InputReceiver {
-//    public:
-//        void onReceiverRegistered() override {
-//            printf("Registered GUI input receiver\n");
-//        }
-//
-//        void onReceiverUnregistered() override {
-//            printf("Unregistered GUI input receiver\n");
-//        }
-//
-//        InputProcessResult onKeyInputEvent(KeyInputEvent *event) override {
-//            screen->keyCallbackEvent(event->keyCode, event->keyCode, event->keyAction, event->mods);
-//
-//            return INPUT_PROCESSED;
-//        }
-//
-//        InputProcessResult onCharInputEvent(CharInputEvent *event) override {
-//            screen->charCallbackEvent(event->codepoint);
-//
-//            return INPUT_PROCESSED;
-//        }
-//
-//        InputProcessResult onMouseInputEvent(MouseInputEvent *event) override {
-//            if (event->action != ACTION_PRESSED)
-//                screen->mouseButtonCallbackEvent(event->button, event->action, event->mods);
-//
-//            return INPUT_PROCESSED;
-//        }
-//    };
-//
-//    engine->inputManager->registerInputReceiver(new GUIInputReceiver);
-//
-//    screen->setVisible(true);
-//    screen->performLayout();
-//    window1->center();
+    screen = new nanogui::Screen(window);
+    auto gui = new nanogui::FormHelper(screen);
+    nanogui::ref<nanogui::Window> window1 = gui->addWindow(Eigen::Vector2i(10, 10), "Form helper example");
+    gui->addGroup("Basic types");
+    gui->addVariable("String", strval, true);
+    gui->addVariable("Boolean", b);
+    gui->addGroup("Other widgets");
+    gui->addButton("A button", []() {
+        printf("Gonna output text\n");
+        printf("Button pressed. String value: %s\n", strval.c_str());
+    });
+
+    class GUIInputReceiver : public InputReceiver {
+    public:
+        void onReceiverRegistered() override {
+            printf("Registered GUI input receiver\n");
+        }
+
+        void onReceiverUnregistered() override {
+            printf("Unregistered GUI input receiver\n");
+        }
+
+        InputProcessResult onKeyInputEvent(KeyInputEvent *event) override {
+            screen->keyCallbackEvent(event->keyCode, event->keyCode, event->keyAction, event->mods);
+
+            return INPUT_PROCESSED;
+        }
+
+        InputProcessResult onCharInputEvent(CharInputEvent *event) override {
+            screen->charCallbackEvent(event->codepoint);
+
+            return INPUT_PROCESSED;
+        }
+
+        InputProcessResult onMouseInputEvent(MouseInputEvent *event) override {
+            if (event->action != ACTION_PRESSED)
+                screen->mouseButtonCallbackEvent(event->button, event->action, event->mods);
+
+            return INPUT_PROCESSED;
+        }
+    };
+
+    engine->inputManager->registerInputReceiver(new GUIInputReceiver);
+
+    screen->setVisible(true);
+    screen->performLayout();
+    window1->center();
 }
 
 void onInit() {
@@ -133,6 +133,6 @@ void onTick(float deltaTime) {
     engine->camera->setPos(engine->camera->getAttachedTo()->getPos() + engine->camera->getOffsetPos());
     engine->tick(deltaTime);
 
-//    screen->cursorPosCallbackEvent(engine->mouseX, engine->mouseY);
-//    screen->drawAll();
+    screen->cursorPosCallbackEvent(engine->mouseX, engine->mouseY);
+    screen->drawAll();
 }

@@ -23,29 +23,24 @@
 #define UNSUPPORTED_EIGEN_CXX11_SRC_TENSOR_TENSORSYCL_EXPR_CONSTRUCTOR_HPP
 
 namespace Eigen {
-    namespace TensorSycl {
-        namespace internal {
+namespace TensorSycl {
+namespace internal {
 
-            template<typename Expr, typename Dims>
-            struct DeviceFixedSizeTensor;
+template <typename Expr, typename Dims>
+struct DeviceFixedSizeTensor;
 
-            template<typename Expr, typename std::ptrdiff_t... Indices>
-            struct DeviceFixedSizeTensor<Expr, Eigen::Sizes<Indices...>> {
-                template<typename Data>
-                static EIGEN_ALWAYS_INLINE Expr
-                instantiate(Data& dt) { return Expr(ConvertToActualTypeSycl(typename Expr::Scalar, dt), Indices...); }
-            };
-
+template <typename Expr, typename std::ptrdiff_t... Indices>
+struct DeviceFixedSizeTensor<Expr, Eigen::Sizes<Indices...>>{
+  template<typename Data>
+  static EIGEN_ALWAYS_INLINE Expr instantiate(Data& dt) {return Expr(ConvertToActualTypeSycl(typename Expr::Scalar, dt), Indices...);}
+};
 /// this class is used by EvalToOp in order to create an lhs expression which is
 /// a pointer from an accessor on device-only buffer
-            template<typename PtrType, size_t N, typename... Params>
-            struct EvalToLHSConstructor {
-                PtrType expr;
-
-                EvalToLHSConstructor(const utility::tuple::Tuple<Params...> &t) : expr(
-                        ConvertToActualTypeSycl(typename Eigen::internal::remove_all<PtrType>::type,
-                                                utility::tuple::get<N>(t))) {}
-            };
+template <typename PtrType, size_t N, typename... Params>
+struct EvalToLHSConstructor {
+  PtrType expr;
+  EvalToLHSConstructor(const utility::tuple::Tuple<Params...> &t) : expr(ConvertToActualTypeSycl(typename Eigen::internal::remove_all<PtrType>::type, utility::tuple::get<N>(t))) {}
+};
 
 /// \struct ExprConstructor is used to reconstruct the expression on the device and
 /// recreate the expression with MakeGlobalPointer containing the device address
@@ -53,8 +48,8 @@ namespace Eigen {
 /// It receives the original expression type, the functor of the node, the tuple
 /// of accessors, and the device expression type to re-instantiate the
 /// expression tree for the device
-            template<typename OrigExpr, typename IndexExpr, typename... Params>
-            struct ExprConstructor;
+template <typename OrigExpr, typename IndexExpr, typename... Params>
+struct ExprConstructor;
 
 /// specialisation of the \ref ExprConstructor struct when the node type is
 /// TensorMap
@@ -71,9 +66,8 @@ CVQual PlaceHolder<CVQual TensorMap<T, Options_, MakePointer_>, N>, Params...>{\
 };
 
 
-            TENSORMAP(const)
-
-        TENSORMAP()
+TENSORMAP(const)
+TENSORMAP()
 #undef TENSORMAP
 
 /// specialisation of the \ref ExprConstructor struct when the node type is
@@ -89,10 +83,8 @@ CVQual PlaceHolder<CVQual TensorMap<TensorFixedSize<Scalar_, Dimensions_, Option
   ExprConstructor(FuncDetector &, const utility::tuple::Tuple<Params...> &t)\
   : expr(DeviceFixedSizeTensor<Type,Dimensions_>::instantiate(utility::tuple::get<N>(t))){}\
 };
-
-        TENSORMAPFIXEDSIZE(const)
-
-    TENSORMAPFIXEDSIZE()
+TENSORMAPFIXEDSIZE(const)
+TENSORMAPFIXEDSIZE()
 #undef TENSORMAPFIXEDSIZE
 
 #define UNARYCATEGORY(CVQual)\
@@ -107,10 +99,8 @@ struct ExprConstructor<CVQual UnaryCategory<OP, OrigRHSExpr>, CVQual UnaryCatego
   : rhsExpr(funcD.rhsExpr, t), expr(rhsExpr.expr, funcD.func) {}\
 };
 
-    UNARYCATEGORY(const)
-
-    UNARYCATEGORY()
-
+UNARYCATEGORY(const)
+UNARYCATEGORY()
 #undef UNARYCATEGORY
 
 /// specialisation of the \ref ExprConstructor struct when the node type is
@@ -130,10 +120,8 @@ struct ExprConstructor<CVQual BinaryCategory<OP, OrigLHSExpr, OrigRHSExpr>,  CVQ
   : lhsExpr(funcD.lhsExpr, t),rhsExpr(funcD.rhsExpr, t), expr(lhsExpr.expr, rhsExpr.expr, funcD.func) {}\
 };
 
-    BINARYCATEGORY(const)
-
-    BINARYCATEGORY()
-
+BINARYCATEGORY(const)
+BINARYCATEGORY()
 #undef BINARYCATEGORY
 
 /// specialisation of the \ref ExprConstructor struct when the node type is
@@ -155,10 +143,8 @@ struct ExprConstructor<CVQual TernaryCategory<OP, OrigArg1Expr, OrigArg2Expr, Or
   : arg1Expr(funcD.arg1Expr, t), arg2Expr(funcD.arg2Expr, t), arg3Expr(funcD.arg3Expr, t), expr(arg1Expr.expr, arg2Expr.expr, arg3Expr.expr, funcD.func) {}\
 };
 
-    TERNARYCATEGORY(const)
-
-    TERNARYCATEGORY()
-
+TERNARYCATEGORY(const)
+TERNARYCATEGORY()
 #undef TERNARYCATEGORY
 
 /// specialisation of the \ref ExprConstructor struct when the node type is
@@ -179,8 +165,7 @@ struct ExprConstructor< CVQual TensorSelectOp<OrigIfExpr, OrigThenExpr, OrigElse
   : ifExpr(funcD.ifExpr, t), thenExpr(funcD.thenExpr, t), elseExpr(funcD.elseExpr, t), expr(ifExpr.expr, thenExpr.expr, elseExpr.expr) {}\
 };
 
-    SELECTOP(const)
-
+SELECTOP(const)
 SELECTOP()
 #undef SELECTOP
 
@@ -200,17 +185,16 @@ struct ExprConstructor<CVQual TensorAssignOp<OrigLHSExpr, OrigRHSExpr>,  CVQual 
   : lhsExpr(funcD.lhsExpr, t), rhsExpr(funcD.rhsExpr, t), expr(lhsExpr.expr, rhsExpr.expr) {}\
  };
 
-ASSIGN(const)
-
-ASSIGN()
-#undef ASSIGN
-
+ ASSIGN(const)
+ ASSIGN()
+ #undef ASSIGN
 
 
 
-/// specialisation of the \ref ExprConstructor struct when the node type is
-/// const TensorAssignOp
-#define CONVERSIONEXPRCONST(CVQual)\
+
+ /// specialisation of the \ref ExprConstructor struct when the node type is
+ /// const TensorAssignOp
+ #define CONVERSIONEXPRCONST(CVQual)\
  template <typename OrigNestedExpr, typename ConvertType, typename NestedExpr, typename... Params>\
  struct ExprConstructor<CVQual TensorConversionOp<ConvertType, OrigNestedExpr>,  CVQual TensorConversionOp<ConvertType, NestedExpr>, Params...> {\
    typedef ExprConstructor<OrigNestedExpr, NestedExpr, Params...> my_nested_type;\
@@ -222,10 +206,9 @@ ASSIGN()
    : nestedExpr(funcD.subExpr, t), expr(nestedExpr.expr) {}\
   };
 
-CONVERSIONEXPRCONST(const)
-
-CONVERSIONEXPRCONST()
-#undef CONVERSIONEXPRCONST
+  CONVERSIONEXPRCONST(const)
+  CONVERSIONEXPRCONST()
+  #undef CONVERSIONEXPRCONST
 
 /// specialisation of the \ref ExprConstructor struct when the node type is
 ///  TensorEvalToOp /// 0 here is the output number in the buffer
@@ -244,7 +227,6 @@ struct ExprConstructor<CVQual TensorEvalToOp<OrigExpr, MakeGlobalPointer>, CVQua
 };
 
 EVALTO(const)
-
 EVALTO()
 #undef EVALTO
 
@@ -263,17 +245,14 @@ CVQual PlaceHolder<CVQual TensorForcedEvalOp<DevExpr>, N>, Params...> {\
 };
 
 FORCEDEVAL(const)
-
 FORCEDEVAL()
 #undef FORCEDEVAL
 
-template<bool Conds, size_t X, size_t Y>
-struct ValueCondition {
-    static const size_t Res = X;
+template <bool Conds,  size_t X , size_t Y > struct ValueCondition {
+  static const size_t Res =X;
 };
-template<size_t X, size_t Y>
-struct ValueCondition<false, X, Y> {
-    static const size_t Res = Y;
+template<size_t X, size_t Y> struct ValueCondition<false, X , Y> {
+  static const size_t Res =Y;
 };
 
 /// specialisation of the \ref ExprConstructor struct when the node type is TensorReductionOp
@@ -291,7 +270,6 @@ CVQual PlaceHolder<CVQual TensorReductionOp<OP, Dim, DevExpr>, N>, Params...> {\
 };
 
 SYCLREDUCTIONEXPR(const)
-
 SYCLREDUCTIONEXPR()
 #undef SYCLREDUCTIONEXPR
 
@@ -314,13 +292,11 @@ CVQual PlaceHolder<CVQual ExprNode<Indices, LhsXprType,  RhsXprType>, N>, Params
 };
 
 SYCLCONTRACTIONCONVOLUTION(const, TensorContractionOp)
-
 SYCLCONTRACTIONCONVOLUTION(, TensorContractionOp)
-
 SYCLCONTRACTIONCONVOLUTION(const, TensorConvolutionOp)
-
 SYCLCONTRACTIONCONVOLUTION(, TensorConvolutionOp)
 #undef SYCLCONTRACTIONCONVOLUTION
+
 
 
 #define SYCLSLICEOPEXPR(CVQual)\
@@ -336,7 +312,6 @@ struct ExprConstructor<CVQual TensorSlicingOp <StartIndices, Sizes, OrigXprType>
 };
 
 SYCLSLICEOPEXPR(const)
-
 SYCLSLICEOPEXPR()
 #undef SYCLSLICEOPEXPR
 
@@ -354,7 +329,6 @@ struct ExprConstructor<CVQual TensorStridingSlicingOp<StartIndices, StopIndices,
 };
 
 SYCLSLICESTRIDEOPEXPR(const)
-
 SYCLSLICESTRIDEOPEXPR()
 #undef SYCLSLICESTRIDEOPEXPR
 
@@ -371,12 +345,10 @@ struct ExprConstructor<CVQual OPEXPR <Param, OrigXprType> , CVQual OPEXPR <Param
 };
 
 SYCLRESHAPEANDSHUFFLEOPEXPRCONST(TensorReshapingOp, const)
-
-SYCLRESHAPEANDSHUFFLEOPEXPRCONST(TensorReshapingOp,)
+SYCLRESHAPEANDSHUFFLEOPEXPRCONST(TensorReshapingOp, )
 
 SYCLRESHAPEANDSHUFFLEOPEXPRCONST(TensorShufflingOp, const)
-
-SYCLRESHAPEANDSHUFFLEOPEXPRCONST(TensorShufflingOp,)
+SYCLRESHAPEANDSHUFFLEOPEXPRCONST(TensorShufflingOp, )
 #undef SYCLRESHAPEANDSHUFFLEOPEXPRCONST
 
 #define SYCLPADDINGOPEXPRCONST(OPEXPR, CVQual)\
@@ -392,8 +364,7 @@ struct ExprConstructor<CVQual OPEXPR <Param, OrigXprType> , CVQual OPEXPR <Param
 };
 
 SYCLPADDINGOPEXPRCONST(TensorPaddingOp, const)
-
-SYCLPADDINGOPEXPRCONST(TensorPaddingOp,)
+SYCLPADDINGOPEXPRCONST(TensorPaddingOp, )
 #undef SYCLPADDINGOPEXPRCONST
 
 
@@ -411,20 +382,15 @@ struct ExprConstructor<CVQual TensorChippingOp <DimId, OrigXprType> , CVQual Ten
 };
 
 SYCLTENSORCHIPPINGOPEXPR(const)
-
 SYCLTENSORCHIPPINGOPEXPR()
 #undef SYCLTENSORCHIPPINGOPEXPR
 
 
 /// template deduction for \ref ExprConstructor struct
-template<typename OrigExpr, typename IndexExpr, typename FuncD, typename... Params>
+template <typename OrigExpr, typename IndexExpr, typename FuncD, typename... Params>
 auto createDeviceExpression(FuncD &funcD, const utility::tuple::Tuple<Params...> &t)
--> decltype(ExprConstructor < OrigExpr, IndexExpr, Params...
-
->(funcD, t)) {
-return
-ExprConstructor<OrigExpr, IndexExpr, Params...>(funcD, t
-);
+    -> decltype(ExprConstructor<OrigExpr, IndexExpr, Params...>(funcD, t)) {
+  return ExprConstructor<OrigExpr, IndexExpr, Params...>(funcD, t);
 }
 
 } /// namespace TensorSycl

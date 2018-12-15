@@ -20,49 +20,25 @@ typedef const Block<const Derived, 1, internal::traits<Derived>::ColsAtCompileTi
 typedef Block<Derived, internal::traits<Derived>::RowsAtCompileTime, Dynamic, !IsRowMajor> ColsBlockXpr;
 typedef const Block<const Derived, internal::traits<Derived>::RowsAtCompileTime, Dynamic, !IsRowMajor> ConstColsBlockXpr;
 /// \internal expression type of a block of whole rows */
-typedef Block <Derived, Dynamic, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> RowsBlockXpr;
+typedef Block<Derived, Dynamic, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> RowsBlockXpr;
 typedef const Block<const Derived, Dynamic, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> ConstRowsBlockXpr;
 /// \internal expression type of a block of whole columns */
-template<int N>
-struct NColsBlockXpr {
-    typedef Block<Derived, internal::traits<Derived>::RowsAtCompileTime, N, !IsRowMajor> Type;
-};
-template<int N>
-struct ConstNColsBlockXpr {
-    typedef const Block<const Derived, internal::traits<Derived>::RowsAtCompileTime, N, !IsRowMajor> Type;
-};
+template<int N> struct NColsBlockXpr { typedef Block<Derived, internal::traits<Derived>::RowsAtCompileTime, N, !IsRowMajor> Type; };
+template<int N> struct ConstNColsBlockXpr { typedef const Block<const Derived, internal::traits<Derived>::RowsAtCompileTime, N, !IsRowMajor> Type; };
 /// \internal expression type of a block of whole rows */
-template<int N>
-struct NRowsBlockXpr {
-    typedef Block <Derived, N, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> Type;
-};
-template<int N>
-struct ConstNRowsBlockXpr {
-    typedef const Block<const Derived, N, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> Type;
-};
+template<int N> struct NRowsBlockXpr { typedef Block<Derived, N, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> Type; };
+template<int N> struct ConstNRowsBlockXpr { typedef const Block<const Derived, N, internal::traits<Derived>::ColsAtCompileTime, IsRowMajor> Type; };
 /// \internal expression of a block */
-typedef Block <Derived> BlockXpr;
+typedef Block<Derived> BlockXpr;
 typedef const Block<const Derived> ConstBlockXpr;
 /// \internal expression of a block of fixed sizes */
-template<int Rows, int Cols>
-struct FixedBlockXpr {
-    typedef Block <Derived, Rows, Cols> Type;
-};
-template<int Rows, int Cols>
-struct ConstFixedBlockXpr {
-    typedef Block<const Derived, Rows, Cols> Type;
-};
+template<int Rows, int Cols> struct FixedBlockXpr { typedef Block<Derived,Rows,Cols> Type; };
+template<int Rows, int Cols> struct ConstFixedBlockXpr { typedef Block<const Derived,Rows,Cols> Type; };
 
-typedef VectorBlock <Derived> SegmentReturnType;
+typedef VectorBlock<Derived> SegmentReturnType;
 typedef const VectorBlock<const Derived> ConstSegmentReturnType;
-template<int Size>
-struct FixedSegmentReturnType {
-    typedef VectorBlock <Derived, Size> Type;
-};
-template<int Size>
-struct ConstFixedSegmentReturnType {
-    typedef const VectorBlock<const Derived, Size> Type;
-};
+template<int Size> struct FixedSegmentReturnType { typedef VectorBlock<Derived, Size> Type; };
+template<int Size> struct ConstFixedSegmentReturnType { typedef const VectorBlock<const Derived, Size> Type; };
 
 #endif // not EIGEN_PARSED_BY_DOXYGEN
 
@@ -105,46 +81,28 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename FixedBlockXpr<...,...>::Type
 #endif
-block(Index
-startRow,
-Index startCol, NRowsType
-blockRows,
-NColsType blockCols
-)
+block(Index startRow, Index startCol, NRowsType blockRows, NColsType blockCols)
 {
-return
-
-typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type(
-        derived(), startRow, startCol, internal::get_runtime_value(blockRows), internal::get_runtime_value(blockCols)
-
-);
+  return typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type(
+            derived(), startRow, startCol, internal::get_runtime_value(blockRows), internal::get_runtime_value(blockCols));
 }
 
 /// This is the const version of block(Index,Index,NRowsType,NColsType)
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline const typename ConstFixedBlockXpr<...,...>::Type
 #endif
-block(Index
-startRow,
-Index startCol, NRowsType
-blockRows,
-NColsType blockCols
-) const
+block(Index startRow, Index startCol, NRowsType blockRows, NColsType blockCols) const
 {
-return
-
-typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type(
-        derived(), startRow, startCol, internal::get_runtime_value(blockRows), internal::get_runtime_value(blockCols)
-
-);
+  return typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type(
+            derived(), startRow, startCol, internal::get_runtime_value(blockRows), internal::get_runtime_value(blockCols));
 }
 
 
@@ -169,54 +127,28 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename FixedBlockXpr<...,...>::Type
 #endif
-topRightCorner(NRowsType
-cRows,
-NColsType cCols
-)
+topRightCorner(NRowsType cRows, NColsType cCols)
 {
-return
-
-typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0,
-
-cols()
-
--
-internal::get_runtime_value(cCols), internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, cols() - internal::get_runtime_value(cCols), internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// This is the const version of topRightCorner(NRowsType, NColsType).
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline const typename ConstFixedBlockXpr<...,...>::Type
 #endif
-topRightCorner(NRowsType
-cRows,
-NColsType cCols
-) const
+topRightCorner(NRowsType cRows, NColsType cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0,
-
-cols()
-
--
-internal::get_runtime_value(cCols), internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, cols() - internal::get_runtime_value(cCols), internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// \returns an expression of a fixed-size top-right corner of \c *this.
@@ -233,19 +165,17 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 ///
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline typename FixedBlockXpr<CRows, CCols>::Type
-
-topRightCorner() {
-    return typename FixedBlockXpr<CRows, CCols>::Type(derived(), 0, cols() - CCols);
+inline typename FixedBlockXpr<CRows,CCols>::Type topRightCorner()
+{
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), 0, cols() - CCols);
 }
 
 /// This is the const version of topRightCorner<int, int>().
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type
-
-topRightCorner() const {
-    return typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), 0, cols() - CCols);
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type topRightCorner() const
+{
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), 0, cols() - CCols);
 }
 
 /// \returns an expression of a top-right corner of \c *this.
@@ -268,38 +198,16 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 /// \sa class Block
 ///
 template<int CRows, int CCols>
-inline typename FixedBlockXpr<CRows, CCols>::Type topRightCorner(Index
-cRows,
-Index cCols
-)
+inline typename FixedBlockXpr<CRows,CCols>::Type topRightCorner(Index cRows, Index cCols)
 {
-return
-
-typename FixedBlockXpr<CRows, CCols>::Type(derived(),
-
-0,
-
-cols()
-
-- cCols, cRows, cCols);
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), 0, cols() - cCols, cRows, cCols);
 }
 
 /// This is the const version of topRightCorner<int, int>(Index, Index).
 template<int CRows, int CCols>
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type topRightCorner(Index
-cRows,
-Index cCols
-) const
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type topRightCorner(Index cRows, Index cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(),
-
-0,
-
-cols()
-
-- cCols, cRows, cCols);
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), 0, cols() - cCols, cRows, cCols);
 }
 
 
@@ -324,46 +232,28 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename FixedBlockXpr<...,...>::Type
 #endif
-topLeftCorner(NRowsType
-cRows,
-NColsType cCols
-)
+topLeftCorner(NRowsType cRows, NColsType cCols)
 {
-return
-
-typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0, 0,
-internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, 0, internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// This is the const version of topLeftCorner(Index, Index).
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline const typename ConstFixedBlockXpr<...,...>::Type
 #endif
-topLeftCorner(NRowsType
-cRows,
-NColsType cCols
-) const
+topLeftCorner(NRowsType cRows, NColsType cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0, 0,
-internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, 0, internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// \returns an expression of a fixed-size top-left corner of \c *this.
@@ -379,19 +269,17 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 ///
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline typename FixedBlockXpr<CRows, CCols>::Type
-
-topLeftCorner() {
-    return typename FixedBlockXpr<CRows, CCols>::Type(derived(), 0, 0);
+inline typename FixedBlockXpr<CRows,CCols>::Type topLeftCorner()
+{
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), 0, 0);
 }
 
 /// This is the const version of topLeftCorner<int, int>().
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type
-
-topLeftCorner() const {
-    return typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), 0, 0);
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type topLeftCorner() const
+{
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), 0, 0);
 }
 
 /// \returns an expression of a top-left corner of \c *this.
@@ -414,30 +302,16 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 /// \sa class Block
 ///
 template<int CRows, int CCols>
-inline typename FixedBlockXpr<CRows, CCols>::Type topLeftCorner(Index
-cRows,
-Index cCols
-)
+inline typename FixedBlockXpr<CRows,CCols>::Type topLeftCorner(Index cRows, Index cCols)
 {
-return
-
-typename FixedBlockXpr<CRows, CCols>::Type(derived(),
-
-0, 0, cRows, cCols);
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), 0, 0, cRows, cCols);
 }
 
 /// This is the const version of topLeftCorner<int, int>(Index, Index).
 template<int CRows, int CCols>
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type topLeftCorner(Index
-cRows,
-Index cCols
-) const
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type topLeftCorner(Index cRows, Index cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(),
-
-0, 0, cRows, cCols);
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), 0, 0, cRows, cCols);
 }
 
 
@@ -462,52 +336,30 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename FixedBlockXpr<...,...>::Type
 #endif
-bottomRightCorner(NRowsType
-cRows,
-NColsType cCols
-)
+bottomRightCorner(NRowsType cRows, NColsType cCols)
 {
-return
-
-typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(), rows()
-
--
-internal::get_runtime_value(cRows), cols()
--
-internal::get_runtime_value(cCols),
-        internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), rows() - internal::get_runtime_value(cRows), cols() - internal::get_runtime_value(cCols),
+                        internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// This is the const version of bottomRightCorner(NRowsType, NColsType).
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline const typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline const typename ConstFixedBlockXpr<...,...>::Type
 #endif
-bottomRightCorner(NRowsType
-cRows,
-NColsType cCols
-) const
+bottomRightCorner(NRowsType cRows, NColsType cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(), rows()
-
--
-internal::get_runtime_value(cRows), cols()
--
-internal::get_runtime_value(cCols),
-        internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), rows() - internal::get_runtime_value(cRows), cols() - internal::get_runtime_value(cCols),
+                        internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// \returns an expression of a fixed-size bottom-right corner of \c *this.
@@ -523,19 +375,17 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 ///
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline typename FixedBlockXpr<CRows, CCols>::Type
-
-bottomRightCorner() {
-    return typename FixedBlockXpr<CRows, CCols>::Type(derived(), rows() - CRows, cols() - CCols);
+inline typename FixedBlockXpr<CRows,CCols>::Type bottomRightCorner()
+{
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), rows() - CRows, cols() - CCols);
 }
 
 /// This is the const version of bottomRightCorner<int, int>().
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type
-
-bottomRightCorner() const {
-    return typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), rows() - CRows, cols() - CCols);
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type bottomRightCorner() const
+{
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), rows() - CRows, cols() - CCols);
 }
 
 /// \returns an expression of a bottom-right corner of \c *this.
@@ -558,38 +408,16 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 /// \sa class Block
 ///
 template<int CRows, int CCols>
-inline typename FixedBlockXpr<CRows, CCols>::Type bottomRightCorner(Index
-cRows,
-Index cCols
-)
+inline typename FixedBlockXpr<CRows,CCols>::Type bottomRightCorner(Index cRows, Index cCols)
 {
-return
-
-typename FixedBlockXpr<CRows, CCols>::Type(derived(), rows()
-
-- cRows,
-
-cols()
-
-- cCols, cRows, cCols);
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), rows() - cRows, cols() - cCols, cRows, cCols);
 }
 
 /// This is the const version of bottomRightCorner<int, int>(Index, Index).
 template<int CRows, int CCols>
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type bottomRightCorner(Index
-cRows,
-Index cCols
-) const
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type bottomRightCorner(Index cRows, Index cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), rows()
-
-- cRows,
-
-cols()
-
-- cCols, cRows, cCols);
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), rows() - cRows, cols() - cCols, cRows, cCols);
 }
 
 
@@ -614,50 +442,30 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename FixedBlockXpr<...,...>::Type
 #endif
-bottomLeftCorner(NRowsType
-cRows,
-NColsType cCols
-)
+bottomLeftCorner(NRowsType cRows, NColsType cCols)
 {
-return
-
-typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(), rows()
-
--
-internal::get_runtime_value(cRows),
-0,
-internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename FixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), rows() - internal::get_runtime_value(cRows), 0,
+                        internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// This is the const version of bottomLeftCorner(NRowsType, NColsType).
 template<typename NRowsType, typename NColsType>
 EIGEN_DEVICE_FUNC
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-inline typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
+inline typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename ConstFixedBlockXpr<...,...>::Type
 #endif
-bottomLeftCorner(NRowsType
-cRows,
-NColsType cCols
-) const
+bottomLeftCorner(NRowsType cRows, NColsType cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value, internal::get_fixed_value<NColsType>::value>::Type
-(derived(), rows()
-
--
-internal::get_runtime_value(cRows),
-0,
-internal::get_runtime_value(cRows), internal::get_runtime_value(cCols)
-);
+  return typename ConstFixedBlockXpr<internal::get_fixed_value<NRowsType>::value,internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), rows() - internal::get_runtime_value(cRows), 0,
+                        internal::get_runtime_value(cRows), internal::get_runtime_value(cCols));
 }
 
 /// \returns an expression of a fixed-size bottom-left corner of \c *this.
@@ -673,19 +481,17 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 ///
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline typename FixedBlockXpr<CRows, CCols>::Type
-
-bottomLeftCorner() {
-    return typename FixedBlockXpr<CRows, CCols>::Type(derived(), rows() - CRows, 0);
+inline typename FixedBlockXpr<CRows,CCols>::Type bottomLeftCorner()
+{
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), rows() - CRows, 0);
 }
 
 /// This is the const version of bottomLeftCorner<int, int>().
 template<int CRows, int CCols>
 EIGEN_DEVICE_FUNC
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type
-
-bottomLeftCorner() const {
-    return typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), rows() - CRows, 0);
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type bottomLeftCorner() const
+{
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), rows() - CRows, 0);
 }
 
 /// \returns an expression of a bottom-left corner of \c *this.
@@ -708,31 +514,18 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 /// \sa class Block
 ///
 template<int CRows, int CCols>
-inline typename FixedBlockXpr<CRows, CCols>::Type bottomLeftCorner(Index
-cRows,
-Index cCols
-)
+inline typename FixedBlockXpr<CRows,CCols>::Type bottomLeftCorner(Index cRows, Index cCols)
 {
-return
-
-typename FixedBlockXpr<CRows, CCols>::Type(derived(), rows()
-
-- cRows, 0, cRows, cCols);
+  return typename FixedBlockXpr<CRows,CCols>::Type(derived(), rows() - cRows, 0, cRows, cCols);
 }
 
 /// This is the const version of bottomLeftCorner<int, int>(Index, Index).
 template<int CRows, int CCols>
-inline const typename ConstFixedBlockXpr<CRows, CCols>::Type bottomLeftCorner(Index
-cRows,
-Index cCols
-) const
+inline const typename ConstFixedBlockXpr<CRows,CCols>::Type bottomLeftCorner(Index cRows, Index cCols) const
 {
-return
-
-typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), rows()
-
-- cRows, 0, cRows, cCols);
+  return typename ConstFixedBlockXpr<CRows,CCols>::Type(derived(), rows() - cRows, 0, cRows, cCols);
 }
+
 
 
 /// \returns a block consisting of the top rows of \c *this.
@@ -747,8 +540,7 @@ typename ConstFixedBlockXpr<CRows, CCols>::Type(derived(), rows()
 /// or Eigen::fix<N>(n) as arguments.
 /// See \link block(Index,Index,NRowsType,NColsType) block() \endlink for the details.
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
@@ -759,17 +551,10 @@ inline typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
 #else
 inline typename NRowsBlockXpr<...>::Type
 #endif
-topRows(NRowsType
-n)
+topRows(NRowsType n)
 {
-return
-
-typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
-(derived(),
-
-0, 0,
-internal::get_runtime_value(n), cols()
-);
+  return typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
+            (derived(), 0, 0, internal::get_runtime_value(n), cols());
 }
 
 /// This is the const version of topRows(NRowsType).
@@ -780,17 +565,10 @@ inline const typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::v
 #else
 inline const typename ConstNRowsBlockXpr<...>::Type
 #endif
-topRows(NRowsType
-n) const
+topRows(NRowsType n) const
 {
-return
-
-typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
-(derived(),
-
-0, 0,
-internal::get_runtime_value(n), cols()
-);
+  return typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
+            (derived(), 0, 0, internal::get_runtime_value(n), cols());
 }
 
 /// \returns a block consisting of the top rows of \c *this.
@@ -804,47 +582,25 @@ internal::get_runtime_value(n), cols()
 /// Example: \include MatrixBase_template_int_topRows.cpp
 /// Output: \verbinclude MatrixBase_template_int_topRows.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename NRowsBlockXpr<N>::Type
-topRows(Index
-n = N
-)
+inline typename NRowsBlockXpr<N>::Type topRows(Index n = N)
 {
-return
-
-typename NRowsBlockXpr<N>::Type(derived(),
-
-0, 0, n,
-
-cols()
-
-);
+  return typename NRowsBlockXpr<N>::Type(derived(), 0, 0, n, cols());
 }
 
 /// This is the const version of topRows<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstNRowsBlockXpr<N>::Type
-topRows(Index
-n = N
-) const
+inline typename ConstNRowsBlockXpr<N>::Type topRows(Index n = N) const
 {
-return
-
-typename ConstNRowsBlockXpr<N>::Type(derived(),
-
-0, 0, n,
-
-cols()
-
-);
+  return typename ConstNRowsBlockXpr<N>::Type(derived(), 0, 0, n, cols());
 }
+
 
 
 /// \returns a block consisting of the bottom rows of \c *this.
@@ -859,8 +615,7 @@ cols()
 /// or Eigen::fix<N>(n) as arguments.
 /// See \link block(Index,Index,NRowsType,NColsType) block() \endlink for the details.
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
@@ -871,19 +626,10 @@ inline typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
 #else
 inline typename NRowsBlockXpr<...>::Type
 #endif
-bottomRows(NRowsType
-n)
+bottomRows(NRowsType n)
 {
-return
-
-typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
-(derived(), rows()
-
--
-internal::get_runtime_value(n),
-0,
-internal::get_runtime_value(n), cols()
-);
+  return typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
+            (derived(), rows() - internal::get_runtime_value(n), 0, internal::get_runtime_value(n), cols());
 }
 
 /// This is the const version of bottomRows(NRowsType).
@@ -894,19 +640,10 @@ inline const typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::v
 #else
 inline const typename ConstNRowsBlockXpr<...>::Type
 #endif
-bottomRows(NRowsType
-n) const
+bottomRows(NRowsType n) const
 {
-return
-
-typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
-(derived(), rows()
-
--
-internal::get_runtime_value(n),
-0,
-internal::get_runtime_value(n), cols()
-);
+  return typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
+            (derived(), rows() - internal::get_runtime_value(n), 0, internal::get_runtime_value(n), cols());
 }
 
 /// \returns a block consisting of the bottom rows of \c *this.
@@ -920,47 +657,25 @@ internal::get_runtime_value(n), cols()
 /// Example: \include MatrixBase_template_int_bottomRows.cpp
 /// Output: \verbinclude MatrixBase_template_int_bottomRows.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename NRowsBlockXpr<N>::Type
-bottomRows(Index
-n = N
-)
+inline typename NRowsBlockXpr<N>::Type bottomRows(Index n = N)
 {
-return
-
-typename NRowsBlockXpr<N>::Type(derived(), rows()
-
-- n, 0, n,
-
-cols()
-
-);
+  return typename NRowsBlockXpr<N>::Type(derived(), rows() - n, 0, n, cols());
 }
 
 /// This is the const version of bottomRows<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstNRowsBlockXpr<N>::Type
-bottomRows(Index
-n = N
-) const
+inline typename ConstNRowsBlockXpr<N>::Type bottomRows(Index n = N) const
 {
-return
-
-typename ConstNRowsBlockXpr<N>::Type(derived(), rows()
-
-- n, 0, n,
-
-cols()
-
-);
+  return typename ConstNRowsBlockXpr<N>::Type(derived(), rows() - n, 0, n, cols());
 }
+
 
 
 /// \returns a block consisting of a range of rows of \c *this.
@@ -976,8 +691,7 @@ cols()
 /// or Eigen::fix<N>(n) as arguments.
 /// See \link block(Index,Index,NRowsType,NColsType) block() \endlink for the details.
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
@@ -988,19 +702,10 @@ inline typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
 #else
 inline typename NRowsBlockXpr<...>::Type
 #endif
-middleRows(Index
-startRow,
-NRowsType n
-)
+middleRows(Index startRow, NRowsType n)
 {
-return
-
-typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
-(derived(), startRow,
-
-0,
-internal::get_runtime_value(n), cols()
-);
+  return typename NRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
+            (derived(), startRow, 0, internal::get_runtime_value(n), cols());
 }
 
 /// This is the const version of middleRows(Index,NRowsType).
@@ -1011,19 +716,10 @@ inline const typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::v
 #else
 inline const typename ConstNRowsBlockXpr<...>::Type
 #endif
-middleRows(Index
-startRow,
-NRowsType n
-) const
+middleRows(Index startRow, NRowsType n) const
 {
-return
-
-typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
-(derived(), startRow,
-
-0,
-internal::get_runtime_value(n), cols()
-);
+  return typename ConstNRowsBlockXpr<internal::get_fixed_value<NRowsType>::value>::Type
+            (derived(), startRow, 0, internal::get_runtime_value(n), cols());
 }
 
 /// \returns a block consisting of a range of rows of \c *this.
@@ -1038,49 +734,25 @@ internal::get_runtime_value(n), cols()
 /// Example: \include DenseBase_template_int_middleRows.cpp
 /// Output: \verbinclude DenseBase_template_int_middleRows.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename NRowsBlockXpr<N>::Type
-middleRows(Index
-startRow,
-Index n = N
-)
+inline typename NRowsBlockXpr<N>::Type middleRows(Index startRow, Index n = N)
 {
-return
-
-typename NRowsBlockXpr<N>::Type(derived(), startRow,
-
-0, n,
-
-cols()
-
-);
+  return typename NRowsBlockXpr<N>::Type(derived(), startRow, 0, n, cols());
 }
 
 /// This is the const version of middleRows<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstNRowsBlockXpr<N>::Type
-middleRows(Index
-startRow,
-Index n = N
-) const
+inline typename ConstNRowsBlockXpr<N>::Type middleRows(Index startRow, Index n = N) const
 {
-return
-
-typename ConstNRowsBlockXpr<N>::Type(derived(), startRow,
-
-0, n,
-
-cols()
-
-);
+  return typename ConstNRowsBlockXpr<N>::Type(derived(), startRow, 0, n, cols());
 }
+
 
 
 /// \returns a block consisting of the left columns of \c *this.
@@ -1095,8 +767,7 @@ cols()
 /// or Eigen::fix<N>(n) as arguments.
 /// See \link block(Index,Index,NRowsType,NColsType) block() \endlink for the details.
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
@@ -1107,19 +778,10 @@ inline typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename NColsBlockXpr<...>::Type
 #endif
-leftCols(NColsType
-n)
+leftCols(NColsType n)
 {
-return
-
-typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0, 0,
-
-rows(), internal::get_runtime_value(n)
-
-);
+  return typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, 0, rows(), internal::get_runtime_value(n));
 }
 
 /// This is the const version of leftCols(NColsType).
@@ -1130,19 +792,10 @@ inline const typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::v
 #else
 inline const typename ConstNColsBlockXpr<...>::Type
 #endif
-leftCols(NColsType
-n) const
+leftCols(NColsType n) const
 {
-return
-
-typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0, 0,
-
-rows(), internal::get_runtime_value(n)
-
-);
+  return typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, 0, rows(), internal::get_runtime_value(n));
 }
 
 /// \returns a block consisting of the left columns of \c *this.
@@ -1156,47 +809,25 @@ rows(), internal::get_runtime_value(n)
 /// Example: \include MatrixBase_template_int_leftCols.cpp
 /// Output: \verbinclude MatrixBase_template_int_leftCols.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename NColsBlockXpr<N>::Type
-leftCols(Index
-n = N
-)
+inline typename NColsBlockXpr<N>::Type leftCols(Index n = N)
 {
-return
-
-typename NColsBlockXpr<N>::Type(derived(),
-
-0, 0,
-
-rows(), n
-
-);
+  return typename NColsBlockXpr<N>::Type(derived(), 0, 0, rows(), n);
 }
 
 /// This is the const version of leftCols<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstNColsBlockXpr<N>::Type
-leftCols(Index
-n = N
-) const
+inline typename ConstNColsBlockXpr<N>::Type leftCols(Index n = N) const
 {
-return
-
-typename ConstNColsBlockXpr<N>::Type(derived(),
-
-0, 0,
-
-rows(), n
-
-);
+  return typename ConstNColsBlockXpr<N>::Type(derived(), 0, 0, rows(), n);
 }
+
 
 
 /// \returns a block consisting of the right columns of \c *this.
@@ -1211,8 +842,7 @@ rows(), n
 /// or Eigen::fix<N>(n) as arguments.
 /// See \link block(Index,Index,NRowsType,NColsType) block() \endlink for the details.
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
@@ -1223,21 +853,10 @@ inline typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename NColsBlockXpr<...>::Type
 #endif
-rightCols(NColsType
-n)
+rightCols(NColsType n)
 {
-return
-
-typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0,
-
-cols()
-
--
-internal::get_runtime_value(n), rows(), internal::get_runtime_value(n)
-);
+  return typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, cols() - internal::get_runtime_value(n), rows(), internal::get_runtime_value(n));
 }
 
 /// This is the const version of rightCols(NColsType).
@@ -1248,21 +867,10 @@ inline const typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::v
 #else
 inline const typename ConstNColsBlockXpr<...>::Type
 #endif
-rightCols(NColsType
-n) const
+rightCols(NColsType n) const
 {
-return
-
-typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0,
-
-cols()
-
--
-internal::get_runtime_value(n), rows(), internal::get_runtime_value(n)
-);
+  return typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, cols() - internal::get_runtime_value(n), rows(), internal::get_runtime_value(n));
 }
 
 /// \returns a block consisting of the right columns of \c *this.
@@ -1276,55 +884,25 @@ internal::get_runtime_value(n), rows(), internal::get_runtime_value(n)
 /// Example: \include MatrixBase_template_int_rightCols.cpp
 /// Output: \verbinclude MatrixBase_template_int_rightCols.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename NColsBlockXpr<N>::Type
-rightCols(Index
-n = N
-)
+inline typename NColsBlockXpr<N>::Type rightCols(Index n = N)
 {
-return
-
-typename NColsBlockXpr<N>::Type(derived(),
-
-0,
-
-cols()
-
-- n,
-
-rows(), n
-
-);
+  return typename NColsBlockXpr<N>::Type(derived(), 0, cols() - n, rows(), n);
 }
 
 /// This is the const version of rightCols<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstNColsBlockXpr<N>::Type
-rightCols(Index
-n = N
-) const
+inline typename ConstNColsBlockXpr<N>::Type rightCols(Index n = N) const
 {
-return
-
-typename ConstNColsBlockXpr<N>::Type(derived(),
-
-0,
-
-cols()
-
-- n,
-
-rows(), n
-
-);
+  return typename ConstNColsBlockXpr<N>::Type(derived(), 0, cols() - n, rows(), n);
 }
+
 
 
 /// \returns a block consisting of a range of columns of \c *this.
@@ -1340,8 +918,7 @@ rows(), n
 /// or Eigen::fix<N>(n) as arguments.
 /// See \link block(Index,Index,NRowsType,NColsType) block() \endlink for the details.
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
@@ -1352,21 +929,10 @@ inline typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
 #else
 inline typename NColsBlockXpr<...>::Type
 #endif
-middleCols(Index
-startCol,
-NColsType numCols
-)
+middleCols(Index startCol, NColsType numCols)
 {
-return
-
-typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0, startCol,
-
-rows(), internal::get_runtime_value(numCols)
-
-);
+  return typename NColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, startCol, rows(), internal::get_runtime_value(numCols));
 }
 
 /// This is the const version of middleCols(Index,NColsType).
@@ -1377,21 +943,10 @@ inline const typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::v
 #else
 inline const typename ConstNColsBlockXpr<...>::Type
 #endif
-middleCols(Index
-startCol,
-NColsType numCols
-) const
+middleCols(Index startCol, NColsType numCols) const
 {
-return
-
-typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
-(derived(),
-
-0, startCol,
-
-rows(), internal::get_runtime_value(numCols)
-
-);
+  return typename ConstNColsBlockXpr<internal::get_fixed_value<NColsType>::value>::Type
+            (derived(), 0, startCol, rows(), internal::get_runtime_value(numCols));
 }
 
 /// \returns a block consisting of a range of columns of \c *this.
@@ -1406,48 +961,23 @@ rows(), internal::get_runtime_value(numCols)
 /// Example: \include DenseBase_template_int_middleCols.cpp
 /// Output: \verbinclude DenseBase_template_int_middleCols.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 ///
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename NColsBlockXpr<N>::Type
-middleCols(Index
-startCol,
-Index n = N
-)
+inline typename NColsBlockXpr<N>::Type middleCols(Index startCol, Index n = N)
 {
-return
-
-typename NColsBlockXpr<N>::Type(derived(),
-
-0, startCol,
-
-rows(), n
-
-);
+  return typename NColsBlockXpr<N>::Type(derived(), 0, startCol, rows(), n);
 }
 
 /// This is the const version of middleCols<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstNColsBlockXpr<N>::Type
-middleCols(Index
-startCol,
-Index n = N
-) const
+inline typename ConstNColsBlockXpr<N>::Type middleCols(Index startCol, Index n = N) const
 {
-return
-
-typename ConstNColsBlockXpr<N>::Type(derived(),
-
-0, startCol,
-
-rows(), n
-
-);
+  return typename ConstNColsBlockXpr<N>::Type(derived(), 0, startCol, rows(), n);
 }
 
 
@@ -1478,33 +1008,17 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 ///
 template<int NRows, int NCols>
 EIGEN_DEVICE_FUNC
-inline typename FixedBlockXpr<NRows, NCols>::Type
-block(Index
-startRow,
-Index startCol
-)
+inline typename FixedBlockXpr<NRows,NCols>::Type block(Index startRow, Index startCol)
 {
-return
-
-typename FixedBlockXpr<NRows, NCols>::Type(derived(), startRow, startCol
-
-);
+  return typename FixedBlockXpr<NRows,NCols>::Type(derived(), startRow, startCol);
 }
 
 /// This is the const version of block<>(Index, Index). */
 template<int NRows, int NCols>
 EIGEN_DEVICE_FUNC
-inline const typename ConstFixedBlockXpr<NRows, NCols>::Type
-block(Index
-startRow,
-Index startCol
-) const
+inline const typename ConstFixedBlockXpr<NRows,NCols>::Type block(Index startRow, Index startCol) const
 {
-return
-
-typename ConstFixedBlockXpr<NRows, NCols>::Type(derived(), startRow, startCol
-
-);
+  return typename ConstFixedBlockXpr<NRows,NCols>::Type(derived(), startRow, startCol);
 }
 
 /// \returns an expression of a block of \c *this.
@@ -1539,36 +1053,18 @@ EIGEN_DOC_BLOCK_ADDONS_NOT_INNER_PANEL
 /// \sa block(Index,Index,NRowsType,NColsType), class Block
 ///
 template<int NRows, int NCols>
-inline typename FixedBlockXpr<NRows, NCols>::Type block(Index
-startRow,
-Index startCol,
-        Index
-blockRows,
-Index blockCols
-)
+inline typename FixedBlockXpr<NRows,NCols>::Type block(Index startRow, Index startCol,
+                                                  Index blockRows, Index blockCols)
 {
-return
-
-typename FixedBlockXpr<NRows, NCols>::Type(derived(), startRow, startCol, blockRows, blockCols
-
-);
+  return typename FixedBlockXpr<NRows,NCols>::Type(derived(), startRow, startCol, blockRows, blockCols);
 }
 
 /// This is the const version of block<>(Index, Index, Index, Index).
 template<int NRows, int NCols>
-inline const typename ConstFixedBlockXpr<NRows, NCols>::Type block(Index
-startRow,
-Index startCol,
-        Index
-blockRows,
-Index blockCols
-) const
+inline const typename ConstFixedBlockXpr<NRows,NCols>::Type block(Index startRow, Index startCol,
+                                                              Index blockRows, Index blockCols) const
 {
-return
-
-typename ConstFixedBlockXpr<NRows, NCols>::Type(derived(), startRow, startCol, blockRows, blockCols
-
-);
+  return typename ConstFixedBlockXpr<NRows,NCols>::Type(derived(), startRow, startCol, blockRows, blockCols);
 }
 
 /// \returns an expression of the \a i-th column of \c *this. Note that the numbering starts at 0.
@@ -1576,33 +1072,20 @@ typename ConstFixedBlockXpr<NRows, NCols>::Type(derived(), startRow, startCol, b
 /// Example: \include MatrixBase_col.cpp
 /// Output: \verbinclude MatrixBase_col.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(column-major)
 /**
   * \sa row(), class Block */
 EIGEN_DEVICE_FUNC
-inline ColXpr
-col(Index
-i)
+inline ColXpr col(Index i)
 {
-return
-
-ColXpr(derived(), i
-
-);
+  return ColXpr(derived(), i);
 }
 
 /// This is the const version of col().
 EIGEN_DEVICE_FUNC
-inline ConstColXpr
-col(Index
-i) const
+inline ConstColXpr col(Index i) const
 {
-return
-
-ConstColXpr(derived(), i
-
-);
+  return ConstColXpr(derived(), i);
 }
 
 /// \returns an expression of the \a i-th row of \c *this. Note that the numbering starts at 0.
@@ -1610,33 +1093,20 @@ ConstColXpr(derived(), i
 /// Example: \include MatrixBase_row.cpp
 /// Output: \verbinclude MatrixBase_row.out
 ///
-EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row
--major)
+EIGEN_DOC_BLOCK_ADDONS_INNER_PANEL_IF(row-major)
 /**
   * \sa col(), class Block */
 EIGEN_DEVICE_FUNC
-inline RowXpr
-row(Index
-i)
+inline RowXpr row(Index i)
 {
-return
-
-RowXpr(derived(), i
-
-);
+  return RowXpr(derived(), i);
 }
 
 /// This is the const version of row(). */
 EIGEN_DEVICE_FUNC
-inline ConstRowXpr
-row(Index
-i) const
+inline ConstRowXpr row(Index i) const
 {
-return
-
-ConstRowXpr(derived(), i
-
-);
+  return ConstRowXpr(derived(), i);
 }
 
 /// \returns an expression of a segment (i.e. a vector block) in \c *this with either dynamic or fixed sizes.
@@ -1667,18 +1137,11 @@ inline typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>:
 #else
 inline typename FixedSegmentReturnType<...>::Type
 #endif
-segment(Index
-start,
-NType n
-)
+segment(Index start, NType n)
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
-(derived(), start, internal::get_runtime_value(n)
-
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
+            (derived(), start, internal::get_runtime_value(n));
 }
 
 
@@ -1690,18 +1153,11 @@ inline const typename ConstFixedSegmentReturnType<internal::get_fixed_value<NTyp
 #else
 inline const typename ConstFixedSegmentReturnType<...>::Type
 #endif
-segment(Index
-start,
-NType n
-) const
+segment(Index start, NType n) const
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename ConstFixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
-(derived(), start, internal::get_runtime_value(n)
-
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename ConstFixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
+            (derived(), start, internal::get_runtime_value(n));
 }
 
 /// \returns an expression of the first coefficients of \c *this with either dynamic or fixed sizes.
@@ -1731,18 +1187,11 @@ inline typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>:
 #else
 inline typename FixedSegmentReturnType<...>::Type
 #endif
-head(NType
-n)
+head(NType n)
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
-(derived(),
-
-0,
-internal::get_runtime_value(n)
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
+              (derived(), 0, internal::get_runtime_value(n));
 }
 
 /// This is the const version of head(NType).
@@ -1753,18 +1202,11 @@ inline const typename ConstFixedSegmentReturnType<internal::get_fixed_value<NTyp
 #else
 inline const typename ConstFixedSegmentReturnType<...>::Type
 #endif
-head(NType
-n) const
+head(NType n) const
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename ConstFixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
-(derived(),
-
-0,
-internal::get_runtime_value(n)
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename ConstFixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
+            (derived(), 0, internal::get_runtime_value(n));
 }
 
 /// \returns an expression of a last coefficients of \c *this with either dynamic or fixed sizes.
@@ -1794,22 +1236,11 @@ inline typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>:
 #else
 inline typename FixedSegmentReturnType<...>::Type
 #endif
-tail(NType
-n)
+tail(NType n)
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
-(derived(),
-
-this->
-
-size()
-
--
-internal::get_runtime_value(n), internal::get_runtime_value(n)
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename FixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
+            (derived(), this->size() - internal::get_runtime_value(n), internal::get_runtime_value(n));
 }
 
 /// This is the const version of tail(Index).
@@ -1820,22 +1251,11 @@ inline const typename ConstFixedSegmentReturnType<internal::get_fixed_value<NTyp
 #else
 inline const typename ConstFixedSegmentReturnType<...>::Type
 #endif
-tail(NType
-n) const
+tail(NType n) const
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename ConstFixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
-(derived(),
-
-this->
-
-size()
-
--
-internal::get_runtime_value(n), internal::get_runtime_value(n)
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename ConstFixedSegmentReturnType<internal::get_fixed_value<NType>::value>::Type
+            (derived(), this->size() - internal::get_runtime_value(n), internal::get_runtime_value(n));
 }
 
 /// \returns a fixed-size expression of a segment (i.e. a vector block) in \c *this
@@ -1856,35 +1276,19 @@ internal::get_runtime_value(n), internal::get_runtime_value(n)
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename FixedSegmentReturnType<N>::Type
-segment(Index
-start,
-Index n = N
-)
+inline typename FixedSegmentReturnType<N>::Type segment(Index start, Index n = N)
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename FixedSegmentReturnType<N>::Type(derived(), start, n
-
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename FixedSegmentReturnType<N>::Type(derived(), start, n);
 }
 
 /// This is the const version of segment<int>(Index).
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstFixedSegmentReturnType<N>::Type
-segment(Index
-start,
-Index n = N
-) const
+inline typename ConstFixedSegmentReturnType<N>::Type segment(Index start, Index n = N) const
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename ConstFixedSegmentReturnType<N>::Type(derived(), start, n
-
-);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename ConstFixedSegmentReturnType<N>::Type(derived(), start, n);
 }
 
 /// \returns a fixed-size expression of the first coefficients of \c *this.
@@ -1904,33 +1308,19 @@ typename ConstFixedSegmentReturnType<N>::Type(derived(), start, n
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename FixedSegmentReturnType<N>::Type
-head(Index
-n = N
-)
+inline typename FixedSegmentReturnType<N>::Type head(Index n = N)
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename FixedSegmentReturnType<N>::Type(derived(),
-
-0, n);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename FixedSegmentReturnType<N>::Type(derived(), 0, n);
 }
 
 /// This is the const version of head<int>().
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstFixedSegmentReturnType<N>::Type
-head(Index
-n = N
-) const
+inline typename ConstFixedSegmentReturnType<N>::Type head(Index n = N) const
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename ConstFixedSegmentReturnType<N>::Type(derived(),
-
-0, n);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename ConstFixedSegmentReturnType<N>::Type(derived(), 0, n);
 }
 
 /// \returns a fixed-size expression of the last coefficients of \c *this.
@@ -1950,31 +1340,17 @@ typename ConstFixedSegmentReturnType<N>::Type(derived(),
 ///
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename FixedSegmentReturnType<N>::Type
-tail(Index
-n = N
-)
+inline typename FixedSegmentReturnType<N>::Type tail(Index n = N)
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename FixedSegmentReturnType<N>::Type(derived(), size()
-
-- n);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename FixedSegmentReturnType<N>::Type(derived(), size() - n);
 }
 
 /// This is the const version of tail<int>.
 template<int N>
 EIGEN_DEVICE_FUNC
-inline typename ConstFixedSegmentReturnType<N>::Type
-tail(Index
-n = N
-) const
+inline typename ConstFixedSegmentReturnType<N>::Type tail(Index n = N) const
 {
-EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
-return
-
-typename ConstFixedSegmentReturnType<N>::Type(derived(), size()
-
-- n);
+  EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived)
+  return typename ConstFixedSegmentReturnType<N>::Type(derived(), size() - n);
 }

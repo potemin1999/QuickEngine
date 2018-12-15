@@ -33,9 +33,9 @@
 #ifndef EIGEN_GENERAL_MATRIX_VECTOR_BLAS_H
 #define EIGEN_GENERAL_MATRIX_VECTOR_BLAS_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
 /**********************************************************************
 * This file implements general matrix-vector multiplication using BLAS
@@ -46,8 +46,8 @@ namespace Eigen {
 
 // gemv specialization
 
-        template<typename Index, typename LhsScalar, int StorageOrder, bool ConjugateLhs, typename RhsScalar, bool ConjugateRhs>
-        struct general_matrix_vector_product_gemv;
+template<typename Index, typename LhsScalar, int StorageOrder, bool ConjugateLhs, typename RhsScalar, bool ConjugateRhs>
+struct general_matrix_vector_product_gemv;
 
 #define EIGEN_BLAS_GEMV_SPECIALIZE(Scalar) \
 template<typename Index, bool ConjugateLhs, bool ConjugateRhs> \
@@ -85,7 +85,7 @@ EIGEN_BLAS_GEMV_SPECIALIZE(float)
 EIGEN_BLAS_GEMV_SPECIALIZE(dcomplex)
 EIGEN_BLAS_GEMV_SPECIALIZE(scomplex)
 
-#define EIGEN_BLAS_GEMV_SPECIALIZATION(EIGTYPE, BLASTYPE, BLASPREFIX) \
+#define EIGEN_BLAS_GEMV_SPECIALIZATION(EIGTYPE,BLASTYPE,BLASPREFIX) \
 template<typename Index, int LhsStorageOrder, bool ConjugateLhs, bool ConjugateRhs> \
 struct general_matrix_vector_product_gemv<Index,EIGTYPE,LhsStorageOrder,ConjugateLhs,EIGTYPE,ConjugateRhs> \
 { \
@@ -117,13 +117,10 @@ static void run( \
 }\
 };
 
-EIGEN_BLAS_GEMV_SPECIALIZATION(double, double, d)
-
-EIGEN_BLAS_GEMV_SPECIALIZATION(float, float, s)
-
+EIGEN_BLAS_GEMV_SPECIALIZATION(double,   double, d)
+EIGEN_BLAS_GEMV_SPECIALIZATION(float,    float,  s)
 EIGEN_BLAS_GEMV_SPECIALIZATION(dcomplex, double, z)
-
-EIGEN_BLAS_GEMV_SPECIALIZATION(scomplex, float, c)
+EIGEN_BLAS_GEMV_SPECIALIZATION(scomplex, float,  c)
 
 } // end namespase internal
 

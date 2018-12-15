@@ -36,7 +36,7 @@ test_initializer arg_keywords_and_defaults([](py::module &m) {
     m.def("kw_func0", &kw_func);
     m.def("kw_func1", &kw_func, py::arg("x"), py::arg("y"));
     m.def("kw_func2", &kw_func, py::arg("x") = 100, py::arg("y") = 200);
-    m.def("kw_func3", [](const char *) {}, py::arg("data") = std::string("Hello world!"));
+    m.def("kw_func3", [](const char *) { }, py::arg("data") = std::string("Hello world!"));
 
     /* A fancier default argument */
     std::vector<int> list;
@@ -47,10 +47,10 @@ test_initializer arg_keywords_and_defaults([](py::module &m) {
     m.def("args_function", &args_function);
     m.def("args_kwargs_function", &args_kwargs_function);
 
-    m.def("kw_func_udl", &kw_func, "x"_a, "y"_a = 300);
-    m.def("kw_func_udl_z", &kw_func, "x"_a, "y"_a = 0);
+    m.def("kw_func_udl", &kw_func, "x"_a, "y"_a=300);
+    m.def("kw_func_udl_z", &kw_func, "x"_a, "y"_a=0);
 
     py::class_<KWClass>(m, "KWClass")
-            .def("foo0", &KWClass::foo)
-            .def("foo1", &KWClass::foo, "x"_a, "y"_a);
+        .def("foo0", &KWClass::foo)
+        .def("foo1", &KWClass::foo, "x"_a, "y"_a);
 });

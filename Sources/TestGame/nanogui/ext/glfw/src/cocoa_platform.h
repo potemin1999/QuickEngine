@@ -34,11 +34,9 @@
 #import <Carbon/Carbon.h>
 #import <Cocoa/Cocoa.h>
 #else
-
 #include <Carbon/Carbon.h>
 #include <ApplicationServices/ApplicationServices.h>
-
-typedef void *id;
+typedef void* id;
 #endif
 
 #include "posix_tls.h"
@@ -61,60 +59,58 @@ typedef void *id;
 // HIToolbox.framework pointer typedefs
 #define kTISPropertyUnicodeKeyLayoutData _glfw.ns.tis.kPropertyUnicodeKeyLayoutData
 #define kTISNotifySelectedKeyboardInputSourceChanged _glfw.ns.tis.kNotifySelectedKeyboardInputSourceChanged
-
 typedef TISInputSourceRef (*PFN_TISCopyCurrentKeyboardLayoutInputSource)(void);
-
 #define TISCopyCurrentKeyboardLayoutInputSource _glfw.ns.tis.CopyCurrentKeyboardLayoutInputSource
-typedef void *(*PFN_TISGetInputSourceProperty)(TISInputSourceRef, CFStringRef);
+typedef void* (*PFN_TISGetInputSourceProperty)(TISInputSourceRef,CFStringRef);
 #define TISGetInputSourceProperty _glfw.ns.tis.GetInputSourceProperty
-
 typedef UInt8 (*PFN_LMGetKbdType)(void);
-
 #define LMGetKbdType _glfw.ns.tis.GetKbdType
 
 
 // Cocoa-specific per-window data
 //
-typedef struct _GLFWwindowNS {
-    id object;
-    id delegate;
-    id view;
+typedef struct _GLFWwindowNS
+{
+    id              object;
+    id              delegate;
+    id              view;
 
     // The total sum of the distances the cursor has been warped
     // since the last cursor motion event was processed
     // This is kept to counteract Cocoa doing the same internally
-    double cursorWarpDeltaX, cursorWarpDeltaY;
+    double          cursorWarpDeltaX, cursorWarpDeltaY;
 
 } _GLFWwindowNS;
 
 
 // Cocoa-specific global data
 //
-typedef struct _GLFWlibraryNS {
-    CGEventSourceRef eventSource;
-    id delegate;
-    id autoreleasePool;
-    id cursor;
-    TISInputSourceRef inputSource;
-    id unicodeData;
-    id listener;
+typedef struct _GLFWlibraryNS
+{
+    CGEventSourceRef    eventSource;
+    id                  delegate;
+    id                  autoreleasePool;
+    id                  cursor;
+    TISInputSourceRef   inputSource;
+    id                  unicodeData;
+    id                  listener;
 
-    char keyName[64];
-    short int publicKeys[256];
-    short int nativeKeys[GLFW_KEY_LAST + 1];
-    char *clipboardString;
+    char                keyName[64];
+    short int           publicKeys[256];
+    short int           nativeKeys[GLFW_KEY_LAST + 1];
+    char*               clipboardString;
     // Where to place the cursor when re-enabled
-    double restoreCursorPosX, restoreCursorPosY;
+    double              restoreCursorPosX, restoreCursorPosY;
     // The window whose disabled cursor mode is active
-    _GLFWwindow *disabledCursorWindow;
+    _GLFWwindow*        disabledCursorWindow;
 
     struct {
-        CFBundleRef bundle;
+        CFBundleRef     bundle;
         PFN_TISCopyCurrentKeyboardLayoutInputSource CopyCurrentKeyboardLayoutInputSource;
         PFN_TISGetInputSourceProperty GetInputSourceProperty;
         PFN_LMGetKbdType GetKbdType;
-        CFStringRef kPropertyUnicodeKeyLayoutData;
-        CFStringRef kNotifySelectedKeyboardInputSourceChanged;
+        CFStringRef     kPropertyUnicodeKeyLayoutData;
+        CFStringRef     kNotifySelectedKeyboardInputSourceChanged;
     } tis;
 
 } _GLFWlibraryNS;
@@ -122,34 +118,36 @@ typedef struct _GLFWlibraryNS {
 
 // Cocoa-specific per-monitor data
 //
-typedef struct _GLFWmonitorNS {
-    CGDirectDisplayID displayID;
-    CGDisplayModeRef previousMode;
-    uint32_t unitNumber;
+typedef struct _GLFWmonitorNS
+{
+    CGDirectDisplayID   displayID;
+    CGDisplayModeRef    previousMode;
+    uint32_t            unitNumber;
 
 } _GLFWmonitorNS;
 
 
 // Cocoa-specific per-cursor data
 //
-typedef struct _GLFWcursorNS {
-    id object;
+typedef struct _GLFWcursorNS
+{
+    id              object;
 
 } _GLFWcursorNS;
 
 
 // Cocoa-specific global timer data
 //
-typedef struct _GLFWtimeNS {
-    uint64_t frequency;
+typedef struct _GLFWtimeNS
+{
+    uint64_t        frequency;
 
 } _GLFWtimeNS;
 
 
 void _glfwInitTimerNS(void);
 
-GLFWbool _glfwSetVideoModeNS(_GLFWmonitor *monitor, const GLFWvidmode *desired);
-
-void _glfwRestoreVideoModeNS(_GLFWmonitor *monitor);
+GLFWbool _glfwSetVideoModeNS(_GLFWmonitor* monitor, const GLFWvidmode* desired);
+void _glfwRestoreVideoModeNS(_GLFWmonitor* monitor);
 
 #endif // _glfw3_cocoa_platform_h_

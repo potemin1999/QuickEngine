@@ -64,9 +64,7 @@
   */
 
 #ifndef EIGEN_MPL2_ONLY
-
 #include "src/OrderingMethods/Amd.h"
-
 #endif
 
 #include "src/OrderingMethods/Ordering.h"

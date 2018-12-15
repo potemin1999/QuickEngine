@@ -33,16 +33,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void error_callback(int error, const char *description) {
+static void error_callback(int error, const char* description)
+{
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
     glViewport(0, 0, width, height);
 }
 
-int main(void) {
-    GLFWwindow *window;
+int main(void)
+{
+    GLFWwindow* window;
 
     glfwSetErrorCallback(error_callback);
 
@@ -50,7 +53,8 @@ int main(void) {
         exit(EXIT_FAILURE);
 
     window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
-    if (!window) {
+    if (!window)
+    {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -61,7 +65,8 @@ int main(void) {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(window);
         glfwWaitEvents();

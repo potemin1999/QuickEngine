@@ -12,12 +12,9 @@
 class Pet {
 public:
     Pet(const std::string &name, const std::string &species)
-            : m_name(name), m_species(species) {}
-
+        : m_name(name), m_species(species) {}
     std::string name() const { return m_name; }
-
     std::string species() const { return m_species; }
-
 private:
     std::string m_name;
     std::string m_species;
@@ -26,7 +23,6 @@ private:
 class Dog : public Pet {
 public:
     Dog(const std::string &name) : Pet(name, "dog") {}
-
     std::string bark() const { return "Woof!"; }
 };
 
@@ -49,33 +45,28 @@ std::string dog_bark(const Dog &dog) {
 }
 
 
-struct BaseClass {
-    virtual ~BaseClass() {}
-};
-
-struct DerivedClass1 : BaseClass {
-};
-struct DerivedClass2 : BaseClass {
-};
+struct BaseClass { virtual ~BaseClass() {} };
+struct DerivedClass1 : BaseClass { };
+struct DerivedClass2 : BaseClass { };
 
 test_initializer inheritance([](py::module &m) {
-    py::class_ <Pet> pet_class(m, "Pet");
+    py::class_<Pet> pet_class(m, "Pet");
     pet_class
-            .def(py::init<std::string, std::string>())
-            .def("name", &Pet::name)
-            .def("species", &Pet::species);
+        .def(py::init<std::string, std::string>())
+        .def("name", &Pet::name)
+        .def("species", &Pet::species);
 
     /* One way of declaring a subclass relationship: reference parent's class_ object */
     py::class_<Dog>(m, "Dog", pet_class)
-            .def(py::init<std::string>());
+        .def(py::init<std::string>());
 
     /* Another way of declaring a subclass relationship: reference parent's C++ type */
     py::class_<Rabbit, Pet>(m, "Rabbit")
-            .def(py::init<std::string>());
+        .def(py::init<std::string>());
 
     /* And another: list parent in class template arguments */
     py::class_<Hamster, Pet>(m, "Hamster")
-            .def(py::init<std::string>());
+        .def(py::init<std::string>());
 
     m.def("pet_name_species", pet_name_species);
     m.def("dog_bark", dog_bark);
@@ -84,27 +75,26 @@ test_initializer inheritance([](py::module &m) {
     py::class_<DerivedClass1>(m, "DerivedClass1").def(py::init<>());
     py::class_<DerivedClass2>(m, "DerivedClass2").def(py::init<>());
 
-    m.def("return_class_1", []() -> BaseClass * { return new DerivedClass1(); });
-    m.def("return_class_2", []() -> BaseClass * { return new DerivedClass2(); });
-    m.def("return_class_n", [](int n) -> BaseClass * {
+    m.def("return_class_1", []() -> BaseClass* { return new DerivedClass1(); });
+    m.def("return_class_2", []() -> BaseClass* { return new DerivedClass2(); });
+    m.def("return_class_n", [](int n) -> BaseClass* {
         if (n == 1) return new DerivedClass1();
         if (n == 2) return new DerivedClass2();
         return new BaseClass();
     });
-    m.def("return_none", []() -> BaseClass * { return nullptr; });
+    m.def("return_none", []() -> BaseClass* { return nullptr; });
 
     m.def("test_isinstance", [](py::list l) {
-        struct Unregistered {
-        }; // checks missing type_info code path
+        struct Unregistered { }; // checks missing type_info code path
 
         return py::make_tuple(
-                py::isinstance<py::tuple>(l[0]),
-                py::isinstance<py::dict>(l[1]),
-                py::isinstance<Pet>(l[2]),
-                py::isinstance<Pet>(l[3]),
-                py::isinstance<Dog>(l[4]),
-                py::isinstance<Rabbit>(l[5]),
-                py::isinstance<Unregistered>(l[6])
+            py::isinstance<py::tuple>(l[0]),
+            py::isinstance<py::dict>(l[1]),
+            py::isinstance<Pet>(l[2]),
+            py::isinstance<Pet>(l[3]),
+            py::isinstance<Dog>(l[4]),
+            py::isinstance<Rabbit>(l[5]),
+            py::isinstance<Unregistered>(l[6])
         );
     });
 });

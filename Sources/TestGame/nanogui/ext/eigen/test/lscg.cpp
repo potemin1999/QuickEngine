@@ -10,19 +10,20 @@
 #include "sparse_solver.h"
 #include <Eigen/IterativeLinearSolvers>
 
-template<typename T>
-void test_lscg_T() {
-    LeastSquaresConjugateGradient<SparseMatrix<T> > lscg_colmajor_diag;
-    LeastSquaresConjugateGradient<SparseMatrix<T>, IdentityPreconditioner> lscg_colmajor_I;
+template<typename T> void test_lscg_T()
+{
+  LeastSquaresConjugateGradient<SparseMatrix<T> > lscg_colmajor_diag;
+  LeastSquaresConjugateGradient<SparseMatrix<T>, IdentityPreconditioner> lscg_colmajor_I;
 
-    CALL_SUBTEST(check_sparse_square_solving(lscg_colmajor_diag));
-    CALL_SUBTEST(check_sparse_square_solving(lscg_colmajor_I));
-
-    CALL_SUBTEST(check_sparse_leastsquare_solving(lscg_colmajor_diag));
-    CALL_SUBTEST(check_sparse_leastsquare_solving(lscg_colmajor_I));
+  CALL_SUBTEST( check_sparse_square_solving(lscg_colmajor_diag)  );
+  CALL_SUBTEST( check_sparse_square_solving(lscg_colmajor_I)     );
+  
+  CALL_SUBTEST( check_sparse_leastsquare_solving(lscg_colmajor_diag)  );
+  CALL_SUBTEST( check_sparse_leastsquare_solving(lscg_colmajor_I)     );
 }
 
-void test_lscg() {
-    CALL_SUBTEST_1(test_lscg_T<double>());
-    CALL_SUBTEST_2(test_lscg_T<std::complex<double> >());
+void test_lscg()
+{
+  CALL_SUBTEST_1(test_lscg_T<double>());
+  CALL_SUBTEST_2(test_lscg_T<std::complex<double> >());
 }

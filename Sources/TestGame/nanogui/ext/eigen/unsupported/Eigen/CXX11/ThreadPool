@@ -31,7 +31,6 @@
 // The code depends on CXX11, so only include the module if the
 // compiler supports it.
 #if __cplusplus > 199711L || EIGEN_COMP_MSVC >= 1900
-
 #include <cstddef>
 #include <cstring>
 #include <stdint.h>
@@ -63,11 +62,11 @@
 // Use the more efficient NonBlockingThreadPool by default.
 namespace Eigen {
 #ifndef EIGEN_USE_SIMPLE_THREAD_POOL
-    template<typename Env> using ThreadPoolTempl = NonBlockingThreadPoolTempl<Env>;
-    typedef NonBlockingThreadPool ThreadPool;
+template <typename Env> using ThreadPoolTempl = NonBlockingThreadPoolTempl<Env>;
+typedef NonBlockingThreadPool ThreadPool;
 #else
-    template <typename Env> using ThreadPoolTempl = SimpleThreadPoolTempl<Env>;
-    typedef SimpleThreadPool ThreadPool;
+template <typename Env> using ThreadPoolTempl = SimpleThreadPoolTempl<Env>;
+typedef SimpleThreadPool ThreadPool;
 #endif
 }  // namespace Eigen
 

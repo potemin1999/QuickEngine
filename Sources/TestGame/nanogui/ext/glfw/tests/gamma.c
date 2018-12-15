@@ -40,12 +40,14 @@
 
 static GLfloat gamma_value = 1.0f;
 
-static void usage(void) {
+static void usage(void)
+{
     printf("Usage: gamma [-h] [-f]\n");
 }
 
-static void set_gamma(GLFWwindow *window, float value) {
-    GLFWmonitor *monitor = glfwGetWindowMonitor(window);
+static void set_gamma(GLFWwindow* window, float value)
+{
+    GLFWmonitor* monitor = glfwGetWindowMonitor(window);
     if (!monitor)
         monitor = glfwGetPrimaryMonitor();
 
@@ -54,30 +56,36 @@ static void set_gamma(GLFWwindow *window, float value) {
     glfwSetGamma(monitor, gamma_value);
 }
 
-static void error_callback(int error, const char *description) {
+static void error_callback(int error, const char* description)
+{
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
     if (action != GLFW_PRESS)
         return;
 
-    switch (key) {
-        case GLFW_KEY_ESCAPE: {
+    switch (key)
+    {
+        case GLFW_KEY_ESCAPE:
+        {
             glfwSetWindowShouldClose(window, GLFW_TRUE);
             break;
         }
 
         case GLFW_KEY_KP_ADD:
         case GLFW_KEY_UP:
-        case GLFW_KEY_Q: {
+        case GLFW_KEY_Q:
+        {
             set_gamma(window, gamma_value + STEP_SIZE);
             break;
         }
 
         case GLFW_KEY_KP_SUBTRACT:
         case GLFW_KEY_DOWN:
-        case GLFW_KEY_W: {
+        case GLFW_KEY_W:
+        {
             if (gamma_value - STEP_SIZE > 0.f)
                 set_gamma(window, gamma_value - STEP_SIZE);
 
@@ -86,22 +94,26 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
-static void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
     glViewport(0, 0, width, height);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     int width, height, ch;
-    GLFWmonitor *monitor = NULL;
-    GLFWwindow *window;
+    GLFWmonitor* monitor = NULL;
+    GLFWwindow* window;
 
     glfwSetErrorCallback(error_callback);
 
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    while ((ch = getopt(argc, argv, "fh")) != -1) {
-        switch (ch) {
+    while ((ch = getopt(argc, argv, "fh")) != -1)
+    {
+        switch (ch)
+        {
             case 'h':
                 usage();
                 exit(EXIT_SUCCESS);
@@ -116,8 +128,9 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (monitor) {
-        const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    if (monitor)
+    {
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
         glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
         glfwWindowHint(GLFW_RED_BITS, mode->redBits);
@@ -126,13 +139,16 @@ int main(int argc, char **argv) {
 
         width = mode->width;
         height = mode->height;
-    } else {
+    }
+    else
+    {
         width = 200;
         height = 200;
     }
 
     window = glfwCreateWindow(width, height, "Gamma Test", monitor, NULL);
-    if (!window) {
+    if (!window)
+    {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -152,7 +168,8 @@ int main(int argc, char **argv) {
 
     glClearColor(0.5f, 0.5f, 0.5f, 0);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glColor3f(0.8f, 0.2f, 0.4f);

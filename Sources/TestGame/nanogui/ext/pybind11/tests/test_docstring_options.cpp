@@ -11,9 +11,7 @@
 
 struct DocstringTestFoo {
     int value;
-
     void setValue(int v) { value = v; }
-
     int getValue() const { return value; }
 };
 
@@ -49,7 +47,7 @@ test_initializer docstring_generation([](py::module &m) {
         options.disable_user_defined_docstrings();
 
         py::class_<DocstringTestFoo>(m, "DocstringTestFoo", "This is a class docstring")
-                .def_property("value_prop", &DocstringTestFoo::getValue, &DocstringTestFoo::setValue,
-                              "This is a property docstring");
+            .def_property("value_prop", &DocstringTestFoo::getValue, &DocstringTestFoo::setValue, "This is a property docstring")
+        ;
     }
 });

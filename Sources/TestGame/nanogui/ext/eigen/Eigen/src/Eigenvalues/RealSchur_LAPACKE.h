@@ -33,7 +33,7 @@
 #ifndef EIGEN_REAL_SCHUR_LAPACKE_H
 #define EIGEN_REAL_SCHUR_LAPACKE_H
 
-namespace Eigen {
+namespace Eigen { 
 
 /** \internal Specialization for the data types supported by LAPACKe */
 
@@ -67,10 +67,10 @@ RealSchur<Matrix<EIGTYPE, Dynamic, Dynamic, EIGCOLROW> >::compute(const EigenBas
 \
 }
 
-EIGEN_LAPACKE_SCHUR_REAL(double, double, d, D, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_SCHUR_REAL(float, float, s, S, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_SCHUR_REAL(double, double, d, D, RowMajor, LAPACK_ROW_MAJOR)
-EIGEN_LAPACKE_SCHUR_REAL(float, float, s, S, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_SCHUR_REAL(double,   double, d, D, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_SCHUR_REAL(float,    float,  s, S, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_SCHUR_REAL(double,   double, d, D, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_SCHUR_REAL(float,    float,  s, S, RowMajor, LAPACK_ROW_MAJOR)
 
 } // end namespace Eigen
 

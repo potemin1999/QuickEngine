@@ -33,12 +33,11 @@
 #ifndef EIGEN_LLT_LAPACKE_H
 #define EIGEN_LLT_LAPACKE_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
-        template<typename Scalar>
-        struct lapacke_llt;
+template<typename Scalar> struct lapacke_llt;
 
 #define EIGEN_LAPACKE_LLT(EIGTYPE, BLASTYPE, LAPACKE_PREFIX) \
 template<> struct lapacke_llt<EIGTYPE> \
@@ -88,15 +87,12 @@ template<> struct llt_inplace<EIGTYPE, Upper> \
   } \
 };
 
-        EIGEN_LAPACKE_LLT(double, double, d)
+EIGEN_LAPACKE_LLT(double, double, d)
+EIGEN_LAPACKE_LLT(float, float, s)
+EIGEN_LAPACKE_LLT(dcomplex, lapack_complex_double, z)
+EIGEN_LAPACKE_LLT(scomplex, lapack_complex_float, c)
 
-        EIGEN_LAPACKE_LLT(float, float, s)
-
-        EIGEN_LAPACKE_LLT(dcomplex, lapack_complex_double, z)
-
-        EIGEN_LAPACKE_LLT(scomplex, lapack_complex_float, c)
-
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

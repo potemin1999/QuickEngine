@@ -13,7 +13,7 @@
 
 double my_func(int x, float y, double z) {
     py::print("my_func(x:int={}, y:float={:.0f}, z:float={:.0f})"_s.format(x, y, z));
-    return (float) x * y * z;
+    return (float) x*y*z;
 }
 
 std::complex<double> my_func3(std::complex<double> c) {
@@ -26,9 +26,9 @@ test_initializer numpy_vectorize([](py::module &m) {
 
     // Vectorize a lambda function with a capture object (e.g. to exclude some arguments from the vectorization)
     m.def("vectorized_func2",
-          [](py::array_t<int> x, py::array_t<float> y, float z) {
-              return py::vectorize([z](int x, float y) { return my_func(x, y, z); })(x, y);
-          }
+        [](py::array_t<int> x, py::array_t<float> y, float z) {
+            return py::vectorize([z](int x, float y) { return my_func(x, y, z); })(x, y);
+        }
     );
 
     // Vectorize a complex-valued function
@@ -37,6 +37,5 @@ test_initializer numpy_vectorize([](py::module &m) {
     /// Numpy function which only accepts specific data types
     m.def("selective_func", [](py::array_t<int, py::array::c_style>) { return "Int branch taken."; });
     m.def("selective_func", [](py::array_t<float, py::array::c_style>) { return "Float branch taken."; });
-    m.def("selective_func",
-          [](py::array_t <std::complex<float>, py::array::c_style>) { return "Complex float branch taken."; });
+    m.def("selective_func", [](py::array_t<std::complex<float>, py::array::c_style>) { return "Complex float branch taken."; });
 });

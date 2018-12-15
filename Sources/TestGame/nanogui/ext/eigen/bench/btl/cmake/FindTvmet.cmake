@@ -12,21 +12,21 @@
 
 if (TVMET_INCLUDE_DIR)
 
-    # in cache already
-    set(TVMET_FOUND TRUE)
+  # in cache already
+  set(TVMET_FOUND TRUE)
 
 else (TVMET_INCLUDE_DIR)
 
-    find_path(TVMET_INCLUDE_DIR NAMES tvmet/tvmet.h
-            PATHS
-            ${TVMETDIR}/
-            ${INCLUDE_INSTALL_DIR}
-            )
+find_path(TVMET_INCLUDE_DIR NAMES tvmet/tvmet.h
+     PATHS
+     ${TVMETDIR}/
+     ${INCLUDE_INSTALL_DIR}
+   )
 
-    include(FindPackageHandleStandardArgs)
-    find_package_handle_standard_args(Tvmet DEFAULT_MSG TVMET_INCLUDE_DIR)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Tvmet DEFAULT_MSG TVMET_INCLUDE_DIR)
 
-    mark_as_advanced(TVMET_INCLUDE_DIR)
+mark_as_advanced(TVMET_INCLUDE_DIR)
 
-endif (TVMET_INCLUDE_DIR)
+endif(TVMET_INCLUDE_DIR)
 

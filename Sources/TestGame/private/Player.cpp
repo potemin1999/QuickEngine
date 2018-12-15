@@ -4,6 +4,7 @@
 #include "Boot.h"
 #include "glfw/glfw3.h"
 #include "Crate_01.h"
+#include "Crate_02.h"
 #include "FloorModel.h"
 
 bool lockCursor = true;
@@ -19,6 +20,12 @@ Player::Player(World *world) : GameObject(world) {
             n->setPos(glm::vec3(x * 6, 0.0f, z * 6));
             portableWorld->addObject(n);
         }
+
+    for (int y = 0; y < 50; y++) {
+        auto n = new Crate_02(portableWorld);
+        n->setPos(glm::vec3(0, 50 + y * 2, 0));
+        portableWorld->addObject(n);
+    }
 
 
     ModelLoader::load_object(this, "", "crate_01.obj");
@@ -47,11 +54,9 @@ Player::Player(World *world) : GameObject(world) {
 
     class MainInputReceiver : public InputReceiver {
         void onReceiverRegistered() override {
-            printf("Yay! InputReceiver registered!\n");
         }
 
         void onReceiverUnregistered() override {
-            printf("Yay! InputReceiver unregistered!\n");
         }
 
         InputProcessResult onKeyInputEvent(KeyInputEvent *event) override {

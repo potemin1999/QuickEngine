@@ -23,65 +23,65 @@
 #define UNSUPPORTED_EIGEN_CXX11_SRC_TENSOR_TENSORSYCL_PLACEHOLDER_EXPR_HPP
 
 namespace Eigen {
-    namespace TensorSycl {
-        namespace internal {
+namespace TensorSycl {
+namespace internal {
 
 /// \struct PlaceHolder
 /// \brief PlaceHolder is used to replace the \ref TensorMap in the expression
 /// tree.
 /// PlaceHolder contains the order of the leaf node in the expression tree.
-            template<typename Scalar, size_t N>
-            struct PlaceHolder {
-                static constexpr size_t I = N;
-                typedef Scalar Type;
-            };
+template <typename Scalar, size_t N>
+struct PlaceHolder {
+  static constexpr size_t I = N;
+  typedef Scalar Type;
+};
 
 /// \sttruct PlaceHolderExpression
 /// \brief it is used to create the PlaceHolder expression. The PlaceHolder
 /// expression is a copy of expression type in which the TensorMap of the has
 /// been replaced with PlaceHolder.
-            template<typename Expr, size_t N>
-            struct PlaceHolderExpression;
+template <typename Expr, size_t N>
+struct PlaceHolderExpression;
 
-            template<size_t N, typename... Args>
-            struct CalculateIndex;
+template<size_t N, typename... Args>
+struct CalculateIndex;
 
-            template<size_t N, typename Arg>
-            struct CalculateIndex<N, Arg> {
-                typedef typename PlaceHolderExpression<Arg, N>::Type ArgType;
-                typedef utility::tuple::Tuple <ArgType> ArgsTuple;
-            };
+template<size_t N, typename Arg>
+struct CalculateIndex<N, Arg>{
+  typedef typename PlaceHolderExpression<Arg, N>::Type ArgType;
+  typedef utility::tuple::Tuple<ArgType> ArgsTuple;
+};
 
-            template<size_t N, typename Arg1, typename Arg2>
-            struct CalculateIndex<N, Arg1, Arg2> {
-                static const size_t Arg2LeafCount = LeafCount<Arg2>::Count;
-                typedef typename PlaceHolderExpression<Arg1, N - Arg2LeafCount>::Type Arg1Type;
-                typedef typename PlaceHolderExpression<Arg2, N>::Type Arg2Type;
-                typedef utility::tuple::Tuple <Arg1Type, Arg2Type> ArgsTuple;
-            };
+template<size_t N, typename Arg1, typename Arg2>
+struct CalculateIndex<N, Arg1, Arg2>{
+  static const size_t Arg2LeafCount = LeafCount<Arg2>::Count;
+  typedef typename PlaceHolderExpression<Arg1, N - Arg2LeafCount>::Type Arg1Type;
+  typedef typename PlaceHolderExpression<Arg2, N>::Type Arg2Type;
+  typedef utility::tuple::Tuple<Arg1Type, Arg2Type> ArgsTuple;
+};
 
-            template<size_t N, typename Arg1, typename Arg2, typename Arg3>
-            struct CalculateIndex<N, Arg1, Arg2, Arg3> {
-                static const size_t Arg3LeafCount = LeafCount<Arg3>::Count;
-                static const size_t Arg2LeafCount = LeafCount<Arg2>::Count;
-                typedef typename PlaceHolderExpression<Arg1, N - Arg3LeafCount - Arg2LeafCount>::Type Arg1Type;
-                typedef typename PlaceHolderExpression<Arg2, N - Arg3LeafCount>::Type Arg2Type;
-                typedef typename PlaceHolderExpression<Arg3, N>::Type Arg3Type;
-                typedef utility::tuple::Tuple <Arg1Type, Arg2Type, Arg3Type> ArgsTuple;
-            };
+template<size_t N, typename Arg1, typename Arg2, typename Arg3>
+struct CalculateIndex<N, Arg1, Arg2, Arg3> {
+  static const size_t Arg3LeafCount = LeafCount<Arg3>::Count;
+  static const size_t Arg2LeafCount = LeafCount<Arg2>::Count;
+  typedef typename PlaceHolderExpression<Arg1, N - Arg3LeafCount - Arg2LeafCount>::Type Arg1Type;
+  typedef typename PlaceHolderExpression<Arg2, N - Arg3LeafCount>::Type Arg2Type;
+  typedef typename PlaceHolderExpression<Arg3, N>::Type Arg3Type;
+  typedef utility::tuple::Tuple<Arg1Type, Arg2Type, Arg3Type> ArgsTuple;
+};
 
-            template<template<class...> class Category, class OP, class TPL>
-            struct CategoryHelper;
+template<template<class...> class Category , class OP, class TPL>
+struct CategoryHelper;
 
-            template<template<class...> class Category, class OP, class ...T>
-            struct CategoryHelper<Category, OP, utility::tuple::Tuple < T...> > {
-            typedef Category<OP, T...> Type;
-        };
+template<template<class...> class Category , class OP, class ...T >
+struct CategoryHelper<Category, OP, utility::tuple::Tuple<T...> > {
+  typedef Category<OP, T... > Type;
+};
 
-        template<template<class...> class Category, class ...T>
-        struct CategoryHelper<Category, NoOP, utility::tuple::Tuple < T...> > {
-        typedef Category<T...> Type;
-    };
+template<template<class...> class Category , class ...T >
+struct CategoryHelper<Category, NoOP, utility::tuple::Tuple<T...> > {
+  typedef Category<T... > Type;
+};
 
 /// specialisation of the \ref PlaceHolderExpression when the node is
 /// TensorCwiseNullaryOp, TensorCwiseUnaryOp, TensorBroadcastingOp, TensorCwiseBinaryOp,  TensorCwiseTernaryOp
@@ -91,8 +91,8 @@ struct PlaceHolderExpression<CVQual Category<OP, SubExpr...>, N>{\
   typedef CVQual typename CategoryHelper<Category, OP, typename CalculateIndex<N, SubExpr...>::ArgsTuple>::Type Type;\
 };
 
-    OPEXPRCATEGORY(const)
-    OPEXPRCATEGORY()
+OPEXPRCATEGORY(const)
+OPEXPRCATEGORY()
 #undef OPEXPRCATEGORY
 
 /// specialisation of the \ref PlaceHolderExpression when the node is
@@ -103,7 +103,7 @@ struct PlaceHolderExpression<CVQual TensorSelectOp<IfExpr, ThenExpr, ElseExpr>, 
   typedef CVQual typename CategoryHelper<TensorSelectOp, NoOP, typename CalculateIndex<N, IfExpr, ThenExpr, ElseExpr>::ArgsTuple>::Type Type;\
 };
 
-    SELECTEXPR(const)
+SELECTEXPR(const)
 SELECTEXPR()
 #undef SELECTEXPR
 
@@ -188,9 +188,9 @@ struct PlaceHolderExpression<CVQual ExprNode<Indices, LhsXprType, RhsXprType>, N
   typedef CVQual PlaceHolder<CVQual ExprNode<Indices, LhsXprType, RhsXprType>, N> Type;\
 };
 SYCLCONTRACTIONCONVOLUTIONPLH(const, TensorContractionOp)
-SYCLCONTRACTIONCONVOLUTIONPLH(, TensorContractionOp)
+SYCLCONTRACTIONCONVOLUTIONPLH(,TensorContractionOp)
 SYCLCONTRACTIONCONVOLUTIONPLH(const, TensorConvolutionOp)
-SYCLCONTRACTIONCONVOLUTIONPLH(, TensorConvolutionOp)
+SYCLCONTRACTIONCONVOLUTIONPLH(,TensorConvolutionOp)
 #undef SYCLCONTRACTIONCONVOLUTIONPLH
 
 
@@ -219,10 +219,10 @@ SYCLSLICESTRIDEOPPLH()
 
 
 /// template deduction for \ref PlaceHolderExpression struct
-template<typename Expr>
+template <typename Expr>
 struct createPlaceHolderExpression {
-    static const size_t TotalLeaves = LeafCount<Expr>::Count;
-    typedef typename PlaceHolderExpression<Expr, TotalLeaves - 1>::Type Type;
+  static const size_t TotalLeaves = LeafCount<Expr>::Count;
+  typedef typename PlaceHolderExpression<Expr, TotalLeaves - 1>::Type Type;
 };
 
 }  // internal

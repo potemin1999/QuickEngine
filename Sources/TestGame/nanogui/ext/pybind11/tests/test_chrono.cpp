@@ -29,8 +29,7 @@ std::chrono::system_clock::duration test_chrono3(std::chrono::system_clock::dura
 }
 
 // Difference between two passed in time_points
-std::chrono::system_clock::duration
-test_chrono4(std::chrono::system_clock::time_point a, std::chrono::system_clock::time_point b) {
+std::chrono::system_clock::duration test_chrono4(std::chrono::system_clock::time_point a, std::chrono::system_clock::time_point b) {
     return a - b;
 }
 
@@ -49,7 +48,7 @@ std::chrono::microseconds test_chrono7(std::chrono::microseconds t) {
     return t;
 }
 
-test_initializer chrono([](py::module &m) {
+test_initializer chrono([] (py::module &m) {
     m.def("test_chrono1", &test_chrono1);
     m.def("test_chrono2", &test_chrono2);
     m.def("test_chrono3", &test_chrono3);

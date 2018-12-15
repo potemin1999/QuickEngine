@@ -37,7 +37,7 @@ def test_reference_wrapper():
     from pybind11_tests.issues import Placeholder, return_vec_of_reference_wrapper
 
     assert str(return_vec_of_reference_wrapper(Placeholder(4))) == \
-           "[Placeholder[1], Placeholder[2], Placeholder[3], Placeholder[4]]"
+        "[Placeholder[1], Placeholder[2], Placeholder[3], Placeholder[4]]"
 
 
 def test_iterator_passthrough():

@@ -33,9 +33,9 @@
 #ifndef EIGEN_SELFADJOINT_MATRIX_MATRIX_BLAS_H
 #define EIGEN_SELFADJOINT_MATRIX_MATRIX_BLAS_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
 
 /* Optimized selfadjoint matrix * matrix (?SYMM/?HEMM) product */
@@ -149,13 +149,10 @@ struct product_selfadjoint_matrix<EIGTYPE,Index,LhsStorageOrder,true,ConjugateLh
   } \
 };
 
-        EIGEN_BLAS_SYMM_L(double, double, d, d)
-
-        EIGEN_BLAS_SYMM_L(float, float, f, s)
-
-        EIGEN_BLAS_HEMM_L(dcomplex, double, cd, z)
-
-        EIGEN_BLAS_HEMM_L(scomplex, float, cf, c)
+EIGEN_BLAS_SYMM_L(double, double, d, d)
+EIGEN_BLAS_SYMM_L(float, float, f, s)
+EIGEN_BLAS_HEMM_L(dcomplex, double, cd, z)
+EIGEN_BLAS_HEMM_L(scomplex, float, cf, c)
 
 
 /* Optimized matrix * selfadjoint matrix (?SYMM/?HEMM) product */
@@ -266,15 +263,12 @@ struct product_selfadjoint_matrix<EIGTYPE,Index,LhsStorageOrder,false,ConjugateL
   } \
 };
 
-        EIGEN_BLAS_SYMM_R(double, double, d, d)
+EIGEN_BLAS_SYMM_R(double, double, d, d)
+EIGEN_BLAS_SYMM_R(float, float, f, s)
+EIGEN_BLAS_HEMM_R(dcomplex, double, cd, z)
+EIGEN_BLAS_HEMM_R(scomplex, float, cf, c)
 
-        EIGEN_BLAS_SYMM_R(float, float, f, s)
-
-        EIGEN_BLAS_HEMM_R(dcomplex, double, cd, z)
-
-        EIGEN_BLAS_HEMM_R(scomplex, float, cf, c)
-
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

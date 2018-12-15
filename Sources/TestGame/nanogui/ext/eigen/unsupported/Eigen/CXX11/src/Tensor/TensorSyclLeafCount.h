@@ -23,26 +23,25 @@
 #define UNSUPPORTED_EIGEN_CXX11_SRC_TENSOR_TENSORSYCL_LEAF_COUNT_HPP
 
 namespace Eigen {
-    namespace TensorSycl {
-        namespace internal {
+namespace TensorSycl {
+namespace internal {
 /// \brief LeafCount used to counting terminal nodes. The total number of
 /// leaf nodes is used by MakePlaceHolderExprHelper to find the order
 /// of the leaf node in a expression tree at compile time.
-            template<typename Expr>
-            struct LeafCount;
+template <typename Expr>
+struct LeafCount;
 
-            template<typename... Args>
-            struct CategoryCount;
+template<typename... Args> struct CategoryCount;
 
-            template<>
-            struct CategoryCount<> {
-                static const size_t Count = 0;
-            };
+template<> struct CategoryCount<>
+{
+  static const size_t Count =0;
+};
 
-            template<typename Arg, typename... Args>
-            struct CategoryCount<Arg, Args...> {
-                static const size_t Count = LeafCount<Arg>::Count + CategoryCount<Args...>::Count;
-            };
+template<typename Arg, typename... Args>
+struct CategoryCount<Arg,Args...>{
+  static const size_t Count = LeafCount<Arg>::Count + CategoryCount<Args...>::Count;
+};
 
 /// specialisation of the \ref LeafCount struct when the node type is const TensorMap
 #define SYCLTENSORMAPLEAFCOUNT(CVQual)\
@@ -51,8 +50,8 @@ struct LeafCount<CVQual TensorMap<PlainObjectType, Options_, MakePointer_> > {\
   static const size_t Count =1;\
 };
 
-            SYCLTENSORMAPLEAFCOUNT(const)
-        SYCLTENSORMAPLEAFCOUNT()
+SYCLTENSORMAPLEAFCOUNT(const)
+SYCLTENSORMAPLEAFCOUNT()
 #undef SYCLTENSORMAPLEAFCOUNT
 
 //  TensorCwiseUnaryOp,  TensorCwiseNullaryOp,  TensorCwiseBinaryOp,  TensorCwiseTernaryOp, and  TensorBroadcastingOp
@@ -60,8 +59,8 @@ struct LeafCount<CVQual TensorMap<PlainObjectType, Options_, MakePointer_> > {\
 template <template <class, class...> class CategoryExpr, typename OP, typename... RHSExpr>\
 struct LeafCount<CVQual CategoryExpr<OP, RHSExpr...> >: CategoryCount<RHSExpr...> {};
 
-        SYCLCATEGORYLEAFCOUNT(const)
-        SYCLCATEGORYLEAFCOUNT()
+SYCLCATEGORYLEAFCOUNT(const)
+SYCLCATEGORYLEAFCOUNT()
 #undef SYCLCATEGORYLEAFCOUNT
 
 /// specialisation of the \ref LeafCount struct when the node type is const TensorSelectOp is an exception
@@ -69,8 +68,8 @@ struct LeafCount<CVQual CategoryExpr<OP, RHSExpr...> >: CategoryCount<RHSExpr...
 template <typename IfExpr, typename ThenExpr, typename ElseExpr>\
 struct LeafCount<CVQual TensorSelectOp<IfExpr, ThenExpr, ElseExpr> > : CategoryCount<IfExpr, ThenExpr, ElseExpr> {};
 
-        SYCLSELECTOPLEAFCOUNT(const)
-    SYCLSELECTOPLEAFCOUNT()
+SYCLSELECTOPLEAFCOUNT(const)
+SYCLSELECTOPLEAFCOUNT()
 #undef SYCLSELECTOPLEAFCOUNT
 
 
@@ -79,7 +78,7 @@ struct LeafCount<CVQual TensorSelectOp<IfExpr, ThenExpr, ElseExpr> > : CategoryC
 template <typename LHSExpr, typename RHSExpr>\
 struct LeafCount<CVQual TensorAssignOp<LHSExpr, RHSExpr> >: CategoryCount<LHSExpr,RHSExpr> {};
 
-    SYCLLEAFCOUNTASSIGNOP(const)
+SYCLLEAFCOUNTASSIGNOP(const)
 SYCLLEAFCOUNTASSIGNOP()
 #undef SYCLLEAFCOUNTASSIGNOP
 
@@ -123,10 +122,10 @@ struct LeafCount<CVQual ExprNode<Indices, LhsXprType, RhsXprType> > {\
     static const size_t Count =1;\
 };
 
-CONTRACTIONCONVOLUTIONLEAFCOUNT(const, TensorContractionOp)
-CONTRACTIONCONVOLUTIONLEAFCOUNT(, TensorContractionOp)
-CONTRACTIONCONVOLUTIONLEAFCOUNT(const, TensorConvolutionOp)
-CONTRACTIONCONVOLUTIONLEAFCOUNT(, TensorConvolutionOp)
+CONTRACTIONCONVOLUTIONLEAFCOUNT(const,TensorContractionOp)
+CONTRACTIONCONVOLUTIONLEAFCOUNT(,TensorContractionOp)
+CONTRACTIONCONVOLUTIONLEAFCOUNT(const,TensorConvolutionOp)
+CONTRACTIONCONVOLUTIONLEAFCOUNT(,TensorConvolutionOp)
 #undef CONTRACTIONCONVOLUTIONLEAFCOUNT
 
 

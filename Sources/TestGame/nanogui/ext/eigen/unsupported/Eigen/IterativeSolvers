@@ -25,10 +25,8 @@
 //@{
 
 #ifndef EIGEN_MPL2_ONLY
-
 #include "src/IterativeSolvers/IterationController.h"
 #include "src/IterativeSolvers/ConstrainedConjGrad.h"
-
 #endif
 
 #include "src/IterativeSolvers/IncompleteLU.h"

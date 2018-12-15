@@ -35,7 +35,7 @@
 
 namespace Eigen {
 
-    namespace internal {
+namespace internal {
 
 // implements LeftSide op(triangular)^-1 * general
 #define EIGEN_BLAS_TRSM_L(EIGTYPE, BLASTYPE, BLASPREFIX) \
@@ -84,13 +84,10 @@ struct triangular_solve_matrix<EIGTYPE,Index,OnTheLeft,Mode,Conjugate,TriStorage
  } \
 };
 
-        EIGEN_BLAS_TRSM_L(double, double, d)
-
-        EIGEN_BLAS_TRSM_L(dcomplex, double, z)
-
-        EIGEN_BLAS_TRSM_L(float, float, s)
-
-        EIGEN_BLAS_TRSM_L(scomplex, float, c)
+EIGEN_BLAS_TRSM_L(double,   double, d)
+EIGEN_BLAS_TRSM_L(dcomplex, double, z)
+EIGEN_BLAS_TRSM_L(float,    float,  s)
+EIGEN_BLAS_TRSM_L(scomplex, float,  c)
 
 
 // implements RightSide general * op(triangular)^-1
@@ -141,16 +138,13 @@ struct triangular_solve_matrix<EIGTYPE,Index,OnTheRight,Mode,Conjugate,TriStorag
  } \
 };
 
-        EIGEN_BLAS_TRSM_R(double, double, d)
-
-        EIGEN_BLAS_TRSM_R(dcomplex, double, z)
-
-        EIGEN_BLAS_TRSM_R(float, float, s)
-
-        EIGEN_BLAS_TRSM_R(scomplex, float, c)
+EIGEN_BLAS_TRSM_R(double,   double, d)
+EIGEN_BLAS_TRSM_R(dcomplex, double, z)
+EIGEN_BLAS_TRSM_R(float,    float,  s)
+EIGEN_BLAS_TRSM_R(scomplex, float,  c)
 
 
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

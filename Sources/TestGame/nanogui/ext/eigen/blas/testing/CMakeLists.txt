@@ -1,22 +1,22 @@
 
 macro(ei_add_blas_test testname)
 
-    set(targetname ${testname})
+  set(targetname ${testname})
 
-    set(filename ${testname}.f)
-    add_executable(${targetname} ${filename})
+  set(filename ${testname}.f)
+  add_executable(${targetname} ${filename})
 
-    target_link_libraries(${targetname} eigen_blas)
+  target_link_libraries(${targetname} eigen_blas)
 
-    if (EIGEN_STANDARD_LIBRARIES_TO_LINK_TO)
-        target_link_libraries(${targetname} ${EIGEN_STANDARD_LIBRARIES_TO_LINK_TO})
-    endif ()
+  if(EIGEN_STANDARD_LIBRARIES_TO_LINK_TO)
+    target_link_libraries(${targetname} ${EIGEN_STANDARD_LIBRARIES_TO_LINK_TO})
+  endif()
 
-    target_link_libraries(${targetname} ${EXTERNAL_LIBS})
+  target_link_libraries(${targetname} ${EXTERNAL_LIBS})
 
-    add_test(${testname} "${Eigen_SOURCE_DIR}/blas/testing/runblastest.sh" "${testname}" "${Eigen_SOURCE_DIR}/blas/testing/${testname}.dat")
-    add_dependencies(buildtests ${targetname})
-
+  add_test(${testname} "${Eigen_SOURCE_DIR}/blas/testing/runblastest.sh" "${testname}" "${Eigen_SOURCE_DIR}/blas/testing/${testname}.dat")
+  add_dependencies(buildtests ${targetname})
+  
 endmacro(ei_add_blas_test)
 
 ei_add_blas_test(sblat1)

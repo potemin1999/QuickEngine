@@ -27,131 +27,114 @@ namespace Eigen {
   * Beware: The constructors are not API compatible with these of
   * std::vector.
   */
-    template<typename T>
-    class MaxSizeVector {
-    public:
-        // Construct a new MaxSizeVector, reserve n elements.
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+template <typename T>
+class MaxSizeVector {
+ public:
+  // Construct a new MaxSizeVector, reserve n elements.
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  explicit MaxSizeVector(size_t n)
+      : reserve_(n), size_(0),
+        data_(static_cast<T*>(internal::aligned_malloc(n * sizeof(T)))) {
+    for (size_t i = 0; i < n; ++i) { new (&data_[i]) T; }
+  }
 
-        explicit MaxSizeVector(size_t n)
-                : reserve_(n), size_(0),
-                  data_(static_cast<T *>(internal::aligned_malloc(n * sizeof(T)))) {
-            for (size_t i = 0; i < n; ++i) { new(&data_[i]) T; }
-        }
+  // Construct a new MaxSizeVector, reserve and resize to n.
+  // Copy the init value to all elements.
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  MaxSizeVector(size_t n, const T& init)
+      : reserve_(n), size_(n),
+        data_(static_cast<T*>(internal::aligned_malloc(n * sizeof(T)))) {
+    for (size_t i = 0; i < n; ++i) { new (&data_[i]) T(init); }
+  }
 
-        // Construct a new MaxSizeVector, reserve and resize to n.
-        // Copy the init value to all elements.
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  ~MaxSizeVector() {
+    for (size_t i = 0; i < size_; ++i) {
+      data_[i].~T();
+    }
+    internal::aligned_free(data_);
+  }
 
-        MaxSizeVector(size_t n, const T &init)
-                : reserve_(n), size_(n),
-                  data_(static_cast<T *>(internal::aligned_malloc(n * sizeof(T)))) {
-            for (size_t i = 0; i < n; ++i) { new(&data_[i]) T(init); }
-        }
+  void resize(size_t n) {
+    eigen_assert(n <= reserve_);
+    for (size_t i = size_; i < n; ++i) {
+      new (&data_[i]) T;
+    }
+    for (size_t i = n; i < size_; ++i) {
+      data_[i].~T();
+    }
+    size_ = n;
+  }
 
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  // Append new elements (up to reserved size).
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  void push_back(const T& t) {
+    eigen_assert(size_ < reserve_);
+    data_[size_++] = t;
+  }
 
-        ~MaxSizeVector() {
-            for (size_t i = 0; i < size_; ++i) {
-                data_[i].~T();
-            }
-            internal::aligned_free(data_);
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  const T& operator[] (size_t i) const {
+    eigen_assert(i < size_);
+    return data_[i];
+  }
 
-        void resize(size_t n) {
-            eigen_assert(n <= reserve_);
-            for (size_t i = size_; i < n; ++i) {
-                new(&data_[i]) T;
-            }
-            for (size_t i = n; i < size_; ++i) {
-                data_[i].~T();
-            }
-            size_ = n;
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  T& operator[] (size_t i) {
+    eigen_assert(i < size_);
+    return data_[i];
+  }
 
-        // Append new elements (up to reserved size).
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  T& back() {
+    eigen_assert(size_ > 0);
+    return data_[size_ - 1];
+  }
 
-        void push_back(const T &t) {
-            eigen_assert(size_ < reserve_);
-            data_[size_++] = t;
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  const T& back() const {
+    eigen_assert(size_ > 0);
+    return data_[size_ - 1];
+  }
 
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  void pop_back() {
+    // NOTE: This does not destroy the value at the end the way
+    // std::vector's version of pop_back() does.  That happens when
+    // the Vector is destroyed.
+    eigen_assert(size_ > 0);
+    size_--;
+  }
 
-        const T &operator[](size_t i) const {
-            eigen_assert(i < size_);
-            return data_[i];
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  size_t size() const { return size_; }
 
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  bool empty() const { return size_ == 0; }
 
-        T &operator[](size_t i) {
-            eigen_assert(i < size_);
-            return data_[i];
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  T* data() { return data_; }
 
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  const T* data() const { return data_; }
 
-        T &back() {
-            eigen_assert(size_ > 0);
-            return data_[size_ - 1];
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  T* begin() { return data_; }
 
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  T* end() { return data_ + size_; }
 
-        const T &back() const {
-            eigen_assert(size_ > 0);
-            return data_[size_ - 1];
-        }
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  const T* begin() const { return data_; }
 
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+  const T* end() const { return data_ + size_; }
 
-        void pop_back() {
-            // NOTE: This does not destroy the value at the end the way
-            // std::vector's version of pop_back() does.  That happens when
-            // the Vector is destroyed.
-            eigen_assert(size_ > 0);
-            size_--;
-        }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        size_t size() const { return size_; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        bool empty() const { return size_ == 0; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        T *data() { return data_; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        const T *data() const { return data_; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        T *begin() { return data_; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        T *end() { return data_ + size_; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        const T *begin() const { return data_; }
-
-        EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
-
-        const T *end() const { return data_ + size_; }
-
-    private:
-        size_t reserve_;
-        size_t size_;
-        T *data_;
-    };
+ private:
+  size_t reserve_;
+  size_t size_;
+  T* data_;
+};
 
 }  // namespace Eigen
 

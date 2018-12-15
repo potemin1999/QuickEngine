@@ -19,39 +19,38 @@
 // 
 #ifndef XY_FILE_HH
 #define XY_FILE_HH
-
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-
 using namespace std;
 
-bool read_xy_file(const std::string &filename, std::vector<int> &tab_sizes,
-                  std::vector<double> &tab_mflops, bool quiet = false) {
+bool read_xy_file(const std::string & filename, std::vector<int> & tab_sizes,
+                  std::vector<double> & tab_mflops, bool quiet = false)
+{
 
-    std::ifstream input_file(filename.c_str(), std::ios::in);
+  std::ifstream input_file (filename.c_str(),std::ios::in);
 
-    if (!input_file) {
-        if (!quiet) {
-            INFOS("!!! Error opening " << filename);
-        }
-        return false;
+  if (!input_file){
+    if (!quiet) {
+      INFOS("!!! Error opening "<<filename);
     }
+    return false;
+  }
 
-    int nb_point = 0;
-    int size = 0;
-    double mflops = 0;
+  int nb_point=0;
+  int size=0;
+  double mflops=0;
 
-    while (input_file >> size >> mflops) {
-        nb_point++;
-        tab_sizes.push_back(size);
-        tab_mflops.push_back(mflops);
-    }
-    SCRUTE(nb_point);
+  while (input_file >> size >> mflops ){
+    nb_point++;
+    tab_sizes.push_back(size);
+    tab_mflops.push_back(mflops);
+  }
+  SCRUTE(nb_point);
 
-    input_file.close();
-    return true;
+  input_file.close();
+  return true;
 }
 
 // The Vector class must satisfy the following part of STL vector concept :
@@ -62,15 +61,15 @@ bool read_xy_file(const std::string &filename, std::vector<int> &tab_sizes,
 using namespace std;
 
 template<class Vector_A, class Vector_B>
-void dump_xy_file(const Vector_A &X, const Vector_B &Y, const std::string &filename) {
+void dump_xy_file(const Vector_A & X, const Vector_B & Y, const std::string & filename){
+  
+  ofstream outfile (filename.c_str(),ios::out) ;
+  int size=X.size();
+  
+  for (int i=0;i<size;i++)
+    outfile << X[i] << " " << Y[i] << endl;
 
-    ofstream outfile(filename.c_str(), ios::out);
-    int size = X.size();
-
-    for (int i = 0; i < size; i++)
-        outfile << X[i] << " " << Y[i] << endl;
-
-    outfile.close();
-}
+  outfile.close();
+} 
 
 #endif

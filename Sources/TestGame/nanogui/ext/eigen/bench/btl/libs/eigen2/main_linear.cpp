@@ -22,12 +22,13 @@
 
 BTL_MAIN;
 
-int main() {
+int main()
+{
 
-    bench < Action_axpy < eigen2_interface<REAL_TYPE> > > (MIN_AXPY, MAX_AXPY, NB_POINT);
-    bench < Action_axpby < eigen2_interface<REAL_TYPE> > > (MIN_AXPY, MAX_AXPY, NB_POINT);
-
-    return 0;
+  bench<Action_axpy<eigen2_interface<REAL_TYPE> > >(MIN_AXPY,MAX_AXPY,NB_POINT);
+  bench<Action_axpby<eigen2_interface<REAL_TYPE> > >(MIN_AXPY,MAX_AXPY,NB_POINT);
+  
+  return 0;
 }
 
 

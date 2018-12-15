@@ -22,13 +22,12 @@
 class El {
 public:
     El() = delete;
-
-    El(int v) : a(v) {}
+    El(int v) : a(v) { }
 
     int a;
 };
 
-std::ostream &operator<<(std::ostream &s, El const &v) {
+std::ostream & operator<<(std::ostream &s, El const&v) {
     s << "El{" << v.a << '}';
     return s;
 }
@@ -37,37 +36,31 @@ std::ostream &operator<<(std::ostream &s, El const &v) {
 class E_nc {
 public:
     explicit E_nc(int i) : value{i} {}
-
     E_nc(const E_nc &) = delete;
-
     E_nc &operator=(const E_nc &) = delete;
-
     E_nc(E_nc &&) = default;
-
     E_nc &operator=(E_nc &&) = default;
 
     int value;
 };
 
-template<class Container>
-Container *one_to_n(int n) {
+template <class Container> Container *one_to_n(int n) {
     auto v = new Container();
     for (int i = 1; i <= n; i++)
         v->emplace_back(i);
     return v;
 }
 
-template<class Map>
-Map *times_ten(int n) {
+template <class Map> Map *times_ten(int n) {
     auto m = new Map();
     for (int i = 1; i <= n; i++)
-        m->emplace(int(i), E_nc(10 * i));
+        m->emplace(int(i), E_nc(10*i));
     return m;
 }
 
 test_initializer stl_binder_vector([](py::module &m) {
     py::class_<El>(m, "El")
-            .def(py::init<int>());
+        .def(py::init<int>());
 
     py::bind_vector<std::vector<unsigned int>>(m, "VectorInt");
     py::bind_vector<std::vector<bool>>(m, "VectorBool");
@@ -89,8 +82,8 @@ test_initializer stl_binder_map([](py::module &m) {
 
 test_initializer stl_binder_noncopyable([](py::module &m) {
     py::class_<E_nc>(m, "ENC")
-            .def(py::init<int>())
-            .def_readwrite("value", &E_nc::value);
+        .def(py::init<int>())
+        .def_readwrite("value", &E_nc::value);
 
     py::bind_vector<std::vector<E_nc>>(m, "VectorENC");
     m.def("get_vnc", &one_to_n<std::vector<E_nc>>, py::return_value_policy::reference);

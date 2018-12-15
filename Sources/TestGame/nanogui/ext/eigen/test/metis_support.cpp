@@ -12,13 +12,14 @@
 #include <Eigen/MetisSupport>
 #include <unsupported/Eigen/SparseExtra>
 
-template<typename T>
-void test_metis_T() {
-    SparseLU<SparseMatrix<T, ColMajor>, MetisOrdering<int> > sparselu_metis;
-
-    check_sparse_square_solving(sparselu_metis);
+template<typename T> void test_metis_T()
+{
+  SparseLU<SparseMatrix<T, ColMajor>, MetisOrdering<int> > sparselu_metis;
+  
+  check_sparse_square_solving(sparselu_metis); 
 }
 
-void test_metis_support() {
-    CALL_SUBTEST_1(test_metis_T<double>());
+void test_metis_support()
+{
+  CALL_SUBTEST_1(test_metis_T<double>());
 }

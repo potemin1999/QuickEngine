@@ -35,15 +35,15 @@
 
 // POSIX-specific global TLS data
 //
-typedef struct _GLFWtlsPOSIX {
-    GLFWbool allocated;
-    pthread_key_t context;
+typedef struct _GLFWtlsPOSIX
+{
+    GLFWbool        allocated;
+    pthread_key_t   context;
 
 } _GLFWtlsPOSIX;
 
 
 GLFWbool _glfwInitThreadLocalStoragePOSIX(void);
-
 void _glfwTerminateThreadLocalStoragePOSIX(void);
 
 #endif // _glfw3_posix_tls_h_

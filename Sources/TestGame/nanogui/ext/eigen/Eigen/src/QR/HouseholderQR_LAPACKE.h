@@ -34,9 +34,9 @@
 #ifndef EIGEN_QR_LAPACKE_H
 #define EIGEN_QR_LAPACKE_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
 /** \internal Specialization for the data types supported by LAPACKe */
 
@@ -56,15 +56,12 @@ struct householder_qr_inplace_blocked<MatrixQR, HCoeffs, EIGTYPE, true> \
   } \
 };
 
-        EIGEN_LAPACKE_QR_NOPIV(double, double, d)
+EIGEN_LAPACKE_QR_NOPIV(double, double, d)
+EIGEN_LAPACKE_QR_NOPIV(float, float, s)
+EIGEN_LAPACKE_QR_NOPIV(dcomplex, lapack_complex_double, z)
+EIGEN_LAPACKE_QR_NOPIV(scomplex, lapack_complex_float, c)
 
-        EIGEN_LAPACKE_QR_NOPIV(float, float, s)
-
-        EIGEN_LAPACKE_QR_NOPIV(dcomplex, lapack_complex_double, z)
-
-        EIGEN_LAPACKE_QR_NOPIV(scomplex, lapack_complex_float, c)
-
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

@@ -23,8 +23,8 @@
 #define UNSUPPORTED_EIGEN_CXX11_SRC_TENSOR_TENSORSYCL_EXTRACT_FUNCTORS_HPP
 
 namespace Eigen {
-    namespace TensorSycl {
-        namespace internal {
+namespace TensorSycl {
+namespace internal {
 /// \struct FunctorExtractor:  This struct is used to extract the functors
 /// constructed on
 /// the host-side, to pack them and reuse them in reconstruction of the
@@ -33,19 +33,14 @@ namespace Eigen {
 /// re-instantiate them on the device.
 /// We have to pass instantiated functors to the device.
 // This struct is used for leafNode (TensorMap) and nodes behaving like leafNode (TensorForcedEval).
-            template<typename Evaluator>
-            struct FunctorExtractor {
-                typedef typename Evaluator::Dimensions Dimensions;
-                const Dimensions m_dimensions;
-                EIGEN_STRONG_INLINE const Dimensions
-                &
+template <typename Evaluator> struct FunctorExtractor{
+  typedef typename Evaluator::Dimensions Dimensions;
+  const Dimensions m_dimensions;
+  EIGEN_STRONG_INLINE const Dimensions& dimensions() const { return m_dimensions; }
+  FunctorExtractor(const Evaluator& expr)
+  : m_dimensions(expr.dimensions()) {}
 
-                dimensions() const { return m_dimensions; }
-
-                FunctorExtractor(const Evaluator &expr)
-                        : m_dimensions(expr.dimensions()) {}
-
-            };
+};
 
 /// specialisation of the \ref FunctorExtractor struct when the node type does not require anything
 ///TensorConversionOp
@@ -57,9 +52,8 @@ struct FunctorExtractor<TensorEvaluator<CVQual ExprNode<ArgType1, ArgType2>, Dev
   : subExpr(expr.impl()) {}\
 };
 
-            SYCLEXTRFUNCCONVERSION(TensorConversionOp, const)
-
-        SYCLEXTRFUNCCONVERSION(TensorConversionOp,)
+SYCLEXTRFUNCCONVERSION(TensorConversionOp, const)
+SYCLEXTRFUNCCONVERSION(TensorConversionOp, )
 #undef SYCLEXTRFUNCCONVERSION
 
 #define SYCLEXTRTENSORMAPFIXEDSIZE(CVQual)\
@@ -68,8 +62,7 @@ struct FunctorExtractor< TensorEvaluator <CVQual TensorMap<TensorFixedSize<Scala
 FunctorExtractor(const TensorEvaluator <CVQual TensorMap<TensorFixedSize<Scalar_, Dimensions_, Options_2, IndexType>, Options_, MakePointer_> , Dev>& ){}\
 };
 
-        SYCLEXTRTENSORMAPFIXEDSIZE(const)
-
+SYCLEXTRTENSORMAPFIXEDSIZE(const)
 SYCLEXTRTENSORMAPFIXEDSIZE()
 #undef SYCLEXTRTENSORMAPFIXEDSIZE
 
@@ -85,7 +78,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual UnaryCategory<OP, RHSExpr>, Dev> 
 };
 
 SYCLEXTRFUNCUNARY(const)
-
 SYCLEXTRFUNCUNARY()
 #undef SYCLEXTRFUNCUNARY
 
@@ -102,7 +94,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual BinaryCategory<OP, LHSExpr, RHSEx
 };
 
 SYCLEXTRFUNCBIINARY(const)
-
 SYCLEXTRFUNCBIINARY()
 #undef SYCLEXTRFUNCBIINARY
 
@@ -119,7 +110,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual TernaryCategory<OP, Arg1Expr, Arg
 };
 
 SYCLEXTRFUNCTERNARY(const)
-
 SYCLEXTRFUNCTERNARY()
 #undef SYCLEXTRFUNCTERNARY
 
@@ -136,7 +126,6 @@ struct FunctorExtractor< TensorEvaluator<CVQual TensorSelectOp<IfExpr, ThenExpr,
 };
 
 SYCLEXTRFUNCSELECTOP(const)
-
 SYCLEXTRFUNCSELECTOP()
 #undef SYCLEXTRFUNCSELECTOP
 
@@ -150,9 +139,7 @@ struct FunctorExtractor<TensorEvaluator<CVQual TensorAssignOp<LHSExpr, RHSExpr>,
   FunctorExtractor(const TensorEvaluator<CVQual TensorAssignOp<LHSExpr, RHSExpr>, Dev>& expr)\
   : lhsExpr(expr.left_impl()), rhsExpr(expr.right_impl()) {}\
 };
-
 SYCLEXTRFUNCASSIGNOP(const)
-
 SYCLEXTRFUNCASSIGNOP()
 #undef SYCLEXTRFUNCASSIGNOP
 
@@ -167,24 +154,17 @@ struct FunctorExtractor<TensorEvaluator<CVQual TensorEvalToOp<RHSExpr>, Dev> > {
 };
 
 SYCLEXTRFUNCEVALTOOP(const)
-
 SYCLEXTRFUNCEVALTOOP()
 #undef SYCLEXTRFUNCEVALTOOP
 
-template<typename Dim, size_t NumOutputDim>
-struct DimConstr {
-    template<typename InDim>
-    static EIGEN_STRONG_INLINE Dim
-    getDim(InDim
-    dims ) { return dims; }
+template<typename Dim, size_t NumOutputDim> struct DimConstr {
+template<typename InDim>
+  static EIGEN_STRONG_INLINE Dim getDim(InDim dims ) {return dims;}
 };
 
-template<typename Dim>
-struct DimConstr<Dim, 0> {
-    template<typename InDim>
-    static EIGEN_STRONG_INLINE Dim
-    getDim(InDim
-    dims ) { return Dim(static_cast<Dim>(dims.TotalSize())); }
+template<typename Dim> struct DimConstr<Dim, 0> {
+  template<typename InDim>
+    static EIGEN_STRONG_INLINE Dim getDim(InDim dims ) {return Dim(static_cast<Dim>(dims.TotalSize()));}
 };
 
 #define SYCLEXTRFUNCREDUCTIONOP(CVQual)\
@@ -200,7 +180,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual TensorReductionOp<Op, Dims, ArgTy
 
 
 SYCLEXTRFUNCREDUCTIONOP(const)
-
 SYCLEXTRFUNCREDUCTIONOP()
 #undef SYCLEXTRFUNCREDUCTIONOP
 
@@ -216,13 +195,10 @@ struct FunctorExtractor<TensorEvaluator<CVQual ExprNode<Indices, LhsXprType, Rhs
 };
 
 
-SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(const, TensorContractionOp)
-
-SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(, TensorContractionOp)
-
-SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(const, TensorConvolutionOp)
-
-SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(, TensorConvolutionOp)
+SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(const,TensorContractionOp)
+SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(,TensorContractionOp)
+SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(const,TensorConvolutionOp)
+SYCLEXTRFUNCCONTRACTCONVOLUTIONOP(,TensorConvolutionOp)
 #undef SYCLEXTRFUNCCONTRACTCONVOLUTIONOP
 
 /// specialisation of the \ref FunctorExtractor struct when the node type is
@@ -240,7 +216,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual TensorSlicingOp<StartIndices, Siz
 };
 
 SYCLEXTRFUNCTSLICEOP(const)
-
 SYCLEXTRFUNCTSLICEOP()
 #undef SYCLEXTRFUNCTSLICEOP
 
@@ -259,7 +234,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual TensorStridingSlicingOp<StartIndi
 };
 
 SYCLEXTRFUNCTSLICESTRIDEOP(const)
-
 SYCLEXTRFUNCTSLICESTRIDEOP()
 #undef SYCLEXTRFUNCTSLICESTRIDEOP
 
@@ -275,13 +249,10 @@ struct FunctorExtractor<Eigen::TensorEvaluator<CVQual Eigen::OPEXPR<Param, XprTy
 };
 
 SYCLRESHAPEANDSHUFFLEOPFUNCEXT(TensorReshapingOp, dimensions(), const)
-
-SYCLRESHAPEANDSHUFFLEOPFUNCEXT(TensorReshapingOp, dimensions(),)
+SYCLRESHAPEANDSHUFFLEOPFUNCEXT(TensorReshapingOp, dimensions(), )
 
 SYCLRESHAPEANDSHUFFLEOPFUNCEXT(TensorShufflingOp, shufflePermutation(), const)
-
-SYCLRESHAPEANDSHUFFLEOPFUNCEXT(TensorShufflingOp, shufflePermutation(),)
-
+SYCLRESHAPEANDSHUFFLEOPFUNCEXT(TensorShufflingOp, shufflePermutation(), )
 #undef SYCLRESHAPEANDSHUFFLEOPFUNCEXT
 
 // Had to separate reshapeOP otherwise it will be mistaken by UnaryCategory
@@ -299,9 +270,7 @@ struct FunctorExtractor<Eigen::TensorEvaluator<CVQual Eigen::OPEXPR<Param, XprTy
 };
 
 PADDINGOPFUNCEXT(TensorPaddingOp, padding(), padding_value(), const)
-
-PADDINGOPFUNCEXT(TensorPaddingOp, padding(), padding_value(),)
-
+PADDINGOPFUNCEXT(TensorPaddingOp, padding(), padding_value(), )
 #undef PADDINGOPFUNCEXT
 
 /// specialisation of the \ref FunctorExtractor struct when the node type is TensorContractionOp and TensorConcatenationOp
@@ -318,7 +287,6 @@ struct FunctorExtractor<TensorEvaluator<CVQual OPEXPR<Param, LHSExpr, RHSExpr>, 
 
 // TensorConcatenationOp
 SYCLEXTRFUNCCONTRACTCONCAT(TensorConcatenationOp, axis(), const)
-
 SYCLEXTRFUNCCONTRACTCONCAT(TensorConcatenationOp, axis(),)
 #undef SYCLEXTRFUNCCONTRACTCONCAT
 
@@ -336,14 +304,13 @@ struct FunctorExtractor<TensorEvaluator<CVQual TensorChippingOp<DimId, XprType>,
 };
 
 SYCLEXTRFUNCCHIPPINGOP(const)
-
 SYCLEXTRFUNCCHIPPINGOP()
 #undef SYCLEXTRFUNCCHIPPINGOP
 
 /// template deduction function for FunctorExtractor
-template<typename Evaluator>
-auto inline extractFunctors(const Evaluator &evaluator) -> FunctorExtractor<Evaluator> {
-    return FunctorExtractor < Evaluator > (evaluator);
+template <typename Evaluator>
+auto inline extractFunctors(const Evaluator& evaluator)-> FunctorExtractor<Evaluator> {
+  return FunctorExtractor<Evaluator>(evaluator);
 }
 }  // namespace internal
 }  // namespace TensorSycl

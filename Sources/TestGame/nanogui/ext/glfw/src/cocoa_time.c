@@ -35,7 +35,8 @@
 
 // Initialise timer
 //
-void _glfwInitTimerNS(void) {
+void _glfwInitTimerNS(void)
+{
     mach_timebase_info_data_t info;
     mach_timebase_info(&info);
 
@@ -47,11 +48,13 @@ void _glfwInitTimerNS(void) {
 //////                       GLFW platform API                      //////
 //////////////////////////////////////////////////////////////////////////
 
-uint64_t _glfwPlatformGetTimerValue(void) {
+uint64_t _glfwPlatformGetTimerValue(void)
+{
     return mach_absolute_time();
 }
 
-uint64_t _glfwPlatformGetTimerFrequency(void) {
+uint64_t _glfwPlatformGetTimerFrequency(void)
+{
     return _glfw.ns_time.frequency;
 }
 

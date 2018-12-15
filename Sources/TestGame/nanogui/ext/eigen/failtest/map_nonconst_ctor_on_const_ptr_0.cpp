@@ -8,7 +8,7 @@
 
 using namespace Eigen;
 
-void foo(CV_QUALIFIER float *ptr) {
+void foo(CV_QUALIFIER float *ptr){
     Map<Matrix3f> m(ptr);
 }
 

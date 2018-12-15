@@ -33,7 +33,7 @@
 #ifndef EIGEN_COMPLEX_SCHUR_LAPACKE_H
 #define EIGEN_COMPLEX_SCHUR_LAPACKE_H
 
-namespace Eigen {
+namespace Eigen { 
 
 /** \internal Specialization for the data types supported by LAPACKe */
 
@@ -82,9 +82,9 @@ ComplexSchur<Matrix<EIGTYPE, Dynamic, Dynamic, EIGCOLROW> >::compute(const Eigen
 }
 
 EIGEN_LAPACKE_SCHUR_COMPLEX(dcomplex, lapack_complex_double, z, Z, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_SCHUR_COMPLEX(scomplex, lapack_complex_float, c, C, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_SCHUR_COMPLEX(scomplex, lapack_complex_float,  c, C, ColMajor, LAPACK_COL_MAJOR)
 EIGEN_LAPACKE_SCHUR_COMPLEX(dcomplex, lapack_complex_double, z, Z, RowMajor, LAPACK_ROW_MAJOR)
-EIGEN_LAPACKE_SCHUR_COMPLEX(scomplex, lapack_complex_float, c, C, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_SCHUR_COMPLEX(scomplex, lapack_complex_float,  c, C, RowMajor, LAPACK_ROW_MAJOR)
 
 } // end namespace Eigen
 

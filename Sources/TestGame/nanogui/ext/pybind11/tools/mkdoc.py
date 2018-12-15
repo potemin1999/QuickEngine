@@ -43,11 +43,11 @@ PRINT_LIST = [
 CPP_OPERATORS = {
     '<=': 'le', '>=': 'ge', '==': 'eq', '!=': 'ne', '[]': 'array',
     '+=': 'iadd', '-=': 'isub', '*=': 'imul', '/=': 'idiv', '%=':
-        'imod', '&=': 'iand', '|=': 'ior', '^=': 'ixor', '<<=': 'ilshift',
+    'imod', '&=': 'iand', '|=': 'ior', '^=': 'ixor', '<<=': 'ilshift',
     '>>=': 'irshift', '++': 'inc', '--': 'dec', '<<': 'lshift', '>>':
-        'rshift', '&&': 'land', '||': 'lor', '!': 'lnot', '~': 'bnot',
+    'rshift', '&&': 'land', '||': 'lor', '!': 'lnot', '~': 'bnot',
     '&': 'band', '|': 'bor', '+': 'add', '-': 'sub', '*': 'mul', '/':
-        'div', '%': 'mod', '<': 'lt', '>': 'gt', '=': 'assign', '()': 'call'
+    'div', '%': 'mod', '<': 'lt', '>': 'gt', '=': 'assign', '()': 'call'
 }
 
 CPP_OPERATORS = OrderedDict(
@@ -213,7 +213,7 @@ def extract(filename, node, prefix, output):
         if len(node.spelling) > 0:
             name = sanitize_name(sub_prefix + d(node.spelling))
             output.append('\nstatic const char *%s =%sR"doc(%s)doc";' %
-                          (name, '\n' if '\n' in comment else ' ', comment))
+                (name, '\n' if '\n' in comment else ' ', comment))
             num_extracted += 1
     return num_extracted
 
@@ -235,7 +235,6 @@ class ExtractionThread(Thread):
             extract(self.filename, tu.cursor, '', self.output)
         finally:
             job_semaphore.release()
-
 
 if __name__ == '__main__':
     parameters = ['-x', 'c++', '-std=c++11']

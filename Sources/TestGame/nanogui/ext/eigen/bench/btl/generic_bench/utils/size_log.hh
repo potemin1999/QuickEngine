@@ -21,32 +21,32 @@
 #define SIZE_LOG
 
 #include "math.h"
-
 // The Vector class must satisfy the following part of STL vector concept :
 //            resize() method
 //            [] operator for seting element
 // the vector element are int compatible.
 template<class Vector>
-void size_log(const int nb_point, const int size_min, const int size_max, Vector &X) {
-    X.resize(nb_point);
+void size_log(const int nb_point, const int size_min, const int size_max, Vector & X)
+{
+  X.resize(nb_point);
 
-    float ls_min = log(float(size_min));
-    float ls_max = log(float(size_max));
+  float ls_min=log(float(size_min));
+  float ls_max=log(float(size_max));
 
-    float ls = 0.0;
+  float ls=0.0;
 
-    float delta_ls = (ls_max - ls_min) / (float(nb_point - 1));
+  float delta_ls=(ls_max-ls_min)/(float(nb_point-1));
 
-    int size = 0;
+  int size=0;
 
-    for (int i = 0; i < nb_point; i++) {
+  for (int i=0;i<nb_point;i++){
 
-        ls = ls_min + float(i) * delta_ls;
+    ls = ls_min + float(i)*delta_ls ;
+    
+    size=int(exp(ls)); 
 
-        size = int(exp(ls));
-
-        X[i] = size;
-    }
+    X[i]=size;
+  }
 
 }
 

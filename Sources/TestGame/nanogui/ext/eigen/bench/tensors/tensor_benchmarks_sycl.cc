@@ -17,5 +17,4 @@
   BENCHMARK_RANGE(BM_##FUNC, 10, 5000);
 
 BM_FuncGPU(broadcasting);
-
 BM_FuncGPU(coeffWiseOp);

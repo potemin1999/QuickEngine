@@ -12,9 +12,9 @@
 
 namespace Eigen {
 
-    namespace internal {
+namespace internal {
 
-        namespace group_theory {
+namespace group_theory {
 
 /** \internal
   * \file CXX11/Tensor/util/TemplateGroupTheory.h
@@ -116,37 +116,34 @@ namespace Eigen {
   *
   * \sa enumerate_group_elements
   */
-            template<template<typename, typename> class Equality, typename id, typename L>
-            struct strip_identities;
+template<template<typename, typename> class Equality, typename id, typename L> struct strip_identities;
 
-            template<
-                    template<typename, typename> class Equality,
-                    typename id,
-                    typename t,
-                    typename... ts
-            >
-            struct strip_identities<Equality, id, type_list < t, ts...>> {
-            typedef typename conditional<
-                    Equality<id, t>::value,
-                    typename strip_identities<Equality, id, type_list < ts...>>::type,
-            typename concat<type_list < t>, typename strip_identities<Equality, id, type_list < ts...>>
-            ::type>::type
-            >
-            ::type type;
-            constexpr static int global_flags =
-                    Equality<id, t>::global_flags | strip_identities<Equality, id, type_list < ts...>>
-            ::global_flags;
-        };
+template<
+  template<typename, typename> class Equality,
+  typename id,
+  typename t,
+  typename... ts
+>
+struct strip_identities<Equality, id, type_list<t, ts...>>
+{
+  typedef typename conditional<
+    Equality<id, t>::value,
+    typename strip_identities<Equality, id, type_list<ts...>>::type,
+    typename concat<type_list<t>, typename strip_identities<Equality, id, type_list<ts...>>::type>::type
+  >::type type;
+  constexpr static int global_flags = Equality<id, t>::global_flags | strip_identities<Equality, id, type_list<ts...>>::global_flags;
+};
 
-        template<
-                template<typename, typename> class Equality,
-                typename id
-                EIGEN_TPL_PP_SPEC_HACK_DEFC(typename, ts)
-        >
-        struct strip_identities<Equality, id, type_list < EIGEN_TPL_PP_SPEC_HACK_USE(ts)>> {
-        typedef type_list<> type;
-        constexpr static int global_flags = 0;
-    };
+template<
+  template<typename, typename> class Equality,
+  typename id
+  EIGEN_TPL_PP_SPEC_HACK_DEFC(typename, ts)
+>
+struct strip_identities<Equality, id, type_list<EIGEN_TPL_PP_SPEC_HACK_USE(ts)>>
+{
+  typedef type_list<> type;
+  constexpr static int global_flags = 0;
+};
 
 /** \internal
   *
@@ -161,38 +158,38 @@ namespace Eigen {
   *
   * \sa enumerate_group_elements, dimino_first_step_elements
   */
-    template<
-            template<typename, typename> class Multiply,
-            template<typename, typename> class Equality,
-            typename id,
-            typename g,
-            typename current_element,
-            typename elements,
-            bool dont_add_current_element   // = false
-    >
-    struct dimino_first_step_elements_helper :
-            public dimino_first_step_elements_helper<
-                    Multiply,
-                    Equality,
-                    id,
-                    g,
-                    typename Multiply<current_element, g>::type,
-                    typename concat<elements, type_list < current_element>>::type,
-            Equality<typename Multiply<current_element, g>::type, id>::value
-    > {
-};
+template<
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename g,
+  typename current_element,
+  typename elements,
+  bool dont_add_current_element   // = false
+>
+struct dimino_first_step_elements_helper :
+  public dimino_first_step_elements_helper<
+    Multiply,
+    Equality,
+    id,
+    g,
+    typename Multiply<current_element, g>::type,
+    typename concat<elements, type_list<current_element>>::type,
+    Equality<typename Multiply<current_element, g>::type, id>::value
+  > {};
 
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename g,
-        typename current_element,
-        typename elements
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename g,
+  typename current_element,
+  typename elements
 >
-struct dimino_first_step_elements_helper<Multiply, Equality, id, g, current_element, elements, true> {
-    typedef elements type;
-    constexpr static int global_flags = Equality<current_element, id>::global_flags;
+struct dimino_first_step_elements_helper<Multiply, Equality, id, g, current_element, elements, true>
+{
+  typedef elements type;
+  constexpr static int global_flags = Equality<current_element, id>::global_flags;
 };
 
 /** \internal
@@ -209,27 +206,28 @@ struct dimino_first_step_elements_helper<Multiply, Equality, id, g, current_elem
   * \sa enumerate_group_elements
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename generators
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename generators
 >
-struct dimino_first_step_elements {
-    typedef typename get<0, generators>::type first_generator;
-    typedef typename skip<1, generators>::type next_generators;
-    typedef type_list <first_generator> generators_done;
+struct dimino_first_step_elements
+{
+  typedef typename get<0, generators>::type first_generator;
+  typedef typename skip<1, generators>::type next_generators;
+  typedef type_list<first_generator> generators_done;
 
-    typedef dimino_first_step_elements_helper<
-            Multiply,
-            Equality,
-            id,
-            first_generator,
-            first_generator,
-            type_list < id>,
+  typedef dimino_first_step_elements_helper<
+    Multiply,
+    Equality,
+    id,
+    first_generator,
+    first_generator,
+    type_list<id>,
     false
-    > helper;
-    typedef typename helper::type type;
-    constexpr static int global_flags = helper::global_flags;
+  > helper;
+  typedef typename helper::type type;
+  constexpr static int global_flags = helper::global_flags;
 };
 
 /** \internal
@@ -253,22 +251,24 @@ struct dimino_first_step_elements {
   * \sa enumerate_group_elements, dimino_add_cosets_for_rep
   */
 template<
-        template<typename, typename> class Multiply,
-        typename sub_group_elements,
-        typename new_coset_rep,
-        bool generate_coset      // = true
+  template<typename, typename> class Multiply,
+  typename sub_group_elements,
+  typename new_coset_rep,
+  bool generate_coset      // = true
 >
-struct dimino_get_coset_elements {
-    typedef typename apply_op_from_right<Multiply, new_coset_rep, sub_group_elements>::type type;
+struct dimino_get_coset_elements
+{
+  typedef typename apply_op_from_right<Multiply, new_coset_rep, sub_group_elements>::type type;
 };
 
 template<
-        template<typename, typename> class Multiply,
-        typename sub_group_elements,
-        typename new_coset_rep
+  template<typename, typename> class Multiply,
+  typename sub_group_elements,
+  typename new_coset_rep
 >
-struct dimino_get_coset_elements<Multiply, sub_group_elements, new_coset_rep, false> {
-    typedef type_list<> type;
+struct dimino_get_coset_elements<Multiply, sub_group_elements, new_coset_rep, false>
+{
+  typedef type_list<> type;
 };
 
 /** \internal
@@ -286,80 +286,77 @@ struct dimino_get_coset_elements<Multiply, sub_group_elements, new_coset_rep, fa
   * \sa enumerate_group_elements, dimino_add_all_coset_spaces
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename sub_group_elements,
-        typename elements,
-        typename generators,
-        typename rep_element,
-        int sub_group_size
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename sub_group_elements,
+  typename elements,
+  typename generators,
+  typename rep_element,
+  int sub_group_size
 >
 struct dimino_add_cosets_for_rep;
 
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename sub_group_elements,
-        typename elements,
-        typename g,
-        typename... gs,
-        typename rep_element,
-        int sub_group_size
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename sub_group_elements,
+  typename elements,
+  typename g,
+  typename... gs,
+  typename rep_element,
+  int sub_group_size
 >
-struct dimino_add_cosets_for_rep<Multiply, Equality, id, sub_group_elements, elements,
-        type_list < g, gs...>, rep_element, sub_group_size>
+struct dimino_add_cosets_for_rep<Multiply, Equality, id, sub_group_elements, elements, type_list<g, gs...>, rep_element, sub_group_size>
 {
-typedef typename Multiply<rep_element, g>::type new_coset_rep;
-typedef contained_in_list_gf <Equality, new_coset_rep, elements> _cil;
-constexpr static bool add_coset = !_cil::value;
+  typedef typename Multiply<rep_element, g>::type new_coset_rep;
+  typedef contained_in_list_gf<Equality, new_coset_rep, elements> _cil;
+  constexpr static bool add_coset = !_cil::value;
 
-typedef typename dimino_get_coset_elements<
-        Multiply,
-        sub_group_elements,
-        new_coset_rep,
-        add_coset
->::type coset_elements;
+  typedef typename dimino_get_coset_elements<
+    Multiply,
+    sub_group_elements,
+    new_coset_rep,
+    add_coset
+  >::type coset_elements;
 
-typedef dimino_add_cosets_for_rep<
-        Multiply,
-        Equality,
-        id,
-        sub_group_elements,
-        typename concat<elements, coset_elements>::type,
-        type_list < gs...>,
-rep_element,
-sub_group_size
->
-_helper;
+  typedef dimino_add_cosets_for_rep<
+    Multiply,
+    Equality,
+    id,
+    sub_group_elements,
+    typename concat<elements, coset_elements>::type,
+    type_list<gs...>,
+    rep_element,
+    sub_group_size
+  > _helper;
 
-typedef typename _helper::type type;
-constexpr static int global_flags = _cil::global_flags | _helper::global_flags;
+  typedef typename _helper::type type;
+  constexpr static int global_flags = _cil::global_flags | _helper::global_flags;
 
-/* Note that we don't have to update global flags here, since
- * we will only add these elements if they are not part of
- * the group already. But that only happens if the coset rep
- * is not already in the group, so the check for the coset rep
- * will catch this.
- */
+  /* Note that we don't have to update global flags here, since
+   * we will only add these elements if they are not part of
+   * the group already. But that only happens if the coset rep
+   * is not already in the group, so the check for the coset rep
+   * will catch this.
+   */
 };
 
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename sub_group_elements,
-        typename elements
-        EIGEN_TPL_PP_SPEC_HACK_DEFC(typename, empty),
-typename rep_element,
-int sub_group_size
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename sub_group_elements,
+  typename elements
+  EIGEN_TPL_PP_SPEC_HACK_DEFC(typename, empty),
+  typename rep_element,
+  int sub_group_size
 >
-struct dimino_add_cosets_for_rep<Multiply, Equality, id, sub_group_elements, elements,
-        type_list < EIGEN_TPL_PP_SPEC_HACK_USE(empty)>, rep_element, sub_group_size>
+struct dimino_add_cosets_for_rep<Multiply, Equality, id, sub_group_elements, elements, type_list<EIGEN_TPL_PP_SPEC_HACK_USE(empty)>, rep_element, sub_group_size>
 {
-typedef elements type;
-constexpr static int global_flags = 0;
+  typedef elements type;
+  constexpr static int global_flags = 0;
 };
 
 /** \internal
@@ -377,62 +374,64 @@ constexpr static int global_flags = 0;
   * \sa enumerate_group_elements, dimino_add_cosets_for_rep
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename sub_group_elements,
-        typename elements,
-        typename generators,
-        int sub_group_size,
-        int rep_pos,
-        bool stop_condition        // = false
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename sub_group_elements,
+  typename elements,
+  typename generators,
+  int sub_group_size,
+  int rep_pos,
+  bool stop_condition        // = false
 >
-struct dimino_add_all_coset_spaces {
-    typedef typename get<rep_pos, elements>::type rep_element;
-    typedef dimino_add_cosets_for_rep<
-            Multiply,
-            Equality,
-            id,
-            sub_group_elements,
-            elements,
-            generators,
-            rep_element,
-            sub_group_elements::count
-    > _ac4r;
-    typedef typename _ac4r::type new_elements;
+struct dimino_add_all_coset_spaces
+{
+  typedef typename get<rep_pos, elements>::type rep_element;
+  typedef dimino_add_cosets_for_rep<
+    Multiply,
+    Equality,
+    id,
+    sub_group_elements,
+    elements,
+    generators,
+    rep_element,
+    sub_group_elements::count
+  > _ac4r;
+  typedef typename _ac4r::type new_elements;
+  
+  constexpr static int new_rep_pos = rep_pos + sub_group_elements::count;
+  constexpr static bool new_stop_condition = new_rep_pos >= new_elements::count;
 
-    constexpr static int new_rep_pos = rep_pos + sub_group_elements::count;
-    constexpr static bool new_stop_condition = new_rep_pos >= new_elements::count;
+  typedef dimino_add_all_coset_spaces<
+    Multiply,
+    Equality,
+    id,
+    sub_group_elements,
+    new_elements,
+    generators,
+    sub_group_size,
+    new_rep_pos,
+    new_stop_condition
+  > _helper;
 
-    typedef dimino_add_all_coset_spaces<
-            Multiply,
-            Equality,
-            id,
-            sub_group_elements,
-            new_elements,
-            generators,
-            sub_group_size,
-            new_rep_pos,
-            new_stop_condition
-    > _helper;
-
-    typedef typename _helper::type type;
-    constexpr static int global_flags = _helper::global_flags | _ac4r::global_flags;
+  typedef typename _helper::type type;
+  constexpr static int global_flags = _helper::global_flags | _ac4r::global_flags;
 };
 
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename sub_group_elements,
-        typename elements,
-        typename generators,
-        int sub_group_size,
-        int rep_pos
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename sub_group_elements,
+  typename elements,
+  typename generators,
+  int sub_group_size,
+  int rep_pos
 >
-struct dimino_add_all_coset_spaces<Multiply, Equality, id, sub_group_elements, elements, generators, sub_group_size, rep_pos, true> {
-    typedef elements type;
-    constexpr static int global_flags = 0;
+struct dimino_add_all_coset_spaces<Multiply, Equality, id, sub_group_elements, elements, generators, sub_group_size, rep_pos, true>
+{
+  typedef elements type;
+  constexpr static int global_flags = 0;
 };
 
 /** \internal
@@ -448,51 +447,53 @@ struct dimino_add_all_coset_spaces<Multiply, Equality, id, sub_group_elements, e
   * \sa enumerate_group_elements, dimino_add_all_coset_spaces
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename elements,
-        typename generators_done,
-        typename current_generator,
-        bool redundant          // = false
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename elements,
+  typename generators_done,
+  typename current_generator,
+  bool redundant          // = false
 >
-struct dimino_add_generator {
-    /* this template is only called if the generator is not redundant
-     * => all elements of the group multiplied with the new generator
-     *    are going to be new elements of the most trivial coset space
-     */
-    typedef typename apply_op_from_right<Multiply, current_generator, elements>::type multiplied_elements;
-    typedef typename concat<elements, multiplied_elements>::type new_elements;
+struct dimino_add_generator
+{
+  /* this template is only called if the generator is not redundant
+   * => all elements of the group multiplied with the new generator
+   *    are going to be new elements of the most trivial coset space
+   */
+  typedef typename apply_op_from_right<Multiply, current_generator, elements>::type multiplied_elements;
+  typedef typename concat<elements, multiplied_elements>::type new_elements;
 
-    constexpr static int rep_pos = elements::count;
+  constexpr static int rep_pos = elements::count;
 
-    typedef dimino_add_all_coset_spaces<
-            Multiply,
-            Equality,
-            id,
-            elements, // elements of previous subgroup
-            new_elements,
-            typename concat<generators_done, type_list < current_generator>>::type,
+  typedef dimino_add_all_coset_spaces<
+    Multiply,
+    Equality,
+    id,
+    elements, // elements of previous subgroup
+    new_elements,
+    typename concat<generators_done, type_list<current_generator>>::type,
     elements::count, // size of previous subgroup
     rep_pos,
     false // don't stop (because rep_pos >= new_elements::count is always false at this point)
-    > _helper;
-    typedef typename _helper::type type;
-    constexpr static int global_flags = _helper::global_flags;
+  > _helper;
+  typedef typename _helper::type type;
+  constexpr static int global_flags = _helper::global_flags;
 };
 
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename elements,
-        typename generators_done,
-        typename current_generator
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename elements,
+  typename generators_done,
+  typename current_generator
 >
-struct dimino_add_generator<Multiply, Equality, id, elements, generators_done, current_generator, true> {
-    // redundant case
-    typedef elements type;
-    constexpr static int global_flags = 0;
+struct dimino_add_generator<Multiply, Equality, id, elements, generators_done, current_generator, true>
+{
+  // redundant case
+  typedef elements type;
+  constexpr static int global_flags = 0;
 };
 
 /** \internal
@@ -508,57 +509,59 @@ struct dimino_add_generator<Multiply, Equality, id, elements, generators_done, c
   * \sa enumerate_group_elements, dimino_add_generator
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename generators_done,
-        typename remaining_generators,
-        typename elements
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename generators_done,
+  typename remaining_generators,
+  typename elements
 >
-struct dimino_add_remaining_generators {
-    typedef typename get<0, remaining_generators>::type first_generator;
-    typedef typename skip<1, remaining_generators>::type next_generators;
+struct dimino_add_remaining_generators
+{
+  typedef typename get<0, remaining_generators>::type first_generator;
+  typedef typename skip<1, remaining_generators>::type next_generators;
 
-    typedef contained_in_list_gf <Equality, first_generator, elements> _cil;
+  typedef contained_in_list_gf<Equality, first_generator, elements> _cil;
 
-    typedef dimino_add_generator<
-            Multiply,
-            Equality,
-            id,
-            elements,
-            generators_done,
-            first_generator,
-            _cil::value
-    > _helper;
+  typedef dimino_add_generator<
+    Multiply,
+    Equality,
+    id,
+    elements,
+    generators_done,
+    first_generator,
+    _cil::value
+  > _helper;
 
-    typedef typename _helper::type new_elements;
+  typedef typename _helper::type new_elements;
 
-    typedef dimino_add_remaining_generators<
-            Multiply,
-            Equality,
-            id,
-            typename concat<generators_done, type_list < first_generator>>::type,
+  typedef dimino_add_remaining_generators<
+    Multiply,
+    Equality,
+    id,
+    typename concat<generators_done, type_list<first_generator>>::type,
     next_generators,
     new_elements
-    > _next_iter;
+  > _next_iter;
 
-    typedef typename _next_iter::type type;
-    constexpr static int global_flags =
-            _cil::global_flags |
-            _helper::global_flags |
-            _next_iter::global_flags;
+  typedef typename _next_iter::type type;
+  constexpr static int global_flags =
+    _cil::global_flags |
+    _helper::global_flags |
+    _next_iter::global_flags;
 };
 
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename generators_done,
-        typename elements
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename generators_done,
+  typename elements
 >
-struct dimino_add_remaining_generators<Multiply, Equality, id, generators_done, type_list<>, elements> {
-    typedef elements type;
-    constexpr static int global_flags = 0;
+struct dimino_add_remaining_generators<Multiply, Equality, id, generators_done, type_list<>, elements>
+{
+  typedef elements type;
+  constexpr static int global_flags = 0;
 };
 
 /** \internal
@@ -576,42 +579,44 @@ struct dimino_add_remaining_generators<Multiply, Equality, id, generators_done, 
   * \sa enumerate_group_elements
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename generators,
-        int initial_global_flags = 0
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename generators,
+  int initial_global_flags = 0
 >
-struct enumerate_group_elements_noid {
-    typedef dimino_first_step_elements<Multiply, Equality, id, generators> first_step;
-    typedef typename first_step::type first_step_elements;
+struct enumerate_group_elements_noid
+{
+  typedef dimino_first_step_elements<Multiply, Equality, id, generators> first_step;
+  typedef typename first_step::type first_step_elements;
 
-    typedef dimino_add_remaining_generators<
-            Multiply,
-            Equality,
-            id,
-            typename first_step::generators_done,
-            typename first_step::next_generators, // remaining_generators
-            typename first_step::type // first_step elements
-    > _helper;
+  typedef dimino_add_remaining_generators<
+    Multiply,
+    Equality,
+    id,
+    typename first_step::generators_done,
+    typename first_step::next_generators, // remaining_generators
+    typename first_step::type // first_step elements
+  > _helper;
 
-    typedef typename _helper::type type;
-    constexpr static int global_flags =
-            initial_global_flags |
-            first_step::global_flags |
-            _helper::global_flags;
+  typedef typename _helper::type type;
+  constexpr static int global_flags =
+    initial_global_flags |
+    first_step::global_flags |
+    _helper::global_flags;
 };
 
 // in case when no generators are specified
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        int initial_global_flags
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  int initial_global_flags
 >
-struct enumerate_group_elements_noid<Multiply, Equality, id, type_list<>, initial_global_flags> {
-    typedef type_list <id> type;
-    constexpr static int global_flags = initial_global_flags;
+struct enumerate_group_elements_noid<Multiply, Equality, id, type_list<>, initial_global_flags>
+{
+  typedef type_list<id> type;
+  constexpr static int global_flags = initial_global_flags;
 };
 
 /** \internal
@@ -632,19 +637,20 @@ struct enumerate_group_elements_noid<Multiply, Equality, id, type_list<>, initia
   * \tparam _generators   A list of (possibly redundant) generators of the group
   */
 template<
-        template<typename, typename> class Multiply,
-        template<typename, typename> class Equality,
-        typename id,
-        typename _generators
+  template<typename, typename> class Multiply,
+  template<typename, typename> class Equality,
+  typename id,
+  typename _generators
 >
 struct enumerate_group_elements
-        : public enumerate_group_elements_noid<
-                Multiply,
-                Equality,
-                id,
-                typename strip_identities<Equality, id, _generators>::type,
-                strip_identities<Equality, id, _generators>::global_flags
-        > {
+  : public enumerate_group_elements_noid<
+      Multiply,
+      Equality,
+      id,
+      typename strip_identities<Equality, id, _generators>::type,
+      strip_identities<Equality, id, _generators>::global_flags
+    >
+{
 };
 
 } // end namespace group_theory
