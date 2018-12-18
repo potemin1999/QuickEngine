@@ -18,7 +18,6 @@
 //
 #ifndef ACTION_TRISOLVE
 #define ACTION_TRISOLVE
-
 #include "utilities.h"
 #include "STL_interface.hh"
 #include <string>
@@ -33,101 +32,106 @@ class Action_trisolve {
 
 public :
 
-    // Ctor
+  // Ctor
 
-    Action_trisolve(int size) : _size(size) {
-        MESSAGE("Action_trisolve Ctor");
+  Action_trisolve( int size ):_size(size)
+  {
+    MESSAGE("Action_trisolve Ctor");
 
-        // STL vector initialization
-        init_matrix<pseudo_random>(L_stl, _size);
-        init_vector<pseudo_random>(B_stl, _size);
-        init_vector<null_function>(X_stl, _size);
-        for (int j = 0; j < _size; ++j) {
-            for (int i = 0; i < j; ++i)
-                L_stl[j][i] = 0;
-            L_stl[j][j] += 3;
-        }
-
-        init_vector<null_function>(resu_stl, _size);
-
-        // generic matrix and vector initialization
-        Interface::matrix_from_stl(L, L_stl);
-        Interface::vector_from_stl(X, X_stl);
-        Interface::vector_from_stl(B, B_stl);
-
-        _cost = 0;
-        for (int j = 0; j < _size; ++j) {
-            _cost += 2 * j + 1;
-        }
+    // STL vector initialization
+    init_matrix<pseudo_random>(L_stl,_size);
+    init_vector<pseudo_random>(B_stl,_size);
+    init_vector<null_function>(X_stl,_size);
+    for (int j=0; j<_size; ++j)
+    {
+      for (int i=0; i<j; ++i)
+        L_stl[j][i] = 0;
+      L_stl[j][j] += 3;
     }
 
-    // invalidate copy ctor
+    init_vector<null_function>(resu_stl,_size);
 
-    Action_trisolve(const Action_trisolve &) {
-        INFOS("illegal call to Action_trisolve Copy Ctor");
-        exit(1);
+    // generic matrix and vector initialization
+    Interface::matrix_from_stl(L,L_stl);
+    Interface::vector_from_stl(X,X_stl);
+    Interface::vector_from_stl(B,B_stl);
+
+    _cost = 0;
+    for (int j=0; j<_size; ++j)
+    {
+      _cost += 2*j + 1;
     }
+  }
 
-    // Dtor
+  // invalidate copy ctor
 
-    ~Action_trisolve(void) {
+  Action_trisolve( const  Action_trisolve & )
+  {
+    INFOS("illegal call to Action_trisolve Copy Ctor");
+    exit(1);
+  }
 
-        MESSAGE("Action_trisolve Dtor");
+  // Dtor
 
-        // deallocation
-        Interface::free_matrix(L, _size);
-        Interface::free_vector(B);
-        Interface::free_vector(X);
-    }
+  ~Action_trisolve( void ){
 
-    // action name
+    MESSAGE("Action_trisolve Dtor");
 
-    static inline std::string name(void) {
-        return "trisolve_vector_" + Interface::name();
-    }
+    // deallocation
+    Interface::free_matrix(L,_size);
+    Interface::free_vector(B);
+    Interface::free_vector(X);
+  }
 
-    double nb_op_base(void) {
-        return _cost;
-    }
+  // action name
 
-    inline void initialize(void) {
-        //Interface::copy_vector(X_ref,X,_size);
-    }
+  static inline std::string name( void )
+  {
+    return "trisolve_vector_"+Interface::name();
+  }
 
-    inline void calculate(void) {
-        Interface::trisolve_lower(L, B, X, _size);
-    }
+  double nb_op_base( void ){
+    return _cost;
+  }
 
-    void check_result() {
-        if (_size > 128) return;
-        // calculation check
-        Interface::vector_to_stl(X, resu_stl);
+  inline void initialize( void ){
+    //Interface::copy_vector(X_ref,X,_size);
+  }
 
-        STL_interface<typename Interface::real_type>::trisolve_lower(L_stl, B_stl, X_stl, _size);
+  inline void calculate( void ) {
+      Interface::trisolve_lower(L,B,X,_size);
+  }
 
-        typename Interface::real_type error =
-                STL_interface<typename Interface::real_type>::norm_diff(X_stl, resu_stl);
+  void check_result(){
+    if (_size>128) return;
+    // calculation check
+    Interface::vector_to_stl(X,resu_stl);
 
-        if (error > 1.e-4) {
-            INFOS("WRONG CALCULATION...residual=" << error);
-            exit(2);
-        } //else INFOS("CALCULATION OK...residual=" << error);
+    STL_interface<typename Interface::real_type>::trisolve_lower(L_stl,B_stl,X_stl,_size);
 
-    }
+    typename Interface::real_type error=
+      STL_interface<typename Interface::real_type>::norm_diff(X_stl,resu_stl);
+
+    if (error>1.e-4){
+      INFOS("WRONG CALCULATION...residual=" << error);
+      exit(2);
+    } //else INFOS("CALCULATION OK...residual=" << error);
+
+  }
 
 private :
 
-    typename Interface::stl_matrix L_stl;
-    typename Interface::stl_vector X_stl;
-    typename Interface::stl_vector B_stl;
-    typename Interface::stl_vector resu_stl;
+  typename Interface::stl_matrix L_stl;
+  typename Interface::stl_vector X_stl;
+  typename Interface::stl_vector B_stl;
+  typename Interface::stl_vector resu_stl;
 
-    typename Interface::gene_matrix L;
-    typename Interface::gene_vector X;
-    typename Interface::gene_vector B;
+  typename Interface::gene_matrix L;
+  typename Interface::gene_vector X;
+  typename Interface::gene_vector B;
 
-    int _size;
-    double _cost;
+  int _size;
+  double _cost;
 };
 
 #endif

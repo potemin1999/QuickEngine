@@ -12,20 +12,20 @@
 
 if (BLAZE_INCLUDE_DIR)
 
-    # in cache already
-    set(BLAZE_FOUND TRUE)
+  # in cache already
+  set(BLAZE_FOUND TRUE)
 
 else (BLAZE_INCLUDE_DIR)
 
-    find_path(BLAZE_INCLUDE_DIR NAMES blaze/Blaze.h
-            PATHS
-            ${INCLUDE_INSTALL_DIR}
-            )
+find_path(BLAZE_INCLUDE_DIR NAMES blaze/Blaze.h
+     PATHS
+     ${INCLUDE_INSTALL_DIR}
+   )
 
-    include(FindPackageHandleStandardArgs)
-    find_package_handle_standard_args(BLAZE DEFAULT_MSG BLAZE_INCLUDE_DIR)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(BLAZE DEFAULT_MSG BLAZE_INCLUDE_DIR)
 
-    mark_as_advanced(BLAZE_INCLUDE_DIR)
+mark_as_advanced(BLAZE_INCLUDE_DIR)
 
-endif (BLAZE_INCLUDE_DIR)
+endif(BLAZE_INCLUDE_DIR)
 

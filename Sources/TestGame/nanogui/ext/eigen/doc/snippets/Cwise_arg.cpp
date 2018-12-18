@@ -1,7 +1,3 @@
 ArrayXcf v = ArrayXcf::Random(3);
-cout << v << endl <<
-endl;
-cout <<
-arg(v)
-<<
-endl;
+cout << v << endl << endl;
+cout << arg(v) << endl;

@@ -10,7 +10,7 @@
 #ifndef EIGEN_SKYLINEUTIL_H
 #define EIGEN_SKYLINEUTIL_H
 
-namespace Eigen {
+namespace Eigen { 
 
 #ifdef NDEBUG
 #define EIGEN_DBG_SKYLINE(X)
@@ -18,17 +18,10 @@ namespace Eigen {
 #define EIGEN_DBG_SKYLINE(X) X
 #endif
 
-    const unsigned int SkylineBit = 0x1200;
-
-    template<typename Lhs, typename Rhs, int ProductMode>
-    class SkylineProduct;
-
-    enum AdditionalProductEvaluationMode {
-        SkylineTimeDenseProduct, SkylineTimeSkylineProduct, DenseTimeSkylineProduct
-    };
-    enum {
-        IsSkyline = SkylineBit
-    };
+const unsigned int SkylineBit = 0x1200;
+template<typename Lhs, typename Rhs, int ProductMode> class SkylineProduct;
+enum AdditionalProductEvaluationMode {SkylineTimeDenseProduct, SkylineTimeSkylineProduct, DenseTimeSkylineProduct};
+enum {IsSkyline = SkylineBit};
 
 
 #define EIGEN_SKYLINE_INHERIT_ASSIGNMENT_OPERATOR(Derived, Op) \
@@ -67,40 +60,29 @@ EIGEN_STRONG_INLINE Derived& operator Op(const Other& scalar) \
 #define EIGEN_SKYLINE_GENERIC_PUBLIC_INTERFACE(Derived) \
   _EIGEN_SKYLINE_GENERIC_PUBLIC_INTERFACE(Derived, Eigen::SkylineMatrixBase<Derived>)
 
-    template<typename Derived>
-    class SkylineMatrixBase;
+template<typename Derived> class SkylineMatrixBase;
+template<typename _Scalar, int _Flags = 0> class SkylineMatrix;
+template<typename _Scalar, int _Flags = 0> class DynamicSkylineMatrix;
+template<typename _Scalar, int _Flags = 0> class SkylineVector;
+template<typename _Scalar, int _Flags = 0> class MappedSkylineMatrix;
 
-    template<typename _Scalar, int _Flags = 0>
-    class SkylineMatrix;
+namespace internal {
 
-    template<typename _Scalar, int _Flags = 0>
-    class DynamicSkylineMatrix;
+template<typename Lhs, typename Rhs> struct skyline_product_mode;
+template<typename Lhs, typename Rhs, int ProductMode = skyline_product_mode<Lhs,Rhs>::value> struct SkylineProductReturnType;
 
-    template<typename _Scalar, int _Flags = 0>
-    class SkylineVector;
+template<typename T> class eval<T,IsSkyline>
+{
+    typedef typename traits<T>::Scalar _Scalar;
+    enum {
+          _Flags = traits<T>::Flags
+    };
 
-    template<typename _Scalar, int _Flags = 0>
-    class MappedSkylineMatrix;
+  public:
+    typedef SkylineMatrix<_Scalar, _Flags> type;
+};
 
-    namespace internal {
-
-        template<typename Lhs, typename Rhs>
-        struct skyline_product_mode;
-        template<typename Lhs, typename Rhs, int ProductMode = skyline_product_mode<Lhs, Rhs>::value>
-        struct SkylineProductReturnType;
-
-        template<typename T>
-        class eval<T, IsSkyline> {
-            typedef typename traits<T>::Scalar _Scalar;
-            enum {
-                _Flags = traits<T>::Flags
-            };
-
-        public:
-            typedef SkylineMatrix<_Scalar, _Flags> type;
-        };
-
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

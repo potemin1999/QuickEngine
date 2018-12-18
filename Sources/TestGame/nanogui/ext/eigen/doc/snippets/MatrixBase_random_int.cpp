@@ -1,2 +1,1 @@
-cout << VectorXi::Random(2) <<
-endl;
+cout << VectorXi::Random(2) << endl;

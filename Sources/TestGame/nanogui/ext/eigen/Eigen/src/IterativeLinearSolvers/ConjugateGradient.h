@@ -10,9 +10,9 @@
 #ifndef EIGEN_CONJUGATE_GRADIENT_H
 #define EIGEN_CONJUGATE_GRADIENT_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
 /** \internal Low-level conjugate gradient algorithm
   * \param mat The matrix A
@@ -23,84 +23,88 @@ namespace Eigen {
   * \param iters On input the max number of iteration, on output the number of performed iterations.
   * \param tol_error On input the tolerance error, on output an estimation of the relative error.
   */
-        template<typename MatrixType, typename Rhs, typename Dest, typename Preconditioner>
-        EIGEN_DONT_INLINE
-        void conjugate_gradient(const MatrixType &mat, const Rhs &rhs, Dest &x,
-                                const Preconditioner &precond, Index &iters,
-                                typename Dest::RealScalar &tol_error) {
-            using std::sqrt;
-            using std::abs;
-            typedef typename Dest::RealScalar RealScalar;
-            typedef typename Dest::Scalar Scalar;
-            typedef Matrix<Scalar, Dynamic, 1> VectorType;
+template<typename MatrixType, typename Rhs, typename Dest, typename Preconditioner>
+EIGEN_DONT_INLINE
+void conjugate_gradient(const MatrixType& mat, const Rhs& rhs, Dest& x,
+                        const Preconditioner& precond, Index& iters,
+                        typename Dest::RealScalar& tol_error)
+{
+  using std::sqrt;
+  using std::abs;
+  typedef typename Dest::RealScalar RealScalar;
+  typedef typename Dest::Scalar Scalar;
+  typedef Matrix<Scalar,Dynamic,1> VectorType;
+  
+  RealScalar tol = tol_error;
+  Index maxIters = iters;
+  
+  Index n = mat.cols();
 
-            RealScalar tol = tol_error;
-            Index maxIters = iters;
+  VectorType residual = rhs - mat * x; //initial residual
 
-            Index n = mat.cols();
+  RealScalar rhsNorm2 = rhs.squaredNorm();
+  if(rhsNorm2 == 0) 
+  {
+    x.setZero();
+    iters = 0;
+    tol_error = 0;
+    return;
+  }
+  RealScalar threshold = tol*tol*rhsNorm2;
+  RealScalar residualNorm2 = residual.squaredNorm();
+  if (residualNorm2 < threshold)
+  {
+    iters = 0;
+    tol_error = sqrt(residualNorm2 / rhsNorm2);
+    return;
+  }
+  
+  VectorType p(n);
+  p = precond.solve(residual);      // initial search direction
 
-            VectorType residual = rhs - mat * x; //initial residual
+  VectorType z(n), tmp(n);
+  RealScalar absNew = numext::real(residual.dot(p));  // the square of the absolute value of r scaled by invM
+  Index i = 0;
+  while(i < maxIters)
+  {
+    tmp.noalias() = mat * p;                    // the bottleneck of the algorithm
 
-            RealScalar rhsNorm2 = rhs.squaredNorm();
-            if (rhsNorm2 == 0) {
-                x.setZero();
-                iters = 0;
-                tol_error = 0;
-                return;
-            }
-            RealScalar threshold = tol * tol * rhsNorm2;
-            RealScalar residualNorm2 = residual.squaredNorm();
-            if (residualNorm2 < threshold) {
-                iters = 0;
-                tol_error = sqrt(residualNorm2 / rhsNorm2);
-                return;
-            }
+    Scalar alpha = absNew / p.dot(tmp);         // the amount we travel on dir
+    x += alpha * p;                             // update solution
+    residual -= alpha * tmp;                    // update residual
+    
+    residualNorm2 = residual.squaredNorm();
+    if(residualNorm2 < threshold)
+      break;
+    
+    z = precond.solve(residual);                // approximately solve for "A z = residual"
 
-            VectorType p(n);
-            p = precond.solve(residual);      // initial search direction
+    RealScalar absOld = absNew;
+    absNew = numext::real(residual.dot(z));     // update the absolute value of r
+    RealScalar beta = absNew / absOld;          // calculate the Gram-Schmidt value used to create the new search direction
+    p = z + beta * p;                           // update search direction
+    i++;
+  }
+  tol_error = sqrt(residualNorm2 / rhsNorm2);
+  iters = i;
+}
 
-            VectorType z(n), tmp(n);
-            RealScalar absNew = numext::real(residual.dot(p));  // the square of the absolute value of r scaled by invM
-            Index i = 0;
-            while (i < maxIters) {
-                tmp.noalias() = mat * p;                    // the bottleneck of the algorithm
+}
 
-                Scalar alpha = absNew / p.dot(tmp);         // the amount we travel on dir
-                x += alpha * p;                             // update solution
-                residual -= alpha * tmp;                    // update residual
+template< typename _MatrixType, int _UpLo=Lower,
+          typename _Preconditioner = DiagonalPreconditioner<typename _MatrixType::Scalar> >
+class ConjugateGradient;
 
-                residualNorm2 = residual.squaredNorm();
-                if (residualNorm2 < threshold)
-                    break;
+namespace internal {
 
-                z = precond.solve(residual);                // approximately solve for "A z = residual"
+template< typename _MatrixType, int _UpLo, typename _Preconditioner>
+struct traits<ConjugateGradient<_MatrixType,_UpLo,_Preconditioner> >
+{
+  typedef _MatrixType MatrixType;
+  typedef _Preconditioner Preconditioner;
+};
 
-                RealScalar absOld = absNew;
-                absNew = numext::real(residual.dot(z));     // update the absolute value of r
-                RealScalar beta = absNew /
-                                  absOld;          // calculate the Gram-Schmidt value used to create the new search direction
-                p = z + beta * p;                           // update search direction
-                i++;
-            }
-            tol_error = sqrt(residualNorm2 / rhsNorm2);
-            iters = i;
-        }
-
-    }
-
-    template<typename _MatrixType, int _UpLo = Lower,
-            typename _Preconditioner = DiagonalPreconditioner<typename _MatrixType::Scalar> >
-    class ConjugateGradient;
-
-    namespace internal {
-
-        template<typename _MatrixType, int _UpLo, typename _Preconditioner>
-        struct traits<ConjugateGradient<_MatrixType, _UpLo, _Preconditioner> > {
-            typedef _MatrixType MatrixType;
-            typedef _Preconditioner Preconditioner;
-        };
-
-    }
+}
 
 /** \ingroup IterativeLinearSolvers_Module
   * \brief A conjugate gradient solver for sparse (or dense) self-adjoint problems
@@ -149,91 +153,92 @@ namespace Eigen {
   *
   * \sa class LeastSquaresConjugateGradient, class SimplicialCholesky, DiagonalPreconditioner, IdentityPreconditioner
   */
-    template<typename _MatrixType, int _UpLo, typename _Preconditioner>
-    class ConjugateGradient : public IterativeSolverBase<ConjugateGradient<_MatrixType, _UpLo, _Preconditioner> > {
-        typedef IterativeSolverBase <ConjugateGradient> Base;
-        using Base::matrix;
-        using Base::m_error;
-        using Base::m_iterations;
-        using Base::m_info;
-        using Base::m_isInitialized;
-    public:
-        typedef _MatrixType MatrixType;
-        typedef typename MatrixType::Scalar Scalar;
-        typedef typename MatrixType::RealScalar RealScalar;
-        typedef _Preconditioner Preconditioner;
+template< typename _MatrixType, int _UpLo, typename _Preconditioner>
+class ConjugateGradient : public IterativeSolverBase<ConjugateGradient<_MatrixType,_UpLo,_Preconditioner> >
+{
+  typedef IterativeSolverBase<ConjugateGradient> Base;
+  using Base::matrix;
+  using Base::m_error;
+  using Base::m_iterations;
+  using Base::m_info;
+  using Base::m_isInitialized;
+public:
+  typedef _MatrixType MatrixType;
+  typedef typename MatrixType::Scalar Scalar;
+  typedef typename MatrixType::RealScalar RealScalar;
+  typedef _Preconditioner Preconditioner;
 
-        enum {
-            UpLo = _UpLo
-        };
+  enum {
+    UpLo = _UpLo
+  };
 
-    public:
+public:
 
-        /** Default constructor. */
-        ConjugateGradient() : Base() {}
+  /** Default constructor. */
+  ConjugateGradient() : Base() {}
 
-        /** Initialize the solver with matrix \a A for further \c Ax=b solving.
-          *
-          * This constructor is a shortcut for the default constructor followed
-          * by a call to compute().
-          *
-          * \warning this class stores a reference to the matrix A as well as some
-          * precomputed values that depend on it. Therefore, if \a A is changed
-          * this class becomes invalid. Call compute() to update it with the new
-          * matrix A, or modify a copy of A.
-          */
-        template<typename MatrixDerived>
-        explicit ConjugateGradient(const EigenBase <MatrixDerived> &A) : Base(A.derived()) {}
+  /** Initialize the solver with matrix \a A for further \c Ax=b solving.
+    * 
+    * This constructor is a shortcut for the default constructor followed
+    * by a call to compute().
+    * 
+    * \warning this class stores a reference to the matrix A as well as some
+    * precomputed values that depend on it. Therefore, if \a A is changed
+    * this class becomes invalid. Call compute() to update it with the new
+    * matrix A, or modify a copy of A.
+    */
+  template<typename MatrixDerived>
+  explicit ConjugateGradient(const EigenBase<MatrixDerived>& A) : Base(A.derived()) {}
 
-        ~ConjugateGradient() {}
+  ~ConjugateGradient() {}
 
-        /** \internal */
-        template<typename Rhs, typename Dest>
-        void _solve_with_guess_impl(const Rhs &b, Dest &x) const {
-            typedef typename Base::MatrixWrapper MatrixWrapper;
-            typedef typename Base::ActualMatrixType ActualMatrixType;
-            enum {
-                TransposeInput = (!MatrixWrapper::MatrixFree)
-                                 && (UpLo == (Lower | Upper))
-                                 && (!MatrixType::IsRowMajor)
-                                 && (!NumTraits<Scalar>::IsComplex)
-            };
-            typedef typename internal::conditional<TransposeInput, Transpose<const ActualMatrixType>, ActualMatrixType const &>::type RowMajorWrapper;
-            EIGEN_STATIC_ASSERT(EIGEN_IMPLIES(MatrixWrapper::MatrixFree, UpLo == (Lower | Upper)),
-                                MATRIX_FREE_CONJUGATE_GRADIENT_IS_COMPATIBLE_WITH_UPPER_UNION_LOWER_MODE_ONLY);
-            typedef typename internal::conditional<UpLo == (Lower | Upper),
-                    RowMajorWrapper,
-                    typename MatrixWrapper::template ConstSelfAdjointViewReturnType<UpLo>::Type
-            >::type SelfAdjointWrapper;
-            m_iterations = Base::maxIterations();
-            m_error = Base::m_tolerance;
-
-            for (Index j = 0; j < b.cols(); ++j) {
-                m_iterations = Base::maxIterations();
-                m_error = Base::m_tolerance;
-
-                typename Dest::ColXpr xj(x, j);
-                RowMajorWrapper row_mat(matrix());
-                internal::conjugate_gradient(SelfAdjointWrapper(row_mat), b.col(j), xj, Base::m_preconditioner,
-                                             m_iterations, m_error);
-            }
-
-            m_isInitialized = true;
-            m_info = m_error <= Base::m_tolerance ? Success : NoConvergence;
-        }
-
-        /** \internal */
-        using Base::_solve_impl;
-
-        template<typename Rhs, typename Dest>
-        void _solve_impl(const MatrixBase <Rhs> &b, Dest &x) const {
-            x.setZero();
-            _solve_with_guess_impl(b.derived(), x);
-        }
-
-    protected:
-
+  /** \internal */
+  template<typename Rhs,typename Dest>
+  void _solve_with_guess_impl(const Rhs& b, Dest& x) const
+  {
+    typedef typename Base::MatrixWrapper MatrixWrapper;
+    typedef typename Base::ActualMatrixType ActualMatrixType;
+    enum {
+      TransposeInput  =   (!MatrixWrapper::MatrixFree)
+                      &&  (UpLo==(Lower|Upper))
+                      &&  (!MatrixType::IsRowMajor)
+                      &&  (!NumTraits<Scalar>::IsComplex)
     };
+    typedef typename internal::conditional<TransposeInput,Transpose<const ActualMatrixType>, ActualMatrixType const&>::type RowMajorWrapper;
+    EIGEN_STATIC_ASSERT(EIGEN_IMPLIES(MatrixWrapper::MatrixFree,UpLo==(Lower|Upper)),MATRIX_FREE_CONJUGATE_GRADIENT_IS_COMPATIBLE_WITH_UPPER_UNION_LOWER_MODE_ONLY);
+    typedef typename internal::conditional<UpLo==(Lower|Upper),
+                                           RowMajorWrapper,
+                                           typename MatrixWrapper::template ConstSelfAdjointViewReturnType<UpLo>::Type
+                                          >::type SelfAdjointWrapper;
+    m_iterations = Base::maxIterations();
+    m_error = Base::m_tolerance;
+
+    for(Index j=0; j<b.cols(); ++j)
+    {
+      m_iterations = Base::maxIterations();
+      m_error = Base::m_tolerance;
+
+      typename Dest::ColXpr xj(x,j);
+      RowMajorWrapper row_mat(matrix());
+      internal::conjugate_gradient(SelfAdjointWrapper(row_mat), b.col(j), xj, Base::m_preconditioner, m_iterations, m_error);
+    }
+
+    m_isInitialized = true;
+    m_info = m_error <= Base::m_tolerance ? Success : NoConvergence;
+  }
+  
+  /** \internal */
+  using Base::_solve_impl;
+  template<typename Rhs,typename Dest>
+  void _solve_impl(const MatrixBase<Rhs>& b, Dest& x) const
+  {
+    x.setZero();
+    _solve_with_guess_impl(b.derived(),x);
+  }
+
+protected:
+
+};
 
 } // end namespace Eigen
 

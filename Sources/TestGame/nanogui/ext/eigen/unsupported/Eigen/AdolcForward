@@ -25,7 +25,6 @@
 #ifndef NUMBER_DIRECTIONS
 # define NUMBER_DIRECTIONS 2
 #endif
-
 #include <adolc/adtl.h>
 
 // adolc defines some very stupid macros:
@@ -61,7 +60,7 @@ namespace Eigen {
   * #include <unsupported/Eigen/AdolcSupport>
   * \endcode
   */
-    //@{
+  //@{
 
 } // namespace Eigen
 
@@ -69,91 +68,86 @@ namespace Eigen {
 // than the custom scalar type own namespace
 namespace adtl {
 
-    inline const adouble &conj(const adouble &x) { return x; }
-
-    inline const adouble &real(const adouble &x) { return x; }
-
-    inline adouble imag(const adouble &) { return 0.; }
-
-    inline adouble abs(const adouble &x) { return fabs(x); }
-
-    inline adouble abs2(const adouble &x) { return x * x; }
+inline const adouble& conj(const adouble& x)  { return x; }
+inline const adouble& real(const adouble& x)  { return x; }
+inline adouble imag(const adouble&)    { return 0.; }
+inline adouble abs(const adouble&  x)  { return fabs(x); }
+inline adouble abs2(const adouble& x)  { return x*x; }
 
 }
 
 namespace Eigen {
 
-    template<>
-    struct NumTraits<adtl::adouble>
-            : NumTraits<double> {
-        typedef adtl::adouble Real;
-        typedef adtl::adouble NonInteger;
-        typedef adtl::adouble Nested;
-        enum {
-            IsComplex = 0,
-            IsInteger = 0,
-            IsSigned = 1,
-            RequireInitialization = 1,
-            ReadCost = 1,
-            AddCost = 1,
-            MulCost = 1
-        };
-    };
+template<> struct NumTraits<adtl::adouble>
+    : NumTraits<double>
+{
+  typedef adtl::adouble Real;
+  typedef adtl::adouble NonInteger;
+  typedef adtl::adouble Nested;
+  enum {
+    IsComplex = 0,
+    IsInteger = 0,
+    IsSigned = 1,
+    RequireInitialization = 1,
+    ReadCost = 1,
+    AddCost = 1,
+    MulCost = 1
+  };
+};
 
-    template<typename Functor>
-    class AdolcForwardJacobian : public Functor {
-        typedef adtl::adouble ActiveScalar;
-    public:
+template<typename Functor> class AdolcForwardJacobian : public Functor
+{
+  typedef adtl::adouble ActiveScalar;
+public:
 
-        AdolcForwardJacobian() : Functor() {}
+  AdolcForwardJacobian() : Functor() {}
+  AdolcForwardJacobian(const Functor& f) : Functor(f) {}
 
-        AdolcForwardJacobian(const Functor &f) : Functor(f) {}
+  // forward constructors
+  template<typename T0>
+  AdolcForwardJacobian(const T0& a0) : Functor(a0) {}
+  template<typename T0, typename T1>
+  AdolcForwardJacobian(const T0& a0, const T1& a1) : Functor(a0, a1) {}
+  template<typename T0, typename T1, typename T2>
+  AdolcForwardJacobian(const T0& a0, const T1& a1, const T1& a2) : Functor(a0, a1, a2) {}
 
-        // forward constructors
-        template<typename T0>
-        AdolcForwardJacobian(const T0 &a0) : Functor(a0) {}
+  typedef typename Functor::InputType InputType;
+  typedef typename Functor::ValueType ValueType;
+  typedef typename Functor::JacobianType JacobianType;
 
-        template<typename T0, typename T1>
-        AdolcForwardJacobian(const T0 &a0, const T1 &a1) : Functor(a0, a1) {}
+  typedef Matrix<ActiveScalar, InputType::SizeAtCompileTime, 1> ActiveInput;
+  typedef Matrix<ActiveScalar, ValueType::SizeAtCompileTime, 1> ActiveValue;
 
-        template<typename T0, typename T1, typename T2>
-        AdolcForwardJacobian(const T0 &a0, const T1 &a1, const T1 &a2) : Functor(a0, a1, a2) {}
+  void operator() (const InputType& x, ValueType* v, JacobianType* _jac) const
+  {
+    eigen_assert(v!=0);
+    if (!_jac)
+    {
+      Functor::operator()(x, v);
+      return;
+    }
 
-        typedef typename Functor::InputType InputType;
-        typedef typename Functor::ValueType ValueType;
-        typedef typename Functor::JacobianType JacobianType;
+    JacobianType& jac = *_jac;
 
-        typedef Matrix<ActiveScalar, InputType::SizeAtCompileTime, 1> ActiveInput;
-        typedef Matrix<ActiveScalar, ValueType::SizeAtCompileTime, 1> ActiveValue;
+    ActiveInput ax = x.template cast<ActiveScalar>();
+    ActiveValue av(jac.rows());
 
-        void operator()(const InputType &x, ValueType *v, JacobianType *_jac) const {
-            eigen_assert(v != 0);
-            if (!_jac) {
-                Functor::operator()(x, v);
-                return;
-            }
+    for (int j=0; j<jac.cols(); j++)
+      for (int i=0; i<jac.cols(); i++)
+        ax[i].setADValue(j, i==j ? 1 : 0);
 
-            JacobianType &jac = *_jac;
+    Functor::operator()(ax, &av);
 
-            ActiveInput ax = x.template cast<ActiveScalar>();
-            ActiveValue av(jac.rows());
+    for (int i=0; i<jac.rows(); i++)
+    {
+      (*v)[i] = av[i].getValue();
+      for (int j=0; j<jac.cols(); j++)
+        jac.coeffRef(i,j) = av[i].getADValue(j);
+    }
+  }
+protected:
 
-            for (int j = 0; j < jac.cols(); j++)
-                for (int i = 0; i < jac.cols(); i++)
-                    ax[i].setADValue(j, i == j ? 1 : 0);
-
-            Functor::operator()(ax, &av);
-
-            for (int i = 0; i < jac.rows(); i++) {
-                (*v)[i] = av[i].getValue();
-                for (int j = 0; j < jac.cols(); j++)
-                    jac.coeffRef(i, j) = av[i].getADValue(j);
-            }
-        }
-
-    protected:
-
-    };
+};
 
 //@}
 

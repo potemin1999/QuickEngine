@@ -23,24 +23,17 @@ Eigen::ThreadPoolDevice device(&pool, threads);
 
 // Vector Matrix and Matrix Vector products
 BM_ContractionCPU(1, 2000, 500);
-
 BM_ContractionCPU(2000, 1, 500);
 
 // Various skinny matrices
 BM_ContractionCPU(250, 3, 512);
-
 BM_ContractionCPU(1500, 3, 512);
 
 BM_ContractionCPU(512, 800, 4);
-
 BM_ContractionCPU(512, 80, 800);
-
 BM_ContractionCPU(512, 80, 13522);
-
 BM_ContractionCPU(1, 80, 13522);
 
 BM_ContractionCPU(3200, 512, 4);
-
 BM_ContractionCPU(3200, 512, 80);
-
 BM_ContractionCPU(3200, 80, 512);

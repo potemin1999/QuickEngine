@@ -121,7 +121,7 @@ def test_recarray(simple_dtype, packed_dtype):
 
     arr = create_rec_partial(3)
     assert str(arr.dtype) == \
-           "{'names':['x','y','z'], 'formats':['?','<u4','<f4'], 'offsets':[0,4,8], 'itemsize':24}"
+        "{'names':['x','y','z'], 'formats':['?','<u4','<f4'], 'offsets':[0,4,8], 'itemsize':24}"
     partial_dtype = arr.dtype
     assert '' not in arr.dtype.fields
     assert partial_dtype.itemsize > simple_dtype.itemsize
@@ -130,8 +130,8 @@ def test_recarray(simple_dtype, packed_dtype):
 
     arr = create_rec_partial_nested(3)
     assert str(arr.dtype) == \
-           "{'names':['a'], 'formats':[{'names':['x','y','z'], 'formats':['?','<u4','<f4']," \
-           " 'offsets':[0,4,8], 'itemsize':24}], 'offsets':[8], 'itemsize':40}"
+        "{'names':['a'], 'formats':[{'names':['x','y','z'], 'formats':['?','<u4','<f4']," \
+        " 'offsets':[0,4,8], 'itemsize':24}], 'offsets':[8], 'itemsize':40}"
     assert '' not in arr.dtype.fields
     assert '' not in arr.dtype.fields['a'][0].fields
     assert arr.dtype.itemsize > partial_dtype.itemsize

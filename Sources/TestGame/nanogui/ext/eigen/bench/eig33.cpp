@@ -46,64 +46,64 @@ using namespace Eigen;
 using namespace std;
 
 template<typename Matrix, typename Roots>
-inline void computeRoots(const Matrix &m, Roots &roots) {
-    typedef typename Matrix::Scalar Scalar;
-    const Scalar s_inv3 = 1.0 / 3.0;
-    const Scalar s_sqrt3 = std::sqrt(Scalar(3.0));
+inline void computeRoots(const Matrix& m, Roots& roots)
+{
+  typedef typename Matrix::Scalar Scalar;
+  const Scalar s_inv3 = 1.0/3.0;
+  const Scalar s_sqrt3 = std::sqrt(Scalar(3.0));
 
-    // The characteristic equation is x^3 - c2*x^2 + c1*x - c0 = 0.  The
-    // eigenvalues are the roots to this equation, all guaranteed to be
-    // real-valued, because the matrix is symmetric.
-    Scalar c0 = m(0, 0) * m(1, 1) * m(2, 2) + Scalar(2) * m(0, 1) * m(0, 2) * m(1, 2) - m(0, 0) * m(1, 2) * m(1, 2) -
-                m(1, 1) * m(0, 2) * m(0, 2) - m(2, 2) * m(0, 1) * m(0, 1);
-    Scalar c1 = m(0, 0) * m(1, 1) - m(0, 1) * m(0, 1) + m(0, 0) * m(2, 2) - m(0, 2) * m(0, 2) + m(1, 1) * m(2, 2) -
-                m(1, 2) * m(1, 2);
-    Scalar c2 = m(0, 0) + m(1, 1) + m(2, 2);
+  // The characteristic equation is x^3 - c2*x^2 + c1*x - c0 = 0.  The
+  // eigenvalues are the roots to this equation, all guaranteed to be
+  // real-valued, because the matrix is symmetric.
+  Scalar c0 = m(0,0)*m(1,1)*m(2,2) + Scalar(2)*m(0,1)*m(0,2)*m(1,2) - m(0,0)*m(1,2)*m(1,2) - m(1,1)*m(0,2)*m(0,2) - m(2,2)*m(0,1)*m(0,1);
+  Scalar c1 = m(0,0)*m(1,1) - m(0,1)*m(0,1) + m(0,0)*m(2,2) - m(0,2)*m(0,2) + m(1,1)*m(2,2) - m(1,2)*m(1,2);
+  Scalar c2 = m(0,0) + m(1,1) + m(2,2);
 
-    // Construct the parameters used in classifying the roots of the equation
-    // and in solving the equation for the roots in closed form.
-    Scalar c2_over_3 = c2 * s_inv3;
-    Scalar a_over_3 = (c1 - c2 * c2_over_3) * s_inv3;
-    if (a_over_3 > Scalar(0))
-        a_over_3 = Scalar(0);
+  // Construct the parameters used in classifying the roots of the equation
+  // and in solving the equation for the roots in closed form.
+  Scalar c2_over_3 = c2*s_inv3;
+  Scalar a_over_3 = (c1 - c2*c2_over_3)*s_inv3;
+  if (a_over_3 > Scalar(0))
+    a_over_3 = Scalar(0);
 
-    Scalar half_b = Scalar(0.5) * (c0 + c2_over_3 * (Scalar(2) * c2_over_3 * c2_over_3 - c1));
+  Scalar half_b = Scalar(0.5)*(c0 + c2_over_3*(Scalar(2)*c2_over_3*c2_over_3 - c1));
 
-    Scalar q = half_b * half_b + a_over_3 * a_over_3 * a_over_3;
-    if (q > Scalar(0))
-        q = Scalar(0);
+  Scalar q = half_b*half_b + a_over_3*a_over_3*a_over_3;
+  if (q > Scalar(0))
+    q = Scalar(0);
 
-    // Compute the eigenvalues by solving for the roots of the polynomial.
-    Scalar rho = std::sqrt(-a_over_3);
-    Scalar theta = std::atan2(std::sqrt(-q), half_b) * s_inv3;
-    Scalar cos_theta = std::cos(theta);
-    Scalar sin_theta = std::sin(theta);
-    roots(2) = c2_over_3 + Scalar(2) * rho * cos_theta;
-    roots(0) = c2_over_3 - rho * (cos_theta + s_sqrt3 * sin_theta);
-    roots(1) = c2_over_3 - rho * (cos_theta - s_sqrt3 * sin_theta);
+  // Compute the eigenvalues by solving for the roots of the polynomial.
+  Scalar rho = std::sqrt(-a_over_3);
+  Scalar theta = std::atan2(std::sqrt(-q),half_b)*s_inv3;
+  Scalar cos_theta = std::cos(theta);
+  Scalar sin_theta = std::sin(theta);
+  roots(2) = c2_over_3 + Scalar(2)*rho*cos_theta;
+  roots(0) = c2_over_3 - rho*(cos_theta + s_sqrt3*sin_theta);
+  roots(1) = c2_over_3 - rho*(cos_theta - s_sqrt3*sin_theta);
 }
 
 template<typename Matrix, typename Vector>
-void eigen33(const Matrix &mat, Matrix &evecs, Vector &evals) {
-    typedef typename Matrix::Scalar Scalar;
-    // Scale the matrix so its entries are in [-1,1].  The scaling is applied
-    // only when at least one matrix entry has magnitude larger than 1.
+void eigen33(const Matrix& mat, Matrix& evecs, Vector& evals)
+{
+  typedef typename Matrix::Scalar Scalar;
+  // Scale the matrix so its entries are in [-1,1].  The scaling is applied
+  // only when at least one matrix entry has magnitude larger than 1.
 
-    Scalar shift = mat.trace() / 3;
-    Matrix scaledMat = mat;
-    scaledMat.diagonal().array() -= shift;
-    Scalar scale = scaledMat.cwiseAbs()/*.template triangularView<Lower>()*/.maxCoeff();
-    scale = std::max(scale, Scalar(1));
-    scaledMat /= scale;
+  Scalar shift = mat.trace()/3;
+  Matrix scaledMat = mat;
+  scaledMat.diagonal().array() -= shift;
+  Scalar scale = scaledMat.cwiseAbs()/*.template triangularView<Lower>()*/.maxCoeff();
+  scale = std::max(scale,Scalar(1));
+  scaledMat/=scale;
 
-    // Compute the eigenvalues
+  // Compute the eigenvalues
 //   scaledMat.setZero();
-    computeRoots(scaledMat, evals);
+  computeRoots(scaledMat,evals);
 
-    // compute the eigen vectors
-    // **here we assume 3 differents eigenvalues**
+  // compute the eigen vectors
+  // **here we assume 3 differents eigenvalues**
 
-    // "optimized version" which appears to be slower with gcc!
+  // "optimized version" which appears to be slower with gcc!
 //     Vector base;
 //     Scalar alpha, beta;
 //     base <<   scaledMat(1,0) * scaledMat(2,1),
@@ -130,57 +130,61 @@ void eigen33(const Matrix &mat, Matrix &evecs, Vector &evals) {
 //   tmp = scaledMat;
 //   tmp.diagonal().array() -= evals(2);
 //   evecs.col(2) = tmp.row(0).cross(tmp.row(1)).normalized();
-
-    // a more stable version:
-    if ((evals(2) - evals(0)) <= Eigen::NumTraits<Scalar>::epsilon()) {
-        evecs.setIdentity();
-    } else {
-        Matrix tmp;
-        tmp = scaledMat;
-        tmp.diagonal().array() -= evals(2);
-        evecs.col(2) = tmp.row(0).cross(tmp.row(1)).normalized();
-
-        tmp = scaledMat;
-        tmp.diagonal().array() -= evals(1);
-        evecs.col(1) = tmp.row(0).cross(tmp.row(1));
-        Scalar n1 = evecs.col(1).norm();
-        if (n1 <= Eigen::NumTraits<Scalar>::epsilon())
-            evecs.col(1) = evecs.col(2).unitOrthogonal();
-        else
-            evecs.col(1) /= n1;
-
-        // make sure that evecs[1] is orthogonal to evecs[2]
-        evecs.col(1) = evecs.col(2).cross(evecs.col(1).cross(evecs.col(2))).normalized();
-        evecs.col(0) = evecs.col(2).cross(evecs.col(1));
-    }
-
-    // Rescale back to the original size.
-    evals *= scale;
-    evals.array() += shift;
+  
+  // a more stable version:
+  if((evals(2)-evals(0))<=Eigen::NumTraits<Scalar>::epsilon())
+  {
+    evecs.setIdentity();
+  }
+  else
+  {
+    Matrix tmp;
+    tmp = scaledMat;
+    tmp.diagonal ().array () -= evals (2);
+    evecs.col (2) = tmp.row (0).cross (tmp.row (1)).normalized ();
+    
+    tmp = scaledMat;
+    tmp.diagonal ().array () -= evals (1);
+    evecs.col(1) = tmp.row (0).cross(tmp.row (1));
+    Scalar n1 = evecs.col(1).norm();
+    if(n1<=Eigen::NumTraits<Scalar>::epsilon())
+      evecs.col(1) = evecs.col(2).unitOrthogonal();
+    else
+      evecs.col(1) /= n1;
+    
+    // make sure that evecs[1] is orthogonal to evecs[2]
+    evecs.col(1) = evecs.col(2).cross(evecs.col(1).cross(evecs.col(2))).normalized();
+    evecs.col(0) = evecs.col(2).cross(evecs.col(1));
+  }
+  
+  // Rescale back to the original size.
+  evals *= scale;
+  evals.array()+=shift;
 }
 
-int main() {
-    BenchTimer t;
-    int tries = 10;
-    int rep = 400000;
-    typedef Matrix3d Mat;
-    typedef Vector3d Vec;
-    Mat A = Mat::Random(3, 3);
-    A = A.adjoint() * A;
+int main()
+{
+  BenchTimer t;
+  int tries = 10;
+  int rep = 400000;
+  typedef Matrix3d Mat;
+  typedef Vector3d Vec;
+  Mat A = Mat::Random(3,3);
+  A = A.adjoint() * A;
 //   Mat Q = A.householderQr().householderQ();
 //   A = Q * Vec(2.2424567,2.2424566,7.454353).asDiagonal() * Q.transpose();
 
-    SelfAdjointEigenSolver<Mat> eig(A);
-    BENCH(t, tries, rep, eig.compute(A));
-    std::cout << "Eigen iterative:  " << t.best() << "s\n";
+  SelfAdjointEigenSolver<Mat> eig(A);
+  BENCH(t, tries, rep, eig.compute(A));
+  std::cout << "Eigen iterative:  " << t.best() << "s\n";
+  
+  BENCH(t, tries, rep, eig.computeDirect(A));
+  std::cout << "Eigen direct   :  " << t.best() << "s\n";
 
-    BENCH(t, tries, rep, eig.computeDirect(A));
-    std::cout << "Eigen direct   :  " << t.best() << "s\n";
-
-    Mat evecs;
-    Vec evals;
-    BENCH(t, tries, rep, eigen33(A, evecs, evals));
-    std::cout << "Direct: " << t.best() << "s\n\n";
+  Mat evecs;
+  Vec evals;
+  BENCH(t, tries, rep, eigen33(A,evecs,evals));
+  std::cout << "Direct: " << t.best() << "s\n\n";
 
 //   std::cerr << "Eigenvalue/eigenvector diffs:\n";
 //   std::cerr << (evals - eig.eigenvalues()).transpose() << "\n";

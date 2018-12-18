@@ -41,22 +41,15 @@
 
 namespace Eigen {
 
-    namespace internal {
+namespace internal {
 
 /* std::get is only constexpr in C++14, not yet in C++11
  */
 
 
-        template<std::size_t I, class T>
-        constexpr inline T &array_get(std::vector <T> &a) { return a[I]; }
-
-        template<std::size_t I, class T>
-        constexpr inline T &&array_get(std::vector <T> &&a) { return a[I]; }
-
-        template<std::size_t I, class T> constexpr inline T const &array_get(std::vector < T >
-        const& a) {
-        return a[I];
-    }
+template<std::size_t I, class T> constexpr inline T&       array_get(std::vector<T>&       a) { return a[I]; }
+template<std::size_t I, class T> constexpr inline T&&      array_get(std::vector<T>&&      a) { return a[I]; }
+template<std::size_t I, class T> constexpr inline T const& array_get(std::vector<T> const& a) { return a[I]; }
 
 /* Suppose you have a template of the form
  * template<typename T> struct X;

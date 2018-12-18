@@ -30,15 +30,15 @@
 
 // We don't need all the fancy stuff
 #ifndef NOMINMAX
-#define NOMINMAX
+ #define NOMINMAX
 #endif
 
 #ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN
+ #define VC_EXTRALEAN
 #endif
 
 #ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
+ #define WIN32_LEAN_AND_MEAN
 #endif
 
 // This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
@@ -48,17 +48,17 @@
 
 // GLFW on Windows is Unicode only and does not work in MBCS mode
 #ifndef UNICODE
-#define UNICODE
+ #define UNICODE
 #endif
 
 // GLFW requires Windows XP or later
 #if WINVER < 0x0501
-#undef WINVER
-#define WINVER 0x0501
+ #undef WINVER
+ #define WINVER 0x0501
 #endif
 #if _WIN32_WINNT < 0x0501
-#undef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
+ #undef _WIN32_WINNT
+ #define _WIN32_WINNT 0x0501
 #endif
 
 // GLFW uses DirectInput8 interfaces
@@ -72,52 +72,54 @@
 #include <dbt.h>
 
 #if defined(_MSC_VER)
-#include <malloc.h>
-#define strdup _strdup
+ #include <malloc.h>
+ #define strdup _strdup
 #endif
 
 // HACK: Define macros that some windows.h variants don't
 #ifndef WM_MOUSEHWHEEL
-#define WM_MOUSEHWHEEL 0x020E
+ #define WM_MOUSEHWHEEL 0x020E
 #endif
 #ifndef WM_DWMCOMPOSITIONCHANGED
-#define WM_DWMCOMPOSITIONCHANGED 0x031E
+ #define WM_DWMCOMPOSITIONCHANGED 0x031E
 #endif
 #ifndef WM_COPYGLOBALDATA
-#define WM_COPYGLOBALDATA 0x0049
+ #define WM_COPYGLOBALDATA 0x0049
 #endif
 #ifndef WM_UNICHAR
-#define WM_UNICHAR 0x0109
+ #define WM_UNICHAR 0x0109
 #endif
 #ifndef UNICODE_NOCHAR
-#define UNICODE_NOCHAR 0xFFFF
+ #define UNICODE_NOCHAR 0xFFFF
 #endif
 #ifndef WM_DPICHANGED
-#define WM_DPICHANGED 0x02E0
+ #define WM_DPICHANGED 0x02E0
 #endif
 #ifndef GET_XBUTTON_WPARAM
-#define GET_XBUTTON_WPARAM(w) (HIWORD(w))
+ #define GET_XBUTTON_WPARAM(w) (HIWORD(w))
 #endif
 #ifndef EDS_ROTATEDMODE
-#define EDS_ROTATEDMODE 0x00000004
+ #define EDS_ROTATEDMODE 0x00000004
 #endif
 #ifndef DISPLAY_DEVICE_ACTIVE
-#define DISPLAY_DEVICE_ACTIVE 0x00000001
+ #define DISPLAY_DEVICE_ACTIVE 0x00000001
 #endif
 
 #if WINVER < 0x0601
-typedef struct tagCHANGEFILTERSTRUCT {
+typedef struct tagCHANGEFILTERSTRUCT
+{
     DWORD cbSize;
     DWORD ExtStatus;
 
 } CHANGEFILTERSTRUCT, *PCHANGEFILTERSTRUCT;
 #ifndef MSGFLT_ALLOW
-#define MSGFLT_ALLOW 1
+ #define MSGFLT_ALLOW 1
 #endif
 #endif /*Windows 7*/
 
 #ifndef DPI_ENUMS_DECLARED
-typedef enum PROCESS_DPI_AWARENESS {
+typedef enum PROCESS_DPI_AWARENESS
+{
     PROCESS_DPI_UNAWARE = 0,
     PROCESS_SYSTEM_DPI_AWARE = 1,
     PROCESS_PER_MONITOR_DPI_AWARE = 2
@@ -126,91 +128,81 @@ typedef enum PROCESS_DPI_AWARENESS {
 
 // HACK: Define macros that some xinput.h variants don't
 #ifndef XINPUT_CAPS_WIRELESS
-#define XINPUT_CAPS_WIRELESS 0x0002
+ #define XINPUT_CAPS_WIRELESS 0x0002
 #endif
 #ifndef XINPUT_DEVSUBTYPE_WHEEL
-#define XINPUT_DEVSUBTYPE_WHEEL 0x02
+ #define XINPUT_DEVSUBTYPE_WHEEL 0x02
 #endif
 #ifndef XINPUT_DEVSUBTYPE_ARCADE_STICK
-#define XINPUT_DEVSUBTYPE_ARCADE_STICK 0x03
+ #define XINPUT_DEVSUBTYPE_ARCADE_STICK 0x03
 #endif
 #ifndef XINPUT_DEVSUBTYPE_FLIGHT_STICK
-#define XINPUT_DEVSUBTYPE_FLIGHT_STICK 0x04
+ #define XINPUT_DEVSUBTYPE_FLIGHT_STICK 0x04
 #endif
 #ifndef XINPUT_DEVSUBTYPE_DANCE_PAD
-#define XINPUT_DEVSUBTYPE_DANCE_PAD 0x05
+ #define XINPUT_DEVSUBTYPE_DANCE_PAD 0x05
 #endif
 #ifndef XINPUT_DEVSUBTYPE_GUITAR
-#define XINPUT_DEVSUBTYPE_GUITAR 0x06
+ #define XINPUT_DEVSUBTYPE_GUITAR 0x06
 #endif
 #ifndef XINPUT_DEVSUBTYPE_DRUM_KIT
-#define XINPUT_DEVSUBTYPE_DRUM_KIT 0x08
+ #define XINPUT_DEVSUBTYPE_DRUM_KIT 0x08
 #endif
 #ifndef XINPUT_DEVSUBTYPE_ARCADE_PAD
-#define XINPUT_DEVSUBTYPE_ARCADE_PAD 0x13
+ #define XINPUT_DEVSUBTYPE_ARCADE_PAD 0x13
 #endif
 #ifndef XUSER_MAX_COUNT
-#define XUSER_MAX_COUNT 4
+ #define XUSER_MAX_COUNT 4
 #endif
 
 // HACK: Define macros that some dinput.h variants don't
 #ifndef DIDFT_OPTIONAL
-#define DIDFT_OPTIONAL    0x80000000
+ #define DIDFT_OPTIONAL	0x80000000
 #endif
 
 // winmm.dll function pointer typedefs
-typedef DWORD (WINAPI
-* TIMEGETTIME_T)(void);
+typedef DWORD (WINAPI * TIMEGETTIME_T)(void);
 #define _glfw_timeGetTime _glfw.win32.winmm.timeGetTime
 
 // xinput.dll function pointer typedefs
-typedef DWORD (WINAPI
-* XINPUTGETCAPABILITIES_T)(DWORD, DWORD, XINPUT_CAPABILITIES*);
-typedef DWORD (WINAPI
-* XINPUTGETSTATE_T)(DWORD, XINPUT_STATE*);
+typedef DWORD (WINAPI * XINPUTGETCAPABILITIES_T)(DWORD,DWORD,XINPUT_CAPABILITIES*);
+typedef DWORD (WINAPI * XINPUTGETSTATE_T)(DWORD,XINPUT_STATE*);
 #define _glfw_XInputGetCapabilities _glfw.win32.xinput.XInputGetCapabilities
 #define _glfw_XInputGetState _glfw.win32.xinput.XInputGetState
 
 // dinput8.dll function pointer typedefs
-typedef HRESULT (WINAPI
-* DIRECTINPUT8CREATE_T)(HINSTANCE, DWORD, REFIID, LPVOID*, LPUNKNOWN);
+typedef HRESULT (WINAPI * DIRECTINPUT8CREATE_T)(HINSTANCE,DWORD,REFIID,LPVOID*,LPUNKNOWN);
 #define _glfw_DirectInput8Create _glfw.win32.dinput8.DirectInput8Create
 
 // user32.dll function pointer typedefs
-typedef BOOL (WINAPI
-* SETPROCESSDPIAWARE_T)(void);
-typedef BOOL (WINAPI
-* CHANGEWINDOWMESSAGEFILTEREX_T)(HWND, UINT, DWORD, PCHANGEFILTERSTRUCT);
+typedef BOOL (WINAPI * SETPROCESSDPIAWARE_T)(void);
+typedef BOOL (WINAPI * CHANGEWINDOWMESSAGEFILTEREX_T)(HWND,UINT,DWORD,PCHANGEFILTERSTRUCT);
 #define _glfw_SetProcessDPIAware _glfw.win32.user32.SetProcessDPIAware
 #define _glfw_ChangeWindowMessageFilterEx _glfw.win32.user32.ChangeWindowMessageFilterEx
 
 // dwmapi.dll function pointer typedefs
-typedef HRESULT (WINAPI
-* DWMISCOMPOSITIONENABLED_T)(BOOL*);
-typedef HRESULT (WINAPI
-* DWMFLUSH_T)(VOID);
+typedef HRESULT (WINAPI * DWMISCOMPOSITIONENABLED_T)(BOOL*);
+typedef HRESULT (WINAPI * DWMFLUSH_T)(VOID);
 #define _glfw_DwmIsCompositionEnabled _glfw.win32.dwmapi.DwmIsCompositionEnabled
 #define _glfw_DwmFlush _glfw.win32.dwmapi.DwmFlush
 
 // shcore.dll function pointer typedefs
-typedef HRESULT (WINAPI
-* SETPROCESSDPIAWARENESS_T)(PROCESS_DPI_AWARENESS);
+typedef HRESULT (WINAPI * SETPROCESSDPIAWARENESS_T)(PROCESS_DPI_AWARENESS);
 #define _glfw_SetProcessDpiAwareness _glfw.win32.shcore.SetProcessDpiAwareness
 
 typedef VkFlags VkWin32SurfaceCreateFlagsKHR;
 
-typedef struct VkWin32SurfaceCreateInfoKHR {
-    VkStructureType sType;
-    const void *pNext;
-    VkWin32SurfaceCreateFlagsKHR flags;
-    HINSTANCE hinstance;
-    HWND hwnd;
+typedef struct VkWin32SurfaceCreateInfoKHR
+{
+    VkStructureType                 sType;
+    const void*                     pNext;
+    VkWin32SurfaceCreateFlagsKHR    flags;
+    HINSTANCE                       hinstance;
+    HWND                            hwnd;
 } VkWin32SurfaceCreateInfoKHR;
 
-typedef VkResult (APIENTRY
-*PFN_vkCreateWin32SurfaceKHR)(VkInstance, const VkWin32SurfaceCreateInfoKHR*, const VkAllocationCallbacks*, VkSurfaceKHR*);
-typedef VkBool32 (APIENTRY
-*PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR)(VkPhysicalDevice, uint32_t);
+typedef VkResult (APIENTRY *PFN_vkCreateWin32SurfaceKHR)(VkInstance,const VkWin32SurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
+typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR)(VkPhysicalDevice,uint32_t);
 
 #include "win32_joystick.h"
 #include "wgl_context.h"
@@ -235,65 +227,67 @@ typedef VkBool32 (APIENTRY
 
 // Win32-specific per-window data
 //
-typedef struct _GLFWwindowWin32 {
-    HWND handle;
-    HICON bigIcon;
-    HICON smallIcon;
+typedef struct _GLFWwindowWin32
+{
+    HWND                handle;
+    HICON               bigIcon;
+    HICON               smallIcon;
 
-    GLFWbool cursorTracked;
-    GLFWbool iconified;
+    GLFWbool            cursorTracked;
+    GLFWbool            iconified;
 
     // The last received cursor position, regardless of source
-    int lastCursorPosX, lastCursorPosY;
+    int                 lastCursorPosX, lastCursorPosY;
 
 } _GLFWwindowWin32;
 
 
 // Win32-specific global data
 //
-typedef struct _GLFWlibraryWin32 {
-    HWND helperWindowHandle;
-    DWORD foregroundLockTimeout;
-    char *clipboardString;
-    char keyName[64];
-    short int publicKeys[512];
-    short int nativeKeys[GLFW_KEY_LAST + 1];
+typedef struct _GLFWlibraryWin32
+{
+    HWND                helperWindowHandle;
+    DWORD               foregroundLockTimeout;
+    char*               clipboardString;
+    char                keyName[64];
+    short int           publicKeys[512];
+    short int           nativeKeys[GLFW_KEY_LAST + 1];
     // Where to place the cursor when re-enabled
-    double restoreCursorPosX, restoreCursorPosY;
+    double              restoreCursorPosX, restoreCursorPosY;
     // The window whose disabled cursor mode is active
-    _GLFWwindow *disabledCursorWindow;
+    _GLFWwindow*        disabledCursorWindow;
 
     struct {
-        HINSTANCE instance;
-        TIMEGETTIME_T timeGetTime;
+        HINSTANCE       instance;
+        TIMEGETTIME_T   timeGetTime;
     } winmm;
 
     struct {
-        HINSTANCE instance;
+        HINSTANCE            instance;
         DIRECTINPUT8CREATE_T DirectInput8Create;
-        IDirectInput8W *api;
+        IDirectInput8W*      api;
     } dinput8;
 
     struct {
-        HINSTANCE instance;
+        HINSTANCE               instance;
         XINPUTGETCAPABILITIES_T XInputGetCapabilities;
-        XINPUTGETSTATE_T XInputGetState;
+        XINPUTGETSTATE_T        XInputGetState;
     } xinput;
 
     struct {
-        HINSTANCE instance;
-        SETPROCESSDPIAWARE_T SetProcessDPIAware;
+        HINSTANCE                     instance;
+        SETPROCESSDPIAWARE_T          SetProcessDPIAware;
         CHANGEWINDOWMESSAGEFILTEREX_T ChangeWindowMessageFilterEx;
     } user32;
 
     struct {
-        HINSTANCE instance;
+        HINSTANCE       instance;
         DWMISCOMPOSITIONENABLED_T DwmIsCompositionEnabled;
-        DWMFLUSH_T DwmFlush;
+        DWMFLUSH_T      DwmFlush;
     } dwmapi;
 
     struct {
-        HINSTANCE instance;
+        HINSTANCE       instance;
         SETPROCESSDPIAWARENESS_T SetProcessDpiAwareness;
     } shcore;
 
@@ -302,21 +296,23 @@ typedef struct _GLFWlibraryWin32 {
 
 // Win32-specific per-monitor data
 //
-typedef struct _GLFWmonitorWin32 {
+typedef struct _GLFWmonitorWin32
+{
     // This size matches the static size of DISPLAY_DEVICE.DeviceName
-    WCHAR adapterName[32];
-    WCHAR displayName[32];
-    char publicAdapterName[64];
-    char publicDisplayName[64];
-    GLFWbool modesPruned;
-    GLFWbool modeChanged;
+    WCHAR               adapterName[32];
+    WCHAR               displayName[32];
+    char                publicAdapterName[64];
+    char                publicDisplayName[64];
+    GLFWbool            modesPruned;
+    GLFWbool            modeChanged;
 
 } _GLFWmonitorWin32;
 
 
 // Win32-specific per-cursor data
 //
-typedef struct _GLFWcursorWin32 {
+typedef struct _GLFWcursorWin32
+{
     HCURSOR handle;
 
 } _GLFWcursorWin32;
@@ -324,38 +320,36 @@ typedef struct _GLFWcursorWin32 {
 
 // Win32-specific global timer data
 //
-typedef struct _GLFWtimeWin32 {
-    GLFWbool hasPC;
-    uint64_t frequency;
+typedef struct _GLFWtimeWin32
+{
+    GLFWbool            hasPC;
+    uint64_t            frequency;
 
 } _GLFWtimeWin32;
 
 
 // Win32-specific global TLS data
 //
-typedef struct _GLFWtlsWin32 {
-    GLFWbool allocated;
-    DWORD context;
+typedef struct _GLFWtlsWin32
+{
+    GLFWbool        allocated;
+    DWORD           context;
 
 } _GLFWtlsWin32;
 
 
 GLFWbool _glfwRegisterWindowClassWin32(void);
-
 void _glfwUnregisterWindowClassWin32(void);
 
 GLFWbool _glfwInitThreadLocalStorageWin32(void);
-
 void _glfwTerminateThreadLocalStorageWin32(void);
 
-WCHAR *_glfwCreateWideStringFromUTF8Win32(const char *source);
-
-char *_glfwCreateUTF8FromWideStringWin32(const WCHAR *source);
+WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source);
+char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source);
 
 void _glfwInitTimerWin32(void);
 
-GLFWbool _glfwSetVideoModeWin32(_GLFWmonitor *monitor, const GLFWvidmode *desired);
-
-void _glfwRestoreVideoModeWin32(_GLFWmonitor *monitor);
+GLFWbool _glfwSetVideoModeWin32(_GLFWmonitor* monitor, const GLFWvidmode* desired);
+void _glfwRestoreVideoModeWin32(_GLFWmonitor* monitor);
 
 #endif // _glfw3_win32_platform_h_

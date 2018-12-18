@@ -14,7 +14,6 @@
 //
 #ifndef ACTION_ROT
 #define ACTION_ROT
-
 #include "utilities.h"
 #include "STL_interface.hh"
 #include <string>
@@ -29,59 +28,62 @@ class Action_rot {
 
 public :
 
-    // Ctor
-    BTL_DONT_INLINE Action_rot(int size):_size(size) {
-        MESSAGE("Action_rot Ctor");
+  // Ctor
+  BTL_DONT_INLINE Action_rot( int size ):_size(size)
+  {
+    MESSAGE("Action_rot Ctor");
 
-        // STL matrix and vector initialization
-        typename Interface::stl_matrix tmp;
-        init_vector<pseudo_random>(A_stl, _size);
-        init_vector<pseudo_random>(B_stl, _size);
+    // STL matrix and vector initialization
+    typename Interface::stl_matrix tmp;
+    init_vector<pseudo_random>(A_stl,_size);
+    init_vector<pseudo_random>(B_stl,_size);
 
-        // generic matrix and vector initialization
-        Interface::vector_from_stl(A_ref, A_stl);
-        Interface::vector_from_stl(A, A_stl);
-        Interface::vector_from_stl(B_ref, B_stl);
-        Interface::vector_from_stl(B, B_stl);
-    }
+    // generic matrix and vector initialization
+    Interface::vector_from_stl(A_ref,A_stl);
+    Interface::vector_from_stl(A,A_stl);
+    Interface::vector_from_stl(B_ref,B_stl);
+    Interface::vector_from_stl(B,B_stl);
+  }
 
-    // invalidate copy ctor
-    Action_rot(const Action_rot &) {
-        INFOS("illegal call to Action_rot Copy Ctor");
-        exit(1);
-    }
+  // invalidate copy ctor
+  Action_rot( const  Action_rot & )
+  {
+    INFOS("illegal call to Action_rot Copy Ctor");
+    exit(1);
+  }
 
-    // Dtor
-    BTL_DONT_INLINE ~Action_rot(void) {
-        MESSAGE("Action_rot Dtor");
-        Interface::free_vector(A);
-        Interface::free_vector(B);
-        Interface::free_vector(A_ref);
-        Interface::free_vector(B_ref);
-    }
+  // Dtor
+  BTL_DONT_INLINE ~Action_rot( void ){
+    MESSAGE("Action_rot Dtor");
+    Interface::free_vector(A);
+    Interface::free_vector(B);
+    Interface::free_vector(A_ref);
+    Interface::free_vector(B_ref);
+  }
 
-    // action name
-    static inline std::string name(void) {
-        return "rot_" + Interface::name();
-    }
+  // action name
+  static inline std::string name( void )
+  {
+    return "rot_" + Interface::name();
+  }
 
-    double nb_op_base(void) {
-        return 6.0 * _size;
-    }
+  double nb_op_base( void ){
+    return 6.0*_size;
+  }
 
-    BTL_DONT_INLINE void initialize(void) {
-        Interface::copy_vector(A_ref, A, _size);
-        Interface::copy_vector(B_ref, B, _size);
-    }
+  BTL_DONT_INLINE  void initialize( void ){
+    Interface::copy_vector(A_ref,A,_size);
+    Interface::copy_vector(B_ref,B,_size);
+  }
 
-    BTL_DONT_INLINE void calculate(void) {
-        BTL_ASM_COMMENT("#begin rot");
-        Interface::rot(A, B, 0.5, 0.6, _size);
-        BTL_ASM_COMMENT("end rot");
-    }
+  BTL_DONT_INLINE void calculate( void ) {
+    BTL_ASM_COMMENT("#begin rot");
+    Interface::rot(A,B,0.5,0.6,_size);
+    BTL_ASM_COMMENT("end rot");
+  }
 
-    BTL_DONT_INLINE void check_result(void) {
-        // calculation check
+  BTL_DONT_INLINE void check_result( void ){
+    // calculation check
 //     Interface::vector_to_stl(X,resu_stl);
 
 //     STL_interface<typename Interface::real_type>::rot(A_stl,B_stl,X_stl,_size);
@@ -94,20 +96,20 @@ public :
 //       exit(0);
 //     }
 
-    }
+  }
 
 private :
 
-    typename Interface::stl_vector A_stl;
-    typename Interface::stl_vector B_stl;
+  typename Interface::stl_vector A_stl;
+  typename Interface::stl_vector B_stl;
 
-    typename Interface::gene_vector A_ref;
-    typename Interface::gene_vector B_ref;
+  typename Interface::gene_vector A_ref;
+  typename Interface::gene_vector B_ref;
 
-    typename Interface::gene_vector A;
-    typename Interface::gene_vector B;
+  typename Interface::gene_vector A;
+  typename Interface::gene_vector B;
 
-    int _size;
+  int _size;
 };
 
 

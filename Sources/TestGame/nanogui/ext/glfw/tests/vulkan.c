@@ -89,149 +89,149 @@
     }
 
 static const char fragShaderCode[] = {
-        0x03, 0x02, 0x23, 0x07, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x08, 0x00,
-        0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x02, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x47, 0x4c, 0x53, 0x4c, 0x2e, 0x73, 0x74, 0x64, 0x2e, 0x34, 0x35, 0x30,
-        0x00, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x07, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e, 0x00, 0x00, 0x00, 0x00,
-        0x09, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x03, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x03, 0x00, 0x03, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x04, 0x00, 0x09, 0x00,
-        0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73, 0x65, 0x70, 0x61, 0x72,
-        0x61, 0x74, 0x65, 0x5f, 0x73, 0x68, 0x61, 0x64, 0x65, 0x72, 0x5f, 0x6f,
-        0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x00, 0x00, 0x04, 0x00, 0x09, 0x00,
-        0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73, 0x68, 0x61, 0x64, 0x69,
-        0x6e, 0x67, 0x5f, 0x6c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x5f,
-        0x34, 0x32, 0x30, 0x70, 0x61, 0x63, 0x6b, 0x00, 0x05, 0x00, 0x04, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e, 0x00, 0x00, 0x00, 0x00,
-        0x05, 0x00, 0x05, 0x00, 0x09, 0x00, 0x00, 0x00, 0x75, 0x46, 0x72, 0x61,
-        0x67, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x00, 0x00, 0x05, 0x00, 0x03, 0x00,
-        0x0d, 0x00, 0x00, 0x00, 0x74, 0x65, 0x78, 0x00, 0x05, 0x00, 0x05, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x74, 0x65, 0x78, 0x63, 0x6f, 0x6f, 0x72, 0x64,
-        0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00, 0x09, 0x00, 0x00, 0x00,
-        0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00,
-        0x0d, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x47, 0x00, 0x04, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x21, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0x00, 0x02, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x21, 0x00, 0x03, 0x00, 0x03, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x16, 0x00, 0x03, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x17, 0x00, 0x04, 0x00, 0x07, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00,
-        0x08, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
-        0x3b, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x19, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x1b, 0x00, 0x03, 0x00, 0x0b, 0x00, 0x00, 0x00,
-        0x0a, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00, 0x0c, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
-        0x0c, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x17, 0x00, 0x04, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
-        0x10, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x36, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xf8, 0x00, 0x02, 0x00,
-        0x05, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00, 0x0b, 0x00, 0x00, 0x00,
-        0x0e, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00,
-        0x0f, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x57, 0x00, 0x05, 0x00, 0x07, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
-        0x0e, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x03, 0x00,
-        0x09, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x01, 0x00,
-        0x38, 0x00, 0x01, 0x00
+    0x03, 0x02, 0x23, 0x07, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x08, 0x00,
+    0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x02, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x47, 0x4c, 0x53, 0x4c, 0x2e, 0x73, 0x74, 0x64, 0x2e, 0x34, 0x35, 0x30,
+    0x00, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x07, 0x00, 0x04, 0x00, 0x00, 0x00,
+    0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e, 0x00, 0x00, 0x00, 0x00,
+    0x09, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x10, 0x00, 0x03, 0x00,
+    0x04, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x03, 0x00, 0x03, 0x00,
+    0x02, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00, 0x04, 0x00, 0x09, 0x00,
+    0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73, 0x65, 0x70, 0x61, 0x72,
+    0x61, 0x74, 0x65, 0x5f, 0x73, 0x68, 0x61, 0x64, 0x65, 0x72, 0x5f, 0x6f,
+    0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x00, 0x00, 0x04, 0x00, 0x09, 0x00,
+    0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73, 0x68, 0x61, 0x64, 0x69,
+    0x6e, 0x67, 0x5f, 0x6c, 0x61, 0x6e, 0x67, 0x75, 0x61, 0x67, 0x65, 0x5f,
+    0x34, 0x32, 0x30, 0x70, 0x61, 0x63, 0x6b, 0x00, 0x05, 0x00, 0x04, 0x00,
+    0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e, 0x00, 0x00, 0x00, 0x00,
+    0x05, 0x00, 0x05, 0x00, 0x09, 0x00, 0x00, 0x00, 0x75, 0x46, 0x72, 0x61,
+    0x67, 0x43, 0x6f, 0x6c, 0x6f, 0x72, 0x00, 0x00, 0x05, 0x00, 0x03, 0x00,
+    0x0d, 0x00, 0x00, 0x00, 0x74, 0x65, 0x78, 0x00, 0x05, 0x00, 0x05, 0x00,
+    0x11, 0x00, 0x00, 0x00, 0x74, 0x65, 0x78, 0x63, 0x6f, 0x6f, 0x72, 0x64,
+    0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00, 0x09, 0x00, 0x00, 0x00,
+    0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00,
+    0x0d, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x47, 0x00, 0x04, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x21, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0x00, 0x02, 0x00,
+    0x02, 0x00, 0x00, 0x00, 0x21, 0x00, 0x03, 0x00, 0x03, 0x00, 0x00, 0x00,
+    0x02, 0x00, 0x00, 0x00, 0x16, 0x00, 0x03, 0x00, 0x06, 0x00, 0x00, 0x00,
+    0x20, 0x00, 0x00, 0x00, 0x17, 0x00, 0x04, 0x00, 0x07, 0x00, 0x00, 0x00,
+    0x06, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00,
+    0x08, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00,
+    0x3b, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00,
+    0x03, 0x00, 0x00, 0x00, 0x19, 0x00, 0x09, 0x00, 0x0a, 0x00, 0x00, 0x00,
+    0x06, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x1b, 0x00, 0x03, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    0x0a, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00, 0x0c, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
+    0x0c, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x17, 0x00, 0x04, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
+    0x02, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
+    0x10, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x36, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xf8, 0x00, 0x02, 0x00,
+    0x05, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    0x0e, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00,
+    0x0f, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x57, 0x00, 0x05, 0x00, 0x07, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
+    0x0e, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x03, 0x00,
+    0x09, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x01, 0x00,
+    0x38, 0x00, 0x01, 0x00
 };
 
 static const char vertShaderCode[] = {
-        0x03, 0x02, 0x23, 0x07, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x08, 0x00,
-        0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x02, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x47, 0x4c, 0x53, 0x4c, 0x2e, 0x73, 0x74, 0x64, 0x2e, 0x34, 0x35, 0x30,
-        0x00, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e, 0x00, 0x00, 0x00, 0x00,
-        0x09, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
-        0x17, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x1d, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
-        0x04, 0x00, 0x09, 0x00, 0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73,
-        0x65, 0x70, 0x61, 0x72, 0x61, 0x74, 0x65, 0x5f, 0x73, 0x68, 0x61, 0x64,
-        0x65, 0x72, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x00, 0x00,
-        0x04, 0x00, 0x09, 0x00, 0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73,
-        0x68, 0x61, 0x64, 0x69, 0x6e, 0x67, 0x5f, 0x6c, 0x61, 0x6e, 0x67, 0x75,
-        0x61, 0x67, 0x65, 0x5f, 0x34, 0x32, 0x30, 0x70, 0x61, 0x63, 0x6b, 0x00,
-        0x05, 0x00, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e,
-        0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x05, 0x00, 0x09, 0x00, 0x00, 0x00,
-        0x74, 0x65, 0x78, 0x63, 0x6f, 0x6f, 0x72, 0x64, 0x00, 0x00, 0x00, 0x00,
-        0x05, 0x00, 0x04, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x61, 0x74, 0x74, 0x72,
-        0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x06, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x67, 0x6c, 0x5f, 0x50, 0x65, 0x72, 0x56, 0x65, 0x72, 0x74, 0x65, 0x78,
-        0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x06, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x50, 0x6f, 0x73, 0x69, 0x74,
-        0x69, 0x6f, 0x6e, 0x00, 0x06, 0x00, 0x07, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x50, 0x6f, 0x69, 0x6e, 0x74,
-        0x53, 0x69, 0x7a, 0x65, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x07, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x43,
-        0x6c, 0x69, 0x70, 0x44, 0x69, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x00,
-        0x05, 0x00, 0x03, 0x00, 0x13, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x05, 0x00, 0x03, 0x00, 0x17, 0x00, 0x00, 0x00, 0x70, 0x6f, 0x73, 0x00,
-        0x05, 0x00, 0x05, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x56,
-        0x65, 0x72, 0x74, 0x65, 0x78, 0x49, 0x44, 0x00, 0x05, 0x00, 0x06, 0x00,
-        0x1d, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x61,
-        0x6e, 0x63, 0x65, 0x49, 0x44, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00,
-        0x09, 0x00, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x47, 0x00, 0x04, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00,
-        0x01, 0x00, 0x00, 0x00, 0x48, 0x00, 0x05, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x48, 0x00, 0x05, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x0b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x48, 0x00, 0x05, 0x00,
-        0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x47, 0x00, 0x03, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00, 0x17, 0x00, 0x00, 0x00,
-        0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00,
-        0x1c, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
-        0x47, 0x00, 0x04, 0x00, 0x1d, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x13, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x21, 0x00, 0x03, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
-        0x16, 0x00, 0x03, 0x00, 0x06, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x17, 0x00, 0x04, 0x00, 0x07, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
-        0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x04, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x07, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00, 0x0a, 0x00, 0x00, 0x00,
-        0x0b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x17, 0x00, 0x04, 0x00,
-        0x0d, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x15, 0x00, 0x04, 0x00, 0x0e, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x2b, 0x00, 0x04, 0x00, 0x0e, 0x00, 0x00, 0x00,
-        0x0f, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x04, 0x00,
-        0x10, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00,
-        0x1e, 0x00, 0x05, 0x00, 0x11, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00,
-        0x06, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00,
-        0x12, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00,
-        0x3b, 0x00, 0x04, 0x00, 0x12, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
-        0x03, 0x00, 0x00, 0x00, 0x15, 0x00, 0x04, 0x00, 0x14, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x2b, 0x00, 0x04, 0x00,
-        0x14, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x04, 0x00, 0x16, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x0d, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00, 0x16, 0x00, 0x00, 0x00,
-        0x17, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00,
-        0x19, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00,
-        0x20, 0x00, 0x04, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x14, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00, 0x1b, 0x00, 0x00, 0x00,
-        0x1c, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
-        0x1b, 0x00, 0x00, 0x00, 0x1d, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
-        0x36, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xf8, 0x00, 0x02, 0x00,
-        0x05, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00, 0x07, 0x00, 0x00, 0x00,
-        0x0c, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x03, 0x00,
-        0x09, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00,
-        0x0d, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x17, 0x00, 0x00, 0x00,
-        0x41, 0x00, 0x05, 0x00, 0x19, 0x00, 0x00, 0x00, 0x1a, 0x00, 0x00, 0x00,
-        0x13, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x03, 0x00,
-        0x1a, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x01, 0x00,
-        0x38, 0x00, 0x01, 0x00
+    0x03, 0x02, 0x23, 0x07, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x08, 0x00,
+    0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x02, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x06, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x47, 0x4c, 0x53, 0x4c, 0x2e, 0x73, 0x74, 0x64, 0x2e, 0x34, 0x35, 0x30,
+    0x00, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e, 0x00, 0x00, 0x00, 0x00,
+    0x09, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
+    0x17, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x1d, 0x00, 0x00, 0x00,
+    0x03, 0x00, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00, 0x90, 0x01, 0x00, 0x00,
+    0x04, 0x00, 0x09, 0x00, 0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73,
+    0x65, 0x70, 0x61, 0x72, 0x61, 0x74, 0x65, 0x5f, 0x73, 0x68, 0x61, 0x64,
+    0x65, 0x72, 0x5f, 0x6f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x00, 0x00,
+    0x04, 0x00, 0x09, 0x00, 0x47, 0x4c, 0x5f, 0x41, 0x52, 0x42, 0x5f, 0x73,
+    0x68, 0x61, 0x64, 0x69, 0x6e, 0x67, 0x5f, 0x6c, 0x61, 0x6e, 0x67, 0x75,
+    0x61, 0x67, 0x65, 0x5f, 0x34, 0x32, 0x30, 0x70, 0x61, 0x63, 0x6b, 0x00,
+    0x05, 0x00, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x6d, 0x61, 0x69, 0x6e,
+    0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x05, 0x00, 0x09, 0x00, 0x00, 0x00,
+    0x74, 0x65, 0x78, 0x63, 0x6f, 0x6f, 0x72, 0x64, 0x00, 0x00, 0x00, 0x00,
+    0x05, 0x00, 0x04, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x61, 0x74, 0x74, 0x72,
+    0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x06, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x67, 0x6c, 0x5f, 0x50, 0x65, 0x72, 0x56, 0x65, 0x72, 0x74, 0x65, 0x78,
+    0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x06, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x50, 0x6f, 0x73, 0x69, 0x74,
+    0x69, 0x6f, 0x6e, 0x00, 0x06, 0x00, 0x07, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x50, 0x6f, 0x69, 0x6e, 0x74,
+    0x53, 0x69, 0x7a, 0x65, 0x00, 0x00, 0x00, 0x00, 0x06, 0x00, 0x07, 0x00,
+    0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x43,
+    0x6c, 0x69, 0x70, 0x44, 0x69, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x00,
+    0x05, 0x00, 0x03, 0x00, 0x13, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x05, 0x00, 0x03, 0x00, 0x17, 0x00, 0x00, 0x00, 0x70, 0x6f, 0x73, 0x00,
+    0x05, 0x00, 0x05, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x56,
+    0x65, 0x72, 0x74, 0x65, 0x78, 0x49, 0x44, 0x00, 0x05, 0x00, 0x06, 0x00,
+    0x1d, 0x00, 0x00, 0x00, 0x67, 0x6c, 0x5f, 0x49, 0x6e, 0x73, 0x74, 0x61,
+    0x6e, 0x63, 0x65, 0x49, 0x44, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00,
+    0x09, 0x00, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x47, 0x00, 0x04, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00,
+    0x01, 0x00, 0x00, 0x00, 0x48, 0x00, 0x05, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x48, 0x00, 0x05, 0x00, 0x11, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x0b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x48, 0x00, 0x05, 0x00,
+    0x11, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    0x03, 0x00, 0x00, 0x00, 0x47, 0x00, 0x03, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x02, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00, 0x17, 0x00, 0x00, 0x00,
+    0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x47, 0x00, 0x04, 0x00,
+    0x1c, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
+    0x47, 0x00, 0x04, 0x00, 0x1d, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00,
+    0x06, 0x00, 0x00, 0x00, 0x13, 0x00, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00,
+    0x21, 0x00, 0x03, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+    0x16, 0x00, 0x03, 0x00, 0x06, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
+    0x17, 0x00, 0x04, 0x00, 0x07, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
+    0x02, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00, 0x08, 0x00, 0x00, 0x00,
+    0x03, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
+    0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
+    0x20, 0x00, 0x04, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x07, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00, 0x0a, 0x00, 0x00, 0x00,
+    0x0b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x17, 0x00, 0x04, 0x00,
+    0x0d, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+    0x15, 0x00, 0x04, 0x00, 0x0e, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x2b, 0x00, 0x04, 0x00, 0x0e, 0x00, 0x00, 0x00,
+    0x0f, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x04, 0x00,
+    0x10, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00,
+    0x1e, 0x00, 0x05, 0x00, 0x11, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00,
+    0x06, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00,
+    0x12, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00,
+    0x3b, 0x00, 0x04, 0x00, 0x12, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00,
+    0x03, 0x00, 0x00, 0x00, 0x15, 0x00, 0x04, 0x00, 0x14, 0x00, 0x00, 0x00,
+    0x20, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x2b, 0x00, 0x04, 0x00,
+    0x14, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x00, 0x04, 0x00, 0x16, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x0d, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00, 0x16, 0x00, 0x00, 0x00,
+    0x17, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04, 0x00,
+    0x19, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00,
+    0x20, 0x00, 0x04, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x14, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00, 0x1b, 0x00, 0x00, 0x00,
+    0x1c, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x3b, 0x00, 0x04, 0x00,
+    0x1b, 0x00, 0x00, 0x00, 0x1d, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+    0x36, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xf8, 0x00, 0x02, 0x00,
+    0x05, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00, 0x07, 0x00, 0x00, 0x00,
+    0x0c, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x03, 0x00,
+    0x09, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x3d, 0x00, 0x04, 0x00,
+    0x0d, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x17, 0x00, 0x00, 0x00,
+    0x41, 0x00, 0x05, 0x00, 0x19, 0x00, 0x00, 0x00, 0x1a, 0x00, 0x00, 0x00,
+    0x13, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x3e, 0x00, 0x03, 0x00,
+    0x1a, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0xfd, 0x00, 0x01, 0x00,
+    0x38, 0x00, 0x01, 0x00
 };
 
 struct texture_object {
@@ -245,13 +245,11 @@ struct texture_object {
     int32_t tex_width, tex_height;
 };
 
-VKAPI_ATTR VkBool32
-
-VKAPI_CALL
+VKAPI_ATTR VkBool32 VKAPI_CALL
 dbgFunc(VkFlags msgFlags, VkDebugReportObjectTypeEXT objType,
         uint64_t srcObject, size_t location, int32_t msgCode,
         const char *pLayerPrefix, const char *pMsg, void *pUserData) {
-    char *message = (char *) malloc(strlen(pMsg) + 100);
+    char *message = (char *)malloc(strlen(pMsg) + 100);
 
     assert(message);
 
@@ -286,7 +284,7 @@ typedef struct _SwapchainBuffers {
 } SwapchainBuffers;
 
 struct demo {
-    GLFWwindow *window;
+    GLFWwindow* window;
     VkSurfaceKHR surface;
     bool use_staging_buffer;
 
@@ -310,13 +308,13 @@ struct demo {
     VkColorSpaceKHR color_space;
 
     PFN_vkGetPhysicalDeviceSurfaceSupportKHR
-            fpGetPhysicalDeviceSurfaceSupportKHR;
+        fpGetPhysicalDeviceSurfaceSupportKHR;
     PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR
-            fpGetPhysicalDeviceSurfaceCapabilitiesKHR;
+        fpGetPhysicalDeviceSurfaceCapabilitiesKHR;
     PFN_vkGetPhysicalDeviceSurfaceFormatsKHR
-            fpGetPhysicalDeviceSurfaceFormatsKHR;
+        fpGetPhysicalDeviceSurfaceFormatsKHR;
     PFN_vkGetPhysicalDeviceSurfacePresentModesKHR
-            fpGetPhysicalDeviceSurfacePresentModesKHR;
+        fpGetPhysicalDeviceSurfacePresentModesKHR;
     PFN_vkCreateSwapchainKHR fpCreateSwapchainKHR;
     PFN_vkDestroySwapchainKHR fpDestroySwapchainKHR;
     PFN_vkGetSwapchainImagesKHR fpGetSwapchainImagesKHR;
@@ -413,14 +411,14 @@ static void demo_flush_init_cmd(struct demo *demo) {
     const VkCommandBuffer cmd_bufs[] = {demo->setup_cmd};
     VkFence nullFence = {VK_NULL_HANDLE};
     VkSubmitInfo submit_info = {.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-            .pNext = NULL,
-            .waitSemaphoreCount = 0,
-            .pWaitSemaphores = NULL,
-            .pWaitDstStageMask = NULL,
-            .commandBufferCount = 1,
-            .pCommandBuffers = cmd_bufs,
-            .signalSemaphoreCount = 0,
-            .pSignalSemaphores = NULL};
+                                .pNext = NULL,
+                                .waitSemaphoreCount = 0,
+                                .pWaitSemaphores = NULL,
+                                .pWaitDstStageMask = NULL,
+                                .commandBufferCount = 1,
+                                .pCommandBuffers = cmd_bufs,
+                                .signalSemaphoreCount = 0,
+                                .pSignalSemaphores = NULL};
 
     err = vkQueueSubmit(demo->queue, 1, &submit_info, nullFence);
     assert(!err);
@@ -440,45 +438,45 @@ static void demo_set_image_layout(struct demo *demo, VkImage image,
 
     if (demo->setup_cmd == VK_NULL_HANDLE) {
         const VkCommandBufferAllocateInfo cmd = {
-                .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-                .pNext = NULL,
-                .commandPool = demo->cmd_pool,
-                .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-                .commandBufferCount = 1,
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+            .pNext = NULL,
+            .commandPool = demo->cmd_pool,
+            .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+            .commandBufferCount = 1,
         };
 
         err = vkAllocateCommandBuffers(demo->device, &cmd, &demo->setup_cmd);
         assert(!err);
 
         VkCommandBufferInheritanceInfo cmd_buf_hinfo = {
-                .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO,
-                .pNext = NULL,
-                .renderPass = VK_NULL_HANDLE,
-                .subpass = 0,
-                .framebuffer = VK_NULL_HANDLE,
-                .occlusionQueryEnable = VK_FALSE,
-                .queryFlags = 0,
-                .pipelineStatistics = 0,
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO,
+            .pNext = NULL,
+            .renderPass = VK_NULL_HANDLE,
+            .subpass = 0,
+            .framebuffer = VK_NULL_HANDLE,
+            .occlusionQueryEnable = VK_FALSE,
+            .queryFlags = 0,
+            .pipelineStatistics = 0,
         };
         VkCommandBufferBeginInfo cmd_buf_info = {
-                .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-                .pNext = NULL,
-                .flags = 0,
-                .pInheritanceInfo = &cmd_buf_hinfo,
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+            .pNext = NULL,
+            .flags = 0,
+            .pInheritanceInfo = &cmd_buf_hinfo,
         };
         err = vkBeginCommandBuffer(demo->setup_cmd, &cmd_buf_info);
         assert(!err);
     }
 
     VkImageMemoryBarrier image_memory_barrier = {
-            .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
-            .pNext = NULL,
-            .srcAccessMask = 0,
-            .dstAccessMask = 0,
-            .oldLayout = old_image_layout,
-            .newLayout = new_image_layout,
-            .image = image,
-            .subresourceRange = {aspectMask, 0, 1, 0, 1}};
+        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
+        .pNext = NULL,
+        .srcAccessMask = 0,
+        .dstAccessMask = 0,
+        .oldLayout = old_image_layout,
+        .newLayout = new_image_layout,
+        .image = image,
+        .subresourceRange = {aspectMask, 0, 1, 0, 1}};
 
     if (new_image_layout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
         /* Make sure anything that was copying from this image has completed */
@@ -487,18 +485,18 @@ static void demo_set_image_layout(struct demo *demo, VkImage image,
 
     if (new_image_layout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL) {
         image_memory_barrier.dstAccessMask =
-                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
     }
 
     if (new_image_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) {
         image_memory_barrier.dstAccessMask =
-                VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
     }
 
     if (new_image_layout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
         /* Make sure any Copy or CPU writes to image are flushed */
         image_memory_barrier.dstAccessMask =
-                VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+            VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
     }
 
     VkImageMemoryBarrier *pmemory_barrier = &image_memory_barrier;
@@ -512,36 +510,36 @@ static void demo_set_image_layout(struct demo *demo, VkImage image,
 
 static void demo_draw_build_cmd(struct demo *demo) {
     const VkCommandBufferInheritanceInfo cmd_buf_hinfo = {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO,
-            .pNext = NULL,
-            .renderPass = VK_NULL_HANDLE,
-            .subpass = 0,
-            .framebuffer = VK_NULL_HANDLE,
-            .occlusionQueryEnable = VK_FALSE,
-            .queryFlags = 0,
-            .pipelineStatistics = 0,
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO,
+        .pNext = NULL,
+        .renderPass = VK_NULL_HANDLE,
+        .subpass = 0,
+        .framebuffer = VK_NULL_HANDLE,
+        .occlusionQueryEnable = VK_FALSE,
+        .queryFlags = 0,
+        .pipelineStatistics = 0,
     };
     const VkCommandBufferBeginInfo cmd_buf_info = {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-            .pNext = NULL,
-            .flags = 0,
-            .pInheritanceInfo = &cmd_buf_hinfo,
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+        .pNext = NULL,
+        .flags = 0,
+        .pInheritanceInfo = &cmd_buf_hinfo,
     };
     const VkClearValue clear_values[2] = {
             [0] = {.color.float32 = {0.2f, 0.2f, 0.2f, 0.2f}},
             [1] = {.depthStencil = {demo->depthStencil, 0}},
     };
     const VkRenderPassBeginInfo rp_begin = {
-            .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-            .pNext = NULL,
-            .renderPass = demo->render_pass,
-            .framebuffer = demo->framebuffers[demo->current_buffer],
-            .renderArea.offset.x = 0,
-            .renderArea.offset.y = 0,
-            .renderArea.extent.width = demo->width,
-            .renderArea.extent.height = demo->height,
-            .clearValueCount = 2,
-            .pClearValues = clear_values,
+        .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+        .pNext = NULL,
+        .renderPass = demo->render_pass,
+        .framebuffer = demo->framebuffers[demo->current_buffer],
+        .renderArea.offset.x = 0,
+        .renderArea.offset.y = 0,
+        .renderArea.extent.width = demo->width,
+        .renderArea.extent.height = demo->height,
+        .clearValueCount = 2,
+        .pClearValues = clear_values,
     };
     VkResult U_ASSERT_ONLY err;
 
@@ -557,10 +555,10 @@ static void demo_draw_build_cmd(struct demo *demo) {
 
     VkViewport viewport;
     memset(&viewport, 0, sizeof(viewport));
-    viewport.height = (float) demo->height;
-    viewport.width = (float) demo->width;
-    viewport.minDepth = (float) 0.0f;
-    viewport.maxDepth = (float) 1.0f;
+    viewport.height = (float)demo->height;
+    viewport.width = (float)demo->width;
+    viewport.minDepth = (float)0.0f;
+    viewport.maxDepth = (float)1.0f;
     vkCmdSetViewport(demo->draw_cmd, 0, 1, &viewport);
 
     VkRect2D scissor;
@@ -579,15 +577,15 @@ static void demo_draw_build_cmd(struct demo *demo) {
     vkCmdEndRenderPass(demo->draw_cmd);
 
     VkImageMemoryBarrier prePresentBarrier = {
-            .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
-            .pNext = NULL,
-            .srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-            .dstAccessMask = VK_ACCESS_MEMORY_READ_BIT,
-            .oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-            .newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
-            .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
-            .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
-            .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1}};
+        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
+        .pNext = NULL,
+        .srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+        .dstAccessMask = VK_ACCESS_MEMORY_READ_BIT,
+        .oldLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        .newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+        .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
+        .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
+        .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1}};
 
     prePresentBarrier.image = demo->buffers[demo->current_buffer].image;
     VkImageMemoryBarrier *pmemory_barrier = &prePresentBarrier;
@@ -603,9 +601,9 @@ static void demo_draw(struct demo *demo) {
     VkResult U_ASSERT_ONLY err;
     VkSemaphore presentCompleteSemaphore;
     VkSemaphoreCreateInfo presentCompleteSemaphoreCreateInfo = {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
-            .pNext = NULL,
-            .flags = 0,
+        .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+        .pNext = NULL,
+        .flags = 0,
     };
 
     err = vkCreateSemaphore(demo->device, &presentCompleteSemaphoreCreateInfo,
@@ -615,7 +613,7 @@ static void demo_draw(struct demo *demo) {
     // Get the index of the next available swapchain image:
     err = demo->fpAcquireNextImageKHR(demo->device, demo->swapchain, UINT64_MAX,
                                       presentCompleteSemaphore,
-                                      (VkFence) 0, // TODO: Show use of fence
+                                      (VkFence)0, // TODO: Show use of fence
                                       &demo->current_buffer);
     if (err == VK_ERROR_OUT_OF_DATE_KHR) {
         // demo->swapchain is out of date (e.g. the window was resized) and
@@ -648,26 +646,26 @@ static void demo_draw(struct demo *demo) {
     demo_draw_build_cmd(demo);
     VkFence nullFence = VK_NULL_HANDLE;
     VkPipelineStageFlags pipe_stage_flags =
-            VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+        VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     VkSubmitInfo submit_info = {.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-            .pNext = NULL,
-            .waitSemaphoreCount = 1,
-            .pWaitSemaphores = &presentCompleteSemaphore,
-            .pWaitDstStageMask = &pipe_stage_flags,
-            .commandBufferCount = 1,
-            .pCommandBuffers = &demo->draw_cmd,
-            .signalSemaphoreCount = 0,
-            .pSignalSemaphores = NULL};
+                                .pNext = NULL,
+                                .waitSemaphoreCount = 1,
+                                .pWaitSemaphores = &presentCompleteSemaphore,
+                                .pWaitDstStageMask = &pipe_stage_flags,
+                                .commandBufferCount = 1,
+                                .pCommandBuffers = &demo->draw_cmd,
+                                .signalSemaphoreCount = 0,
+                                .pSignalSemaphores = NULL};
 
     err = vkQueueSubmit(demo->queue, 1, &submit_info, nullFence);
     assert(!err);
 
     VkPresentInfoKHR present = {
-            .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
-            .pNext = NULL,
-            .swapchainCount = 1,
-            .pSwapchains = &demo->swapchain,
-            .pImageIndices = &demo->current_buffer,
+        .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+        .pNext = NULL,
+        .swapchainCount = 1,
+        .pSwapchains = &demo->swapchain,
+        .pImageIndices = &demo->current_buffer,
     };
 
     // TBD/TODO: SHOULD THE "present" PARAMETER BE "const" IN THE HEADER?
@@ -696,23 +694,23 @@ static void demo_prepare_buffers(struct demo *demo) {
     // Check the surface capabilities and formats
     VkSurfaceCapabilitiesKHR surfCapabilities;
     err = demo->fpGetPhysicalDeviceSurfaceCapabilitiesKHR(
-            demo->gpu, demo->surface, &surfCapabilities);
+        demo->gpu, demo->surface, &surfCapabilities);
     assert(!err);
 
     uint32_t presentModeCount;
     err = demo->fpGetPhysicalDeviceSurfacePresentModesKHR(
-            demo->gpu, demo->surface, &presentModeCount, NULL);
+        demo->gpu, demo->surface, &presentModeCount, NULL);
     assert(!err);
     VkPresentModeKHR *presentModes =
-            (VkPresentModeKHR *) malloc(presentModeCount * sizeof(VkPresentModeKHR));
+        (VkPresentModeKHR *)malloc(presentModeCount * sizeof(VkPresentModeKHR));
     assert(presentModes);
     err = demo->fpGetPhysicalDeviceSurfacePresentModesKHR(
-            demo->gpu, demo->surface, &presentModeCount, presentModes);
+        demo->gpu, demo->surface, &presentModeCount, presentModes);
     assert(!err);
 
     VkExtent2D swapchainExtent;
     // width and height are either both -1, or both not -1.
-    if (surfCapabilities.currentExtent.width == (uint32_t) -1) {
+    if (surfCapabilities.currentExtent.width == (uint32_t)-1) {
         // If the surface size is undefined, the size is set to
         // the size of the images requested.
         swapchainExtent.width = demo->width;
@@ -730,7 +728,7 @@ static void demo_prepare_buffers(struct demo *demo) {
     // own only 1 image at a time, besides the images being displayed and
     // queued for display):
     uint32_t desiredNumberOfSwapchainImages =
-            surfCapabilities.minImageCount + 1;
+        surfCapabilities.minImageCount + 1;
     if ((surfCapabilities.maxImageCount > 0) &&
         (desiredNumberOfSwapchainImages > surfCapabilities.maxImageCount)) {
         // Application must settle for fewer images than desired:
@@ -746,26 +744,26 @@ static void demo_prepare_buffers(struct demo *demo) {
     }
 
     const VkSwapchainCreateInfoKHR swapchain = {
-            .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
-            .pNext = NULL,
-            .surface = demo->surface,
-            .minImageCount = desiredNumberOfSwapchainImages,
-            .imageFormat = demo->format,
-            .imageColorSpace = demo->color_space,
-            .imageExtent =
-                    {
-                            .width = swapchainExtent.width, .height = swapchainExtent.height,
-                    },
-            .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
-            .preTransform = preTransform,
-            .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
-            .imageArrayLayers = 1,
-            .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
-            .queueFamilyIndexCount = 0,
-            .pQueueFamilyIndices = NULL,
-            .presentMode = swapchainPresentMode,
-            .oldSwapchain = oldSwapchain,
-            .clipped = true,
+        .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+        .pNext = NULL,
+        .surface = demo->surface,
+        .minImageCount = desiredNumberOfSwapchainImages,
+        .imageFormat = demo->format,
+        .imageColorSpace = demo->color_space,
+        .imageExtent =
+            {
+             .width = swapchainExtent.width, .height = swapchainExtent.height,
+            },
+        .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+        .preTransform = preTransform,
+        .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+        .imageArrayLayers = 1,
+        .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
+        .queueFamilyIndexCount = 0,
+        .pQueueFamilyIndices = NULL,
+        .presentMode = swapchainPresentMode,
+        .oldSwapchain = oldSwapchain,
+        .clipped = true,
     };
     uint32_t i;
 
@@ -786,36 +784,36 @@ static void demo_prepare_buffers(struct demo *demo) {
     assert(!err);
 
     VkImage *swapchainImages =
-            (VkImage *) malloc(demo->swapchainImageCount * sizeof(VkImage));
+        (VkImage *)malloc(demo->swapchainImageCount * sizeof(VkImage));
     assert(swapchainImages);
     err = demo->fpGetSwapchainImagesKHR(demo->device, demo->swapchain,
                                         &demo->swapchainImageCount,
                                         swapchainImages);
     assert(!err);
 
-    demo->buffers = (SwapchainBuffers *) malloc(sizeof(SwapchainBuffers) *
-                                                demo->swapchainImageCount);
+    demo->buffers = (SwapchainBuffers *)malloc(sizeof(SwapchainBuffers) *
+                                               demo->swapchainImageCount);
     assert(demo->buffers);
 
     for (i = 0; i < demo->swapchainImageCount; i++) {
         VkImageViewCreateInfo color_attachment_view = {
-                .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-                .pNext = NULL,
-                .format = demo->format,
-                .components =
-                        {
-                                .r = VK_COMPONENT_SWIZZLE_R,
-                                .g = VK_COMPONENT_SWIZZLE_G,
-                                .b = VK_COMPONENT_SWIZZLE_B,
-                                .a = VK_COMPONENT_SWIZZLE_A,
-                        },
-                .subresourceRange = {.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
-                        .baseMipLevel = 0,
-                        .levelCount = 1,
-                        .baseArrayLayer = 0,
-                        .layerCount = 1},
-                .viewType = VK_IMAGE_VIEW_TYPE_2D,
-                .flags = 0,
+            .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+            .pNext = NULL,
+            .format = demo->format,
+            .components =
+                {
+                 .r = VK_COMPONENT_SWIZZLE_R,
+                 .g = VK_COMPONENT_SWIZZLE_G,
+                 .b = VK_COMPONENT_SWIZZLE_B,
+                 .a = VK_COMPONENT_SWIZZLE_A,
+                },
+            .subresourceRange = {.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+                                 .baseMipLevel = 0,
+                                 .levelCount = 1,
+                                 .baseArrayLayer = 0,
+                                 .layerCount = 1},
+            .viewType = VK_IMAGE_VIEW_TYPE_2D,
+            .flags = 0,
         };
 
         demo->buffers[i].image = swapchainImages[i];
@@ -825,8 +823,8 @@ static void demo_prepare_buffers(struct demo *demo) {
         // layout and will change to COLOR_ATTACHMENT_OPTIMAL, so init the image
         // to that state
         demo_set_image_layout(
-                demo, demo->buffers[i].image, VK_IMAGE_ASPECT_COLOR_BIT,
-                VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+            demo, demo->buffers[i].image, VK_IMAGE_ASPECT_COLOR_BIT,
+            VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 
         color_attachment_view.image = demo->buffers[i].image;
 
@@ -845,36 +843,36 @@ static void demo_prepare_buffers(struct demo *demo) {
 static void demo_prepare_depth(struct demo *demo) {
     const VkFormat depth_format = VK_FORMAT_D16_UNORM;
     const VkImageCreateInfo image = {
-            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
-            .pNext = NULL,
-            .imageType = VK_IMAGE_TYPE_2D,
-            .format = depth_format,
-            .extent = {demo->width, demo->height, 1},
-            .mipLevels = 1,
-            .arrayLayers = 1,
-            .samples = VK_SAMPLE_COUNT_1_BIT,
-            .tiling = VK_IMAGE_TILING_OPTIMAL,
-            .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-            .flags = 0,
+        .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+        .pNext = NULL,
+        .imageType = VK_IMAGE_TYPE_2D,
+        .format = depth_format,
+        .extent = {demo->width, demo->height, 1},
+        .mipLevels = 1,
+        .arrayLayers = 1,
+        .samples = VK_SAMPLE_COUNT_1_BIT,
+        .tiling = VK_IMAGE_TILING_OPTIMAL,
+        .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+        .flags = 0,
     };
     VkMemoryAllocateInfo mem_alloc = {
-            .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-            .pNext = NULL,
-            .allocationSize = 0,
-            .memoryTypeIndex = 0,
+        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .pNext = NULL,
+        .allocationSize = 0,
+        .memoryTypeIndex = 0,
     };
     VkImageViewCreateInfo view = {
-            .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-            .pNext = NULL,
-            .image = VK_NULL_HANDLE,
-            .format = depth_format,
-            .subresourceRange = {.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT,
-                    .baseMipLevel = 0,
-                    .levelCount = 1,
-                    .baseArrayLayer = 0,
-                    .layerCount = 1},
-            .flags = 0,
-            .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .pNext = NULL,
+        .image = VK_NULL_HANDLE,
+        .format = depth_format,
+        .subresourceRange = {.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT,
+                             .baseMipLevel = 0,
+                             .levelCount = 1,
+                             .baseArrayLayer = 0,
+                             .layerCount = 1},
+        .flags = 0,
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
     };
 
     VkMemoryRequirements mem_reqs;
@@ -903,7 +901,7 @@ static void demo_prepare_depth(struct demo *demo) {
 
     /* bind memory */
     err =
-            vkBindImageMemory(demo->device, demo->depth.image, demo->depth.mem, 0);
+        vkBindImageMemory(demo->device, demo->depth.image, demo->depth.mem, 0);
     assert(!err);
 
     demo_set_image_layout(demo, demo->depth.image, VK_IMAGE_ASPECT_DEPTH_BIT,
@@ -930,37 +928,37 @@ demo_prepare_texture_image(struct demo *demo, const uint32_t *tex_colors,
     tex_obj->tex_height = tex_height;
 
     const VkImageCreateInfo image_create_info = {
-            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
-            .pNext = NULL,
-            .imageType = VK_IMAGE_TYPE_2D,
-            .format = tex_format,
-            .extent = {tex_width, tex_height, 1},
-            .mipLevels = 1,
-            .arrayLayers = 1,
-            .samples = VK_SAMPLE_COUNT_1_BIT,
-            .tiling = tiling,
-            .usage = usage,
-            .flags = 0,
+        .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+        .pNext = NULL,
+        .imageType = VK_IMAGE_TYPE_2D,
+        .format = tex_format,
+        .extent = {tex_width, tex_height, 1},
+        .mipLevels = 1,
+        .arrayLayers = 1,
+        .samples = VK_SAMPLE_COUNT_1_BIT,
+        .tiling = tiling,
+        .usage = usage,
+        .flags = 0,
     };
     VkMemoryAllocateInfo mem_alloc = {
-            .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-            .pNext = NULL,
-            .allocationSize = 0,
-            .memoryTypeIndex = 0,
+        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .pNext = NULL,
+        .allocationSize = 0,
+        .memoryTypeIndex = 0,
     };
 
     VkMemoryRequirements mem_reqs;
 
     err =
-            vkCreateImage(demo->device, &image_create_info, NULL, &tex_obj->image);
+        vkCreateImage(demo->device, &image_create_info, NULL, &tex_obj->image);
     assert(!err);
 
     vkGetImageMemoryRequirements(demo->device, tex_obj->image, &mem_reqs);
 
     mem_alloc.allocationSize = mem_reqs.size;
     pass =
-            memory_type_from_properties(demo, mem_reqs.memoryTypeBits,
-                                        required_props, &mem_alloc.memoryTypeIndex);
+        memory_type_from_properties(demo, mem_reqs.memoryTypeBits,
+                                    required_props, &mem_alloc.memoryTypeIndex);
     assert(pass);
 
     /* allocate memory */
@@ -973,9 +971,9 @@ demo_prepare_texture_image(struct demo *demo, const uint32_t *tex_colors,
 
     if (required_props & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
         const VkImageSubresource subres = {
-                .aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
-                .mipLevel = 0,
-                .arrayLayer = 0,
+            .aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+            .mipLevel = 0,
+            .arrayLayer = 0,
         };
         VkSubresourceLayout layout;
         void *data;
@@ -989,7 +987,7 @@ demo_prepare_texture_image(struct demo *demo, const uint32_t *tex_colors,
         assert(!err);
 
         for (y = 0; y < tex_height; y++) {
-            uint32_t *row = (uint32_t *) ((char *) data + layout.rowPitch * y);
+            uint32_t *row = (uint32_t *)((char *)data + layout.rowPitch * y);
             for (x = 0; x < tex_width; x++)
                 row[x] = tex_colors[(x & 1) ^ (y & 1)];
         }
@@ -1015,7 +1013,7 @@ static void demo_prepare_textures(struct demo *demo) {
     const VkFormat tex_format = VK_FORMAT_B8G8R8A8_UNORM;
     VkFormatProperties props;
     const uint32_t tex_colors[DEMO_TEXTURE_COUNT][2] = {
-            {0xffff0000, 0xff00ff00},
+        {0xffff0000, 0xff00ff00},
     };
     uint32_t i;
     VkResult U_ASSERT_ONLY err;
@@ -1043,10 +1041,10 @@ static void demo_prepare_textures(struct demo *demo) {
                                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 
             demo_prepare_texture_image(
-                    demo, tex_colors[i], &demo->textures[i],
-                    VK_IMAGE_TILING_OPTIMAL,
-                    (VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT),
-                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+                demo, tex_colors[i], &demo->textures[i],
+                VK_IMAGE_TILING_OPTIMAL,
+                (VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT),
+                VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
             demo_set_image_layout(demo, staging_texture.image,
                                   VK_IMAGE_ASPECT_COLOR_BIT,
@@ -1059,17 +1057,17 @@ static void demo_prepare_textures(struct demo *demo) {
                                   VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
 
             VkImageCopy copy_region = {
-                    .srcSubresource = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1},
-                    .srcOffset = {0, 0, 0},
-                    .dstSubresource = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1},
-                    .dstOffset = {0, 0, 0},
-                    .extent = {staging_texture.tex_width,
-                               staging_texture.tex_height, 1},
+                .srcSubresource = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1},
+                .srcOffset = {0, 0, 0},
+                .dstSubresource = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 0, 1},
+                .dstOffset = {0, 0, 0},
+                .extent = {staging_texture.tex_width,
+                           staging_texture.tex_height, 1},
             };
             vkCmdCopyImage(
-                    demo->setup_cmd, staging_texture.image,
-                    VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, demo->textures[i].image,
-                    VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copy_region);
+                demo->setup_cmd, staging_texture.image,
+                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, demo->textures[i].image,
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copy_region);
 
             demo_set_image_layout(demo, demo->textures[i].image,
                                   VK_IMAGE_ASPECT_COLOR_BIT,
@@ -1085,36 +1083,36 @@ static void demo_prepare_textures(struct demo *demo) {
         }
 
         const VkSamplerCreateInfo sampler = {
-                .sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO,
-                .pNext = NULL,
-                .magFilter = VK_FILTER_NEAREST,
-                .minFilter = VK_FILTER_NEAREST,
-                .mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST,
-                .addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT,
-                .addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT,
-                .addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
-                .mipLodBias = 0.0f,
-                .anisotropyEnable = VK_FALSE,
-                .maxAnisotropy = 1,
-                .compareOp = VK_COMPARE_OP_NEVER,
-                .minLod = 0.0f,
-                .maxLod = 0.0f,
-                .borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE,
-                .unnormalizedCoordinates = VK_FALSE,
+            .sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO,
+            .pNext = NULL,
+            .magFilter = VK_FILTER_NEAREST,
+            .minFilter = VK_FILTER_NEAREST,
+            .mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST,
+            .addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+            .addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+            .addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+            .mipLodBias = 0.0f,
+            .anisotropyEnable = VK_FALSE,
+            .maxAnisotropy = 1,
+            .compareOp = VK_COMPARE_OP_NEVER,
+            .minLod = 0.0f,
+            .maxLod = 0.0f,
+            .borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE,
+            .unnormalizedCoordinates = VK_FALSE,
         };
         VkImageViewCreateInfo view = {
-                .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-                .pNext = NULL,
-                .image = VK_NULL_HANDLE,
-                .viewType = VK_IMAGE_VIEW_TYPE_2D,
-                .format = tex_format,
-                .components =
-                        {
-                                VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_G,
-                                VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_A,
-                        },
-                .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1},
-                .flags = 0,
+            .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+            .pNext = NULL,
+            .image = VK_NULL_HANDLE,
+            .viewType = VK_IMAGE_VIEW_TYPE_2D,
+            .format = tex_format,
+            .components =
+                {
+                 VK_COMPONENT_SWIZZLE_R, VK_COMPONENT_SWIZZLE_G,
+                 VK_COMPONENT_SWIZZLE_B, VK_COMPONENT_SWIZZLE_A,
+                },
+            .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1},
+            .flags = 0,
         };
 
         /* create sampler */
@@ -1133,24 +1131,24 @@ static void demo_prepare_textures(struct demo *demo) {
 static void demo_prepare_vertices(struct demo *demo) {
     // clang-format off
     const float vb[3][5] = {
-            /*      position             texcoord */
-            {-1.0f, -1.0f, 0.25f, 0.0f, 0.0f},
-            {1.0f,  -1.0f, 0.25f, 1.0f, 0.0f},
-            {0.0f,  1.0f,  1.0f,  0.5f, 1.0f},
+        /*      position             texcoord */
+        { -1.0f, -1.0f,  0.25f,     0.0f, 0.0f },
+        {  1.0f, -1.0f,  0.25f,     1.0f, 0.0f },
+        {  0.0f,  1.0f,  1.0f,      0.5f, 1.0f },
     };
     // clang-format on
     const VkBufferCreateInfo buf_info = {
-            .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
-            .pNext = NULL,
-            .size = sizeof(vb),
-            .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
-            .flags = 0,
+        .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+        .pNext = NULL,
+        .size = sizeof(vb),
+        .usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+        .flags = 0,
     };
     VkMemoryAllocateInfo mem_alloc = {
-            .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-            .pNext = NULL,
-            .allocationSize = 0,
-            .memoryTypeIndex = 0,
+        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+        .pNext = NULL,
+        .allocationSize = 0,
+        .memoryTypeIndex = 0,
     };
     VkMemoryRequirements mem_reqs;
     VkResult U_ASSERT_ONLY err;
@@ -1187,7 +1185,7 @@ static void demo_prepare_vertices(struct demo *demo) {
     assert(!err);
 
     demo->vertices.vi.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     demo->vertices.vi.pNext = NULL;
     demo->vertices.vi.vertexBindingDescriptionCount = 1;
     demo->vertices.vi.pVertexBindingDescriptions = demo->vertices.vi_bindings;
@@ -1211,17 +1209,17 @@ static void demo_prepare_vertices(struct demo *demo) {
 
 static void demo_prepare_descriptor_layout(struct demo *demo) {
     const VkDescriptorSetLayoutBinding layout_binding = {
-            .binding = 0,
-            .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-            .descriptorCount = DEMO_TEXTURE_COUNT,
-            .stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,
-            .pImmutableSamplers = NULL,
+        .binding = 0,
+        .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+        .descriptorCount = DEMO_TEXTURE_COUNT,
+        .stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,
+        .pImmutableSamplers = NULL,
     };
     const VkDescriptorSetLayoutCreateInfo descriptor_layout = {
-            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-            .pNext = NULL,
-            .bindingCount = 1,
-            .pBindings = &layout_binding,
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+        .pNext = NULL,
+        .bindingCount = 1,
+        .pBindings = &layout_binding,
     };
     VkResult U_ASSERT_ONLY err;
 
@@ -1230,10 +1228,10 @@ static void demo_prepare_descriptor_layout(struct demo *demo) {
     assert(!err);
 
     const VkPipelineLayoutCreateInfo pPipelineLayoutCreateInfo = {
-            .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-            .pNext = NULL,
-            .setLayoutCount = 1,
-            .pSetLayouts = &demo->desc_layout,
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
+        .pNext = NULL,
+        .setLayoutCount = 1,
+        .pSetLayouts = &demo->desc_layout,
     };
 
     err = vkCreatePipelineLayout(demo->device, &pPipelineLayoutCreateInfo, NULL,
@@ -1244,58 +1242,58 @@ static void demo_prepare_descriptor_layout(struct demo *demo) {
 static void demo_prepare_render_pass(struct demo *demo) {
     const VkAttachmentDescription attachments[2] = {
             [0] =
-                    {
-                            .format = demo->format,
-                            .samples = VK_SAMPLE_COUNT_1_BIT,
-                            .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
-                            .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
-                            .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
-                            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
-                            .initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                            .finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                    },
+                {
+                 .format = demo->format,
+                 .samples = VK_SAMPLE_COUNT_1_BIT,
+                 .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
+                 .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
+                 .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+                 .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+                 .initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                 .finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                },
             [1] =
-                    {
-                            .format = demo->depth.format,
-                            .samples = VK_SAMPLE_COUNT_1_BIT,
-                            .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
-                            .storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
-                            .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
-                            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
-                            .initialLayout =
-                            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
-                            .finalLayout =
-                            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
-                    },
+                {
+                 .format = demo->depth.format,
+                 .samples = VK_SAMPLE_COUNT_1_BIT,
+                 .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
+                 .storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+                 .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+                 .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+                 .initialLayout =
+                     VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+                 .finalLayout =
+                     VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+                },
     };
     const VkAttachmentReference color_reference = {
-            .attachment = 0, .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        .attachment = 0, .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
     };
     const VkAttachmentReference depth_reference = {
-            .attachment = 1,
-            .layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
+        .attachment = 1,
+        .layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
     };
     const VkSubpassDescription subpass = {
-            .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
-            .flags = 0,
-            .inputAttachmentCount = 0,
-            .pInputAttachments = NULL,
-            .colorAttachmentCount = 1,
-            .pColorAttachments = &color_reference,
-            .pResolveAttachments = NULL,
-            .pDepthStencilAttachment = &depth_reference,
-            .preserveAttachmentCount = 0,
-            .pPreserveAttachments = NULL,
+        .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
+        .flags = 0,
+        .inputAttachmentCount = 0,
+        .pInputAttachments = NULL,
+        .colorAttachmentCount = 1,
+        .pColorAttachments = &color_reference,
+        .pResolveAttachments = NULL,
+        .pDepthStencilAttachment = &depth_reference,
+        .preserveAttachmentCount = 0,
+        .pPreserveAttachments = NULL,
     };
     const VkRenderPassCreateInfo rp_info = {
-            .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
-            .pNext = NULL,
-            .attachmentCount = 2,
-            .pAttachments = attachments,
-            .subpassCount = 1,
-            .pSubpasses = &subpass,
-            .dependencyCount = 0,
-            .pDependencies = NULL,
+        .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
+        .pNext = NULL,
+        .attachmentCount = 2,
+        .pAttachments = attachments,
+        .subpassCount = 1,
+        .pSubpasses = &subpass,
+        .dependencyCount = 0,
+        .pDependencies = NULL,
     };
     VkResult U_ASSERT_ONLY err;
 
@@ -1325,7 +1323,7 @@ static VkShaderModule demo_prepare_vs(struct demo *demo) {
     size_t size = sizeof(vertShaderCode);
 
     demo->vert_shader_module =
-            demo_prepare_shader_module(demo, vertShaderCode, size);
+        demo_prepare_shader_module(demo, vertShaderCode, size);
 
     return demo->vert_shader_module;
 }
@@ -1334,7 +1332,7 @@ static VkShaderModule demo_prepare_fs(struct demo *demo) {
     size_t size = sizeof(fragShaderCode);
 
     demo->frag_shader_module =
-            demo_prepare_shader_module(demo, fragShaderCode, size);
+        demo_prepare_shader_module(demo, fragShaderCode, size);
 
     return demo->frag_shader_module;
 }
@@ -1392,10 +1390,10 @@ static void demo_prepare_pipeline(struct demo *demo) {
     vp.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
     vp.viewportCount = 1;
     dynamicStateEnables[dynamicState.dynamicStateCount++] =
-            VK_DYNAMIC_STATE_VIEWPORT;
+        VK_DYNAMIC_STATE_VIEWPORT;
     vp.scissorCount = 1;
     dynamicStateEnables[dynamicState.dynamicStateCount++] =
-            VK_DYNAMIC_STATE_SCISSOR;
+        VK_DYNAMIC_STATE_SCISSOR;
 
     memset(&ds, 0, sizeof(ds));
     ds.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
@@ -1458,15 +1456,15 @@ static void demo_prepare_pipeline(struct demo *demo) {
 
 static void demo_prepare_descriptor_pool(struct demo *demo) {
     const VkDescriptorPoolSize type_count = {
-            .type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-            .descriptorCount = DEMO_TEXTURE_COUNT,
+        .type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+        .descriptorCount = DEMO_TEXTURE_COUNT,
     };
     const VkDescriptorPoolCreateInfo descriptor_pool = {
-            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-            .pNext = NULL,
-            .maxSets = 1,
-            .poolSizeCount = 1,
-            .pPoolSizes = &type_count,
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .pNext = NULL,
+        .maxSets = 1,
+        .poolSizeCount = 1,
+        .pPoolSizes = &type_count,
     };
     VkResult U_ASSERT_ONLY err;
 
@@ -1482,11 +1480,11 @@ static void demo_prepare_descriptor_set(struct demo *demo) {
     uint32_t i;
 
     VkDescriptorSetAllocateInfo alloc_info = {
-            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
-            .pNext = NULL,
-            .descriptorPool = demo->desc_pool,
-            .descriptorSetCount = 1,
-            .pSetLayouts = &demo->desc_layout};
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+        .pNext = NULL,
+        .descriptorPool = demo->desc_pool,
+        .descriptorSetCount = 1,
+        .pSetLayouts = &demo->desc_layout};
     err = vkAllocateDescriptorSets(demo->device, &alloc_info, &demo->desc_set);
     assert(!err);
 
@@ -1512,20 +1510,20 @@ static void demo_prepare_framebuffers(struct demo *demo) {
     attachments[1] = demo->depth.view;
 
     const VkFramebufferCreateInfo fb_info = {
-            .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
-            .pNext = NULL,
-            .renderPass = demo->render_pass,
-            .attachmentCount = 2,
-            .pAttachments = attachments,
-            .width = demo->width,
-            .height = demo->height,
-            .layers = 1,
+        .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+        .pNext = NULL,
+        .renderPass = demo->render_pass,
+        .attachmentCount = 2,
+        .pAttachments = attachments,
+        .width = demo->width,
+        .height = demo->height,
+        .layers = 1,
     };
     VkResult U_ASSERT_ONLY err;
     uint32_t i;
 
-    demo->framebuffers = (VkFramebuffer *) malloc(demo->swapchainImageCount *
-                                                  sizeof(VkFramebuffer));
+    demo->framebuffers = (VkFramebuffer *)malloc(demo->swapchainImageCount *
+                                                 sizeof(VkFramebuffer));
     assert(demo->framebuffers);
 
     for (i = 0; i < demo->swapchainImageCount; i++) {
@@ -1540,21 +1538,21 @@ static void demo_prepare(struct demo *demo) {
     VkResult U_ASSERT_ONLY err;
 
     const VkCommandPoolCreateInfo cmd_pool_info = {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-            .pNext = NULL,
-            .queueFamilyIndex = demo->graphics_queue_node_index,
-            .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+        .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+        .pNext = NULL,
+        .queueFamilyIndex = demo->graphics_queue_node_index,
+        .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
     };
     err = vkCreateCommandPool(demo->device, &cmd_pool_info, NULL,
                               &demo->cmd_pool);
     assert(!err);
 
     const VkCommandBufferAllocateInfo cmd = {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-            .pNext = NULL,
-            .commandPool = demo->cmd_pool,
-            .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-            .commandBufferCount = 1,
+        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+        .pNext = NULL,
+        .commandPool = demo->cmd_pool,
+        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+        .commandBufferCount = 1,
     };
     err = vkAllocateCommandBuffers(demo->device, &cmd, &demo->draw_cmd);
     assert(!err);
@@ -1573,23 +1571,23 @@ static void demo_prepare(struct demo *demo) {
     demo_prepare_framebuffers(demo);
 }
 
-static void demo_error_callback(int error, const char *description) {
+static void demo_error_callback(int error, const char* description) {
     printf("GLFW error: %s\n", description);
     fflush(stdout);
 }
 
-static void demo_key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+static void demo_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-static void demo_refresh_callback(GLFWwindow *window) {
-    struct demo *demo = glfwGetWindowUserPointer(window);
+static void demo_refresh_callback(GLFWwindow* window) {
+    struct demo* demo = glfwGetWindowUserPointer(window);
     demo_draw(demo);
 }
 
-static void demo_resize_callback(GLFWwindow *window, int width, int height) {
-    struct demo *demo = glfwGetWindowUserPointer(window);
+static void demo_resize_callback(GLFWwindow* window, int width, int height) {
+    struct demo* demo = glfwGetWindowUserPointer(window);
     demo->width = width;
     demo->height = height;
     demo_resize(demo);
@@ -1643,8 +1641,7 @@ static VkBool32 demo_check_layers(uint32_t check_count, char **check_names,
                                   VkLayerProperties *layers) {
     uint32_t i, j;
     for (i = 0; i < check_count; i++) {
-        VkBool32
-        found = 0;
+        VkBool32 found = 0;
         for (j = 0; j < layer_count; j++) {
             if (!strcmp(check_names[i], layers[j].layerName)) {
                 found = 1;
@@ -1659,19 +1656,15 @@ static VkBool32 demo_check_layers(uint32_t check_count, char **check_names,
     return 1;
 }
 
-VKAPI_ATTR void *VKAPI_CALL
-
-myrealloc(void *pUserData, void *pOriginal,
-          size_t size, size_t alignment,
-          VkSystemAllocationScope allocationScope) {
+VKAPI_ATTR void *VKAPI_CALL myrealloc(void *pUserData, void *pOriginal,
+                                      size_t size, size_t alignment,
+                                      VkSystemAllocationScope allocationScope) {
     return realloc(pOriginal, size);
 }
 
-VKAPI_ATTR void *VKAPI_CALL
-
-myalloc(void *pUserData, size_t size,
-        size_t alignment,
-        VkSystemAllocationScope allocationScope) {
+VKAPI_ATTR void *VKAPI_CALL myalloc(void *pUserData, size_t size,
+                                    size_t alignment,
+                                    VkSystemAllocationScope allocationScope) {
 #ifdef _MSC_VER
     return _aligned_malloc(size, alignment);
 #else
@@ -1679,9 +1672,7 @@ myalloc(void *pUserData, size_t size,
 #endif
 }
 
-VKAPI_ATTR void VKAPI_CALL
-
-myfree(void *pUserData, void *pMemory) {
+VKAPI_ATTR void VKAPI_CALL myfree(void *pUserData, void *pMemory) {
 #ifdef _MSC_VER
     _aligned_free(pMemory);
 #else
@@ -1692,7 +1683,7 @@ myfree(void *pUserData, void *pMemory) {
 static void demo_init_vk(struct demo *demo) {
     VkResult err;
     uint32_t required_extension_count;
-    const char **required_extensions;
+    const char** required_extensions;
     uint32_t i;
     uint32_t instance_extension_count = 0;
     uint32_t instance_layer_count = 0;
@@ -1701,8 +1692,8 @@ static void demo_init_vk(struct demo *demo) {
     demo->enabled_layer_count = 0;
 
     char *instance_validation_layers[] = {
-            "VK_LAYER_LUNARG_mem_tracker",
-            "VK_LAYER_GOOGLE_unique_objects",
+        "VK_LAYER_LUNARG_mem_tracker",
+        "VK_LAYER_GOOGLE_unique_objects",
     };
 
     demo->device_validation_layers[0] = "VK_LAYER_LUNARG_mem_tracker";
@@ -1710,23 +1701,22 @@ static void demo_init_vk(struct demo *demo) {
     device_validation_layer_count = 2;
 
     /* Look for validation layers */
-    VkBool32
-    validation_found = 0;
+    VkBool32 validation_found = 0;
     err = vkEnumerateInstanceLayerProperties(&instance_layer_count, NULL);
     assert(!err);
 
     if (instance_layer_count > 0) {
         VkLayerProperties *instance_layers =
-                malloc(sizeof(VkLayerProperties) * instance_layer_count);
+            malloc(sizeof(VkLayerProperties) * instance_layer_count);
         err = vkEnumerateInstanceLayerProperties(&instance_layer_count,
                                                  instance_layers);
         assert(!err);
 
         if (demo->validate) {
             validation_found = demo_check_layers(
-                    ARRAY_SIZE(instance_validation_layers),
-                    instance_validation_layers, instance_layer_count,
-                    instance_layers);
+                ARRAY_SIZE(instance_validation_layers),
+                instance_validation_layers, instance_layer_count,
+                instance_layers);
             demo->enabled_layer_count = ARRAY_SIZE(instance_validation_layers);
         }
 
@@ -1758,21 +1748,21 @@ static void demo_init_vk(struct demo *demo) {
     }
 
     err = vkEnumerateInstanceExtensionProperties(
-            NULL, &instance_extension_count, NULL);
+        NULL, &instance_extension_count, NULL);
     assert(!err);
 
     if (instance_extension_count > 0) {
         VkExtensionProperties *instance_extensions =
-                malloc(sizeof(VkExtensionProperties) * instance_extension_count);
+            malloc(sizeof(VkExtensionProperties) * instance_extension_count);
         err = vkEnumerateInstanceExtensionProperties(
-                NULL, &instance_extension_count, instance_extensions);
+            NULL, &instance_extension_count, instance_extensions);
         assert(!err);
         for (i = 0; i < instance_extension_count; i++) {
             if (!strcmp(VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
                         instance_extensions[i].extensionName)) {
                 if (demo->validate) {
                     demo->extension_names[demo->enabled_extension_count++] =
-                            VK_EXT_DEBUG_REPORT_EXTENSION_NAME;
+                        VK_EXT_DEBUG_REPORT_EXTENSION_NAME;
                 }
             }
             assert(demo->enabled_extension_count < 64);
@@ -1782,22 +1772,22 @@ static void demo_init_vk(struct demo *demo) {
     }
 
     const VkApplicationInfo app = {
-            .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-            .pNext = NULL,
-            .pApplicationName = APP_SHORT_NAME,
-            .applicationVersion = 0,
-            .pEngineName = APP_SHORT_NAME,
-            .engineVersion = 0,
-            .apiVersion = VK_API_VERSION_1_0,
+        .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+        .pNext = NULL,
+        .pApplicationName = APP_SHORT_NAME,
+        .applicationVersion = 0,
+        .pEngineName = APP_SHORT_NAME,
+        .engineVersion = 0,
+        .apiVersion = VK_API_VERSION_1_0,
     };
     VkInstanceCreateInfo inst_info = {
-            .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-            .pNext = NULL,
-            .pApplicationInfo = &app,
-            .enabledLayerCount = demo->enabled_layer_count,
-            .ppEnabledLayerNames = (const char *const *) instance_validation_layers,
-            .enabledExtensionCount = demo->enabled_extension_count,
-            .ppEnabledExtensionNames = (const char *const *) demo->extension_names,
+        .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+        .pNext = NULL,
+        .pApplicationInfo = &app,
+        .enabledLayerCount = demo->enabled_layer_count,
+        .ppEnabledLayerNames = (const char *const *)instance_validation_layers,
+        .enabledExtensionCount = demo->enabled_extension_count,
+        .ppEnabledExtensionNames = (const char *const *)demo->extension_names,
     };
 
     uint32_t gpu_count;
@@ -1829,7 +1819,7 @@ static void demo_init_vk(struct demo *demo) {
 
     if (gpu_count > 0) {
         VkPhysicalDevice *physical_devices =
-                malloc(sizeof(VkPhysicalDevice) * gpu_count);
+            malloc(sizeof(VkPhysicalDevice) * gpu_count);
         err = vkEnumeratePhysicalDevices(demo->inst, &gpu_count,
                                          physical_devices);
         assert(!err);
@@ -1849,12 +1839,12 @@ static void demo_init_vk(struct demo *demo) {
     demo->enabled_layer_count = 0;
     uint32_t device_layer_count = 0;
     err =
-            vkEnumerateDeviceLayerProperties(demo->gpu, &device_layer_count, NULL);
+        vkEnumerateDeviceLayerProperties(demo->gpu, &device_layer_count, NULL);
     assert(!err);
 
     if (device_layer_count > 0) {
         VkLayerProperties *device_layers =
-                malloc(sizeof(VkLayerProperties) * device_layer_count);
+            malloc(sizeof(VkLayerProperties) * device_layer_count);
         err = vkEnumerateDeviceLayerProperties(demo->gpu, &device_layer_count,
                                                device_layers);
         assert(!err);
@@ -1880,8 +1870,7 @@ static void demo_init_vk(struct demo *demo) {
 
     /* Look for device extensions */
     uint32_t device_extension_count = 0;
-    VkBool32
-    swapchainExtFound = 0;
+    VkBool32 swapchainExtFound = 0;
     demo->enabled_extension_count = 0;
 
     err = vkEnumerateDeviceExtensionProperties(demo->gpu, NULL,
@@ -1892,7 +1881,7 @@ static void demo_init_vk(struct demo *demo) {
         VkExtensionProperties *device_extensions =
                 malloc(sizeof(VkExtensionProperties) * device_extension_count);
         err = vkEnumerateDeviceExtensionProperties(
-                demo->gpu, NULL, &device_extension_count, device_extensions);
+            demo->gpu, NULL, &device_extension_count, device_extensions);
         assert(!err);
 
         for (i = 0; i < device_extension_count; i++) {
@@ -1900,7 +1889,7 @@ static void demo_init_vk(struct demo *demo) {
                         device_extensions[i].extensionName)) {
                 swapchainExtFound = 1;
                 demo->extension_names[demo->enabled_extension_count++] =
-                        VK_KHR_SWAPCHAIN_EXTENSION_NAME;
+                    VK_KHR_SWAPCHAIN_EXTENSION_NAME;
             }
             assert(demo->enabled_extension_count < 64);
         }
@@ -1910,44 +1899,43 @@ static void demo_init_vk(struct demo *demo) {
 
     if (!swapchainExtFound) {
         ERR_EXIT("vkEnumerateDeviceExtensionProperties failed to find "
-                 "the "
-                         VK_KHR_SWAPCHAIN_EXTENSION_NAME
-                         " extension.\n\nDo you have a compatible "
-                         "Vulkan installable client driver (ICD) installed?\nPlease "
-                         "look at the Getting Started guide for additional "
-                         "information.\n",
+                 "the " VK_KHR_SWAPCHAIN_EXTENSION_NAME
+                 " extension.\n\nDo you have a compatible "
+                 "Vulkan installable client driver (ICD) installed?\nPlease "
+                 "look at the Getting Started guide for additional "
+                 "information.\n",
                  "vkCreateInstance Failure");
     }
 
     if (demo->validate) {
         demo->CreateDebugReportCallback =
-                (PFN_vkCreateDebugReportCallbackEXT) vkGetInstanceProcAddr(
-                        demo->inst, "vkCreateDebugReportCallbackEXT");
+            (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(
+                demo->inst, "vkCreateDebugReportCallbackEXT");
         if (!demo->CreateDebugReportCallback) {
             ERR_EXIT(
-                    "GetProcAddr: Unable to find vkCreateDebugReportCallbackEXT\n",
-                    "vkGetProcAddr Failure");
+                "GetProcAddr: Unable to find vkCreateDebugReportCallbackEXT\n",
+                "vkGetProcAddr Failure");
         }
         VkDebugReportCallbackCreateInfoEXT dbgCreateInfo;
         dbgCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CREATE_INFO_EXT;
         dbgCreateInfo.flags =
-                VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+            VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
         dbgCreateInfo.pfnCallback = dbgFunc;
         dbgCreateInfo.pUserData = NULL;
         dbgCreateInfo.pNext = NULL;
         err = demo->CreateDebugReportCallback(demo->inst, &dbgCreateInfo, NULL,
                                               &demo->msg_callback);
         switch (err) {
-            case VK_SUCCESS:
-                break;
-            case VK_ERROR_OUT_OF_HOST_MEMORY:
-                ERR_EXIT("CreateDebugReportCallback: out of host memory\n",
-                         "CreateDebugReportCallback Failure");
-                break;
-            default:
-                ERR_EXIT("CreateDebugReportCallback: unknown failure\n",
-                         "CreateDebugReportCallback Failure");
-                break;
+        case VK_SUCCESS:
+            break;
+        case VK_ERROR_OUT_OF_HOST_MEMORY:
+            ERR_EXIT("CreateDebugReportCallback: out of host memory\n",
+                     "CreateDebugReportCallback Failure");
+            break;
+        default:
+            ERR_EXIT("CreateDebugReportCallback: unknown failure\n",
+                     "CreateDebugReportCallback Failure");
+            break;
         }
     }
 
@@ -1969,8 +1957,8 @@ static void demo_init_vk(struct demo *demo) {
     vkGetPhysicalDeviceQueueFamilyProperties(demo->gpu, &demo->queue_count,
                                              NULL);
 
-    demo->queue_props = (VkQueueFamilyProperties *) malloc(
-            demo->queue_count * sizeof(VkQueueFamilyProperties));
+    demo->queue_props = (VkQueueFamilyProperties *)malloc(
+        demo->queue_count * sizeof(VkQueueFamilyProperties));
     vkGetPhysicalDeviceQueueFamilyProperties(demo->gpu, &demo->queue_count,
                                              demo->queue_props);
     assert(demo->queue_count >= 1);
@@ -1985,24 +1973,24 @@ static void demo_init_device(struct demo *demo) {
 
     float queue_priorities[1] = {0.0};
     const VkDeviceQueueCreateInfo queue = {
-            .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            .pNext = NULL,
-            .queueFamilyIndex = demo->graphics_queue_node_index,
-            .queueCount = 1,
-            .pQueuePriorities = queue_priorities};
+        .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+        .pNext = NULL,
+        .queueFamilyIndex = demo->graphics_queue_node_index,
+        .queueCount = 1,
+        .pQueuePriorities = queue_priorities};
 
     VkDeviceCreateInfo device = {
-            .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-            .pNext = NULL,
-            .queueCreateInfoCount = 1,
-            .pQueueCreateInfos = &queue,
-            .enabledLayerCount = demo->enabled_layer_count,
-            .ppEnabledLayerNames =
-            (const char *const *) ((demo->validate)
-                                   ? demo->device_validation_layers
-                                   : NULL),
-            .enabledExtensionCount = demo->enabled_extension_count,
-            .ppEnabledExtensionNames = (const char *const *) demo->extension_names,
+        .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+        .pNext = NULL,
+        .queueCreateInfoCount = 1,
+        .pQueueCreateInfos = &queue,
+        .enabledLayerCount = demo->enabled_layer_count,
+        .ppEnabledLayerNames =
+            (const char *const *)((demo->validate)
+                                      ? demo->device_validation_layers
+                                      : NULL),
+        .enabledExtensionCount = demo->enabled_extension_count,
+        .ppEnabledExtensionNames = (const char *const *)demo->extension_names,
     };
 
     err = vkCreateDevice(demo->gpu, &device, NULL, &demo->device);
@@ -2023,9 +2011,8 @@ static void demo_init_vk_swapchain(struct demo *demo) {
     glfwCreateWindowSurface(demo->inst, demo->window, NULL, &demo->surface);
 
     // Iterate over each queue to learn whether it supports presenting:
-    VkBool32 * supportsPresent =
-            (VkBool32 * )
-    malloc(demo->queue_count * sizeof(VkBool32));
+    VkBool32 *supportsPresent =
+        (VkBool32 *)malloc(demo->queue_count * sizeof(VkBool32));
     for (i = 0; i < demo->queue_count; i++) {
         demo->fpGetPhysicalDeviceSurfaceSupportKHR(demo->gpu, i, demo->surface,
                                                    &supportsPresent[i]);
@@ -2090,7 +2077,7 @@ static void demo_init_vk_swapchain(struct demo *demo) {
                                                      &formatCount, NULL);
     assert(!err);
     VkSurfaceFormatKHR *surfFormats =
-            (VkSurfaceFormatKHR *) malloc(formatCount * sizeof(VkSurfaceFormatKHR));
+        (VkSurfaceFormatKHR *)malloc(formatCount * sizeof(VkSurfaceFormatKHR));
     err = demo->fpGetPhysicalDeviceSurfaceFormatsKHR(demo->gpu, demo->surface,
                                                      &formatCount, surfFormats);
     assert(!err);
@@ -2125,7 +2112,8 @@ static void demo_init_connection(struct demo *demo) {
     }
 }
 
-static void demo_init(struct demo *demo, const int argc, const char *argv[]) {
+static void demo_init(struct demo *demo, const int argc, const char *argv[])
+{
     int i;
 
     memset(demo, 0, sizeof(*demo));

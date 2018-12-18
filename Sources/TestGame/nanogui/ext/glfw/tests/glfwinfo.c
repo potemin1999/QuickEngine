@@ -24,7 +24,6 @@
 //========================================================================
 
 #define VK_NO_PROTOTYPES
-
 #include <vulkan/vulkan.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -54,33 +53,34 @@
 #define BEHAVIOR_NAME_NONE  "none"
 #define BEHAVIOR_NAME_FLUSH "flush"
 
-static void usage(void) {
+static void usage(void)
+{
     printf("Usage: glfwinfo [OPTION]...\n");
     printf("Options:\n");
     printf("  -a, --client-api=API      the client API to use ("
-           API_NAME_OPENGL " or "
-           API_NAME_OPENGL_ES ")\n");
+                                        API_NAME_OPENGL " or "
+                                        API_NAME_OPENGL_ES ")\n");
     printf("  -b, --behavior=BEHAVIOR   the release behavior to use ("
-           BEHAVIOR_NAME_NONE " or "
-           BEHAVIOR_NAME_FLUSH ")\n");
+                                        BEHAVIOR_NAME_NONE " or "
+                                        BEHAVIOR_NAME_FLUSH ")\n");
     printf("  -c, --context-api=API     the context creation API to use ("
-           API_NAME_NATIVE " or "
-           API_NAME_EGL ")\n");
+                                        API_NAME_NATIVE " or "
+                                        API_NAME_EGL ")\n");
     printf("  -d, --debug               request a debug context\n");
     printf("  -f, --forward             require a forward-compatible context\n");
     printf("  -h, --help                show this help\n");
     printf("  -l, --list-extensions     list all Vulkan and client API extensions\n");
     printf("      --list-layers         list all Vulkan layers\n");
     printf("  -m, --major=MAJOR         the major number of the required "
-           "client API version\n");
+                                        "client API version\n");
     printf("  -n, --minor=MINOR         the minor number of the required "
-           "client API version\n");
+                                        "client API version\n");
     printf("  -p, --profile=PROFILE     the OpenGL profile to use ("
-           PROFILE_NAME_CORE " or "
-           PROFILE_NAME_COMPAT ")\n");
+                                        PROFILE_NAME_CORE " or "
+                                        PROFILE_NAME_COMPAT ")\n");
     printf("  -s, --robustness=STRATEGY the robustness strategy to use ("
-           STRATEGY_NAME_NONE " or "
-           STRATEGY_NAME_LOSE ")\n");
+                                        STRATEGY_NAME_NONE " or "
+                                        STRATEGY_NAME_LOSE ")\n");
     printf("  -v, --version             print version information\n");
     printf("      --red-bits=N          the number of red bits to request\n");
     printf("      --green-bits=N        the number of green bits to request\n");
@@ -100,11 +100,13 @@ static void usage(void) {
     printf("      --no-error            request a context that does not emit errors\n");
 }
 
-static void error_callback(int error, const char *description) {
+static void error_callback(int error, const char* description)
+{
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static const char *get_device_type_name(VkPhysicalDeviceType type) {
+static const char* get_device_type_name(VkPhysicalDeviceType type)
+{
     if (type == VK_PHYSICAL_DEVICE_TYPE_OTHER)
         return "other";
     else if (type == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
@@ -119,7 +121,8 @@ static const char *get_device_type_name(VkPhysicalDeviceType type) {
     return "unknown";
 }
 
-static const char *get_api_name(int api) {
+static const char* get_api_name(int api)
+{
     if (api == GLFW_OPENGL_API)
         return "OpenGL";
     else if (api == GLFW_OPENGL_ES_API)
@@ -128,7 +131,8 @@ static const char *get_api_name(int api) {
     return "Unknown API";
 }
 
-static const char *get_profile_name_gl(GLint mask) {
+static const char* get_profile_name_gl(GLint mask)
+{
     if (mask & GL_CONTEXT_COMPATIBILITY_PROFILE_BIT)
         return PROFILE_NAME_COMPAT;
     if (mask & GL_CONTEXT_CORE_PROFILE_BIT)
@@ -137,7 +141,8 @@ static const char *get_profile_name_gl(GLint mask) {
     return "unknown";
 }
 
-static const char *get_profile_name_glfw(int profile) {
+static const char* get_profile_name_glfw(int profile)
+{
     if (profile == GLFW_OPENGL_COMPAT_PROFILE)
         return PROFILE_NAME_COMPAT;
     if (profile == GLFW_OPENGL_CORE_PROFILE)
@@ -146,7 +151,8 @@ static const char *get_profile_name_glfw(int profile) {
     return "unknown";
 }
 
-static const char *get_strategy_name_gl(GLint strategy) {
+static const char* get_strategy_name_gl(GLint strategy)
+{
     if (strategy == GL_LOSE_CONTEXT_ON_RESET_ARB)
         return STRATEGY_NAME_LOSE;
     if (strategy == GL_NO_RESET_NOTIFICATION_ARB)
@@ -155,7 +161,8 @@ static const char *get_strategy_name_gl(GLint strategy) {
     return "unknown";
 }
 
-static const char *get_strategy_name_glfw(int strategy) {
+static const char* get_strategy_name_glfw(int strategy)
+{
     if (strategy == GLFW_LOSE_CONTEXT_ON_RESET)
         return STRATEGY_NAME_LOSE;
     if (strategy == GLFW_NO_RESET_NOTIFICATION)
@@ -164,24 +171,30 @@ static const char *get_strategy_name_glfw(int strategy) {
     return "unknown";
 }
 
-static void list_context_extensions(int client, int major, int minor) {
+static void list_context_extensions(int client, int major, int minor)
+{
     int i;
     GLint count;
-    const GLubyte *extensions;
+    const GLubyte* extensions;
 
     printf("%s context extensions:\n", get_api_name(client));
 
-    if (client == GLFW_OPENGL_API && major > 2) {
+    if (client == GLFW_OPENGL_API && major > 2)
+    {
         glGetIntegerv(GL_NUM_EXTENSIONS, &count);
 
-        for (i = 0; i < count; i++)
-            printf(" %s\n", (const char *) glGetStringi(GL_EXTENSIONS, i));
-    } else {
+        for (i = 0;  i < count;  i++)
+            printf(" %s\n", (const char*) glGetStringi(GL_EXTENSIONS, i));
+    }
+    else
+    {
         extensions = glGetString(GL_EXTENSIONS);
-        while (*extensions != '\0') {
+        while (*extensions != '\0')
+        {
             putchar(' ');
 
-            while (*extensions != '\0' && *extensions != ' ') {
+            while (*extensions != '\0' && *extensions != ' ')
+            {
                 putchar(*extensions);
                 extensions++;
             }
@@ -194,12 +207,13 @@ static void list_context_extensions(int client, int major, int minor) {
     }
 }
 
-static void list_vulkan_instance_extensions(void) {
+static void list_vulkan_instance_extensions(void)
+{
     uint32_t i, ep_count = 0;
-    VkExtensionProperties *ep;
+    VkExtensionProperties* ep;
     PFN_vkEnumerateInstanceExtensionProperties vkEnumerateInstanceExtensionProperties =
-            (PFN_vkEnumerateInstanceExtensionProperties)
-                    glfwGetInstanceProcAddress(NULL, "vkEnumerateInstanceExtensionProperties");
+        (PFN_vkEnumerateInstanceExtensionProperties)
+        glfwGetInstanceProcAddress(NULL, "vkEnumerateInstanceExtensionProperties");
 
     printf("Vulkan instance extensions:\n");
 
@@ -208,23 +222,25 @@ static void list_vulkan_instance_extensions(void) {
 
     ep = calloc(ep_count, sizeof(VkExtensionProperties));
 
-    if (vkEnumerateInstanceExtensionProperties(NULL, &ep_count, ep) != VK_SUCCESS) {
+    if (vkEnumerateInstanceExtensionProperties(NULL, &ep_count, ep) != VK_SUCCESS)
+    {
         free(ep);
         return;
     }
 
-    for (i = 0; i < ep_count; i++)
+    for (i = 0;  i < ep_count;  i++)
         printf(" %s (v%u)\n", ep[i].extensionName, ep[i].specVersion);
 
     free(ep);
 }
 
-static void list_vulkan_instance_layers(void) {
+static void list_vulkan_instance_layers(void)
+{
     uint32_t i, lp_count = 0;
-    VkLayerProperties *lp;
+    VkLayerProperties* lp;
     PFN_vkEnumerateInstanceLayerProperties vkEnumerateInstanceLayerProperties =
-            (PFN_vkEnumerateInstanceLayerProperties)
-                    glfwGetInstanceProcAddress(NULL, "vkEnumerateInstanceLayerProperties");
+        (PFN_vkEnumerateInstanceLayerProperties)
+        glfwGetInstanceProcAddress(NULL, "vkEnumerateInstanceLayerProperties");
 
     printf("Vulkan instance layers:\n");
 
@@ -233,12 +249,14 @@ static void list_vulkan_instance_layers(void) {
 
     lp = calloc(lp_count, sizeof(VkLayerProperties));
 
-    if (vkEnumerateInstanceLayerProperties(&lp_count, lp) != VK_SUCCESS) {
+    if (vkEnumerateInstanceLayerProperties(&lp_count, lp) != VK_SUCCESS)
+    {
         free(lp);
         return;
     }
 
-    for (i = 0; i < lp_count; i++) {
+    for (i = 0;  i < lp_count;  i++)
+    {
         printf(" %s (v%u) \"%s\"\n",
                lp[i].layerName,
                lp[i].specVersion >> 22,
@@ -248,12 +266,13 @@ static void list_vulkan_instance_layers(void) {
     free(lp);
 }
 
-static void list_vulkan_device_extensions(VkInstance instance, VkPhysicalDevice device) {
+static void list_vulkan_device_extensions(VkInstance instance, VkPhysicalDevice device)
+{
     uint32_t i, ep_count;
-    VkExtensionProperties *ep;
+    VkExtensionProperties* ep;
     PFN_vkEnumerateDeviceExtensionProperties vkEnumerateDeviceExtensionProperties =
-            (PFN_vkEnumerateDeviceExtensionProperties)
-                    glfwGetInstanceProcAddress(instance, "vkEnumerateDeviceExtensionProperties");
+        (PFN_vkEnumerateDeviceExtensionProperties)
+        glfwGetInstanceProcAddress(instance, "vkEnumerateDeviceExtensionProperties");
 
     printf("Vulkan device extensions:\n");
 
@@ -262,23 +281,25 @@ static void list_vulkan_device_extensions(VkInstance instance, VkPhysicalDevice 
 
     ep = calloc(ep_count, sizeof(VkExtensionProperties));
 
-    if (vkEnumerateDeviceExtensionProperties(device, NULL, &ep_count, ep) != VK_SUCCESS) {
+    if (vkEnumerateDeviceExtensionProperties(device, NULL, &ep_count, ep) != VK_SUCCESS)
+    {
         free(ep);
         return;
     }
 
-    for (i = 0; i < ep_count; i++)
+    for (i = 0;  i < ep_count;  i++)
         printf(" %s (v%u)\n", ep[i].extensionName, ep[i].specVersion);
 
     free(ep);
 }
 
-static void list_vulkan_device_layers(VkInstance instance, VkPhysicalDevice device) {
+static void list_vulkan_device_layers(VkInstance instance, VkPhysicalDevice device)
+{
     uint32_t i, lp_count;
-    VkLayerProperties *lp;
+    VkLayerProperties* lp;
     PFN_vkEnumerateDeviceLayerProperties vkEnumerateDeviceLayerProperties =
-            (PFN_vkEnumerateDeviceLayerProperties)
-                    glfwGetInstanceProcAddress(instance, "vkEnumerateDeviceLayerProperties");
+        (PFN_vkEnumerateDeviceLayerProperties)
+        glfwGetInstanceProcAddress(instance, "vkEnumerateDeviceLayerProperties");
 
     printf("Vulkan device layers:\n");
 
@@ -287,12 +308,14 @@ static void list_vulkan_device_layers(VkInstance instance, VkPhysicalDevice devi
 
     lp = calloc(lp_count, sizeof(VkLayerProperties));
 
-    if (vkEnumerateDeviceLayerProperties(device, &lp_count, lp) != VK_SUCCESS) {
+    if (vkEnumerateDeviceLayerProperties(device, &lp_count, lp) != VK_SUCCESS)
+    {
         free(lp);
         return;
     }
 
-    for (i = 0; i < lp_count; i++) {
+    for (i = 0;  i < lp_count;  i++)
+    {
         printf(" %s (v%u) \"%s\"\n",
                lp[i].layerName,
                lp[i].specVersion >> 22,
@@ -302,11 +325,13 @@ static void list_vulkan_device_layers(VkInstance instance, VkPhysicalDevice devi
     free(lp);
 }
 
-static int valid_version(void) {
+static int valid_version(void)
+{
     int major, minor, revision;
     glfwGetVersion(&major, &minor, &revision);
 
-    if (major != GLFW_VERSION_MAJOR) {
+    if (major != GLFW_VERSION_MAJOR)
+    {
         printf("*** ERROR: GLFW major version mismatch! ***\n");
         return GLFW_FALSE;
     }
@@ -317,7 +342,8 @@ static int valid_version(void) {
     return GLFW_TRUE;
 }
 
-static void print_version(void) {
+static void print_version(void)
+{
     int major, minor, revision;
     glfwGetVersion(&major, &minor, &revision);
 
@@ -329,53 +355,52 @@ static void print_version(void) {
     printf("GLFW library version string: \"%s\"\n", glfwGetVersionString());
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     int ch, client, context, major, minor, revision, profile;
     GLint redbits, greenbits, bluebits, alphabits, depthbits, stencilbits;
     int list_extensions = GLFW_FALSE, list_layers = GLFW_FALSE;
     GLenum error;
-    GLFWwindow *window;
+    GLFWwindow* window;
 
-    enum {
-        CLIENT, CONTEXT, BEHAVIOR, DEBUG, FORWARD, HELP, EXTENSIONS, LAYERS,
-        MAJOR, MINOR, PROFILE, ROBUSTNESS, VERSION,
-        REDBITS, GREENBITS, BLUEBITS, ALPHABITS, DEPTHBITS, STENCILBITS,
-        ACCUMREDBITS, ACCUMGREENBITS, ACCUMBLUEBITS, ACCUMALPHABITS,
-        AUXBUFFERS, SAMPLES, STEREO, SRGB, SINGLEBUFFER, NOERROR_SRSLY
-    };
+    enum { CLIENT, CONTEXT, BEHAVIOR, DEBUG, FORWARD, HELP, EXTENSIONS, LAYERS,
+           MAJOR, MINOR, PROFILE, ROBUSTNESS, VERSION,
+           REDBITS, GREENBITS, BLUEBITS, ALPHABITS, DEPTHBITS, STENCILBITS,
+           ACCUMREDBITS, ACCUMGREENBITS, ACCUMBLUEBITS, ACCUMALPHABITS,
+           AUXBUFFERS, SAMPLES, STEREO, SRGB, SINGLEBUFFER, NOERROR_SRSLY };
     const struct option options[] =
-            {
-                    {"behavior",         1, NULL, BEHAVIOR},
-                    {"client-api",       1, NULL, CLIENT},
-                    {"context-api",      1, NULL, CONTEXT},
-                    {"debug",            0, NULL, DEBUG},
-                    {"forward",          0, NULL, FORWARD},
-                    {"help",             0, NULL, HELP},
-                    {"list-extensions",  0, NULL, EXTENSIONS},
-                    {"list-layers",      0, NULL, LAYERS},
-                    {"major",            1, NULL, MAJOR},
-                    {"minor",            1, NULL, MINOR},
-                    {"profile",          1, NULL, PROFILE},
-                    {"robustness",       1, NULL, ROBUSTNESS},
-                    {"version",          0, NULL, VERSION},
-                    {"red-bits",         1, NULL, REDBITS},
-                    {"green-bits",       1, NULL, GREENBITS},
-                    {"blue-bits",        1, NULL, BLUEBITS},
-                    {"alpha-bits",       1, NULL, ALPHABITS},
-                    {"depth-bits",       1, NULL, DEPTHBITS},
-                    {"stencil-bits",     1, NULL, STENCILBITS},
-                    {"accum-red-bits",   1, NULL, ACCUMREDBITS},
-                    {"accum-green-bits", 1, NULL, ACCUMGREENBITS},
-                    {"accum-blue-bits",  1, NULL, ACCUMBLUEBITS},
-                    {"accum-alpha-bits", 1, NULL, ACCUMALPHABITS},
-                    {"aux-buffers",      1, NULL, AUXBUFFERS},
-                    {"samples",          1, NULL, SAMPLES},
-                    {"stereo",           0, NULL, STEREO},
-                    {"srgb",             0, NULL, SRGB},
-                    {"singlebuffer",     0, NULL, SINGLEBUFFER},
-                    {"no-error",         0, NULL, NOERROR_SRSLY},
-                    {NULL,               0, NULL, 0}
-            };
+    {
+        { "behavior",         1, NULL, BEHAVIOR },
+        { "client-api",       1, NULL, CLIENT },
+        { "context-api",      1, NULL, CONTEXT },
+        { "debug",            0, NULL, DEBUG },
+        { "forward",          0, NULL, FORWARD },
+        { "help",             0, NULL, HELP },
+        { "list-extensions",  0, NULL, EXTENSIONS },
+        { "list-layers",      0, NULL, LAYERS },
+        { "major",            1, NULL, MAJOR },
+        { "minor",            1, NULL, MINOR },
+        { "profile",          1, NULL, PROFILE },
+        { "robustness",       1, NULL, ROBUSTNESS },
+        { "version",          0, NULL, VERSION },
+        { "red-bits",         1, NULL, REDBITS },
+        { "green-bits",       1, NULL, GREENBITS },
+        { "blue-bits",        1, NULL, BLUEBITS },
+        { "alpha-bits",       1, NULL, ALPHABITS },
+        { "depth-bits",       1, NULL, DEPTHBITS },
+        { "stencil-bits",     1, NULL, STENCILBITS },
+        { "accum-red-bits",   1, NULL, ACCUMREDBITS },
+        { "accum-green-bits", 1, NULL, ACCUMGREENBITS },
+        { "accum-blue-bits",  1, NULL, ACCUMBLUEBITS },
+        { "accum-alpha-bits", 1, NULL, ACCUMALPHABITS },
+        { "aux-buffers",      1, NULL, AUXBUFFERS },
+        { "samples",          1, NULL, SAMPLES },
+        { "stereo",           0, NULL, STEREO },
+        { "srgb",             0, NULL, SRGB },
+        { "singlebuffer",     0, NULL, SINGLEBUFFER },
+        { "no-error",         0, NULL, NOERROR_SRSLY },
+        { NULL, 0, NULL, 0 }
+    };
 
     // Initialize GLFW and create window
 
@@ -387,28 +412,36 @@ int main(int argc, char **argv) {
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    while ((ch = getopt_long(argc, argv, "a:b:dfhlm:n:p:s:v", options, NULL)) != -1) {
-        switch (ch) {
+    while ((ch = getopt_long(argc, argv, "a:b:dfhlm:n:p:s:v", options, NULL)) != -1)
+    {
+        switch (ch)
+        {
             case 'a':
             case CLIENT:
                 if (strcasecmp(optarg, API_NAME_OPENGL) == 0)
                     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
                 else if (strcasecmp(optarg, API_NAME_OPENGL_ES) == 0)
                     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-                else {
+                else
+                {
                     usage();
                     exit(EXIT_FAILURE);
                 }
                 break;
             case 'b':
             case BEHAVIOR:
-                if (strcasecmp(optarg, BEHAVIOR_NAME_NONE) == 0) {
+                if (strcasecmp(optarg, BEHAVIOR_NAME_NONE) == 0)
+                {
                     glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR,
                                    GLFW_RELEASE_BEHAVIOR_NONE);
-                } else if (strcasecmp(optarg, BEHAVIOR_NAME_FLUSH) == 0) {
+                }
+                else if (strcasecmp(optarg, BEHAVIOR_NAME_FLUSH) == 0)
+                {
                     glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR,
                                    GLFW_RELEASE_BEHAVIOR_FLUSH);
-                } else {
+                }
+                else
+                {
                     usage();
                     exit(EXIT_FAILURE);
                 }
@@ -419,7 +452,8 @@ int main(int argc, char **argv) {
                     glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
                 else if (strcasecmp(optarg, API_NAME_EGL) == 0)
                     glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
-                else {
+                else
+                {
                     usage();
                     exit(EXIT_FAILURE);
                 }
@@ -453,26 +487,36 @@ int main(int argc, char **argv) {
                 break;
             case 'p':
             case PROFILE:
-                if (strcasecmp(optarg, PROFILE_NAME_CORE) == 0) {
+                if (strcasecmp(optarg, PROFILE_NAME_CORE) == 0)
+                {
                     glfwWindowHint(GLFW_OPENGL_PROFILE,
                                    GLFW_OPENGL_CORE_PROFILE);
-                } else if (strcasecmp(optarg, PROFILE_NAME_COMPAT) == 0) {
+                }
+                else if (strcasecmp(optarg, PROFILE_NAME_COMPAT) == 0)
+                {
                     glfwWindowHint(GLFW_OPENGL_PROFILE,
                                    GLFW_OPENGL_COMPAT_PROFILE);
-                } else {
+                }
+                else
+                {
                     usage();
                     exit(EXIT_FAILURE);
                 }
                 break;
             case 's':
             case ROBUSTNESS:
-                if (strcasecmp(optarg, STRATEGY_NAME_NONE) == 0) {
+                if (strcasecmp(optarg, STRATEGY_NAME_NONE) == 0)
+                {
                     glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS,
                                    GLFW_NO_RESET_NOTIFICATION);
-                } else if (strcasecmp(optarg, STRATEGY_NAME_LOSE) == 0) {
+                }
+                else if (strcasecmp(optarg, STRATEGY_NAME_LOSE) == 0)
+                {
                     glfwWindowHint(GLFW_CONTEXT_ROBUSTNESS,
                                    GLFW_LOSE_CONTEXT_ON_RESET);
-                } else {
+                }
+                else
+                {
                     usage();
                     exit(EXIT_FAILURE);
                 }
@@ -576,7 +620,8 @@ int main(int argc, char **argv) {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
     window = glfwCreateWindow(200, 200, "Version", NULL, NULL);
-    if (!window) {
+    if (!window)
+    {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -607,8 +652,10 @@ int main(int argc, char **argv) {
 
     // Report client API context properties
 
-    if (client == GLFW_OPENGL_API) {
-        if (major >= 3) {
+    if (client == GLFW_OPENGL_API)
+    {
+        if (major >= 3)
+        {
             GLint flags;
 
             glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
@@ -637,7 +684,8 @@ int main(int argc, char **argv) {
             putchar('\n');
         }
 
-        if (major >= 4 || (major == 3 && minor >= 2)) {
+        if (major >= 4 || (major == 3 && minor >= 2))
+        {
             GLint mask;
             glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &mask);
 
@@ -651,7 +699,8 @@ int main(int argc, char **argv) {
                    get_profile_name_glfw(profile));
         }
 
-        if (glfwExtensionSupported("GL_ARB_robustness")) {
+        if (glfwExtensionSupported("GL_ARB_robustness"))
+        {
             const int robustness = glfwGetWindowAttrib(window, GLFW_CONTEXT_ROBUSTNESS);
             GLint strategy;
             glGetIntegerv(GL_RESET_NOTIFICATION_STRATEGY_ARB, &strategy);
@@ -674,7 +723,8 @@ int main(int argc, char **argv) {
            get_api_name(client),
            glGetString(GL_VENDOR));
 
-    if (major >= 2) {
+    if (major >= 2)
+    {
         printf("%s context shading language version: \"%s\"\n",
                get_api_name(client),
                glGetString(GL_SHADING_LANGUAGE_VERSION));
@@ -682,7 +732,8 @@ int main(int argc, char **argv) {
 
     printf("%s framebuffer:\n", get_api_name(client));
 
-    if (client == GLFW_OPENGL_API && profile == GLFW_OPENGL_CORE_PROFILE) {
+    if (client == GLFW_OPENGL_API && profile == GLFW_OPENGL_CORE_PROFILE)
+    {
         glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
                                               GL_BACK_LEFT,
                                               GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
@@ -707,7 +758,9 @@ int main(int argc, char **argv) {
                                               GL_STENCIL,
                                               GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE,
                                               &stencilbits);
-    } else {
+    }
+    else
+    {
         glGetIntegerv(GL_RED_BITS, &redbits);
         glGetIntegerv(GL_GREEN_BITS, &greenbits);
         glGetIntegerv(GL_BLUE_BITS, &bluebits);
@@ -721,7 +774,8 @@ int main(int argc, char **argv) {
 
     if (client == GLFW_OPENGL_ES_API ||
         glfwExtensionSupported("GL_ARB_multisample") ||
-        major > 1 || minor >= 3) {
+        major > 1 || minor >= 3)
+    {
         GLint samples, samplebuffers;
         glGetIntegerv(GL_SAMPLES, &samples);
         glGetIntegerv(GL_SAMPLE_BUFFERS, &samplebuffers);
@@ -729,7 +783,8 @@ int main(int argc, char **argv) {
         printf(" samples: %u sample buffers: %u\n", samples, samplebuffers);
     }
 
-    if (client == GLFW_OPENGL_API && profile != GLFW_OPENGL_CORE_PROFILE) {
+    if (client == GLFW_OPENGL_API && profile != GLFW_OPENGL_CORE_PROFILE)
+    {
         GLint accumredbits, accumgreenbits, accumbluebits, accumalphabits;
         GLint auxbuffers;
 
@@ -749,15 +804,16 @@ int main(int argc, char **argv) {
     printf("Vulkan loader: %s\n",
            glfwVulkanSupported() ? "available" : "missing");
 
-    if (glfwVulkanSupported()) {
+    if (glfwVulkanSupported())
+    {
         uint32_t i, re_count, pd_count;
-        const char **re;
+        const char** re;
         VkApplicationInfo ai = {0};
         VkInstanceCreateInfo ici = {0};
         VkInstance instance;
-        VkPhysicalDevice *pd;
+        VkPhysicalDevice* pd;
         PFN_vkCreateInstance vkCreateInstance = (PFN_vkCreateInstance)
-                glfwGetInstanceProcAddress(NULL, "vkCreateInstance");
+            glfwGetInstanceProcAddress(NULL, "vkCreateInstance");
         PFN_vkDestroyInstance vkDestroyInstance;
         PFN_vkEnumeratePhysicalDevices vkEnumeratePhysicalDevices;
         PFN_vkGetPhysicalDeviceProperties vkGetPhysicalDeviceProperties;
@@ -765,7 +821,7 @@ int main(int argc, char **argv) {
         re = glfwGetRequiredInstanceExtensions(&re_count);
 
         printf("Vulkan required instance extensions:");
-        for (i = 0; i < re_count; i++)
+        for (i = 0;  i < re_count;  i++)
             printf(" %s", re[i]);
         putchar('\n');
 
@@ -787,19 +843,21 @@ int main(int argc, char **argv) {
         ici.enabledExtensionCount = re_count;
         ici.ppEnabledExtensionNames = re;
 
-        if (vkCreateInstance(&ici, NULL, &instance) != VK_SUCCESS) {
+        if (vkCreateInstance(&ici, NULL, &instance) != VK_SUCCESS)
+        {
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
 
         vkDestroyInstance = (PFN_vkDestroyInstance)
-                glfwGetInstanceProcAddress(instance, "vkDestroyInstance");
+            glfwGetInstanceProcAddress(instance, "vkDestroyInstance");
         vkEnumeratePhysicalDevices = (PFN_vkEnumeratePhysicalDevices)
-                glfwGetInstanceProcAddress(instance, "vkEnumeratePhysicalDevices");
+            glfwGetInstanceProcAddress(instance, "vkEnumeratePhysicalDevices");
         vkGetPhysicalDeviceProperties = (PFN_vkGetPhysicalDeviceProperties)
-                glfwGetInstanceProcAddress(instance, "vkGetPhysicalDeviceProperties");
+            glfwGetInstanceProcAddress(instance, "vkGetPhysicalDeviceProperties");
 
-        if (vkEnumeratePhysicalDevices(instance, &pd_count, NULL) != VK_SUCCESS) {
+        if (vkEnumeratePhysicalDevices(instance, &pd_count, NULL) != VK_SUCCESS)
+        {
             vkDestroyInstance(instance, NULL);
             glfwTerminate();
             exit(EXIT_FAILURE);
@@ -807,14 +865,16 @@ int main(int argc, char **argv) {
 
         pd = calloc(pd_count, sizeof(VkPhysicalDevice));
 
-        if (vkEnumeratePhysicalDevices(instance, &pd_count, pd) != VK_SUCCESS) {
+        if (vkEnumeratePhysicalDevices(instance, &pd_count, pd) != VK_SUCCESS)
+        {
             free(pd);
             vkDestroyInstance(instance, NULL);
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
 
-        for (i = 0; i < pd_count; i++) {
+        for (i = 0;  i < pd_count;  i++)
+        {
             VkPhysicalDeviceProperties pdp;
 
             vkGetPhysicalDeviceProperties(pd[i], &pdp);

@@ -35,13 +35,12 @@
 
 namespace Eigen {
 
-    namespace internal {
+namespace internal {
 
-        template<typename Index, typename Scalar, int AStorageOrder, bool ConjugateA, int ResStorageOrder, int UpLo>
-        struct general_matrix_matrix_rankupdate :
-                general_matrix_matrix_triangular_product<
-                        Index, Scalar, AStorageOrder, ConjugateA, Scalar, AStorageOrder, ConjugateA, ResStorageOrder, UpLo, BuiltIn> {
-        };
+template <typename Index, typename Scalar, int AStorageOrder, bool ConjugateA, int ResStorageOrder, int  UpLo>
+struct general_matrix_matrix_rankupdate :
+       general_matrix_matrix_triangular_product<
+         Index,Scalar,AStorageOrder,ConjugateA,Scalar,AStorageOrder,ConjugateA,ResStorageOrder,UpLo,BuiltIn> {};
 
 
 // try to go to BLAS specialization
@@ -66,9 +65,8 @@ struct general_matrix_matrix_triangular_product<Index,Scalar,LhsStorageOrder,Con
   } \
 };
 
-        EIGEN_BLAS_RANKUPDATE_SPECIALIZE(double)
-
-        EIGEN_BLAS_RANKUPDATE_SPECIALIZE(float)
+EIGEN_BLAS_RANKUPDATE_SPECIALIZE(double)
+EIGEN_BLAS_RANKUPDATE_SPECIALIZE(float)
 // TODO handle complex cases
 // EIGEN_BLAS_RANKUPDATE_SPECIALIZE(dcomplex)
 // EIGEN_BLAS_RANKUPDATE_SPECIALIZE(scomplex)
@@ -128,16 +126,15 @@ struct general_matrix_matrix_rankupdate<Index,EIGTYPE,AStorageOrder,ConjugateA,C
 };
 
 
-        EIGEN_BLAS_RANKUPDATE_R(double, double, dsyrk_)
-
-        EIGEN_BLAS_RANKUPDATE_R(float, float, ssyrk_)
+EIGEN_BLAS_RANKUPDATE_R(double, double, dsyrk_)
+EIGEN_BLAS_RANKUPDATE_R(float,  float,  ssyrk_)
 
 // TODO hanlde complex cases
 // EIGEN_BLAS_RANKUPDATE_C(dcomplex, double, double, zherk_)
 // EIGEN_BLAS_RANKUPDATE_C(scomplex, float,  float, cherk_)
 
 
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

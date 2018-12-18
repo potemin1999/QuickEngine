@@ -13,8 +13,9 @@
 #include "datatypes.h"
 
 /* Subroutine */ int dsbmv_(char *uplo, integer *n, integer *k, doublereal *
-alpha, doublereal *a, integer *lda, doublereal *x, integer *incx,
-                            doublereal *beta, doublereal *y, integer *incy, ftnlen uplo_len) {
+	alpha, doublereal *a, integer *lda, doublereal *x, integer *incx, 
+	doublereal *beta, doublereal *y, integer *incy, ftnlen uplo_len)
+{
     /* System generated locals */
     integer a_dim1, a_offset, i__1, i__2, i__3, i__4;
 
@@ -173,42 +174,42 @@ alpha, doublereal *a, integer *lda, doublereal *x, integer *incx,
 
     /* Function Body */
     info = 0;
-    if (!lsame_(uplo, "U", (ftnlen) 1, (ftnlen) 1) && !lsame_(uplo, "L", (
-            ftnlen) 1, (ftnlen) 1)) {
-        info = 1;
+    if (! lsame_(uplo, "U", (ftnlen)1, (ftnlen)1) && ! lsame_(uplo, "L", (
+	    ftnlen)1, (ftnlen)1)) {
+	info = 1;
     } else if (*n < 0) {
-        info = 2;
+	info = 2;
     } else if (*k < 0) {
-        info = 3;
+	info = 3;
     } else if (*lda < *k + 1) {
-        info = 6;
+	info = 6;
     } else if (*incx == 0) {
-        info = 8;
+	info = 8;
     } else if (*incy == 0) {
-        info = 11;
+	info = 11;
     }
     if (info != 0) {
-        xerbla_("DSBMV ", &info, (ftnlen) 6);
-        return 0;
+	xerbla_("DSBMV ", &info, (ftnlen)6);
+	return 0;
     }
 
 /*     Quick return if possible. */
 
     if (*n == 0 || (*alpha == 0. && *beta == 1.)) {
-        return 0;
+	return 0;
     }
 
 /*     Set up the start points in  X  and  Y. */
 
     if (*incx > 0) {
-        kx = 1;
+	kx = 1;
     } else {
-        kx = 1 - (*n - 1) * *incx;
+	kx = 1 - (*n - 1) * *incx;
     }
     if (*incy > 0) {
-        ky = 1;
+	ky = 1;
     } else {
-        ky = 1 - (*n - 1) * *incy;
+	ky = 1 - (*n - 1) * *incy;
     }
 
 /*     Start the operations. In this version the elements of the array A */
@@ -217,144 +218,144 @@ alpha, doublereal *a, integer *lda, doublereal *x, integer *incx,
 /*     First form  y := beta*y. */
 
     if (*beta != 1.) {
-        if (*incy == 1) {
-            if (*beta == 0.) {
-                i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
-                    y[i__] = 0.;
+	if (*incy == 1) {
+	    if (*beta == 0.) {
+		i__1 = *n;
+		for (i__ = 1; i__ <= i__1; ++i__) {
+		    y[i__] = 0.;
 /* L10: */
-                }
-            } else {
-                i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
-                    y[i__] = *beta * y[i__];
+		}
+	    } else {
+		i__1 = *n;
+		for (i__ = 1; i__ <= i__1; ++i__) {
+		    y[i__] = *beta * y[i__];
 /* L20: */
-                }
-            }
-        } else {
-            iy = ky;
-            if (*beta == 0.) {
-                i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
-                    y[iy] = 0.;
-                    iy += *incy;
+		}
+	    }
+	} else {
+	    iy = ky;
+	    if (*beta == 0.) {
+		i__1 = *n;
+		for (i__ = 1; i__ <= i__1; ++i__) {
+		    y[iy] = 0.;
+		    iy += *incy;
 /* L30: */
-                }
-            } else {
-                i__1 = *n;
-                for (i__ = 1; i__ <= i__1; ++i__) {
-                    y[iy] = *beta * y[iy];
-                    iy += *incy;
+		}
+	    } else {
+		i__1 = *n;
+		for (i__ = 1; i__ <= i__1; ++i__) {
+		    y[iy] = *beta * y[iy];
+		    iy += *incy;
 /* L40: */
-                }
-            }
-        }
+		}
+	    }
+	}
     }
     if (*alpha == 0.) {
-        return 0;
+	return 0;
     }
-    if (lsame_(uplo, "U", (ftnlen) 1, (ftnlen) 1)) {
+    if (lsame_(uplo, "U", (ftnlen)1, (ftnlen)1)) {
 
 /*        Form  y  when upper triangle of A is stored. */
 
-        kplus1 = *k + 1;
-        if (*incx == 1 && *incy == 1) {
-            i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
-                temp1 = *alpha * x[j];
-                temp2 = 0.;
-                l = kplus1 - j;
+	kplus1 = *k + 1;
+	if (*incx == 1 && *incy == 1) {
+	    i__1 = *n;
+	    for (j = 1; j <= i__1; ++j) {
+		temp1 = *alpha * x[j];
+		temp2 = 0.;
+		l = kplus1 - j;
 /* Computing MAX */
-                i__2 = 1, i__3 = j - *k;
-                i__4 = j - 1;
-                for (i__ = max(i__2, i__3); i__ <= i__4; ++i__) {
-                    y[i__] += temp1 * a[l + i__ + j * a_dim1];
-                    temp2 += a[l + i__ + j * a_dim1] * x[i__];
+		i__2 = 1, i__3 = j - *k;
+		i__4 = j - 1;
+		for (i__ = max(i__2,i__3); i__ <= i__4; ++i__) {
+		    y[i__] += temp1 * a[l + i__ + j * a_dim1];
+		    temp2 += a[l + i__ + j * a_dim1] * x[i__];
 /* L50: */
-                }
-                y[j] = y[j] + temp1 * a[kplus1 + j * a_dim1] + *alpha * temp2;
+		}
+		y[j] = y[j] + temp1 * a[kplus1 + j * a_dim1] + *alpha * temp2;
 /* L60: */
-            }
-        } else {
-            jx = kx;
-            jy = ky;
-            i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
-                temp1 = *alpha * x[jx];
-                temp2 = 0.;
-                ix = kx;
-                iy = ky;
-                l = kplus1 - j;
+	    }
+	} else {
+	    jx = kx;
+	    jy = ky;
+	    i__1 = *n;
+	    for (j = 1; j <= i__1; ++j) {
+		temp1 = *alpha * x[jx];
+		temp2 = 0.;
+		ix = kx;
+		iy = ky;
+		l = kplus1 - j;
 /* Computing MAX */
-                i__4 = 1, i__2 = j - *k;
-                i__3 = j - 1;
-                for (i__ = max(i__4, i__2); i__ <= i__3; ++i__) {
-                    y[iy] += temp1 * a[l + i__ + j * a_dim1];
-                    temp2 += a[l + i__ + j * a_dim1] * x[ix];
-                    ix += *incx;
-                    iy += *incy;
+		i__4 = 1, i__2 = j - *k;
+		i__3 = j - 1;
+		for (i__ = max(i__4,i__2); i__ <= i__3; ++i__) {
+		    y[iy] += temp1 * a[l + i__ + j * a_dim1];
+		    temp2 += a[l + i__ + j * a_dim1] * x[ix];
+		    ix += *incx;
+		    iy += *incy;
 /* L70: */
-                }
-                y[jy] = y[jy] + temp1 * a[kplus1 + j * a_dim1] + *alpha *
-                                                                 temp2;
-                jx += *incx;
-                jy += *incy;
-                if (j > *k) {
-                    kx += *incx;
-                    ky += *incy;
-                }
+		}
+		y[jy] = y[jy] + temp1 * a[kplus1 + j * a_dim1] + *alpha * 
+			temp2;
+		jx += *incx;
+		jy += *incy;
+		if (j > *k) {
+		    kx += *incx;
+		    ky += *incy;
+		}
 /* L80: */
-            }
-        }
+	    }
+	}
     } else {
 
 /*        Form  y  when lower triangle of A is stored. */
 
-        if (*incx == 1 && *incy == 1) {
-            i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
-                temp1 = *alpha * x[j];
-                temp2 = 0.;
-                y[j] += temp1 * a[j * a_dim1 + 1];
-                l = 1 - j;
+	if (*incx == 1 && *incy == 1) {
+	    i__1 = *n;
+	    for (j = 1; j <= i__1; ++j) {
+		temp1 = *alpha * x[j];
+		temp2 = 0.;
+		y[j] += temp1 * a[j * a_dim1 + 1];
+		l = 1 - j;
 /* Computing MIN */
-                i__4 = *n, i__2 = j + *k;
-                i__3 = min(i__4, i__2);
-                for (i__ = j + 1; i__ <= i__3; ++i__) {
-                    y[i__] += temp1 * a[l + i__ + j * a_dim1];
-                    temp2 += a[l + i__ + j * a_dim1] * x[i__];
+		i__4 = *n, i__2 = j + *k;
+		i__3 = min(i__4,i__2);
+		for (i__ = j + 1; i__ <= i__3; ++i__) {
+		    y[i__] += temp1 * a[l + i__ + j * a_dim1];
+		    temp2 += a[l + i__ + j * a_dim1] * x[i__];
 /* L90: */
-                }
-                y[j] += *alpha * temp2;
+		}
+		y[j] += *alpha * temp2;
 /* L100: */
-            }
-        } else {
-            jx = kx;
-            jy = ky;
-            i__1 = *n;
-            for (j = 1; j <= i__1; ++j) {
-                temp1 = *alpha * x[jx];
-                temp2 = 0.;
-                y[jy] += temp1 * a[j * a_dim1 + 1];
-                l = 1 - j;
-                ix = jx;
-                iy = jy;
+	    }
+	} else {
+	    jx = kx;
+	    jy = ky;
+	    i__1 = *n;
+	    for (j = 1; j <= i__1; ++j) {
+		temp1 = *alpha * x[jx];
+		temp2 = 0.;
+		y[jy] += temp1 * a[j * a_dim1 + 1];
+		l = 1 - j;
+		ix = jx;
+		iy = jy;
 /* Computing MIN */
-                i__4 = *n, i__2 = j + *k;
-                i__3 = min(i__4, i__2);
-                for (i__ = j + 1; i__ <= i__3; ++i__) {
-                    ix += *incx;
-                    iy += *incy;
-                    y[iy] += temp1 * a[l + i__ + j * a_dim1];
-                    temp2 += a[l + i__ + j * a_dim1] * x[ix];
+		i__4 = *n, i__2 = j + *k;
+		i__3 = min(i__4,i__2);
+		for (i__ = j + 1; i__ <= i__3; ++i__) {
+		    ix += *incx;
+		    iy += *incy;
+		    y[iy] += temp1 * a[l + i__ + j * a_dim1];
+		    temp2 += a[l + i__ + j * a_dim1] * x[ix];
 /* L110: */
-                }
-                y[jy] += *alpha * temp2;
-                jx += *incx;
-                jy += *incy;
+		}
+		y[jy] += *alpha * temp2;
+		jx += *incx;
+		jy += *incy;
 /* L120: */
-            }
-        }
+	    }
+	}
     }
 
     return 0;

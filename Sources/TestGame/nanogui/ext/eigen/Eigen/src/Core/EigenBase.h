@@ -25,109 +25,94 @@ namespace Eigen {
   *
   * \sa \blank \ref TopicClassHierarchy
   */
-    template<typename Derived>
-    struct EigenBase {
+template<typename Derived> struct EigenBase
+{
 //   typedef typename internal::plain_matrix_type<Derived>::type PlainObject;
+  
+  /** \brief The interface type of indices
+    * \details To change this, \c \#define the preprocessor symbol \c EIGEN_DEFAULT_DENSE_INDEX_TYPE.
+    * \deprecated Since Eigen 3.3, its usage is deprecated. Use Eigen::Index instead.
+    * \sa StorageIndex, \ref TopicPreprocessorDirectives.
+    */
+  typedef Eigen::Index Index;
 
-        /** \brief The interface type of indices
-          * \details To change this, \c \#define the preprocessor symbol \c EIGEN_DEFAULT_DENSE_INDEX_TYPE.
-          * \deprecated Since Eigen 3.3, its usage is deprecated. Use Eigen::Index instead.
-          * \sa StorageIndex, \ref TopicPreprocessorDirectives.
-          */
-        typedef Eigen::Index Index;
+  // FIXME is it needed?
+  typedef typename internal::traits<Derived>::StorageKind StorageKind;
 
-        // FIXME is it needed?
-        typedef typename internal::traits<Derived>::StorageKind StorageKind;
+  /** \returns a reference to the derived object */
+  EIGEN_DEVICE_FUNC
+  Derived& derived() { return *static_cast<Derived*>(this); }
+  /** \returns a const reference to the derived object */
+  EIGEN_DEVICE_FUNC
+  const Derived& derived() const { return *static_cast<const Derived*>(this); }
 
-        /** \returns a reference to the derived object */
-        EIGEN_DEVICE_FUNC
-                Derived
-        &
+  EIGEN_DEVICE_FUNC
+  inline Derived& const_cast_derived() const
+  { return *static_cast<Derived*>(const_cast<EigenBase*>(this)); }
+  EIGEN_DEVICE_FUNC
+  inline const Derived& const_derived() const
+  { return *static_cast<const Derived*>(this); }
 
-        derived() { return *static_cast<Derived *>(this); }
+  /** \returns the number of rows. \sa cols(), RowsAtCompileTime */
+  EIGEN_DEVICE_FUNC
+  inline Index rows() const { return derived().rows(); }
+  /** \returns the number of columns. \sa rows(), ColsAtCompileTime*/
+  EIGEN_DEVICE_FUNC
+  inline Index cols() const { return derived().cols(); }
+  /** \returns the number of coefficients, which is rows()*cols().
+    * \sa rows(), cols(), SizeAtCompileTime. */
+  EIGEN_DEVICE_FUNC
+  inline Index size() const { return rows() * cols(); }
 
-        /** \returns a const reference to the derived object */
-        EIGEN_DEVICE_FUNC
-        const Derived
-        &
+  /** \internal Don't use it, but do the equivalent: \code dst = *this; \endcode */
+  template<typename Dest>
+  EIGEN_DEVICE_FUNC
+  inline void evalTo(Dest& dst) const
+  { derived().evalTo(dst); }
 
-        derived() const { return *static_cast<const Derived *>(this); }
+  /** \internal Don't use it, but do the equivalent: \code dst += *this; \endcode */
+  template<typename Dest>
+  EIGEN_DEVICE_FUNC
+  inline void addTo(Dest& dst) const
+  {
+    // This is the default implementation,
+    // derived class can reimplement it in a more optimized way.
+    typename Dest::PlainObject res(rows(),cols());
+    evalTo(res);
+    dst += res;
+  }
 
-        EIGEN_DEVICE_FUNC
-        inline Derived
-        &
+  /** \internal Don't use it, but do the equivalent: \code dst -= *this; \endcode */
+  template<typename Dest>
+  EIGEN_DEVICE_FUNC
+  inline void subTo(Dest& dst) const
+  {
+    // This is the default implementation,
+    // derived class can reimplement it in a more optimized way.
+    typename Dest::PlainObject res(rows(),cols());
+    evalTo(res);
+    dst -= res;
+  }
 
-        const_cast_derived() const { return *static_cast<Derived *>(const_cast<EigenBase *>(this)); }
+  /** \internal Don't use it, but do the equivalent: \code dst.applyOnTheRight(*this); \endcode */
+  template<typename Dest>
+  EIGEN_DEVICE_FUNC inline void applyThisOnTheRight(Dest& dst) const
+  {
+    // This is the default implementation,
+    // derived class can reimplement it in a more optimized way.
+    dst = dst * this->derived();
+  }
 
-        EIGEN_DEVICE_FUNC
-        inline const Derived
-        &
+  /** \internal Don't use it, but do the equivalent: \code dst.applyOnTheLeft(*this); \endcode */
+  template<typename Dest>
+  EIGEN_DEVICE_FUNC inline void applyThisOnTheLeft(Dest& dst) const
+  {
+    // This is the default implementation,
+    // derived class can reimplement it in a more optimized way.
+    dst = this->derived() * dst;
+  }
 
-        const_derived() const { return *static_cast<const Derived *>(this); }
-
-        /** \returns the number of rows. \sa cols(), RowsAtCompileTime */
-        EIGEN_DEVICE_FUNC
-        inline Index
-
-        rows() const { return derived().rows(); }
-
-        /** \returns the number of columns. \sa rows(), ColsAtCompileTime*/
-        EIGEN_DEVICE_FUNC
-        inline Index
-
-        cols() const { return derived().cols(); }
-
-        /** \returns the number of coefficients, which is rows()*cols().
-          * \sa rows(), cols(), SizeAtCompileTime. */
-        EIGEN_DEVICE_FUNC
-        inline Index
-
-        size() const { return rows() * cols(); }
-
-        /** \internal Don't use it, but do the equivalent: \code dst = *this; \endcode */
-        template<typename Dest>
-        EIGEN_DEVICE_FUNC
-        inline void evalTo(Dest &dst) const { derived().evalTo(dst); }
-
-        /** \internal Don't use it, but do the equivalent: \code dst += *this; \endcode */
-        template<typename Dest>
-        EIGEN_DEVICE_FUNC
-        inline void addTo(Dest &dst) const {
-            // This is the default implementation,
-            // derived class can reimplement it in a more optimized way.
-            typename Dest::PlainObject res(rows(), cols());
-            evalTo(res);
-            dst += res;
-        }
-
-        /** \internal Don't use it, but do the equivalent: \code dst -= *this; \endcode */
-        template<typename Dest>
-        EIGEN_DEVICE_FUNC
-        inline void subTo(Dest &dst) const {
-            // This is the default implementation,
-            // derived class can reimplement it in a more optimized way.
-            typename Dest::PlainObject res(rows(), cols());
-            evalTo(res);
-            dst -= res;
-        }
-
-        /** \internal Don't use it, but do the equivalent: \code dst.applyOnTheRight(*this); \endcode */
-        template<typename Dest>
-        EIGEN_DEVICE_FUNC inline void applyThisOnTheRight(Dest &dst) const {
-            // This is the default implementation,
-            // derived class can reimplement it in a more optimized way.
-            dst = dst * this->derived();
-        }
-
-        /** \internal Don't use it, but do the equivalent: \code dst.applyOnTheLeft(*this); \endcode */
-        template<typename Dest>
-        EIGEN_DEVICE_FUNC inline void applyThisOnTheLeft(Dest &dst) const {
-            // This is the default implementation,
-            // derived class can reimplement it in a more optimized way.
-            dst = this->derived() * dst;
-        }
-
-    };
+};
 
 /***************************************************************************
 * Implementation of matrix base methods
@@ -141,38 +126,32 @@ namespace Eigen {
   *
   * \returns a reference to *this.
   */
-    template<typename Derived>
-    template<typename OtherDerived>
-    EIGEN_DEVICE_FUNC
-            Derived
-    &
+template<typename Derived>
+template<typename OtherDerived>
+EIGEN_DEVICE_FUNC
+Derived& DenseBase<Derived>::operator=(const EigenBase<OtherDerived> &other)
+{
+  call_assignment(derived(), other.derived());
+  return derived();
+}
 
-    DenseBase<Derived>::operator=(const EigenBase<OtherDerived> &other) {
-        call_assignment(derived(), other.derived());
-        return derived();
-    }
+template<typename Derived>
+template<typename OtherDerived>
+EIGEN_DEVICE_FUNC
+Derived& DenseBase<Derived>::operator+=(const EigenBase<OtherDerived> &other)
+{
+  call_assignment(derived(), other.derived(), internal::add_assign_op<Scalar,typename OtherDerived::Scalar>());
+  return derived();
+}
 
-    template<typename Derived>
-    template<typename OtherDerived>
-    EIGEN_DEVICE_FUNC
-            Derived
-    &
-
-    DenseBase<Derived>::operator+=(const EigenBase<OtherDerived> &other) {
-        call_assignment(derived(), other.derived(), internal::add_assign_op<Scalar, typename OtherDerived::Scalar>());
-        return derived();
-    }
-
-    template<typename Derived>
-    template<typename OtherDerived>
-    EIGEN_DEVICE_FUNC
-            Derived
-    &
-
-    DenseBase<Derived>::operator-=(const EigenBase<OtherDerived> &other) {
-        call_assignment(derived(), other.derived(), internal::sub_assign_op<Scalar, typename OtherDerived::Scalar>());
-        return derived();
-    }
+template<typename Derived>
+template<typename OtherDerived>
+EIGEN_DEVICE_FUNC
+Derived& DenseBase<Derived>::operator-=(const EigenBase<OtherDerived> &other)
+{
+  call_assignment(derived(), other.derived(), internal::sub_assign_op<Scalar,typename OtherDerived::Scalar>());
+  return derived();
+}
 
 } // end namespace Eigen
 

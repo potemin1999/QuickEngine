@@ -106,7 +106,7 @@ def test_noncopyable_deque():
 
     i = 1
     for j in dnc:
-        assert (j.value == i)
+        assert(j.value == i)
         i += 1
 
 

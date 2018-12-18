@@ -14,27 +14,27 @@
 # include(FindLibraryWithDebug)
 
 if (BLITZ_INCLUDES AND BLITZ_LIBRARIES)
-    set(Blitz_FIND_QUIETLY TRUE)
+  set(Blitz_FIND_QUIETLY TRUE)
 endif (BLITZ_INCLUDES AND BLITZ_LIBRARIES)
 
 find_path(BLITZ_INCLUDES
-        NAMES
-        blitz/array.h
-        PATH_SUFFIXES blitz*
-        PATHS
-        $ENV{BLITZDIR}/include
-        ${INCLUDE_INSTALL_DIR}
-        )
+  NAMES
+  blitz/array.h
+  PATH_SUFFIXES blitz*
+  PATHS
+  $ENV{BLITZDIR}/include
+  ${INCLUDE_INSTALL_DIR}
+)
 
 find_library(BLITZ_LIBRARIES
-        blitz
-        PATHS
-        $ENV{BLITZDIR}/lib
-        ${LIB_INSTALL_DIR}
-        )
+  blitz
+  PATHS
+  $ENV{BLITZDIR}/lib
+  ${LIB_INSTALL_DIR}
+)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Blitz DEFAULT_MSG
-        BLITZ_INCLUDES BLITZ_LIBRARIES)
+                                  BLITZ_INCLUDES BLITZ_LIBRARIES)
 
 mark_as_advanced(BLITZ_INCLUDES BLITZ_LIBRARIES)

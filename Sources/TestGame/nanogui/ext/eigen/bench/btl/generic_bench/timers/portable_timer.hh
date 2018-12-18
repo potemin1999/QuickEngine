@@ -56,9 +56,9 @@
 
    Portable_Timer()
    {
-     startVal.QuadPart = 0;
-     stopVal.QuadPart = 0;
-     QueryPerformanceFrequency(&frequency);
+	 startVal.QuadPart = 0;
+	 stopVal.QuadPart = 0;
+	 QueryPerformanceFrequency(&frequency);
    }
 
    void start() { QueryPerformanceCounter(&startVal); }
@@ -66,7 +66,7 @@
    void stop() { QueryPerformanceCounter(&stopVal); }
 
    double elapsed() {
-     LARGE_INTEGER time;
+	 LARGE_INTEGER time;
      time.QuadPart = stopVal.QuadPart - startVal.QuadPart;
      return LIToSecs(time);
    }
@@ -136,42 +136,49 @@ private:
 #include <unistd.h>
 #include <sys/times.h>
 
-class Portable_Timer {
-public:
+class Portable_Timer
+{
+ public:
 
-    Portable_Timer() {
-        m_clkid = BtlConfig::Instance.realclock ? CLOCK_REALTIME : CLOCK_PROCESS_CPUTIME_ID;
-    }
+  Portable_Timer()
+  {
+    m_clkid = BtlConfig::Instance.realclock ? CLOCK_REALTIME : CLOCK_PROCESS_CPUTIME_ID;
+  }
 
-    Portable_Timer(int clkid) : m_clkid(clkid) {}
+  Portable_Timer(int clkid) : m_clkid(clkid)
+  {}
 
-    void start() {
-        timespec ts;
-        clock_gettime(m_clkid, &ts);
-        m_start_time = double(ts.tv_sec) + 1e-9 * double(ts.tv_nsec);
+  void start()
+  {
+    timespec ts;
+    clock_gettime(m_clkid, &ts);
+    m_start_time = double(ts.tv_sec) + 1e-9 * double(ts.tv_nsec);
 
-    }
+  }
 
-    void stop() {
-        timespec ts;
-        clock_gettime(m_clkid, &ts);
-        m_stop_time = double(ts.tv_sec) + 1e-9 * double(ts.tv_nsec);
+  void stop()
+  {
+    timespec ts;
+    clock_gettime(m_clkid, &ts);
+    m_stop_time = double(ts.tv_sec) + 1e-9 * double(ts.tv_nsec);
 
-    }
+  }
 
-    double elapsed() {
-        return user_time();
-    }
+  double elapsed()
+  {
+    return  user_time();
+  }
 
-    double user_time() {
-        return m_stop_time - m_start_time;
-    }
+  double user_time()
+  {
+    return m_stop_time - m_start_time;
+  }
 
 
 private:
 
-    int m_clkid;
-    double m_stop_time, m_start_time;
+  int m_clkid;
+  double m_stop_time, m_start_time;
 
 }; // Portable_Timer (Linux)
 

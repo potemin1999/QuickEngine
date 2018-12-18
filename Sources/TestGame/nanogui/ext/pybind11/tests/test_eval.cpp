@@ -21,9 +21,9 @@ test_initializer eval([](py::module &m) {
         });
 
         auto result = py::eval<py::eval_statements>(
-                "print('Hello World!');\n"
-                "x = call_test();",
-                global, local
+            "print('Hello World!');\n"
+            "x = call_test();",
+            global, local
         );
         auto x = local["x"].cast<int>();
 

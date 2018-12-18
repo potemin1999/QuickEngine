@@ -12,6 +12,6 @@ set(CTEST_DROP_SITE "manao.inria.fr")
 set(CTEST_DROP_LOCATION "/CDash/submit.php?project=Eigen")
 set(CTEST_DROP_SITE_CDASH TRUE)
 set(CTEST_PROJECT_SUBPROJECTS
-        Official
-        Unsupported
-        )
+Official
+Unsupported
+)

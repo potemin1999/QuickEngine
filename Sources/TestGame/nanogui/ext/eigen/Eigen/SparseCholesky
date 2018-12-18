@@ -37,9 +37,7 @@
 #include "src/SparseCholesky/SimplicialCholesky.h"
 
 #ifndef EIGEN_MPL2_ONLY
-
 #include "src/SparseCholesky/SimplicialCholesky_impl.h"
-
 #endif
 
 #include "src/Core/util/ReenableStupidWarnings.h"

@@ -27,104 +27,105 @@
 
 using namespace std;
 
-void read_xy_file(const string &filename, vector<int> &tab_sizes, vector<double> &tab_mflops);
-
-void regularize_curve(const string &filename,
-                      const vector<double> &tab_mflops,
-                      const vector<int> &tab_sizes,
-                      int start_cut_size, int stop_cut_size);
+void read_xy_file(const string & filename, vector<int> & tab_sizes, vector<double> & tab_mflops);
+void regularize_curve(const string & filename,
+		      const vector<double> & tab_mflops, 
+		      const vector<int> & tab_sizes, 
+		      int start_cut_size, int stop_cut_size);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char *argv[]) {
+int main( int argc , char *argv[] )
+{
 
-    // input data
+  // input data
 
-    if (argc < 4) {
-        INFOS("!!! Error ... usage : main filename start_cut_size stop_cut_size regularize_filename");
-        exit(0);
-    }
-    INFOS(argc);
+  if (argc<4){
+    INFOS("!!! Error ... usage : main filename start_cut_size stop_cut_size regularize_filename");
+    exit(0);
+  }
+  INFOS(argc);
 
-    int start_cut_size = atoi(argv[2]);
-    int stop_cut_size = atoi(argv[3]);
+  int start_cut_size=atoi(argv[2]);
+  int stop_cut_size=atoi(argv[3]);
 
-    string filename = argv[1];
-    string regularize_filename = argv[4];
+  string filename=argv[1];
+  string regularize_filename=argv[4];
+  
+  INFOS(filename);
+  INFOS("start_cut_size="<<start_cut_size);
 
-    INFOS(filename);
-    INFOS("start_cut_size=" << start_cut_size);
+  vector<int> tab_sizes;
+  vector<double> tab_mflops;
 
-    vector<int> tab_sizes;
-    vector<double> tab_mflops;
+  read_xy_file(filename,tab_sizes,tab_mflops);
 
-    read_xy_file(filename, tab_sizes, tab_mflops);
+  // regularizeing
 
-    // regularizeing
-
-    regularize_curve(regularize_filename, tab_mflops, tab_sizes, start_cut_size, stop_cut_size);
-
+  regularize_curve(regularize_filename,tab_mflops,tab_sizes,start_cut_size,stop_cut_size);
+  
 
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-void regularize_curve(const string &filename,
-                      const vector<double> &tab_mflops,
-                      const vector<int> &tab_sizes,
-                      int start_cut_size, int stop_cut_size) {
-    int size = tab_mflops.size();
-    ofstream output_file(filename.c_str(), ios::out);
+void regularize_curve(const string & filename,
+		      const vector<double> & tab_mflops, 
+		      const vector<int> & tab_sizes, 
+		      int start_cut_size, int stop_cut_size)
+{
+  int size=tab_mflops.size();
+  ofstream output_file (filename.c_str(),ios::out) ;
 
-    int i = 0;
+  int i=0;
 
-    while (tab_sizes[i] < start_cut_size) {
+  while(tab_sizes[i]<start_cut_size){
+    
+    output_file << tab_sizes[i] << " " <<  tab_mflops[i] << endl ;
+    i++;
 
-        output_file << tab_sizes[i] << " " << tab_mflops[i] << endl;
-        i++;
+  }
+    
+  output_file << endl ;
 
-    }
+  while(tab_sizes[i]<stop_cut_size){
+    
+    i++;
 
-    output_file << endl;
+  }
 
-    while (tab_sizes[i] < stop_cut_size) {
+  while(i<size){
+    
+    output_file << tab_sizes[i] << " " <<  tab_mflops[i] << endl ;
+    i++;
 
-        i++;
+  }
 
-    }
-
-    while (i < size) {
-
-        output_file << tab_sizes[i] << " " << tab_mflops[i] << endl;
-        i++;
-
-    }
-
-    output_file.close();
+  output_file.close();
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void read_xy_file(const string &filename, vector<int> &tab_sizes, vector<double> &tab_mflops) {
+void read_xy_file(const string & filename, vector<int> & tab_sizes, vector<double> & tab_mflops){
 
-    ifstream input_file(filename.c_str(), ios::in);
+  ifstream input_file (filename.c_str(),ios::in) ;
 
-    if (!input_file) {
-        INFOS("!!! Error opening " << filename);
-        exit(0);
-    }
+  if (!input_file){
+    INFOS("!!! Error opening "<<filename);
+    exit(0);
+  }
+  
+  int nb_point=0;
+  int size=0;
+  double mflops=0;
 
-    int nb_point = 0;
-    int size = 0;
-    double mflops = 0;
+  while (input_file >> size >> mflops ){
+    nb_point++;
+    tab_sizes.push_back(size);
+    tab_mflops.push_back(mflops);
+  }
+  SCRUTE(nb_point);
 
-    while (input_file >> size >> mflops) {
-        nb_point++;
-        tab_sizes.push_back(size);
-        tab_mflops.push_back(mflops);
-    }
-    SCRUTE(nb_point);
-
-    input_file.close();
+  input_file.close();
 }
 

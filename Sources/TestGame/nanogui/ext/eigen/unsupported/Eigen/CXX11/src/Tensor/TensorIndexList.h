@@ -598,162 +598,127 @@ struct index_pair_second_statically_eq_impl<const IndexPairList<FirstType, Other
 #else
 
 namespace Eigen {
-    namespace internal {
+namespace internal {
 
-        template<typename T>
-        struct index_known_statically_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
+template <typename T>
+struct index_known_statically_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(const DenseIndex) {
+    return false;
+  }
+};
 
-            bool run(const DenseIndex) {
-                return false;
-            }
-        };
+template <typename T>
+struct all_indices_known_statically_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run() {
+    return false;
+  }
+};
 
-        template<typename T>
-        struct all_indices_known_statically_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
+template <typename T>
+struct indices_statically_known_to_increase_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run() {
+    return false;
+  }
+};
 
-            bool run() {
-                return false;
-            }
-        };
+template <typename T>
+struct index_statically_eq_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(DenseIndex, DenseIndex) {
+    return false;
+  }
+};
 
-        template<typename T>
-        struct indices_statically_known_to_increase_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
+template <typename T>
+struct index_statically_ne_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(DenseIndex, DenseIndex) {
+    return false;
+  }
+};
 
-            bool run() {
-                return false;
-            }
-        };
+template <typename T>
+struct index_statically_gt_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(DenseIndex, DenseIndex) {
+    return false;
+  }
+};
 
-        template<typename T>
-        struct index_statically_eq_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
+template <typename T>
+struct index_statically_lt_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(DenseIndex, DenseIndex) {
+    return false;
+  }
+};
 
-            bool run(DenseIndex, DenseIndex) {
-                return false;
-            }
-        };
+template <typename Tx>
+struct index_pair_first_statically_eq_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(DenseIndex, DenseIndex) {
+    return false;
+  }
+};
 
-        template<typename T>
-        struct index_statically_ne_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
-
-            bool run(DenseIndex, DenseIndex) {
-                return false;
-            }
-        };
-
-        template<typename T>
-        struct index_statically_gt_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
-
-            bool run(DenseIndex, DenseIndex) {
-                return false;
-            }
-        };
-
-        template<typename T>
-        struct index_statically_lt_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
-
-            bool run(DenseIndex, DenseIndex) {
-                return false;
-            }
-        };
-
-        template<typename Tx>
-        struct index_pair_first_statically_eq_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
-
-            bool run(DenseIndex, DenseIndex) {
-                return false;
-            }
-        };
-
-        template<typename Tx>
-        struct index_pair_second_statically_eq_impl {
-            static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE
-
-            bool run(DenseIndex, DenseIndex) {
-                return false;
-            }
-        };
+template <typename Tx>
+struct index_pair_second_statically_eq_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE bool run(DenseIndex, DenseIndex) {
+    return false;
+  }
+};
 
 
-    }  // end namespace internal
+
+}  // end namespace internal
 }  // end namespace Eigen
 
 #endif
 
 
 namespace Eigen {
-    namespace internal {
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
+namespace internal {
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_known_statically(DenseIndex i) {
+  return index_known_statically_impl<T>::run(i);
+}
 
-        bool index_known_statically(DenseIndex i) {
-            return index_known_statically_impl<T>::run(i);
-        }
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool all_indices_known_statically() {
+  return all_indices_known_statically_impl<T>::run();
+}
 
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool indices_statically_known_to_increase() {
+  return indices_statically_known_to_increase_impl<T>::run();
+}
 
-        bool all_indices_known_statically() {
-            return all_indices_known_statically_impl<T>::run();
-        }
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_statically_eq(DenseIndex i, DenseIndex value) {
+  return index_statically_eq_impl<T>::run(i, value);
+}
 
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_statically_ne(DenseIndex i, DenseIndex value) {
+  return index_statically_ne_impl<T>::run(i, value);
+}
 
-        bool indices_statically_known_to_increase() {
-            return indices_statically_known_to_increase_impl<T>::run();
-        }
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_statically_gt(DenseIndex i, DenseIndex value) {
+  return index_statically_gt_impl<T>::run(i, value);
+}
 
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_statically_lt(DenseIndex i, DenseIndex value) {
+  return index_statically_lt_impl<T>::run(i, value);
+}
 
-        bool index_statically_eq(DenseIndex i, DenseIndex value) {
-            return index_statically_eq_impl<T>::run(i, value);
-        }
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_pair_first_statically_eq(DenseIndex i, DenseIndex value) {
+  return index_pair_first_statically_eq_impl<T>::run(i, value);
+}
 
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
+template <typename T>
+static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR bool index_pair_second_statically_eq(DenseIndex i, DenseIndex value) {
+  return index_pair_second_statically_eq_impl<T>::run(i, value);
+}
 
-        bool index_statically_ne(DenseIndex i, DenseIndex value) {
-            return index_statically_ne_impl<T>::run(i, value);
-        }
-
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
-
-        bool index_statically_gt(DenseIndex i, DenseIndex value) {
-            return index_statically_gt_impl<T>::run(i, value);
-        }
-
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
-
-        bool index_statically_lt(DenseIndex i, DenseIndex value) {
-            return index_statically_lt_impl<T>::run(i, value);
-        }
-
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
-
-        bool index_pair_first_statically_eq(DenseIndex i, DenseIndex value) {
-            return index_pair_first_statically_eq_impl<T>::run(i, value);
-        }
-
-        template<typename T>
-        static EIGEN_DEVICE_FUNC EIGEN_CONSTEXPR
-
-        bool index_pair_second_statically_eq(DenseIndex i, DenseIndex value) {
-            return index_pair_second_statically_eq_impl<T>::run(i, value);
-        }
-
-    }  // end namespace internal
+}  // end namespace internal
 }  // end namespace Eigen
 
 

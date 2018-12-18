@@ -35,18 +35,17 @@
 
 typedef VkFlags VkMirSurfaceCreateFlagsKHR;
 
-typedef struct VkMirSurfaceCreateInfoKHR {
-    VkStructureType sType;
-    const void *pNext;
-    VkMirSurfaceCreateFlagsKHR flags;
-    MirConnection *connection;
-    MirSurface *mirSurface;
+typedef struct VkMirSurfaceCreateInfoKHR
+{
+    VkStructureType             sType;
+    const void*                 pNext;
+    VkMirSurfaceCreateFlagsKHR  flags;
+    MirConnection*              connection;
+    MirSurface*                 mirSurface;
 } VkMirSurfaceCreateInfoKHR;
 
-typedef VkResult (APIENTRY
-*PFN_vkCreateMirSurfaceKHR)(VkInstance, const VkMirSurfaceCreateInfoKHR*, const VkAllocationCallbacks*, VkSurfaceKHR*);
-typedef VkBool32 (APIENTRY
-*PFN_vkGetPhysicalDeviceMirPresentationSupportKHR)(VkPhysicalDevice, uint32_t, MirConnection*);
+typedef VkResult (APIENTRY *PFN_vkCreateMirSurfaceKHR)(VkInstance,const VkMirSurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
+typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceMirPresentationSupportKHR)(VkPhysicalDevice,uint32_t,MirConnection*);
 
 #include "posix_tls.h"
 #include "posix_time.h"
@@ -72,24 +71,27 @@ typedef VkBool32 (APIENTRY
 
 // Mir-specific Event Queue
 //
-typedef struct EventQueue {
+typedef struct EventQueue
+{
     TAILQ_HEAD(, EventNode) head;
 } EventQueue;
 
 // Mir-specific per-window data
 //
-typedef struct _GLFWwindowMir {
-    MirSurface *surface;
-    int width;
-    int height;
-    MirEGLNativeWindowType window;
+typedef struct _GLFWwindowMir
+{
+    MirSurface*             surface;
+    int                     width;
+    int                     height;
+    MirEGLNativeWindowType  window;
 
 } _GLFWwindowMir;
 
 
 // Mir-specific per-monitor data
 //
-typedef struct _GLFWmonitorMir {
+typedef struct _GLFWmonitorMir
+{
     int cur_mode;
     int output_id;
     int x;
@@ -100,16 +102,17 @@ typedef struct _GLFWmonitorMir {
 
 // Mir-specific global data
 //
-typedef struct _GLFWlibraryMir {
-    MirConnection *connection;
+typedef struct _GLFWlibraryMir
+{
+    MirConnection*          connection;
     MirEGLNativeDisplayType display;
-    MirCursorConfiguration *default_conf;
-    EventQueue *event_queue;
+    MirCursorConfiguration* default_conf;
+    EventQueue* event_queue;
 
-    short int publicKeys[256];
+    short int       publicKeys[256];
 
     pthread_mutex_t event_mutex;
-    pthread_cond_t event_cond;
+    pthread_cond_t  event_cond;
 
 } _GLFWlibraryMir;
 
@@ -117,14 +120,14 @@ typedef struct _GLFWlibraryMir {
 // Mir-specific per-cursor data
 // TODO: Only system cursors are implemented in Mir atm. Need to wait for support.
 //
-typedef struct _GLFWcursorMir {
-    MirCursorConfiguration *conf;
-    MirBufferStream *custom_cursor;
+typedef struct _GLFWcursorMir
+{
+    MirCursorConfiguration* conf;
+    MirBufferStream*        custom_cursor;
 } _GLFWcursorMir;
 
 
-extern void _glfwInitEventQueueMir(EventQueue *queue);
-
-extern void _glfwDeleteEventQueueMir(EventQueue *queue);
+extern void _glfwInitEventQueueMir(EventQueue* queue);
+extern void _glfwDeleteEventQueueMir(EventQueue* queue);
 
 #endif // _glfw3_mir_platform_h_

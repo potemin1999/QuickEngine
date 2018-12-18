@@ -4,6 +4,10 @@
 
 class Player : public GameObject {
 public:
-    Player();
+    bool isInSecondWorld = false;
+    Player(World *world);
+    World *portableWorld;
+
+    void moveToWorld(World *world);
 };
 

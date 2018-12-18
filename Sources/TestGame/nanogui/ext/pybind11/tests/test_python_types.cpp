@@ -24,7 +24,6 @@ public:
         print_created(ptr, "via new_instance");
         return ptr;
     }
-
     ~ExamplePythonTypes() { print_destroyed(this); }
 
     /* Create and return a Python dictionary */
@@ -76,11 +75,11 @@ public:
 
     /* C++ STL data types are automatically casted */
     std::array<std::string, 2> get_array() {
-        return std::array<std::string, 2>{{"array entry 1", "array entry 2"}};
+        return std::array<std::string, 2> {{ "array entry 1" , "array entry 2"}};
     }
 
     std::valarray<int> get_valarray() {
-        return std::valarray<int>({1, 4, 9});
+        return std::valarray<int>({ 1, 4, 9 });
     }
 
     /* Easily iterate over a dictionary using a C++11 range-based for loop */
@@ -164,7 +163,7 @@ public:
         return (py::str) py::bytes("boo", 3);
     }
 
-    void test_print(const py::object &obj) {
+    void test_print(const py::object& obj) {
         py::print(py::str(obj));
         py::print(py::repr(obj));
     }
@@ -177,15 +176,9 @@ int ExamplePythonTypes::value = 0;
 const int ExamplePythonTypes::value2 = 5;
 
 struct MoveOutContainer {
-    struct Value {
-        int value;
-    };
+    struct Value { int value; };
 
-    std::list<Value> move_list() const {
-        return {{0},
-                {1},
-                {2}};
-    }
+    std::list<Value> move_list() const { return {{0}, {1}, {2}}; }
 };
 
 
@@ -193,59 +186,59 @@ test_initializer python_types([](py::module &m) {
     /* No constructor is explicitly defined below. An exception is raised when
        trying to construct it directly from Python */
     py::class_<ExamplePythonTypes>(m, "ExamplePythonTypes", "Example 2 documentation", py::metaclass())
-            .def("get_dict", &ExamplePythonTypes::get_dict, "Return a Python dictionary")
-            .def("get_dict_2", &ExamplePythonTypes::get_dict_2, "Return a C++ dictionary")
-            .def("get_list", &ExamplePythonTypes::get_list, "Return a Python list")
-            .def("get_list_2", &ExamplePythonTypes::get_list_2, "Return a C++ list")
-            .def("get_set", &ExamplePythonTypes::get_set, "Return a Python set")
-            .def("get_set2", &ExamplePythonTypes::get_set_2, "Return a C++ set")
-            .def("get_array", &ExamplePythonTypes::get_array, "Return a C++ array")
-            .def("get_valarray", &ExamplePythonTypes::get_valarray, "Return a C++ valarray")
-            .def("print_dict", &ExamplePythonTypes::print_dict, "Print entries of a Python dictionary")
-            .def("print_dict_2", &ExamplePythonTypes::print_dict_2, "Print entries of a C++ dictionary")
-            .def("print_set", &ExamplePythonTypes::print_set, "Print entries of a Python set")
-            .def("print_set_2", &ExamplePythonTypes::print_set_2, "Print entries of a C++ set")
-            .def("print_list", &ExamplePythonTypes::print_list, "Print entries of a Python list")
-            .def("print_list_2", &ExamplePythonTypes::print_list_2, "Print entries of a C++ list")
-            .def("print_array", &ExamplePythonTypes::print_array, "Print entries of a C++ array")
-            .def("print_valarray", &ExamplePythonTypes::print_valarray, "Print entries of a C++ valarray")
-            .def("pair_passthrough", &ExamplePythonTypes::pair_passthrough, "Return a pair in reversed order")
-            .def("tuple_passthrough", &ExamplePythonTypes::tuple_passthrough, "Return a triple in reversed order")
-            .def("throw_exception", &ExamplePythonTypes::throw_exception, "Throw an exception")
-            .def("get_bytes_from_string", &ExamplePythonTypes::get_bytes_from_string, "py::bytes from std::string")
-            .def("get_bytes_from_str", &ExamplePythonTypes::get_bytes_from_str, "py::bytes from py::str")
-            .def("get_str_from_string", &ExamplePythonTypes::get_str_from_string, "py::str from std::string")
-            .def("get_str_from_bytes", &ExamplePythonTypes::get_str_from_bytes, "py::str from py::bytes")
-            .def("test_print", &ExamplePythonTypes::test_print, "test the print function")
-            .def_static("new_instance", &ExamplePythonTypes::new_instance, "Return an instance")
-            .def_readwrite_static("value", &ExamplePythonTypes::value, "Static value member")
-            .def_readonly_static("value2", &ExamplePythonTypes::value2, "Static value member (readonly)");
+        .def("get_dict", &ExamplePythonTypes::get_dict, "Return a Python dictionary")
+        .def("get_dict_2", &ExamplePythonTypes::get_dict_2, "Return a C++ dictionary")
+        .def("get_list", &ExamplePythonTypes::get_list, "Return a Python list")
+        .def("get_list_2", &ExamplePythonTypes::get_list_2, "Return a C++ list")
+        .def("get_set", &ExamplePythonTypes::get_set, "Return a Python set")
+        .def("get_set2", &ExamplePythonTypes::get_set_2, "Return a C++ set")
+        .def("get_array", &ExamplePythonTypes::get_array, "Return a C++ array")
+        .def("get_valarray", &ExamplePythonTypes::get_valarray, "Return a C++ valarray")
+        .def("print_dict", &ExamplePythonTypes::print_dict, "Print entries of a Python dictionary")
+        .def("print_dict_2", &ExamplePythonTypes::print_dict_2, "Print entries of a C++ dictionary")
+        .def("print_set", &ExamplePythonTypes::print_set, "Print entries of a Python set")
+        .def("print_set_2", &ExamplePythonTypes::print_set_2, "Print entries of a C++ set")
+        .def("print_list", &ExamplePythonTypes::print_list, "Print entries of a Python list")
+        .def("print_list_2", &ExamplePythonTypes::print_list_2, "Print entries of a C++ list")
+        .def("print_array", &ExamplePythonTypes::print_array, "Print entries of a C++ array")
+        .def("print_valarray", &ExamplePythonTypes::print_valarray, "Print entries of a C++ valarray")
+        .def("pair_passthrough", &ExamplePythonTypes::pair_passthrough, "Return a pair in reversed order")
+        .def("tuple_passthrough", &ExamplePythonTypes::tuple_passthrough, "Return a triple in reversed order")
+        .def("throw_exception", &ExamplePythonTypes::throw_exception, "Throw an exception")
+        .def("get_bytes_from_string", &ExamplePythonTypes::get_bytes_from_string, "py::bytes from std::string")
+        .def("get_bytes_from_str", &ExamplePythonTypes::get_bytes_from_str, "py::bytes from py::str")
+        .def("get_str_from_string", &ExamplePythonTypes::get_str_from_string, "py::str from std::string")
+        .def("get_str_from_bytes", &ExamplePythonTypes::get_str_from_bytes, "py::str from py::bytes")
+        .def("test_print", &ExamplePythonTypes::test_print, "test the print function")
+        .def_static("new_instance", &ExamplePythonTypes::new_instance, "Return an instance")
+        .def_readwrite_static("value", &ExamplePythonTypes::value, "Static value member")
+        .def_readonly_static("value2", &ExamplePythonTypes::value2, "Static value member (readonly)");
 
     m.def("test_print_function", []() {
         py::print("Hello, World!");
         py::print(1, 2.0, "three", true, std::string("-- multiple args"));
         auto args = py::make_tuple("and", "a", "custom", "separator");
-        py::print("*args", *args, "sep"_a = "-");
-        py::print("no new line here", "end"_a = " -- ");
+        py::print("*args", *args, "sep"_a="-");
+        py::print("no new line here", "end"_a=" -- ");
         py::print("next print");
 
         auto py_stderr = py::module::import("sys").attr("stderr");
-        py::print("this goes to stderr", "file"_a = py_stderr);
+        py::print("this goes to stderr", "file"_a=py_stderr);
 
-        py::print("flush", "flush"_a = true);
+        py::print("flush", "flush"_a=true);
 
-        py::print("{a} + {b} = {c}"_s.format("a"_a = "py::print", "b"_a = "str.format", "c"_a = "this"));
+        py::print("{a} + {b} = {c}"_s.format("a"_a="py::print", "b"_a="str.format", "c"_a="this"));
     });
 
     m.def("test_str_format", []() {
         auto s1 = "{} + {} = {}"_s.format(1, 2, 3);
-        auto s2 = "{a} + {b} = {c}"_s.format("a"_a = 1, "b"_a = 2, "c"_a = 3);
+        auto s2 = "{a} + {b} = {c}"_s.format("a"_a=1, "b"_a=2, "c"_a=3);
         return py::make_tuple(s1, s2);
     });
 
     m.def("test_dict_keyword_constructor", []() {
-        auto d1 = py::dict("x"_a = 1, "y"_a = 2);
-        auto d2 = py::dict("z"_a = 3, **d1);
+        auto d1 = py::dict("x"_a=1, "y"_a=2);
+        auto d2 = py::dict("z"_a=3, **d1);
         return d2;
     });
 
@@ -350,52 +343,52 @@ test_initializer python_types([](py::module &m) {
 
     m.def("test_default_constructors", []() {
         return py::dict(
-                "str"_a = py::str(),
-                "bool"_a = py::bool_(),
-                "int"_a = py::int_(),
-                "float"_a = py::float_(),
-                "tuple"_a = py::tuple(),
-                "list"_a = py::list(),
-                "dict"_a = py::dict(),
-                "set"_a = py::set()
+            "str"_a=py::str(),
+            "bool"_a=py::bool_(),
+            "int"_a=py::int_(),
+            "float"_a=py::float_(),
+            "tuple"_a=py::tuple(),
+            "list"_a=py::list(),
+            "dict"_a=py::dict(),
+            "set"_a=py::set()
         );
     });
 
     m.def("test_converting_constructors", [](py::dict d) {
         return py::dict(
-                "str"_a = py::str(d["str"]),
-                "bool"_a = py::bool_(d["bool"]),
-                "int"_a = py::int_(d["int"]),
-                "float"_a = py::float_(d["float"]),
-                "tuple"_a = py::tuple(d["tuple"]),
-                "list"_a = py::list(d["list"]),
-                "dict"_a = py::dict(d["dict"]),
-                "set"_a = py::set(d["set"]),
-                "memoryview"_a = py::memoryview(d["memoryview"])
+            "str"_a=py::str(d["str"]),
+            "bool"_a=py::bool_(d["bool"]),
+            "int"_a=py::int_(d["int"]),
+            "float"_a=py::float_(d["float"]),
+            "tuple"_a=py::tuple(d["tuple"]),
+            "list"_a=py::list(d["list"]),
+            "dict"_a=py::dict(d["dict"]),
+            "set"_a=py::set(d["set"]),
+            "memoryview"_a=py::memoryview(d["memoryview"])
         );
     });
 
     m.def("test_cast_functions", [](py::dict d) {
         // When converting between Python types, obj.cast<T>() should be the same as T(obj)
         return py::dict(
-                "str"_a = d["str"].cast<py::str>(),
-                "bool"_a = d["bool"].cast<py::bool_>(),
-                "int"_a = d["int"].cast<py::int_>(),
-                "float"_a = d["float"].cast<py::float_>(),
-                "tuple"_a = d["tuple"].cast<py::tuple>(),
-                "list"_a = d["list"].cast<py::list>(),
-                "dict"_a = d["dict"].cast<py::dict>(),
-                "set"_a = d["set"].cast<py::set>(),
-                "memoryview"_a = d["memoryview"].cast<py::memoryview>()
+            "str"_a=d["str"].cast<py::str>(),
+            "bool"_a=d["bool"].cast<py::bool_>(),
+            "int"_a=d["int"].cast<py::int_>(),
+            "float"_a=d["float"].cast<py::float_>(),
+            "tuple"_a=d["tuple"].cast<py::tuple>(),
+            "list"_a=d["list"].cast<py::list>(),
+            "dict"_a=d["dict"].cast<py::dict>(),
+            "set"_a=d["set"].cast<py::set>(),
+            "memoryview"_a=d["memoryview"].cast<py::memoryview>()
         );
     });
 
     py::class_<MoveOutContainer::Value>(m, "MoveOutContainerValue")
-            .def_readonly("value", &MoveOutContainer::Value::value);
+        .def_readonly("value", &MoveOutContainer::Value::value);
 
     py::class_<MoveOutContainer>(m, "MoveOutContainer")
-            .def(py::init<>())
-            .def_property_readonly("move_list", &MoveOutContainer::move_list);
+        .def(py::init<>())
+        .def_property_readonly("move_list", &MoveOutContainer::move_list);
 
     m.def("get_implicit_casting", []() {
         py::dict d;
@@ -429,8 +422,8 @@ test_initializer python_types([](py::module &m) {
         l.append(py::int_(15));
 
         return py::dict(
-                "d"_a = d,
-                "l"_a = l
+            "d"_a=d,
+            "l"_a=l
         );
     });
 });

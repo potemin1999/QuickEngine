@@ -2,7 +2,7 @@
 #define __khrplatform_h_
 
 /*
-** Copyright (c) 2008-2009 The Khronos Group Inc.
+** Copyright (c) 2008-2018 The Khronos Group Inc.
 **
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and/or associated documentation files (the
@@ -26,18 +26,16 @@
 
 /* Khronos platform-specific types and definitions.
  *
- * $Revision: 32517 $ on $Date: 2016-03-11 02:41:19 -0800 (Fri, 11 Mar 2016) $
+ * The master copy of khrplatform.h is maintained in the Khronos EGL
+ * Registry repository at https://github.com/KhronosGroup/EGL-Registry
+ * The last semantic modification to khrplatform.h was at commit ID:
+ *      67a3e0864c2d75ea5287b9f3d2eb74a745936692
  *
  * Adopters may modify this file to suit their platform. Adopters are
  * encouraged to submit platform specific modifications to the Khronos
  * group so that they can be included in future versions of this file.
- * Please submit changes by sending them to the public Khronos Bugzilla
- * (http://khronos.org/bugzilla) by filing a bug against product
- * "Khronos (general)" component "Registry".
- *
- * A predefined template which fills in some of the bug fields can be
- * reached using http://tinyurl.com/khrplatform-h-bugreport, but you
- * must create a Bugzilla login first.
+ * Please submit changes by filing pull requests or issues on
+ * the EGL Registry repository linked above.
  *
  *
  * See the Implementer's Guidelines for information about where this file
@@ -102,8 +100,7 @@
 #elif defined (__SYMBIAN32__)
 #   define KHRONOS_APICALL IMPORT_C
 #elif defined(__ANDROID__)
-#   include <sys/cdefs.h>
-#   define KHRONOS_APICALL __attribute__((visibility("default"))) __NDK_FPABI__
+#   define KHRONOS_APICALL __attribute__((visibility("default")))
 #else
 #   define KHRONOS_APICALL
 #endif
@@ -115,7 +112,7 @@
  * name in the function prototype.
  */
 #if defined(_WIN32) && !defined(_WIN32_WCE) && !defined(__SCITECH_SNAP__)
-/* Win32 but not WinCE */
+    /* Win32 but not WinCE */
 #   define KHRONOS_APIENTRY __stdcall
 #else
 #   define KHRONOS_APIENTRY
@@ -142,11 +139,10 @@
  * Using <stdint.h>
  */
 #include <stdint.h>
-
-typedef int32_t khronos_int32_t;
-typedef uint32_t khronos_uint32_t;
-typedef int64_t khronos_int64_t;
-typedef uint64_t khronos_uint64_t;
+typedef int32_t                 khronos_int32_t;
+typedef uint32_t                khronos_uint32_t;
+typedef int64_t                 khronos_int64_t;
+typedef uint64_t                khronos_uint64_t;
 #define KHRONOS_SUPPORT_INT64   1
 #define KHRONOS_SUPPORT_FLOAT   1
 
@@ -221,10 +217,10 @@ typedef uint64_t                khronos_uint64_t;
 /*
  * Types that are (so far) the same on all platforms
  */
-typedef signed char khronos_int8_t;
-typedef unsigned char khronos_uint8_t;
-typedef signed short int khronos_int16_t;
-typedef unsigned short int khronos_uint16_t;
+typedef signed   char          khronos_int8_t;
+typedef unsigned char          khronos_uint8_t;
+typedef signed   short int     khronos_int16_t;
+typedef unsigned short int     khronos_uint16_t;
 
 /*
  * Types that differ between LLP64 and LP64 architectures - in LLP64,
@@ -237,17 +233,17 @@ typedef unsigned long long int khronos_uintptr_t;
 typedef signed   long long int khronos_ssize_t;
 typedef unsigned long long int khronos_usize_t;
 #else
-typedef signed long int khronos_intptr_t;
-typedef unsigned long int khronos_uintptr_t;
-typedef signed long int khronos_ssize_t;
-typedef unsigned long int khronos_usize_t;
+typedef signed   long  int     khronos_intptr_t;
+typedef unsigned long  int     khronos_uintptr_t;
+typedef signed   long  int     khronos_ssize_t;
+typedef unsigned long  int     khronos_usize_t;
 #endif
 
 #if KHRONOS_SUPPORT_FLOAT
 /*
  * Float type
  */
-typedef float khronos_float_t;
+typedef          float         khronos_float_t;
 #endif
 
 #if KHRONOS_SUPPORT_INT64
@@ -260,8 +256,8 @@ typedef float khronos_float_t;
  * 64 bit value that wraps back to 0 every 584 years.  Time intervals
  * may be either signed or unsigned.
  */
-typedef khronos_uint64_t khronos_utime_nanoseconds_t;
-typedef khronos_int64_t khronos_stime_nanoseconds_t;
+typedef khronos_uint64_t       khronos_utime_nanoseconds_t;
+typedef khronos_int64_t        khronos_stime_nanoseconds_t;
 #endif
 
 /*
@@ -279,7 +275,7 @@ typedef khronos_int64_t khronos_stime_nanoseconds_t;
  */
 typedef enum {
     KHRONOS_FALSE = 0,
-    KHRONOS_TRUE = 1,
+    KHRONOS_TRUE  = 1,
     KHRONOS_BOOLEAN_ENUM_FORCE_SIZE = KHRONOS_MAX_ENUM
 } khronos_boolean_enum_t;
 

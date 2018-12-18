@@ -197,11 +197,11 @@ typedef struct coro_context coro_context;
  * This function is not reentrant, but putting a mutex around it
  * will work.
  */
-void coro_create(coro_context *ctx, /* an uninitialised coro_context */
-                 coro_func coro,    /* the coroutine code to be executed */
-                 void *arg,         /* a single pointer passed to the coro */
-                 void *sptr,        /* start of stack area */
-                 size_t ssze);      /* size of stack area in bytes */
+void coro_create (coro_context *ctx, /* an uninitialised coro_context */
+                  coro_func coro,    /* the coroutine code to be executed */
+                  void *arg,         /* a single pointer passed to the coro */
+                  void *sptr,        /* start of stack area */
+                  size_t ssze);      /* size of stack area in bytes */
 
 /*
  * The following prototype defines the coroutine switching function. It is
@@ -262,11 +262,12 @@ void coro_destroy (coro_context *ctx);
  * not actually do anything.
  */
 
-struct coro_stack {
-    void *sptr;
-    size_t ssze;
+struct coro_stack
+{
+  void *sptr;
+  size_t ssze;
 #if CORO_USE_VALGRIND
-    int valgrind_id;
+  int valgrind_id;
 #endif
 };
 
@@ -280,14 +281,14 @@ struct coro_stack {
  *
  * If size is 0, then a "suitable" stack size is chosen (usually 1-2MB).
  */
-int coro_stack_alloc(struct coro_stack *stack, unsigned int size);
+int coro_stack_alloc (struct coro_stack *stack, unsigned int size);
 
 /*
  * Free the stack allocated by coro_stack_alloc again. It is safe to
  * call this function on the coro_stack structure even if coro_stack_alloc
  * failed.
  */
-void coro_stack_free(struct coro_stack *stack);
+void coro_stack_free (struct coro_stack *stack);
 
 #endif
 
@@ -372,17 +373,17 @@ struct coro_context
 
 #elif CORO_ASM
 
-struct coro_context {
-    void **sp; /* must be at offset 0 */
+struct coro_context
+{
+  void **sp; /* must be at offset 0 */
 };
 
 #if __i386__ || __x86_64__
-
 void __attribute__ ((__noinline__, __regparm__(2)))
 #else
 void __attribute__ ((__noinline__))
 #endif
-coro_transfer(coro_context *prev, coro_context *next);
+coro_transfer (coro_context *prev, coro_context *next);
 
 # define coro_destroy(ctx) (void *)(ctx)
 

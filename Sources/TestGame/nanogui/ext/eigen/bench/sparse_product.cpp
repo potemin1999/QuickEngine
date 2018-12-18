@@ -93,68 +93,70 @@ cs* cs_sorted_multiply2(const cs* a, const cs* b)
 
 void bench_sort();
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 //   bench_sort();
 
-    int rows = SIZE;
-    int cols = SIZE;
-    float density = DENSITY;
+  int rows = SIZE;
+  int cols = SIZE;
+  float density = DENSITY;
 
-    EigenSparseMatrix sm1(rows, cols), sm2(rows, cols), sm3(rows, cols), sm4(rows, cols);
+  EigenSparseMatrix sm1(rows,cols), sm2(rows,cols), sm3(rows,cols), sm4(rows,cols);
 
-    BenchTimer timer;
-    for (int nnzPerCol = NNZPERCOL; nnzPerCol > 1; nnzPerCol /= 1.1) {
-        sm1.setZero();
-        sm2.setZero();
-        fillMatrix2(nnzPerCol, rows, cols, sm1);
-        fillMatrix2(nnzPerCol, rows, cols, sm2);
+  BenchTimer timer;
+  for (int nnzPerCol = NNZPERCOL; nnzPerCol>1; nnzPerCol/=1.1)
+  {
+    sm1.setZero();
+    sm2.setZero();
+    fillMatrix2(nnzPerCol, rows, cols, sm1);
+    fillMatrix2(nnzPerCol, rows, cols, sm2);
 //     std::cerr << "filling OK\n";
 
-        // dense matrices
-#ifdef DENSEMATRIX
-        {
-          std::cout << "Eigen Dense\t" << nnzPerCol << "%\n";
-          DenseMatrix m1(rows,cols), m2(rows,cols), m3(rows,cols);
-          eiToDense(sm1, m1);
-          eiToDense(sm2, m2);
+    // dense matrices
+    #ifdef DENSEMATRIX
+    {
+      std::cout << "Eigen Dense\t" << nnzPerCol << "%\n";
+      DenseMatrix m1(rows,cols), m2(rows,cols), m3(rows,cols);
+      eiToDense(sm1, m1);
+      eiToDense(sm2, m2);
 
-          timer.reset();
-          timer.start();
-          for (int k=0; k<REPEAT; ++k)
-            m3 = m1 * m2;
-          timer.stop();
-          std::cout << "   a * b:\t" << timer.value() << endl;
+      timer.reset();
+      timer.start();
+      for (int k=0; k<REPEAT; ++k)
+        m3 = m1 * m2;
+      timer.stop();
+      std::cout << "   a * b:\t" << timer.value() << endl;
 
-          timer.reset();
-          timer.start();
-          for (int k=0; k<REPEAT; ++k)
-            m3 = m1.transpose() * m2;
-          timer.stop();
-          std::cout << "   a' * b:\t" << timer.value() << endl;
+      timer.reset();
+      timer.start();
+      for (int k=0; k<REPEAT; ++k)
+        m3 = m1.transpose() * m2;
+      timer.stop();
+      std::cout << "   a' * b:\t" << timer.value() << endl;
 
-          timer.reset();
-          timer.start();
-          for (int k=0; k<REPEAT; ++k)
-            m3 = m1.transpose() * m2.transpose();
-          timer.stop();
-          std::cout << "   a' * b':\t" << timer.value() << endl;
+      timer.reset();
+      timer.start();
+      for (int k=0; k<REPEAT; ++k)
+        m3 = m1.transpose() * m2.transpose();
+      timer.stop();
+      std::cout << "   a' * b':\t" << timer.value() << endl;
 
-          timer.reset();
-          timer.start();
-          for (int k=0; k<REPEAT; ++k)
-            m3 = m1 * m2.transpose();
-          timer.stop();
-          std::cout << "   a * b':\t" << timer.value() << endl;
-        }
-#endif
+      timer.reset();
+      timer.start();
+      for (int k=0; k<REPEAT; ++k)
+        m3 = m1 * m2.transpose();
+      timer.stop();
+      std::cout << "   a * b':\t" << timer.value() << endl;
+    }
+    #endif
 
-        // eigen sparse matrices
-        {
-            std::cout << "Eigen sparse\t" << sm1.nonZeros() / (float(sm1.rows()) * float(sm1.cols())) * 100 << "% * "
-                      << sm2.nonZeros() / (float(sm2.rows()) * float(sm2.cols())) * 100 << "%\n";
+    // eigen sparse matrices
+    {
+      std::cout << "Eigen sparse\t" << sm1.nonZeros()/(float(sm1.rows())*float(sm1.cols()))*100 << "% * "
+                << sm2.nonZeros()/(float(sm2.rows())*float(sm2.cols()))*100 << "%\n";
 
-            BENCH(sm3 = sm1 * sm2;)
-            std::cout << "   a * b:\t" << timer.value() << endl;
+      BENCH(sm3 = sm1 * sm2; )
+      std::cout << "   a * b:\t" << timer.value() << endl;
 
 //       BENCH(sm3 = sm1.transpose() * sm2; )
 //       std::cout << "   a' * b:\t" << timer.value() << endl;
@@ -179,96 +181,96 @@ int main(int argc, char *argv[]) {
 // //
 //       BENCH(sm3._experimentalNewProduct(sm1, sm2.transpose());)
 //       std::cout << "   a * b' :\t" << timer.value() << endl;
-        }
+    }
 
-        // eigen dyn-sparse matrices
-        /*{
-          DynamicSparseMatrix<Scalar> m1(sm1), m2(sm2), m3(sm3);
-          std::cout << "Eigen dyn-sparse\t" << m1.nonZeros()/(float(m1.rows())*float(m1.cols()))*100 << "% * "
-                    << m2.nonZeros()/(float(m2.rows())*float(m2.cols()))*100 << "%\n";
+    // eigen dyn-sparse matrices
+    /*{
+      DynamicSparseMatrix<Scalar> m1(sm1), m2(sm2), m3(sm3);
+      std::cout << "Eigen dyn-sparse\t" << m1.nonZeros()/(float(m1.rows())*float(m1.cols()))*100 << "% * "
+                << m2.nonZeros()/(float(m2.rows())*float(m2.cols()))*100 << "%\n";
 
-    //       timer.reset();
-    //       timer.start();
-          BENCH(for (int k=0; k<REPEAT; ++k) m3 = m1 * m2;)
-    //       timer.stop();
-          std::cout << "   a * b:\t" << timer.value() << endl;
-    //       std::cout << sm3 << "\n";
+//       timer.reset();
+//       timer.start();
+      BENCH(for (int k=0; k<REPEAT; ++k) m3 = m1 * m2;)
+//       timer.stop();
+      std::cout << "   a * b:\t" << timer.value() << endl;
+//       std::cout << sm3 << "\n";
 
-          timer.reset();
-          timer.start();
-    //       std::cerr << "transpose...\n";
-    //       EigenSparseMatrix sm4 = sm1.transpose();
-    //       std::cout << sm4.nonZeros() << " == " << sm1.nonZeros() << "\n";
-    //       exit(1);
-    //       std::cerr << "transpose OK\n";
-    //       std::cout << sm1 << "\n\n" << sm1.transpose() << "\n\n" << sm4.transpose() << "\n\n";
-          BENCH(for (int k=0; k<REPEAT; ++k) m3 = m1.transpose() * m2;)
-    //       timer.stop();
-          std::cout << "   a' * b:\t" << timer.value() << endl;
+      timer.reset();
+      timer.start();
+//       std::cerr << "transpose...\n";
+//       EigenSparseMatrix sm4 = sm1.transpose();
+//       std::cout << sm4.nonZeros() << " == " << sm1.nonZeros() << "\n";
+//       exit(1);
+//       std::cerr << "transpose OK\n";
+//       std::cout << sm1 << "\n\n" << sm1.transpose() << "\n\n" << sm4.transpose() << "\n\n";
+      BENCH(for (int k=0; k<REPEAT; ++k) m3 = m1.transpose() * m2;)
+//       timer.stop();
+      std::cout << "   a' * b:\t" << timer.value() << endl;
 
-    //       timer.reset();
-    //       timer.start();
-          BENCH( for (int k=0; k<REPEAT; ++k) m3 = m1.transpose() * m2.transpose(); )
-    //       timer.stop();
-          std::cout << "   a' * b':\t" << timer.value() << endl;
+//       timer.reset();
+//       timer.start();
+      BENCH( for (int k=0; k<REPEAT; ++k) m3 = m1.transpose() * m2.transpose(); )
+//       timer.stop();
+      std::cout << "   a' * b':\t" << timer.value() << endl;
 
-    //       timer.reset();
-    //       timer.start();
-          BENCH( for (int k=0; k<REPEAT; ++k) m3 = m1 * m2.transpose(); )
-    //       timer.stop();
-          std::cout << "   a * b' :\t" << timer.value() << endl;
-        }*/
+//       timer.reset();
+//       timer.start();
+      BENCH( for (int k=0; k<REPEAT; ++k) m3 = m1 * m2.transpose(); )
+//       timer.stop();
+      std::cout << "   a * b' :\t" << timer.value() << endl;
+    }*/
 
-        // CSparse
-#ifdef CSPARSE
+    // CSparse
+    #ifdef CSPARSE
+    {
+      std::cout << "CSparse \t" << nnzPerCol << "%\n";
+      cs *m1, *m2, *m3;
+      eiToCSparse(sm1, m1);
+      eiToCSparse(sm2, m2);
+
+      BENCH(
+      {
+        m3 = cs_sorted_multiply(m1, m2);
+        if (!m3)
         {
-          std::cout << "CSparse \t" << nnzPerCol << "%\n";
-          cs *m1, *m2, *m3;
-          eiToCSparse(sm1, m1);
-          eiToCSparse(sm2, m2);
-
-          BENCH(
-          {
-            m3 = cs_sorted_multiply(m1, m2);
-            if (!m3)
-            {
-              std::cerr << "cs_multiply failed\n";
-            }
-    //         cs_print(m3, 0);
-            cs_spfree(m3);
-          }
-          );
-    //       timer.stop();
-          std::cout << "   a * b:\t" << timer.value() << endl;
-
-    //       BENCH( { m3 = cs_sorted_multiply2(m1, m2); cs_spfree(m3); } );
-    //       std::cout << "   a * b:\t" << timer.value() << endl;
+          std::cerr << "cs_multiply failed\n";
         }
-#endif
+//         cs_print(m3, 0);
+        cs_spfree(m3);
+      }
+      );
+//       timer.stop();
+      std::cout << "   a * b:\t" << timer.value() << endl;
 
-#ifndef NOUBLAS
-        {
-            std::cout << "ublas\t" << nnzPerCol << "%\n";
-            UBlasSparse m1(rows, cols), m2(rows, cols), m3(rows, cols);
-            eiToUblas(sm1, m1);
-            eiToUblas(sm2, m2);
+//       BENCH( { m3 = cs_sorted_multiply2(m1, m2); cs_spfree(m3); } );
+//       std::cout << "   a * b:\t" << timer.value() << endl;
+    }
+    #endif
 
-            BENCH(boost::numeric::ublas::prod(m1, m2, m3););
-            std::cout << "   a * b:\t" << timer.value() << endl;
-        }
-#endif
+    #ifndef NOUBLAS
+    {
+      std::cout << "ublas\t" << nnzPerCol << "%\n";
+      UBlasSparse m1(rows,cols), m2(rows,cols), m3(rows,cols);
+      eiToUblas(sm1, m1);
+      eiToUblas(sm2, m2);
 
-        // GMM++
-#ifndef NOGMM
-        {
-            std::cout << "GMM++ sparse\t" << nnzPerCol << "%\n";
-            GmmDynSparse gmmT3(rows, cols);
-            GmmSparse m1(rows, cols), m2(rows, cols), m3(rows, cols);
-            eiToGmm(sm1, m1);
-            eiToGmm(sm2, m2);
+      BENCH(boost::numeric::ublas::prod(m1, m2, m3););
+      std::cout << "   a * b:\t" << timer.value() << endl;
+    }
+    #endif
 
-            BENCH(gmm::mult(m1, m2, gmmT3););
-            std::cout << "   a * b:\t" << timer.value() << endl;
+    // GMM++
+    #ifndef NOGMM
+    {
+      std::cout << "GMM++ sparse\t" << nnzPerCol << "%\n";
+      GmmDynSparse  gmmT3(rows,cols);
+      GmmSparse m1(rows,cols), m2(rows,cols), m3(rows,cols);
+      eiToGmm(sm1, m1);
+      eiToGmm(sm2, m2);
+
+      BENCH(gmm::mult(m1, m2, gmmT3););
+      std::cout << "   a * b:\t" << timer.value() << endl;
 
 //       BENCH(gmm::mult(gmm::transposed(m1), m2, gmmT3););
 //       std::cout << "   a' * b:\t" << timer.value() << endl;
@@ -286,19 +288,19 @@ int main(int argc, char *argv[]) {
 //         std::cout << "   a' * b':\t" << "forever" << endl;
 //         std::cout << "   a * b':\t" << "forever" << endl;
 //       }
-        }
-#endif
+    }
+    #endif
 
-        // MTL4
-#ifndef NOMTL
-        {
-            std::cout << "MTL4\t" << nnzPerCol << "%\n";
-            MtlSparse m1(rows, cols), m2(rows, cols), m3(rows, cols);
-            eiToMtl(sm1, m1);
-            eiToMtl(sm2, m2);
+    // MTL4
+    #ifndef NOMTL
+    {
+      std::cout << "MTL4\t" << nnzPerCol << "%\n";
+      MtlSparse m1(rows,cols), m2(rows,cols), m3(rows,cols);
+      eiToMtl(sm1, m1);
+      eiToMtl(sm2, m2);
 
-            BENCH(m3 = m1 * m2;);
-            std::cout << "   a * b:\t" << timer.value() << endl;
+      BENCH(m3 = m1 * m2;);
+      std::cout << "   a * b:\t" << timer.value() << endl;
 
 //       BENCH(m3 = trans(m1) * m2;);
 //       std::cout << "   a' * b:\t" << timer.value() << endl;
@@ -308,13 +310,13 @@ int main(int argc, char *argv[]) {
 //
 //       BENCH(m3 = m1 * trans(m2););
 //       std::cout << "   a * b' :\t" << timer.value() << endl;
-        }
-#endif
-
-        std::cout << "\n\n";
     }
+    #endif
 
-    return 0;
+    std::cout << "\n\n";
+  }
+
+  return 0;
 }
 
 

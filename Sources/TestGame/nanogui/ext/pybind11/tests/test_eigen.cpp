@@ -11,28 +11,26 @@
 #include <pybind11/eigen.h>
 #include <Eigen/Cholesky>
 
-Eigen::VectorXf double_col(const Eigen::VectorXf &x) { return 2.0f * x; }
+Eigen::VectorXf double_col(const Eigen::VectorXf& x)
+{ return 2.0f * x; }
 
-Eigen::RowVectorXf double_row(const Eigen::RowVectorXf &x) { return 2.0f * x; }
+Eigen::RowVectorXf double_row(const Eigen::RowVectorXf& x)
+{ return 2.0f * x; }
 
-Eigen::MatrixXf double_mat_cm(const Eigen::MatrixXf &x) { return 2.0f * x; }
+Eigen::MatrixXf double_mat_cm(const Eigen::MatrixXf& x)
+{ return 2.0f * x; }
 
 // Different ways of passing via Eigen::Ref; the first and second are the Eigen-recommended
 Eigen::MatrixXd cholesky1(Eigen::Ref<Eigen::MatrixXd> &x) { return x.llt().matrixL(); }
-
 Eigen::MatrixXd cholesky2(const Eigen::Ref<const Eigen::MatrixXd> &x) { return x.llt().matrixL(); }
-
 Eigen::MatrixXd cholesky3(const Eigen::Ref<Eigen::MatrixXd> &x) { return x.llt().matrixL(); }
-
 Eigen::MatrixXd cholesky4(Eigen::Ref<const Eigen::MatrixXd> &x) { return x.llt().matrixL(); }
-
 Eigen::MatrixXd cholesky5(Eigen::Ref<Eigen::MatrixXd> x) { return x.llt().matrixL(); }
-
 Eigen::MatrixXd cholesky6(Eigen::Ref<const Eigen::MatrixXd> x) { return x.llt().matrixL(); }
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixXfRowMajor;
-
-MatrixXfRowMajor double_mat_rm(const MatrixXfRowMajor &x) { return 2.0f * x; }
+MatrixXfRowMajor double_mat_rm(const MatrixXfRowMajor& x)
+{ return 2.0f * x; }
 
 test_initializer eigen([](py::module &m) {
     typedef Eigen::Matrix<float, 5, 6, Eigen::RowMajor> FixedMatrixR;
@@ -47,7 +45,7 @@ test_initializer eigen([](py::module &m) {
     // Non-symmetric matrix with zero elements
     Eigen::MatrixXf mat(5, 6);
     mat << 0, 3, 0, 0, 0, 11, 22, 0, 0, 0, 17, 11, 7, 5, 0, 1, 0, 11, 0,
-            0, 0, 0, 0, 11, 0, 0, 14, 0, 8, 11;
+        0, 0, 0, 0, 11, 0, 0, 14, 0, 8, 11;
 
     m.def("double_col", &double_col);
     m.def("double_row", &double_row);
@@ -66,25 +64,24 @@ test_initializer eigen([](py::module &m) {
     m.def("diagonal_n", [](const Eigen::Ref<const Eigen::MatrixXd> &x, int index) { return x.diagonal(index); });
 
     // Return a block of a matrix (gives non-standard strides)
-    m.def("block",
-          [](const Eigen::Ref<const Eigen::MatrixXd> &x, int start_row, int start_col, int block_rows, int block_cols) {
-              return x.block(start_row, start_col, block_rows, block_cols);
-          });
+    m.def("block", [](const Eigen::Ref<const Eigen::MatrixXd> &x, int start_row, int start_col, int block_rows, int block_cols) {
+        return x.block(start_row, start_col, block_rows, block_cols);
+    });
 
     // Returns a DiagonalMatrix with diagonal (1,2,3,...)
     m.def("incr_diag", [](int k) {
         Eigen::DiagonalMatrix<int, Eigen::Dynamic> m(k);
-        for (int i = 0; i < k; i++) m.diagonal()[i] = i + 1;
+        for (int i = 0; i < k; i++) m.diagonal()[i] = i+1;
         return m;
     });
 
     // Returns a SelfAdjointView referencing the lower triangle of m
     m.def("symmetric_lower", [](const Eigen::MatrixXi &m) {
-        return m.selfadjointView<Eigen::Lower>();
+            return m.selfadjointView<Eigen::Lower>();
     });
     // Returns a SelfAdjointView referencing the lower triangle of m
     m.def("symmetric_upper", [](const Eigen::MatrixXi &m) {
-        return m.selfadjointView<Eigen::Upper>();
+            return m.selfadjointView<Eigen::Upper>();
     });
 
     m.def("fixed_r", [mat]() -> FixedMatrixR {

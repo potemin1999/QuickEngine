@@ -373,13 +373,14 @@ static void test_dim_check()
 
 #endif
 
-void test_cxx11_tensor_index_list() {
+void test_cxx11_tensor_index_list()
+{
 #ifdef EIGEN_HAS_INDEX_LIST
-    CALL_SUBTEST(test_static_index_list());
-    CALL_SUBTEST(test_type2index_list());
-    CALL_SUBTEST(test_type2indexpair_list());
-    CALL_SUBTEST(test_dynamic_index_list());
-    CALL_SUBTEST(test_mixed_index_list());
-    CALL_SUBTEST(test_dim_check());
+  CALL_SUBTEST(test_static_index_list());
+  CALL_SUBTEST(test_type2index_list());
+  CALL_SUBTEST(test_type2indexpair_list());
+  CALL_SUBTEST(test_dynamic_index_list());
+  CALL_SUBTEST(test_mixed_index_list());
+  CALL_SUBTEST(test_dim_check());
 #endif
 }

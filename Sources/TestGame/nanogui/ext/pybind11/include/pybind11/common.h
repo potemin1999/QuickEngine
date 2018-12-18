@@ -192,400 +192,344 @@ extern "C" {
 
 NAMESPACE_BEGIN(pybind11)
 
-    using ssize_t = Py_ssize_t;
-    using size_t  = std::size_t;
+using ssize_t = Py_ssize_t;
+using size_t  = std::size_t;
 
 /// Approach used to cast a previously unknown C++ instance into a Python object
-    enum class return_value_policy : uint8_t {
-        /** This is the default return value policy, which falls back to the policy
-            return_value_policy::take_ownership when the return value is a pointer.
-            Otherwise, it uses return_value::move or return_value::copy for rvalue
-            and lvalue references, respectively. See below for a description of what
-            all of these different policies do. */
-                automatic = 0,
+enum class return_value_policy : uint8_t {
+    /** This is the default return value policy, which falls back to the policy
+        return_value_policy::take_ownership when the return value is a pointer.
+        Otherwise, it uses return_value::move or return_value::copy for rvalue
+        and lvalue references, respectively. See below for a description of what
+        all of these different policies do. */
+    automatic = 0,
 
-        /** As above, but use policy return_value_policy::reference when the return
-            value is a pointer. This is the default conversion policy for function
-            arguments when calling Python functions manually from C++ code (i.e. via
-            handle::operator()). You probably won't need to use this. */
-                automatic_reference,
+    /** As above, but use policy return_value_policy::reference when the return
+        value is a pointer. This is the default conversion policy for function
+        arguments when calling Python functions manually from C++ code (i.e. via
+        handle::operator()). You probably won't need to use this. */
+    automatic_reference,
 
-        /** Reference an existing object (i.e. do not create a new copy) and take
-            ownership. Python will call the destructor and delete operator when the
-            object’s reference count reaches zero. Undefined behavior ensues when
-            the C++ side does the same.. */
-                take_ownership,
+    /** Reference an existing object (i.e. do not create a new copy) and take
+        ownership. Python will call the destructor and delete operator when the
+        object’s reference count reaches zero. Undefined behavior ensues when
+        the C++ side does the same.. */
+    take_ownership,
 
-        /** Create a new copy of the returned object, which will be owned by
-            Python. This policy is comparably safe because the lifetimes of the two
-            instances are decoupled. */
-                copy,
+    /** Create a new copy of the returned object, which will be owned by
+        Python. This policy is comparably safe because the lifetimes of the two
+        instances are decoupled. */
+    copy,
 
-        /** Use std::move to move the return value contents into a new instance
-            that will be owned by Python. This policy is comparably safe because the
-            lifetimes of the two instances (move source and destination) are
-            decoupled. */
-                move,
+    /** Use std::move to move the return value contents into a new instance
+        that will be owned by Python. This policy is comparably safe because the
+        lifetimes of the two instances (move source and destination) are
+        decoupled. */
+    move,
 
-        /** Reference an existing object, but do not take ownership. The C++ side
-            is responsible for managing the object’s lifetime and deallocating it
-            when it is no longer used. Warning: undefined behavior will ensue when
-            the C++ side deletes an object that is still referenced and used by
-            Python. */
-                reference,
+    /** Reference an existing object, but do not take ownership. The C++ side
+        is responsible for managing the object’s lifetime and deallocating it
+        when it is no longer used. Warning: undefined behavior will ensue when
+        the C++ side deletes an object that is still referenced and used by
+        Python. */
+    reference,
 
-        /** This policy only applies to methods and properties. It references the
-            object without taking ownership similar to the above
-            return_value_policy::reference policy. In contrast to that policy, the
-            function or property’s implicit this argument (called the parent) is
-            considered to be the the owner of the return value (the child).
-            pybind11 then couples the lifetime of the parent to the child via a
-            reference relationship that ensures that the parent cannot be garbage
-            collected while Python is still using the child. More advanced
-            variations of this scheme are also possible using combinations of
-            return_value_policy::reference and the keep_alive call policy */
-                reference_internal
-    };
+    /** This policy only applies to methods and properties. It references the
+        object without taking ownership similar to the above
+        return_value_policy::reference policy. In contrast to that policy, the
+        function or property’s implicit this argument (called the parent) is
+        considered to be the the owner of the return value (the child).
+        pybind11 then couples the lifetime of the parent to the child via a
+        reference relationship that ensures that the parent cannot be garbage
+        collected while Python is still using the child. More advanced
+        variations of this scheme are also possible using combinations of
+        return_value_policy::reference and the keep_alive call policy */
+    reference_internal
+};
 
 /// Information record describing a Python buffer object
-    struct buffer_info {
-        void *ptr = nullptr;         // Pointer to the underlying storage
-        size_t itemsize = 0;         // Size of individual items in bytes
-        size_t size = 0;             // Total number of entries
-        std::string format;          // For homogeneous buffers, this should be set to format_descriptor<T>::format()
-        size_t ndim = 0;             // Number of dimensions
-        std::vector<size_t> shape;   // Shape of the tensor (1 entry per dimension)
-        std::vector<size_t> strides; // Number of entries between adjacent entries (for each per dimension)
+struct buffer_info {
+    void *ptr = nullptr;         // Pointer to the underlying storage
+    size_t itemsize = 0;         // Size of individual items in bytes
+    size_t size = 0;             // Total number of entries
+    std::string format;          // For homogeneous buffers, this should be set to format_descriptor<T>::format()
+    size_t ndim = 0;             // Number of dimensions
+    std::vector<size_t> shape;   // Shape of the tensor (1 entry per dimension)
+    std::vector<size_t> strides; // Number of entries between adjacent entries (for each per dimension)
 
-        buffer_info() {}
+    buffer_info() { }
 
-        buffer_info(void *ptr, size_t itemsize, const std::string &format, size_t ndim,
-                    const std::vector<size_t> &shape, const std::vector<size_t> &strides)
-                : ptr(ptr), itemsize(itemsize), size(1), format(format),
-                  ndim(ndim), shape(shape), strides(strides) {
-            for (size_t i = 0; i < ndim; ++i)
-                size *= shape[i];
+    buffer_info(void *ptr, size_t itemsize, const std::string &format, size_t ndim,
+                const std::vector<size_t> &shape, const std::vector<size_t> &strides)
+        : ptr(ptr), itemsize(itemsize), size(1), format(format),
+          ndim(ndim), shape(shape), strides(strides) {
+        for (size_t i = 0; i < ndim; ++i)
+            size *= shape[i];
+    }
+
+    buffer_info(void *ptr, size_t itemsize, const std::string &format, size_t size)
+    : buffer_info(ptr, itemsize, format, 1, std::vector<size_t> { size },
+                  std::vector<size_t> { itemsize }) { }
+
+    explicit buffer_info(Py_buffer *view, bool ownview = true)
+        : ptr(view->buf), itemsize((size_t) view->itemsize), size(1), format(view->format),
+          ndim((size_t) view->ndim), shape((size_t) view->ndim), strides((size_t) view->ndim), view(view), ownview(ownview) {
+        for (size_t i = 0; i < (size_t) view->ndim; ++i) {
+            shape[i] = (size_t) view->shape[i];
+            strides[i] = (size_t) view->strides[i];
+            size *= shape[i];
         }
+    }
 
-        buffer_info(void *ptr, size_t itemsize, const std::string &format, size_t size)
-                : buffer_info(ptr, itemsize, format, 1, std::vector<size_t>{size},
-                              std::vector<size_t>{itemsize}) {}
+    buffer_info(const buffer_info &) = delete;
+    buffer_info& operator=(const buffer_info &) = delete;
 
-        explicit buffer_info(Py_buffer *view, bool ownview = true)
-                : ptr(view->buf), itemsize((size_t) view->itemsize), size(1), format(view->format),
-                  ndim((size_t) view->ndim), shape((size_t) view->ndim), strides((size_t) view->ndim), view(view),
-                  ownview(ownview) {
-            for (size_t i = 0; i < (size_t) view->ndim; ++i) {
-                shape[i] = (size_t) view->shape[i];
-                strides[i] = (size_t) view->strides[i];
-                size *= shape[i];
-            }
-        }
+    buffer_info(buffer_info &&other) {
+        (*this) = std::move(other);
+    }
 
-        buffer_info(const buffer_info &) = delete;
+    buffer_info& operator=(buffer_info &&rhs) {
+        ptr = rhs.ptr;
+        itemsize = rhs.itemsize;
+        size = rhs.size;
+        format = std::move(rhs.format);
+        ndim = rhs.ndim;
+        shape = std::move(rhs.shape);
+        strides = std::move(rhs.strides);
+        std::swap(view, rhs.view);
+        std::swap(ownview, rhs.ownview);
+        return *this;
+    }
 
-        buffer_info &operator=(const buffer_info &) = delete;
+    ~buffer_info() {
+        if (view && ownview) { PyBuffer_Release(view); delete view; }
+    }
 
-        buffer_info(buffer_info &&other) {
-            (*this) = std::move(other);
-        }
+private:
+    Py_buffer *view = nullptr;
+    bool ownview = false;
+};
 
-        buffer_info &operator=(buffer_info &&rhs) {
-            ptr = rhs.ptr;
-            itemsize = rhs.itemsize;
-            size = rhs.size;
-            format = std::move(rhs.format);
-            ndim = rhs.ndim;
-            shape = std::move(rhs.shape);
-            strides = std::move(rhs.strides);
-            std::swap(view, rhs.view);
-            std::swap(ownview, rhs.ownview);
-            return *this;
-        }
+NAMESPACE_BEGIN(detail)
 
-        ~buffer_info() {
-            if (view && ownview) {
-                PyBuffer_Release(view);
-                delete view;
-            }
-        }
+inline static constexpr int log2(size_t n, int k = 0) { return (n <= 1) ? k : log2(n >> 1, k + 1); }
 
-    private:
-        Py_buffer *view = nullptr;
-        bool ownview = false;
-    };
-
-    NAMESPACE_BEGIN(detail)
-
-        inline static constexpr int log2(size_t n, int k = 0) { return (n <= 1) ? k : log2(n >> 1, k + 1); }
-
-        inline std::string error_string();
+inline std::string error_string();
 
 /// Core part of the 'instance' type which POD (needed to be able to use 'offsetof')
-        template<typename type>
-        struct instance_essentials {
-            PyObject_HEAD
-                    type *value;
-            PyObject *weakrefs;
-            bool owned : 1;
-            bool holder_constructed : 1;
-        };
+template <typename type> struct instance_essentials {
+    PyObject_HEAD
+    type *value;
+    PyObject *weakrefs;
+    bool owned : 1;
+    bool holder_constructed : 1;
+};
 
 /// PyObject wrapper around generic types, includes a special holder type that is responsible for lifetime management
-        template<typename type, typename holder_type = std::unique_ptr<type>>
-        struct instance : instance_essentials<type> {
-            holder_type holder;
-        };
+template <typename type, typename holder_type = std::unique_ptr<type>> struct instance : instance_essentials<type> {
+    holder_type holder;
+};
 
-        struct overload_hash {
-            inline size_t operator()(const std::pair<const PyObject *, const char *> &v) const {
-                size_t value = std::hash<const void *>()(v.first);
-                value ^= std::hash<const void *>()(v.second) + 0x9e3779b9 + (value << 6) + (value >> 2);
-                return value;
-            }
-        };
+struct overload_hash {
+    inline size_t operator()(const std::pair<const PyObject *, const char *>& v) const {
+        size_t value = std::hash<const void *>()(v.first);
+        value ^= std::hash<const void *>()(v.second)  + 0x9e3779b9 + (value<<6) + (value>>2);
+        return value;
+    }
+};
 
 /// Internal data struture used to track registered instances and types
-        struct internals {
-            std::unordered_map<std::type_index, void *> registered_types_cpp;   // std::type_index -> type_info
-            std::unordered_map<const void *, void *> registered_types_py;       // PyTypeObject* -> type_info
-            std::unordered_multimap<const void *, void *> registered_instances; // void * -> PyObject*
-            std::unordered_set<std::pair<const PyObject *, const char *>, overload_hash> inactive_overload_cache;
-            std::unordered_map<std::type_index, std::vector<bool (*)(PyObject *, void *&)>> direct_conversions;
-            std::forward_list<void (*)(std::exception_ptr)> registered_exception_translators;
-            std::unordered_map<std::string, void *> shared_data; // Custom data to be shared across extensions
+struct internals {
+    std::unordered_map<std::type_index, void*> registered_types_cpp;   // std::type_index -> type_info
+    std::unordered_map<const void *, void*> registered_types_py;       // PyTypeObject* -> type_info
+    std::unordered_multimap<const void *, void*> registered_instances; // void * -> PyObject*
+    std::unordered_set<std::pair<const PyObject *, const char *>, overload_hash> inactive_overload_cache;
+    std::unordered_map<std::type_index, std::vector<bool (*)(PyObject *, void *&)>> direct_conversions;
+    std::forward_list<void (*) (std::exception_ptr)> registered_exception_translators;
+    std::unordered_map<std::string, void *> shared_data; // Custom data to be shared across extensions
 #if defined(WITH_THREAD)
-            decltype(PyThread_create_key()) tstate = 0; // Usually an int but a long on Cygwin64 with Python 3.x
-            PyInterpreterState *istate = nullptr;
+    decltype(PyThread_create_key()) tstate = 0; // Usually an int but a long on Cygwin64 with Python 3.x
+    PyInterpreterState *istate = nullptr;
 #endif
-        };
+};
 
 /// Return a reference to the current 'internals' information
-        inline internals &get_internals();
+inline internals &get_internals();
 
 /// from __cpp_future__ import (convenient aliases from C++14/17)
 #ifdef PYBIND11_CPP14
-        using std::enable_if_t;
-        using std::conditional_t;
+using std::enable_if_t;
+using std::conditional_t;
 #else
-        template <bool B, typename T = void> using enable_if_t = typename std::enable_if<B, T>::type;
-        template <bool B, typename T, typename F> using conditional_t = typename std::conditional<B, T, F>::type;
+template <bool B, typename T = void> using enable_if_t = typename std::enable_if<B, T>::type;
+template <bool B, typename T, typename F> using conditional_t = typename std::conditional<B, T, F>::type;
 #endif
 
 /// Index sequences
 #if defined(PYBIND11_CPP14) || defined(_MSC_VER)
-        using std::index_sequence;
-        using std::make_index_sequence;
+using std::index_sequence;
+using std::make_index_sequence;
 #else
-        template<size_t ...> struct index_sequence  { };
-        template<size_t N, size_t ...S> struct make_index_sequence_impl : make_index_sequence_impl <N - 1, N - 1, S...> { };
-        template<size_t ...S> struct make_index_sequence_impl <0, S...> { typedef index_sequence<S...> type; };
-        template<size_t N> using make_index_sequence = typename make_index_sequence_impl<N>::type;
+template<size_t ...> struct index_sequence  { };
+template<size_t N, size_t ...S> struct make_index_sequence_impl : make_index_sequence_impl <N - 1, N - 1, S...> { };
+template<size_t ...S> struct make_index_sequence_impl <0, S...> { typedef index_sequence<S...> type; };
+template<size_t N> using make_index_sequence = typename make_index_sequence_impl<N>::type;
 #endif
 
 #if defined(PYBIND11_CPP17) || defined(_MSC_VER)
-        using std::bool_constant;
-        using std::negation;
+using std::bool_constant;
+using std::negation;
 #else
-        template <bool B> using bool_constant = std::integral_constant<bool, B>;
-        template <class T> using negation = bool_constant<!T::value>;
+template <bool B> using bool_constant = std::integral_constant<bool, B>;
+template <class T> using negation = bool_constant<!T::value>;
 #endif
 
 /// Compile-time all/any/none of that check the ::value of all template types
 #ifdef PYBIND11_CPP17
-        template<class... Ts> using all_of = bool_constant<(Ts::value && ...)>;
-        template<class... Ts> using any_of = bool_constant<(Ts::value || ...)>;
+template <class... Ts> using all_of = bool_constant<(Ts::value && ...)>;
+template <class... Ts> using any_of = bool_constant<(Ts::value || ...)>;
 #elif !defined(_MSC_VER)
-        template <bool...> struct bools {};
-        template <class... Ts> using all_of = std::is_same<
-            bools<Ts::value..., true>,
-            bools<true, Ts::value...>>;
-        template <class... Ts> using any_of = negation<all_of<negation<Ts>...>>;
+template <bool...> struct bools {};
+template <class... Ts> using all_of = std::is_same<
+    bools<Ts::value..., true>,
+    bools<true, Ts::value...>>;
+template <class... Ts> using any_of = negation<all_of<negation<Ts>...>>;
 #else
-        // MSVC has trouble with the above, but supports std::conjunction, which we can use instead (albeit
-        // at a slight loss of compilation efficiency).
-        template <class... Ts> using all_of = std::conjunction<Ts...>;
-        template <class... Ts> using any_of = std::disjunction<Ts...>;
+// MSVC has trouble with the above, but supports std::conjunction, which we can use instead (albeit
+// at a slight loss of compilation efficiency).
+template <class... Ts> using all_of = std::conjunction<Ts...>;
+template <class... Ts> using any_of = std::disjunction<Ts...>;
 #endif
-        template<class... Ts> using none_of = negation<any_of<Ts...>>;
+template <class... Ts> using none_of = negation<any_of<Ts...>>;
 
 /// Strip the class from a method type
-        template<typename T>
-        struct remove_class {
-        };
-        template<typename C, typename R, typename... A>
-        struct remove_class<R (C::*)(A...)> {
-            typedef R type(A...);
-        };
-        template<typename C, typename R, typename... A>
-        struct remove_class<R (C::*)(A...) const> {
-            typedef R type(A...);
-        };
+template <typename T> struct remove_class { };
+template <typename C, typename R, typename... A> struct remove_class<R (C::*)(A...)> { typedef R type(A...); };
+template <typename C, typename R, typename... A> struct remove_class<R (C::*)(A...) const> { typedef R type(A...); };
 
 /// Helper template to strip away type modifiers
-        template<typename T>
-        struct intrinsic_type {
-            typedef T type;
-        };
-        template<typename T>
-        struct intrinsic_type<const T> {
-            typedef typename intrinsic_type<T>::type type;
-        };
-        template<typename T>
-        struct intrinsic_type<T *> {
-            typedef typename intrinsic_type<T>::type type;
-        };
-        template<typename T>
-        struct intrinsic_type<T &> {
-            typedef typename intrinsic_type<T>::type type;
-        };
-        template<typename T>
-        struct intrinsic_type<T &&> {
-            typedef typename intrinsic_type<T>::type type;
-        };
-        template<typename T, size_t N>
-        struct intrinsic_type<const T[N]> {
-            typedef typename intrinsic_type<T>::type type;
-        };
-        template<typename T, size_t N>
-        struct intrinsic_type<T[N]> {
-            typedef typename intrinsic_type<T>::type type;
-        };
-        template<typename T> using intrinsic_t = typename intrinsic_type<T>::type;
+template <typename T> struct intrinsic_type                       { typedef T type; };
+template <typename T> struct intrinsic_type<const T>              { typedef typename intrinsic_type<T>::type type; };
+template <typename T> struct intrinsic_type<T*>                   { typedef typename intrinsic_type<T>::type type; };
+template <typename T> struct intrinsic_type<T&>                   { typedef typename intrinsic_type<T>::type type; };
+template <typename T> struct intrinsic_type<T&&>                  { typedef typename intrinsic_type<T>::type type; };
+template <typename T, size_t N> struct intrinsic_type<const T[N]> { typedef typename intrinsic_type<T>::type type; };
+template <typename T, size_t N> struct intrinsic_type<T[N]>       { typedef typename intrinsic_type<T>::type type; };
+template <typename T> using intrinsic_t = typename intrinsic_type<T>::type;
 
 /// Helper type to replace 'void' in some expressions
-        struct void_type {
-        };
+struct void_type { };
 
 /// Helper template which holds a list of types
-        template<typename...>
-        struct type_list {
-        };
+template <typename...> struct type_list { };
 
 /// Compile-time integer sum
-        constexpr size_t constexpr_sum() { return 0; }
-
-        template<typename T, typename... Ts>
-        constexpr size_t constexpr_sum(T n, Ts... ns) { return size_t{n} + constexpr_sum(ns...); }
+constexpr size_t constexpr_sum() { return 0; }
+template <typename T, typename... Ts>
+constexpr size_t constexpr_sum(T n, Ts... ns) { return size_t{n} + constexpr_sum(ns...); }
 
 // Extracts the first type from the template parameter pack matching the predicate, or Default if none match.
-        template<template<class> class Predicate, class Default, class... Ts>
-        struct first_of;
-        template<template<class> class Predicate, class Default>
-        struct first_of<Predicate, Default> {
-            using type = Default;
-        };
-        template<template<class> class Predicate, class Default, class T, class... Ts>
-        struct first_of<Predicate, Default, T, Ts...> {
-            using type = typename std::conditional<
-                    Predicate<T>::value,
-                    T,
-                    typename first_of<Predicate, Default, Ts...>::type
-            >::type;
-        };
-        template<template<class> class Predicate, class Default, class... T> using first_of_t = typename first_of<Predicate, Default, T...>::type;
+template <template<class> class Predicate, class Default, class... Ts> struct first_of;
+template <template<class> class Predicate, class Default> struct first_of<Predicate, Default> {
+    using type = Default;
+};
+template <template<class> class Predicate, class Default, class T, class... Ts>
+struct first_of<Predicate, Default, T, Ts...> {
+    using type = typename std::conditional<
+        Predicate<T>::value,
+        T,
+        typename first_of<Predicate, Default, Ts...>::type
+    >::type;
+};
+template <template<class> class Predicate, class Default, class... T> using first_of_t = typename first_of<Predicate, Default, T...>::type;
 
 /// Defer the evaluation of type T until types Us are instantiated
-        template<typename T, typename... /*Us*/>
-        struct deferred_type {
-            using type = T;
-        };
-        template<typename T, typename... Us> using deferred_t = typename deferred_type<T, Us...>::type;
+template <typename T, typename... /*Us*/> struct deferred_type { using type = T; };
+template <typename T, typename... Us> using deferred_t = typename deferred_type<T, Us...>::type;
 
-        template<template<typename...> class Base>
-        struct is_template_base_of_impl {
-            template<typename... Us>
-            static std::true_type check(Base<Us...> *);
-
-            static std::false_type check(...);
-        };
+template <template<typename...> class Base>
+struct is_template_base_of_impl {
+    template <typename... Us> static std::true_type check(Base<Us...> *);
+    static std::false_type check(...);
+};
 
 /// Check if a template is the base of a type. For example:
 /// `is_template_base_of<Base, T>` is true if `struct T : Base<U> {}` where U can be anything
-        template<template<typename...> class Base, typename T>
+template <template<typename...> class Base, typename T>
 #if !defined(_MSC_VER)
-        using is_template_base_of = decltype(is_template_base_of_impl<Base>::check((T *) nullptr));
+using is_template_base_of = decltype(is_template_base_of_impl<Base>::check((T*)nullptr));
 #else // MSVC2015 has trouble with decltype in template aliases
-        struct is_template_base_of : decltype(is_template_base_of_impl<Base>::check((T*)nullptr)) { };
+struct is_template_base_of : decltype(is_template_base_of_impl<Base>::check((T*)nullptr)) { };
 #endif
 
 /// Check if T is std::shared_ptr<U> where U can be anything
-        template<typename T>
-        struct is_shared_ptr : std::false_type {
-        };
-        template<typename U>
-        struct is_shared_ptr<std::shared_ptr<U>> : std::true_type {
-        };
+template <typename T> struct is_shared_ptr : std::false_type { };
+template <typename U> struct is_shared_ptr<std::shared_ptr<U>> : std::true_type { };
 
 /// Ignore that a variable is unused in compiler warnings
-        inline void ignore_unused(const int *) {}
+inline void ignore_unused(const int *) { }
 
-    NAMESPACE_END(detail)
+NAMESPACE_END(detail)
 
 /// Returns a named pointer that is shared among all extension modules (using the same
 /// pybind11 version) running in the current interpreter. Names starting with underscores
 /// are reserved for internal usage. Returns `nullptr` if no matching entry was found.
-    inline PYBIND11_NOINLINE void *get_shared_data(const std::string &name) {
-        auto &internals = detail::get_internals();
-        auto it = internals.shared_data.find(name);
-        return it != internals.shared_data.end() ? it->second : nullptr;
-    }
+inline PYBIND11_NOINLINE void* get_shared_data(const std::string& name) {
+    auto& internals = detail::get_internals();
+    auto it = internals.shared_data.find(name);
+    return it != internals.shared_data.end() ? it->second : nullptr;
+}
 
 /// Set the shared data that can be later recovered by `get_shared_data()`.
-    inline PYBIND11_NOINLINE void *set_shared_data(const std::string &name, void *data) {
-        detail::get_internals().shared_data[name] = data;
-        return data;
-    }
+inline PYBIND11_NOINLINE void *set_shared_data(const std::string& name, void *data) {
+    detail::get_internals().shared_data[name] = data;
+    return data;
+}
 
 /// Returns a typed reference to a shared data entry (by using `get_shared_data()`) if
 /// such entry exists. Otherwise, a new object of default-constructible type `T` is
 /// added to the shared data under the given name and a reference to it is returned.
-    template<typename T>
-    T &get_or_create_shared_data(const std::string &name) {
-        auto &internals = detail::get_internals();
-        auto it = internals.shared_data.find(name);
-        T *ptr = (T *) (it != internals.shared_data.end() ? it->second : nullptr);
-        if (!ptr) {
-            ptr = new T();
-            internals.shared_data[name] = ptr;
-        }
-        return *ptr;
+template<typename T> T& get_or_create_shared_data(const std::string& name) {
+    auto& internals = detail::get_internals();
+    auto it = internals.shared_data.find(name);
+    T* ptr = (T*) (it != internals.shared_data.end() ? it->second : nullptr);
+    if (!ptr) {
+        ptr = new T();
+        internals.shared_data[name] = ptr;
     }
+    return *ptr;
+}
 
 /// Fetch and hold an error which was already set in Python
-    class error_already_set : public std::runtime_error {
-    public:
-        error_already_set() : std::runtime_error(detail::error_string()) {
-            PyErr_Fetch(&type, &value, &trace);
-        }
+class error_already_set : public std::runtime_error {
+public:
+    error_already_set() : std::runtime_error(detail::error_string()) {
+        PyErr_Fetch(&type, &value, &trace);
+    }
 
-        error_already_set(const error_already_set &) = delete;
+    error_already_set(const error_already_set &) = delete;
 
-        error_already_set(error_already_set &&e)
-                : std::runtime_error(e.what()), type(e.type), value(e.value),
-                  trace(e.trace) { e.type = e.value = e.trace = nullptr; }
+    error_already_set(error_already_set &&e)
+        : std::runtime_error(e.what()), type(e.type), value(e.value),
+          trace(e.trace) { e.type = e.value = e.trace = nullptr; }
 
-        inline ~error_already_set(); // implementation in pybind11.h
+    inline ~error_already_set(); // implementation in pybind11.h
 
-        error_already_set &operator=(const error_already_set &) = delete;
+    error_already_set& operator=(const error_already_set &) = delete;
 
-        /// Give the error back to Python
-        void restore() {
-            PyErr_Restore(type, value, trace);
-            type = value = trace = nullptr;
-        }
+    /// Give the error back to Python
+    void restore() { PyErr_Restore(type, value, trace); type = value = trace = nullptr; }
 
-    private:
-        PyObject *type, *value, *trace;
-    };
+private:
+    PyObject *type, *value, *trace;
+};
 
 /// C++ bindings of builtin Python exceptions
-    class builtin_exception : public std::runtime_error {
-    public:
-        using std::runtime_error::runtime_error;
-
-        virtual void set_error() const = 0; /// Set the error using the Python C API
-    };
+class builtin_exception : public std::runtime_error {
+public:
+    using std::runtime_error::runtime_error;
+    virtual void set_error() const = 0; /// Set the error using the Python C API
+};
 
 #define PYBIND11_RUNTIME_EXCEPTION(name, type) \
     class name : public builtin_exception { public: \
@@ -594,101 +538,79 @@ NAMESPACE_BEGIN(pybind11)
         void set_error() const override { PyErr_SetString(type, what()); } \
     };
 
-    PYBIND11_RUNTIME_EXCEPTION(stop_iteration, PyExc_StopIteration)
+PYBIND11_RUNTIME_EXCEPTION(stop_iteration, PyExc_StopIteration)
+PYBIND11_RUNTIME_EXCEPTION(index_error, PyExc_IndexError)
+PYBIND11_RUNTIME_EXCEPTION(key_error, PyExc_KeyError)
+PYBIND11_RUNTIME_EXCEPTION(value_error, PyExc_ValueError)
+PYBIND11_RUNTIME_EXCEPTION(type_error, PyExc_TypeError)
+PYBIND11_RUNTIME_EXCEPTION(cast_error, PyExc_RuntimeError) /// Thrown when pybind11::cast or handle::call fail due to a type casting error
+PYBIND11_RUNTIME_EXCEPTION(reference_cast_error, PyExc_RuntimeError) /// Used internally
 
-    PYBIND11_RUNTIME_EXCEPTION(index_error, PyExc_IndexError)
-
-    PYBIND11_RUNTIME_EXCEPTION(key_error, PyExc_KeyError)
-
-    PYBIND11_RUNTIME_EXCEPTION(value_error, PyExc_ValueError)
-
-    PYBIND11_RUNTIME_EXCEPTION(type_error, PyExc_TypeError)
-
-    PYBIND11_RUNTIME_EXCEPTION(cast_error,
-                               PyExc_RuntimeError) /// Thrown when pybind11::cast or handle::call fail due to a type casting error
-    PYBIND11_RUNTIME_EXCEPTION(reference_cast_error, PyExc_RuntimeError) /// Used internally
-
-    [[noreturn]] PYBIND11_NOINLINE inline void pybind11_fail(const char *reason) { throw std::runtime_error(reason); }
-
-    [[noreturn]] PYBIND11_NOINLINE inline void pybind11_fail(const std::string &reason) {
-        throw std::runtime_error(reason);
-    }
+[[noreturn]] PYBIND11_NOINLINE inline void pybind11_fail(const char *reason) { throw std::runtime_error(reason); }
+[[noreturn]] PYBIND11_NOINLINE inline void pybind11_fail(const std::string &reason) { throw std::runtime_error(reason); }
 
 /// Format strings for basic number types
 #define PYBIND11_DECL_FMT(t, v) template<> struct format_descriptor<t> \
     { static constexpr const char* value = v; /* for backwards compatibility */ \
       static std::string format() { return value; } }
 
-    template<typename T, typename SFINAE = void>
-    struct format_descriptor {
-    };
+template <typename T, typename SFINAE = void> struct format_descriptor { };
 
-    template<typename T>
-    struct format_descriptor<T, detail::enable_if_t<std::is_integral<T>::value>> {
-        static constexpr const char c = "bBhHiIqQ"[detail::log2(sizeof(T)) * 2 + std::is_unsigned<T>::value];
-        static constexpr const char value[2] = {c, '\0'};
+template <typename T> struct format_descriptor<T, detail::enable_if_t<std::is_integral<T>::value>> {
+    static constexpr const char c = "bBhHiIqQ"[detail::log2(sizeof(T))*2 + std::is_unsigned<T>::value];
+    static constexpr const char value[2] = { c, '\0' };
+    static std::string format() { return std::string(1, c); }
+};
 
-        static std::string format() { return std::string(1, c); }
-    };
-
-    template<typename T> constexpr const char format_descriptor<
-            T, detail::enable_if_t<std::is_integral<T>::value>>::value[2];
+template <typename T> constexpr const char format_descriptor<
+    T, detail::enable_if_t<std::is_integral<T>::value>>::value[2];
 
 /// RAII wrapper that temporarily clears any Python error state
-    struct error_scope {
-        PyObject *type, *value, *trace;
+struct error_scope {
+    PyObject *type, *value, *trace;
+    error_scope() { PyErr_Fetch(&type, &value, &trace); }
+    ~error_scope() { PyErr_Restore(type, value, trace); }
+};
 
-        error_scope() { PyErr_Fetch(&type, &value, &trace); }
-
-        ~error_scope() { PyErr_Restore(type, value, trace); }
-    };
-
-    PYBIND11_DECL_FMT(float, "f");
-
-    PYBIND11_DECL_FMT(double, "d");
-
-    PYBIND11_DECL_FMT(bool, "?");
+PYBIND11_DECL_FMT(float, "f");
+PYBIND11_DECL_FMT(double, "d");
+PYBIND11_DECL_FMT(bool, "?");
 
 /// Dummy destructor wrapper that can be used to expose classes with a private destructor
-    struct nodelete {
-        template<typename T>
-        void operator()(T *) {}
-    };
+struct nodelete { template <typename T> void operator()(T*) { } };
 
 // overload_cast requires variable templates: C++14 or MSVC 2015 Update 2
 #if defined(PYBIND11_CPP14) || _MSC_FULL_VER >= 190023918
 #define PYBIND11_OVERLOAD_CAST 1
 
-    NAMESPACE_BEGIN(detail)
-        template<typename... Args>
-        struct overload_cast_impl {
-            template<typename Return /*,*/ PYBIND11_NOEXCEPT_TPL_ARG>
-            constexpr auto operator()(Return (*pf)(Args...) PYBIND11_NOEXCEPT_SPECIFIER) const noexcept
-            -> decltype(pf) { return pf; }
+NAMESPACE_BEGIN(detail)
+template <typename... Args>
+struct overload_cast_impl {
+    template <typename Return /*,*/ PYBIND11_NOEXCEPT_TPL_ARG>
+    constexpr auto operator()(Return (*pf)(Args...) PYBIND11_NOEXCEPT_SPECIFIER) const noexcept
+                              -> decltype(pf) { return pf; }
 
-            template<typename Return, typename Class /*,*/ PYBIND11_NOEXCEPT_TPL_ARG>
-            constexpr auto
-            operator()(Return (Class::*pmf)(Args...) PYBIND11_NOEXCEPT_SPECIFIER, std::false_type = {}) const noexcept
-            -> decltype(pmf) { return pmf; }
+    template <typename Return, typename Class /*,*/ PYBIND11_NOEXCEPT_TPL_ARG>
+    constexpr auto operator()(Return (Class::*pmf)(Args...) PYBIND11_NOEXCEPT_SPECIFIER, std::false_type = {}) const noexcept
+                              -> decltype(pmf) { return pmf; }
 
-            template<typename Return, typename Class /*,*/ PYBIND11_NOEXCEPT_TPL_ARG>
-            constexpr auto
-            operator()(Return (Class::*pmf)(Args...) const PYBIND11_NOEXCEPT_SPECIFIER, std::true_type) const noexcept
-            -> decltype(pmf) { return pmf; }
-        };
-    NAMESPACE_END(detail)
+    template <typename Return, typename Class /*,*/ PYBIND11_NOEXCEPT_TPL_ARG>
+    constexpr auto operator()(Return (Class::*pmf)(Args...) const PYBIND11_NOEXCEPT_SPECIFIER, std::true_type) const noexcept
+                              -> decltype(pmf) { return pmf; }
+};
+NAMESPACE_END(detail)
 
 /// Syntax sugar for resolving overloaded function pointers:
 ///  - regular: static_cast<Return (Class::*)(Arg0, Arg1, Arg2)>(&Class::func)
 ///  - sweet:   overload_cast<Arg0, Arg1, Arg2>(&Class::func)
-    template<typename... Args>
-    static constexpr detail::overload_cast_impl<Args...> overload_cast = {};
+template <typename... Args>
+static constexpr detail::overload_cast_impl<Args...> overload_cast = {};
 // MSVC 2015 only accepts this particular initialization syntax for this variable template.
 
 /// Const member function selector for overload_cast
 ///  - regular: static_cast<Return (Class::*)(Arg) const>(&Class::func)
 ///  - sweet:   overload_cast<Arg>(&Class::func, const_)
-    static constexpr auto const_ = std::true_type{};
+static constexpr auto const_ = std::true_type{};
 
 #endif // overload_cast
 

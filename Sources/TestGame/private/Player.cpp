@@ -4,10 +4,30 @@
 #include "Boot.h"
 #include "glfw/glfw3.h"
 #include "Crate_01.h"
+#include "Crate_02.h"
+#include "FloorModel.h"
 
 bool lockCursor = true;
 
-Player::Player() : GameObject() {
+Player::Player(World *world) : GameObject(world) {
+    // create portable world
+    portableWorld = new World(1);
+    engine->addWorld(portableWorld);
+    // create floor in second world
+    for (int x = -5; x <= 5; x++)
+        for (int z = -5; z <= 5; z++) {
+            auto n = new FloorModel(portableWorld);
+            n->setPos(glm::vec3(x * 6, 0.0f, z * 6));
+            portableWorld->addObject(n);
+        }
+
+    for (int y = 0; y < 50; y++) {
+        auto n = new Crate_02(portableWorld);
+        n->setPos(glm::vec3(0, 50 + y * 2, 0));
+        portableWorld->addObject(n);
+    }
+
+
     ModelLoader::load_object(this, "", "crate_01.obj");
 
     glm::tquat rot = this->getRotation();
@@ -34,11 +54,9 @@ Player::Player() : GameObject() {
 
     class MainInputReceiver : public InputReceiver {
         void onReceiverRegistered() override {
-            printf("Yay! InputReceiver registered!\n");
         }
 
         void onReceiverUnregistered() override {
-            printf("Yay! InputReceiver unregistered!\n");
         }
 
         InputProcessResult onKeyInputEvent(KeyInputEvent *event) override {
@@ -54,6 +72,19 @@ Player::Player() : GameObject() {
                         // return mouse to center on cursor relock to prevent rotation jump
                         if (engine->lockCursor)
                             glfwSetCursorPos(window, engine->windowWidth * 0.5f, engine->windowHeight * 0.5f);
+                        break;
+                    }
+                    case GLFW_KEY_TAB: {
+                        auto player = (Player *) (engine->camera->getAttachedTo());
+                        player->isInSecondWorld = !player->isInSecondWorld;
+                        if (player->isInSecondWorld) {
+                            player->moveToWorld(engine->getWorld(1));
+                            engine->renderer->attachWorld(engine->getWorld(1));
+                        } else {
+                            player->moveToWorld(engine->getWorld(0));
+                            engine->renderer->attachWorld(engine->getWorld(0));
+                        }
+
                         break;
                     }
                     default:
@@ -104,11 +135,12 @@ Player::Player() : GameObject() {
                         glm::vec3 startPos = engine->camera->getAttachedTo()->getPos() + engine->camera->getOffsetPos();
                         glm::vec3 forward = engine->camera->getForward();
 
-                        auto crate = new Crate_01();
+                        World *world = engine->camera->getAttachedTo()->getWorld();
+                        auto crate = new Crate_01(world);
                         crate->setPos(startPos + forward);
                         crate->rigidBody->applyForce(btVector3(forward.x, forward.y, forward.z) * 10000,
                                                      btVector3(0, 0, 0));
-                        engine->addObject(crate);
+                        world->addObject(crate);
 
                         break;
                     }
@@ -132,4 +164,9 @@ Player::Player() : GameObject() {
     };
     engine->inputManager->registerInputReceiver(new MainInputReceiver);
 
+}
+
+void Player::moveToWorld(World *world) {
+    this->getWorld()->removeObject(this);
+    world->addObject(this);
 }

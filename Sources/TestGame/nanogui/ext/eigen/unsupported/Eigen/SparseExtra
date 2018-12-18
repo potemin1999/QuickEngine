@@ -23,7 +23,7 @@
 #include <sstream>
 
 #ifdef EIGEN_GOOGLEHASH_SUPPORT
-#include <google/dense_hash_map>
+  #include <google/dense_hash_map>
 #endif
 
 /**
@@ -44,10 +44,8 @@
 #include "src/SparseExtra/MarketIO.h"
 
 #if !defined(_WIN32)
-
 #include <dirent.h>
 #include "src/SparseExtra/MatrixMarketIterator.h"
-
 #endif
 
 #include "../../Eigen/src/Core/util/ReenableStupidWarnings.h"

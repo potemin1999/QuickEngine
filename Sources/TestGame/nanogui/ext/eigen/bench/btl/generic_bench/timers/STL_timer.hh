@@ -1,7 +1,7 @@
 //=====================================================
 // File   :  STL_Timer.hh
 // Author :  L. Plagne <laurent.plagne@edf.fr)>        
-// Copyright (C) EDF R&D,  mar dï¿½c 3 18:59:35 CET 2002
+// Copyright (C) EDF R&D,  mar déc 3 18:59:35 CET 2002
 //=====================================================
 // 
 // This program is free software; you can redistribute it and/or
@@ -25,55 +25,54 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-
 using namespace std;
 
 class STL_Timer {
 public:
-    STL_Timer() { baseline = false; };  // Default constructor
-    // Start a series of r trials:
-    void start(unsigned int r) {
-        reps = r;
-        count = 0;
-        iterations.clear();
-        iterations.reserve(reps);
-        initial = time(0);
-    };
-
-    // Start a series of r trials to determine baseline time:
-    void start_baseline(unsigned int r) {
-        baseline = true;
-        start(r);
+  STL_Timer(){ baseline = false; };  // Default constructor
+  // Start a series of r trials:
+  void start(unsigned int r){
+    reps = r;
+    count = 0;
+    iterations.clear();
+    iterations.reserve(reps);
+    initial = time(0);
+  };
+  // Start a series of r trials to determine baseline time:
+  void start_baseline(unsigned int r)
+  {
+    baseline = true;
+    start(r);
+  }
+  // Returns true if the trials have been completed, else false
+  bool check()
+  {
+    ++count;
+    final = time(0);
+    if (initial < final) {
+      iterations.push_back(count);  
+      initial = final;
+      count = 0;
     }
-
-    // Returns true if the trials have been completed, else false
-    bool check() {
-        ++count;
-        final = time(0);
-        if (initial < final) {
-            iterations.push_back(count);
-            initial = final;
-            count = 0;
-        }
-        return (iterations.size() < reps);
-    };
-
-    // Returns the results for external use
-    double get_time(void) {
-        sort(iterations.begin(), iterations.end());
-        return 1.0 / iterations[reps / 2];
-    };
+    return (iterations.size() < reps);
+  };
+  // Returns the results for external use
+  double get_time( void )
+  {
+    sort(iterations.begin(), iterations.end());
+    return 1.0/iterations[reps/2];
+  };
 private:
-    unsigned int reps;  // Number of trials
-    // For storing loop iterations of a trial
-    vector<long> iterations;
-    // For saving initial and final times of a trial
-    time_t initial, final;
-    // For counting loop iterations of a trial
-    unsigned long count;
-    // true if this is a baseline computation, false otherwise
-    bool baseline;
-    // For recording the baseline time
-    double baseline_time;
+  unsigned int reps;  // Number of trials
+  // For storing loop iterations of a trial
+  vector<long> iterations;
+  // For saving initial and final times of a trial
+  time_t initial, final;
+  // For counting loop iterations of a trial
+  unsigned long count;
+  // true if this is a baseline computation, false otherwise
+  bool baseline;
+  // For recording the baseline time 
+  double baseline_time;
 };
 

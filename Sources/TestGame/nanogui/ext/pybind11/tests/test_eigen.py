@@ -3,11 +3,11 @@ import pytest
 with pytest.suppress(ImportError):
     import numpy as np
 
-    ref = np.array([[0, 3, 0, 0, 0, 11],
-                    [22, 0, 0, 0, 17, 11],
-                    [7, 5, 0, 1, 0, 11],
-                    [0, 0, 0, 0, 0, 11],
-                    [0, 0, 14, 0, 8, 11]])
+    ref = np.array([[ 0,  3,  0,  0,  0, 11],
+                    [22,  0,  0,  0, 17, 11],
+                    [ 7,  5,  0,  1,  0, 11],
+                    [ 0,  0,  0,  0,  0, 11],
+                    [ 0,  0, 14,  0,  8, 11]])
 
 
 def assert_equal_ref(mat):
@@ -91,9 +91,9 @@ def test_special_matrix_objects():
 
     assert np.all(incr_diag(7) == np.diag([1, 2, 3, 4, 5, 6, 7]))
 
-    asymm = np.array([[1, 2, 3, 4],
-                      [5, 6, 7, 8],
-                      [9, 10, 11, 12],
+    asymm = np.array([[ 1,  2,  3,  4],
+                      [ 5,  6,  7,  8],
+                      [ 9, 10, 11, 12],
                       [13, 14, 15, 16]])
     symm_lower = np.array(asymm)
     symm_upper = np.array(asymm)

@@ -1,7 +1,7 @@
 //=====================================================
 // File   :  size_lin_log.hh
 // Author :  L. Plagne <laurent.plagne@edf.fr)>        
-// Copyright (C) EDF R&D,  mar dï¿½c 3 18:59:37 CET 2002
+// Copyright (C) EDF R&D,  mar déc 3 18:59:37 CET 2002
 //=====================================================
 // 
 // This program is free software; you can redistribute it and/or
@@ -23,45 +23,47 @@
 #include "size_log.hh"
 
 template<class Vector>
-void size_lin_log(const int nb_point, const int /*size_min*/, const int size_max, Vector &X) {
-    int ten = 10;
-    int nine = 9;
+void size_lin_log(const int nb_point, const int /*size_min*/, const int size_max, Vector & X)
+{
+  int ten=10;
+  int nine=9;
 
-    X.resize(nb_point);
+  X.resize(nb_point);
 
-    if (nb_point > ten) {
+  if (nb_point>ten){
 
-        for (int i = 0; i < nine; i++) {
+    for (int i=0;i<nine;i++){
+      
+      X[i]=i+1;
 
-            X[i] = i + 1;
-
-        }
-
-        Vector log_size;
-        size_log(nb_point - nine, ten, size_max, log_size);
-
-        for (int i = 0; i < nb_point - nine; i++) {
-
-            X[i + nine] = log_size[i];
-
-        }
-    } else {
-
-        for (int i = 0; i < nb_point; i++) {
-
-            X[i] = i + 1;
-
-        }
     }
 
-    //  for (int i=0;i<nb_point;i++){
+    Vector log_size;
+    size_log(nb_point-nine,ten,size_max,log_size);
 
+    for (int i=0;i<nb_point-nine;i++){
+      
+      X[i+nine]=log_size[i];
+
+    }
+  }
+  else{
+
+    for (int i=0;i<nb_point;i++){
+      
+      X[i]=i+1;
+
+    }
+  }
+
+ //  for (int i=0;i<nb_point;i++){
+    
 //        INFOS("computed sizes : X["<<i<<"]="<<X[i]);
-
+    
 //   }
 
 }
-
+  
 #endif
     
 

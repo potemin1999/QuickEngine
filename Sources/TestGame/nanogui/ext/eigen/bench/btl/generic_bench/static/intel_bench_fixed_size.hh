@@ -1,7 +1,7 @@
 //=====================================================
 // File   :  intel_bench_fixed_size.hh
 // Author :  L. Plagne <laurent.plagne@edf.fr)>        
-// Copyright (C) EDF R&D,  mar dï¿½c 3 18:59:37 CET 2002
+// Copyright (C) EDF R&D,  mar déc 3 18:59:37 CET 2002
 //=====================================================
 // 
 // This program is free software; you can redistribute it and/or
@@ -23,42 +23,43 @@
 #include "utilities.h"
 #include "function_time.hh"
 
-template<class Action>
-double bench_fixed_size(int size, unsigned long long &nb_calc, unsigned long long &nb_init) {
+template <class Action>
+double bench_fixed_size(int size, unsigned long long  & nb_calc,unsigned long long & nb_init)
+{
+  
+  Action action(size);
+  
+  double time_baseline=time_init(nb_init,action);
 
-    Action action(size);
+  while (time_baseline < MIN_TIME) {
 
-    double time_baseline = time_init(nb_init, action);
+    //INFOS("nb_init="<<nb_init);
+    //INFOS("time_baseline="<<time_baseline);
+    nb_init*=2;
+    time_baseline=time_init(nb_init,action);
+  }
+  
+  time_baseline=time_baseline/(double(nb_init));
+  
+  double time_action=time_calculate(nb_calc,action);
+  
+  while (time_action < MIN_TIME) {
+    
+    nb_calc*=2;
+    time_action=time_calculate(nb_calc,action);
+  }
 
-    while (time_baseline < MIN_TIME) {
+  INFOS("nb_init="<<nb_init);
+  INFOS("nb_calc="<<nb_calc);
+  
+  
+  time_action=time_action/(double(nb_calc));
+  
+  action.check_result();
+  
+  time_action=time_action-time_baseline;
 
-        //INFOS("nb_init="<<nb_init);
-        //INFOS("time_baseline="<<time_baseline);
-        nb_init *= 2;
-        time_baseline = time_init(nb_init, action);
-    }
-
-    time_baseline = time_baseline / (double(nb_init));
-
-    double time_action = time_calculate(nb_calc, action);
-
-    while (time_action < MIN_TIME) {
-
-        nb_calc *= 2;
-        time_action = time_calculate(nb_calc, action);
-    }
-
-    INFOS("nb_init=" << nb_init);
-    INFOS("nb_calc=" << nb_calc);
-
-
-    time_action = time_action / (double(nb_calc));
-
-    action.check_result();
-
-    time_action = time_action - time_baseline;
-
-    return action.nb_op_base() / (time_action * 1000000.0);
+  return action.nb_op_base()/(time_action*1000000.0);
 
 }
 

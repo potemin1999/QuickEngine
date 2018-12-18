@@ -11,13 +11,13 @@
    !defined(NONAMELESSUNION)
 #define NONAMELESSUNION		1
 #endif
-#if defined(NONAMELESSUNION) && \
+#if defined(NONAMELESSUNION)  && \
    !defined(NONAMELESSSTRUCT)
 #define NONAMELESSSTRUCT	1
 #endif
 #if !defined(__GNU_EXTENSION)
 #if defined(__GNUC__) || defined(__GNUG__)
-#define __GNU_EXTENSION        __extension__
+#define __GNU_EXTENSION		__extension__
 #else
 #define __GNU_EXTENSION
 #endif
@@ -26,8 +26,8 @@
 #ifndef __ANONYMOUS_DEFINED
 #define __ANONYMOUS_DEFINED
 #if defined(__GNUC__) || defined(__GNUG__)
-#define _ANONYMOUS_UNION    __extension__
-#define _ANONYMOUS_STRUCT    __extension__
+#define _ANONYMOUS_UNION	__extension__
+#define _ANONYMOUS_STRUCT	__extension__
 #else
 #define _ANONYMOUS_UNION
 #define _ANONYMOUS_STRUCT
@@ -39,7 +39,7 @@
 #define _UNION_NAME(x)  x
 #define _STRUCT_NAME(x) x
 #endif
-#endif    /* __ANONYMOUS_DEFINED */
+#endif	/* __ANONYMOUS_DEFINED */
 
 #ifndef DUMMYUNIONNAME
 # ifdef NONAMELESSUNION
@@ -55,7 +55,7 @@
 #  define DUMMYUNIONNAME9 u9
 # else /* NONAMELESSUNION */
 #  define DUMMYUNIONNAME
-#  define DUMMYUNIONNAME1    /* Wine uses this variant */
+#  define DUMMYUNIONNAME1	/* Wine uses this variant */
 #  define DUMMYUNIONNAME2
 #  define DUMMYUNIONNAME3
 #  define DUMMYUNIONNAME4
@@ -65,15 +65,15 @@
 #  define DUMMYUNIONNAME8
 #  define DUMMYUNIONNAME9
 # endif
-#endif    /* DUMMYUNIONNAME */
+#endif	/* DUMMYUNIONNAME */
 
-#if !defined(DUMMYUNIONNAME1)    /* MinGW does not define this one */
+#if !defined(DUMMYUNIONNAME1)	/* MinGW does not define this one */
 # ifdef NONAMELESSUNION
 #  define DUMMYUNIONNAME1 u1	/* Wine uses this variant */
 # else
 #  define DUMMYUNIONNAME1	/* Wine uses this variant */
 # endif
-#endif    /* DUMMYUNIONNAME1 */
+#endif	/* DUMMYUNIONNAME1 */
 
 #ifndef DUMMYSTRUCTNAME
 # ifdef NONAMELESSUNION
@@ -85,7 +85,7 @@
 #  define DUMMYSTRUCTNAME5 s5
 # else
 #  define DUMMYSTRUCTNAME
-#  define DUMMYSTRUCTNAME1    /* Wine uses this variant */
+#  define DUMMYSTRUCTNAME1	/* Wine uses this variant */
 #  define DUMMYSTRUCTNAME2
 #  define DUMMYSTRUCTNAME3
 #  define DUMMYSTRUCTNAME4
@@ -105,7 +105,7 @@
 #   define WINELIB_NAME_AW(func) func##A
 #  endif
 # endif
-#endif    /* WINELIB_NAME_AW */
+#endif	/* WINELIB_NAME_AW */
 
 #ifndef DECL_WINELIB_TYPE_AW
 # ifdef __MINGW_TYPEDEF_AW
@@ -113,5 +113,5 @@
 # else
 #  define DECL_WINELIB_TYPE_AW(type)  typedef WINELIB_NAME_AW(type) type;
 # endif
-#endif    /* DECL_WINELIB_TYPE_AW */
+#endif	/* DECL_WINELIB_TYPE_AW */
 

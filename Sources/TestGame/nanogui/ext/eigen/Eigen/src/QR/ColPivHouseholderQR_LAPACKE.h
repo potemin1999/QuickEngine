@@ -34,7 +34,7 @@
 #ifndef EIGEN_COLPIVOTINGHOUSEHOLDERQR_LAPACKE_H
 #define EIGEN_COLPIVOTINGHOUSEHOLDERQR_LAPACKE_H
 
-namespace Eigen {
+namespace Eigen { 
 
 /** \internal Specialization for the data types supported by LAPACKe */
 
@@ -82,15 +82,15 @@ ColPivHouseholderQR<Matrix<EIGTYPE, Dynamic, Dynamic, EIGCOLROW, Dynamic, Dynami
   return *this; \
 }
 
-EIGEN_LAPACKE_QR_COLPIV(double, double, d, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_QR_COLPIV(float, float, s, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_QR_COLPIV(double,   double,        d, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_QR_COLPIV(float,    float,         s, ColMajor, LAPACK_COL_MAJOR)
 EIGEN_LAPACKE_QR_COLPIV(dcomplex, lapack_complex_double, z, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_QR_COLPIV(scomplex, lapack_complex_float, c, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_QR_COLPIV(scomplex, lapack_complex_float,  c, ColMajor, LAPACK_COL_MAJOR)
 
-EIGEN_LAPACKE_QR_COLPIV(double, double, d, RowMajor, LAPACK_ROW_MAJOR)
-EIGEN_LAPACKE_QR_COLPIV(float, float, s, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_QR_COLPIV(double,   double,        d, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_QR_COLPIV(float,    float,         s, RowMajor, LAPACK_ROW_MAJOR)
 EIGEN_LAPACKE_QR_COLPIV(dcomplex, lapack_complex_double, z, RowMajor, LAPACK_ROW_MAJOR)
-EIGEN_LAPACKE_QR_COLPIV(scomplex, lapack_complex_float, c, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_QR_COLPIV(scomplex, lapack_complex_float,  c, RowMajor, LAPACK_ROW_MAJOR)
 
 } // end namespace Eigen
 

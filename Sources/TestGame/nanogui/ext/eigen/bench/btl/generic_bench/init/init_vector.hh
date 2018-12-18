@@ -25,13 +25,13 @@
 //            [] operator for setting element
 //            value_type defined
 template<double init_function(int), class Vector>
-void init_vector(Vector &X, int size) {
+void init_vector(Vector & X, int size){
 
-    X.resize(size);
+  X.resize(size);
 
-    for (unsigned int i = 0; i < X.size(); i++) {
-        X[i] = typename Vector::value_type(init_function(i));
-    }
+  for (unsigned int i=0;i<X.size();i++){
+    X[i]=typename Vector::value_type(init_function(i));
+  }
 }
 
 #endif

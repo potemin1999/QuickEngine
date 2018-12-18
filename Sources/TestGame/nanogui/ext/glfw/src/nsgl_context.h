@@ -33,30 +33,29 @@
 
 // NSGL-specific per-context data
 //
-typedef struct _GLFWcontextNSGL {
-    id pixelFormat;
-    id object;
+typedef struct _GLFWcontextNSGL
+{
+    id           pixelFormat;
+    id	         object;
 
 } _GLFWcontextNSGL;
 
 
 // NSGL-specific global data
 //
-typedef struct _GLFWlibraryNSGL {
+typedef struct _GLFWlibraryNSGL
+{
     // dlopen handle for OpenGL.framework (for glfwGetProcAddress)
-    CFBundleRef framework;
+    CFBundleRef     framework;
 
 } _GLFWlibraryNSGL;
 
 
 GLFWbool _glfwInitNSGL(void);
-
 void _glfwTerminateNSGL(void);
-
-GLFWbool _glfwCreateContextNSGL(_GLFWwindow *window,
-                                const _GLFWctxconfig *ctxconfig,
-                                const _GLFWfbconfig *fbconfig);
-
-void _glfwDestroyContextNSGL(_GLFWwindow *window);
+GLFWbool _glfwCreateContextNSGL(_GLFWwindow* window,
+                                const _GLFWctxconfig* ctxconfig,
+                                const _GLFWfbconfig* fbconfig);
+void _glfwDestroyContextNSGL(_GLFWwindow* window);
 
 #endif // _glfw3_nsgl_context_h_

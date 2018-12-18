@@ -5,21 +5,21 @@
 # Compile with make BLAS=0
 
 if (LIBXSMM)
-    set(XSMM_FIND_QUIETLY TRUE)
-    set(XSMM_INCLUDES ${LIBXSMM}/include)
-    set(XSMM_LIBRARIES ${LIBXSMM}/lib)
+  set(XSMM_FIND_QUIETLY TRUE)
+  set(XSMM_INCLUDES ${LIBXSMM}/include)
+  set(XSMM_LIBRARIES ${LIBXSMM}/lib)
 endif (LIBXSMM)
 
-find_path(LIBXSMM
-        NAMES
-        libxsmm.h
-        PATHS
-        $ENV{XSMMDIR}/include
-        ${INCLUDE_INSTALL_DIR}
-        )
+find_path(LIBXSMM 
+  NAMES 
+  libxsmm.h 
+  PATHS 
+  $ENV{XSMMDIR}/include 
+  ${INCLUDE_INSTALL_DIR} 
+)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(XSMM DEFAULT_MSG
-        LIBXSMM)
+                                  LIBXSMM)
 
 mark_as_advanced(LIBXSMM)

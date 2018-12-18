@@ -31,9 +31,7 @@
 #include <malloc.h>
 
 #include <initguid.h>
-
-DEFINE_GUID(GUID_DEVINTERFACE_HID,
-0x4d1e55b2, 0xf16f, 0x11cf, 0x88, 0xcb, 0x00, 0x11, 0x11, 0x00, 0x00, 0x30);
+DEFINE_GUID(GUID_DEVINTERFACE_HID,0x4d1e55b2,0xf16f,0x11cf,0x88,0xcb,0x00,0x11,0x11,0x00,0x00,0x30);
 
 #if defined(_GLFW_USE_HYBRID_HPG) || defined(_GLFW_USE_OPTIMUS_HPG)
 
@@ -64,52 +62,58 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
 
 // Load necessary libraries (DLLs)
 //
-static GLFWbool loadLibraries(void) {
+static GLFWbool loadLibraries(void)
+{
     _glfw.win32.winmm.instance = LoadLibraryA("winmm.dll");
-    if (!_glfw.win32.winmm.instance) {
+    if (!_glfw.win32.winmm.instance)
+    {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Win32: Failed to load winmm.dll");
         return GLFW_FALSE;
     }
 
     _glfw.win32.winmm.timeGetTime = (TIMEGETTIME_T)
-            GetProcAddress(_glfw.win32.winmm.instance, "timeGetTime");
+        GetProcAddress(_glfw.win32.winmm.instance, "timeGetTime");
 
     _glfw.win32.user32.instance = LoadLibraryA("user32.dll");
-    if (!_glfw.win32.user32.instance) {
+    if (!_glfw.win32.user32.instance)
+    {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Win32: Failed to load user32.dll");
         return GLFW_FALSE;
     }
 
     _glfw.win32.user32.SetProcessDPIAware = (SETPROCESSDPIAWARE_T)
-            GetProcAddress(_glfw.win32.user32.instance, "SetProcessDPIAware");
+        GetProcAddress(_glfw.win32.user32.instance, "SetProcessDPIAware");
     _glfw.win32.user32.ChangeWindowMessageFilterEx = (CHANGEWINDOWMESSAGEFILTEREX_T)
-            GetProcAddress(_glfw.win32.user32.instance, "ChangeWindowMessageFilterEx");
+        GetProcAddress(_glfw.win32.user32.instance, "ChangeWindowMessageFilterEx");
 
     _glfw.win32.dinput8.instance = LoadLibraryA("dinput8.dll");
-    if (_glfw.win32.dinput8.instance) {
+    if (_glfw.win32.dinput8.instance)
+    {
         _glfw.win32.dinput8.DirectInput8Create = (DIRECTINPUT8CREATE_T)
-                GetProcAddress(_glfw.win32.dinput8.instance, "DirectInput8Create");
+            GetProcAddress(_glfw.win32.dinput8.instance, "DirectInput8Create");
     }
 
     {
         int i;
-        const char *names[] =
-                {
-                        "xinput1_4.dll",
-                        "xinput1_3.dll",
-                        "xinput9_1_0.dll",
-                        "xinput1_2.dll",
-                        "xinput1_1.dll",
-                        NULL
-                };
+        const char* names[] =
+        {
+            "xinput1_4.dll",
+            "xinput1_3.dll",
+            "xinput9_1_0.dll",
+            "xinput1_2.dll",
+            "xinput1_1.dll",
+            NULL
+        };
 
-        for (i = 0; names[i]; i++) {
+        for (i = 0;  names[i];  i++)
+        {
             _glfw.win32.xinput.instance = LoadLibraryA(names[i]);
-            if (_glfw.win32.xinput.instance) {
+            if (_glfw.win32.xinput.instance)
+            {
                 _glfw.win32.xinput.XInputGetCapabilities = (XINPUTGETCAPABILITIES_T)
-                        GetProcAddress(_glfw.win32.xinput.instance, "XInputGetCapabilities");
+                    GetProcAddress(_glfw.win32.xinput.instance, "XInputGetCapabilities");
                 _glfw.win32.xinput.XInputGetState = (XINPUTGETSTATE_T)
-                        GetProcAddress(_glfw.win32.xinput.instance, "XInputGetState");
+                    GetProcAddress(_glfw.win32.xinput.instance, "XInputGetState");
 
                 break;
             }
@@ -117,17 +121,19 @@ static GLFWbool loadLibraries(void) {
     }
 
     _glfw.win32.dwmapi.instance = LoadLibraryA("dwmapi.dll");
-    if (_glfw.win32.dwmapi.instance) {
+    if (_glfw.win32.dwmapi.instance)
+    {
         _glfw.win32.dwmapi.DwmIsCompositionEnabled = (DWMISCOMPOSITIONENABLED_T)
-                GetProcAddress(_glfw.win32.dwmapi.instance, "DwmIsCompositionEnabled");
+            GetProcAddress(_glfw.win32.dwmapi.instance, "DwmIsCompositionEnabled");
         _glfw.win32.dwmapi.DwmFlush = (DWMFLUSH_T)
-                GetProcAddress(_glfw.win32.dwmapi.instance, "DwmFlush");
+            GetProcAddress(_glfw.win32.dwmapi.instance, "DwmFlush");
     }
 
     _glfw.win32.shcore.instance = LoadLibraryA("shcore.dll");
-    if (_glfw.win32.shcore.instance) {
+    if (_glfw.win32.shcore.instance)
+    {
         _glfw.win32.shcore.SetProcessDpiAwareness = (SETPROCESSDPIAWARENESS_T)
-                GetProcAddress(_glfw.win32.shcore.instance, "SetProcessDpiAwareness");
+            GetProcAddress(_glfw.win32.shcore.instance, "SetProcessDpiAwareness");
     }
 
     return GLFW_TRUE;
@@ -135,7 +141,8 @@ static GLFWbool loadLibraries(void) {
 
 // Unload used libraries (DLLs)
 //
-static void freeLibraries(void) {
+static void freeLibraries(void)
+{
     if (_glfw.win32.xinput.instance)
         FreeLibrary(_glfw.win32.xinput.instance);
 
@@ -157,7 +164,8 @@ static void freeLibraries(void) {
 
 // Create key code translation tables
 //
-static void createKeyTables(void) {
+static void createKeyTables(void)
+{
     int scancode;
 
     memset(_glfw.win32.publicKeys, -1, sizeof(_glfw.win32.publicKeys));
@@ -285,7 +293,8 @@ static void createKeyTables(void) {
     _glfw.win32.publicKeys[0x037] = GLFW_KEY_KP_MULTIPLY;
     _glfw.win32.publicKeys[0x04A] = GLFW_KEY_KP_SUBTRACT;
 
-    for (scancode = 0; scancode < 512; scancode++) {
+    for (scancode = 0;  scancode < 512;  scancode++)
+    {
         if (_glfw.win32.publicKeys[scancode] > 0)
             _glfw.win32.nativeKeys[_glfw.win32.publicKeys[scancode]] = scancode;
     }
@@ -293,7 +302,8 @@ static void createKeyTables(void) {
 
 // Creates a dummy window for behind-the-scenes work
 //
-static HWND createHelperWindow(void) {
+static HWND createHelperWindow(void)
+{
     HWND window = CreateWindowExW(WS_EX_OVERLAPPEDWINDOW,
                                   _GLFW_WNDCLASSNAME,
                                   L"GLFW helper window",
@@ -302,7 +312,8 @@ static HWND createHelperWindow(void) {
                                   HWND_MESSAGE, NULL,
                                   GetModuleHandleW(NULL),
                                   NULL);
-    if (!window) {
+    if (!window)
+    {
         _glfwInputError(GLFW_PLATFORM_ERROR,
                         "Win32: Failed to create helper window");
         return NULL;
@@ -317,11 +328,11 @@ static HWND createHelperWindow(void) {
         dbi.dbcc_classguid = GUID_DEVINTERFACE_HID;
 
         RegisterDeviceNotificationW(window,
-                                    (DEV_BROADCAST_HDR * ) & dbi,
+                                    (DEV_BROADCAST_HDR*) &dbi,
                                     DEVICE_NOTIFY_WINDOW_HANDLE);
     }
 
-    return window;
+   return window;
 }
 
 
@@ -331,8 +342,9 @@ static HWND createHelperWindow(void) {
 
 // Returns a wide string version of the specified UTF-8 string
 //
-WCHAR *_glfwCreateWideStringFromUTF8Win32(const char *source) {
-    WCHAR *target;
+WCHAR* _glfwCreateWideStringFromUTF8Win32(const char* source)
+{
+    WCHAR* target;
     int length;
 
     length = MultiByteToWideChar(CP_UTF8, 0, source, -1, NULL, 0);
@@ -341,7 +353,8 @@ WCHAR *_glfwCreateWideStringFromUTF8Win32(const char *source) {
 
     target = calloc(length, sizeof(WCHAR));
 
-    if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, target, length)) {
+    if (!MultiByteToWideChar(CP_UTF8, 0, source, -1, target, length))
+    {
         free(target);
         return NULL;
     }
@@ -351,8 +364,9 @@ WCHAR *_glfwCreateWideStringFromUTF8Win32(const char *source) {
 
 // Returns a UTF-8 string version of the specified wide string
 //
-char *_glfwCreateUTF8FromWideStringWin32(const WCHAR *source) {
-    char *target;
+char* _glfwCreateUTF8FromWideStringWin32(const WCHAR* source)
+{
+    char* target;
     int length;
 
     length = WideCharToMultiByte(CP_UTF8, 0, source, -1, NULL, 0, NULL, NULL);
@@ -361,7 +375,8 @@ char *_glfwCreateUTF8FromWideStringWin32(const WCHAR *source) {
 
     target = calloc(length, sizeof(char));
 
-    if (!WideCharToMultiByte(CP_UTF8, 0, source, -1, target, length, NULL, NULL)) {
+    if (!WideCharToMultiByte(CP_UTF8, 0, source, -1, target, length, NULL, NULL))
+    {
         free(target);
         return NULL;
     }
@@ -374,7 +389,8 @@ char *_glfwCreateUTF8FromWideStringWin32(const WCHAR *source) {
 //////                       GLFW platform API                      //////
 //////////////////////////////////////////////////////////////////////////
 
-int _glfwPlatformInit(void) {
+int _glfwPlatformInit(void)
+{
     if (!_glfwInitThreadLocalStorageWin32())
         return GLFW_FALSE;
 
@@ -415,7 +431,8 @@ int _glfwPlatformInit(void) {
     return GLFW_TRUE;
 }
 
-void _glfwPlatformTerminate(void) {
+void _glfwPlatformTerminate(void)
+{
     if (_glfw.win32.helperWindowHandle)
         DestroyWindow(_glfw.win32.helperWindowHandle);
 
@@ -437,7 +454,8 @@ void _glfwPlatformTerminate(void) {
     freeLibraries();
 }
 
-const char *_glfwPlatformGetVersionString(void) {
+const char* _glfwPlatformGetVersionString(void)
+{
     return _GLFW_VERSION_NUMBER " Win32 WGL EGL"
 #if defined(__MINGW32__)
         " MinGW"
@@ -450,6 +468,6 @@ const char *_glfwPlatformGetVersionString(void) {
 #if defined(_GLFW_BUILD_DLL)
         " DLL"
 #endif
-            ;
+        ;
 }
 

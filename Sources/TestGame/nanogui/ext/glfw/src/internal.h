@@ -30,50 +30,44 @@
 
 
 #if defined(_GLFW_USE_CONFIG_H)
-#include "glfw_config.h"
+ #include "glfw_config.h"
 #endif
 
 #if defined(GLFW_INCLUDE_GLCOREARB) || \
-    defined(GLFW_INCLUDE_ES1) || \
-    defined(GLFW_INCLUDE_ES2) || \
-    defined(GLFW_INCLUDE_ES3) || \
-    defined(GLFW_INCLUDE_NONE) || \
-    defined(GLFW_INCLUDE_GLEXT) || \
-    defined(GLFW_INCLUDE_GLU) || \
+    defined(GLFW_INCLUDE_ES1)       || \
+    defined(GLFW_INCLUDE_ES2)       || \
+    defined(GLFW_INCLUDE_ES3)       || \
+    defined(GLFW_INCLUDE_NONE)      || \
+    defined(GLFW_INCLUDE_GLEXT)     || \
+    defined(GLFW_INCLUDE_GLU)       || \
     defined(GLFW_DLL)
-#error "You must not define any header option macros when compiling GLFW"
+ #error "You must not define any header option macros when compiling GLFW"
 #endif
 
 #define GLFW_INCLUDE_NONE
-
 #include "../include/GLFW/glfw3.h"
 
 typedef int GLFWbool;
 
-typedef struct _GLFWwndconfig _GLFWwndconfig;
-typedef struct _GLFWctxconfig _GLFWctxconfig;
-typedef struct _GLFWfbconfig _GLFWfbconfig;
-typedef struct _GLFWcontext _GLFWcontext;
-typedef struct _GLFWwindow _GLFWwindow;
-typedef struct _GLFWlibrary _GLFWlibrary;
-typedef struct _GLFWmonitor _GLFWmonitor;
-typedef struct _GLFWcursor _GLFWcursor;
+typedef struct _GLFWwndconfig   _GLFWwndconfig;
+typedef struct _GLFWctxconfig   _GLFWctxconfig;
+typedef struct _GLFWfbconfig    _GLFWfbconfig;
+typedef struct _GLFWcontext     _GLFWcontext;
+typedef struct _GLFWwindow      _GLFWwindow;
+typedef struct _GLFWlibrary     _GLFWlibrary;
+typedef struct _GLFWmonitor     _GLFWmonitor;
+typedef struct _GLFWcursor      _GLFWcursor;
 
-typedef void (*_GLFWmakecontextcurrentfun)(_GLFWwindow *);
-
-typedef void (*_GLFWswapbuffersfun)(_GLFWwindow *);
-
-typedef void (*_GLFWswapintervalfun)(int);
-
-typedef int (*_GLFWextensionsupportedfun)(const char *);
-
-typedef GLFWglproc (*_GLFWgetprocaddressfun)(const char *);
-
-typedef void (*_GLFWdestroycontextfun)(_GLFWwindow *);
+typedef void (* _GLFWmakecontextcurrentfun)(_GLFWwindow*);
+typedef void (* _GLFWswapbuffersfun)(_GLFWwindow*);
+typedef void (* _GLFWswapintervalfun)(int);
+typedef int (* _GLFWextensionsupportedfun)(const char*);
+typedef GLFWglproc (* _GLFWgetprocaddressfun)(const char*);
+typedef void (* _GLFWdestroycontextfun)(_GLFWwindow*);
 
 #define GL_VERSION 0x1f02
-#define GL_NONE    0
-#define GL_COLOR_BUFFER_BIT    0x00004000
+#define GL_NONE	0
+#define GL_COLOR_BUFFER_BIT	0x00004000
 #define GL_EXTENSIONS 0x1f03
 #define GL_NUM_EXTENSIONS 0x821d
 #define GL_CONTEXT_FLAGS 0x821e
@@ -89,29 +83,27 @@ typedef void (*_GLFWdestroycontextfun)(_GLFWwindow *);
 #define GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH 0x82fc
 #define GL_CONTEXT_FLAG_NO_ERROR_BIT_KHR 0x00000008
 
-typedef int GLint;
+typedef int	GLint;
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
 typedef unsigned int GLbitfield;
 typedef unsigned char GLubyte;
 
-typedef void (APIENTRY *PFNGLCLEARPROC)(GLbitfield);
-
-typedef const GLubyte *(APIENTRY *PFNGLGETSTRINGPROC)(GLenum);
-
-typedef void (APIENTRY *PFNGLGETINTEGERVPROC)(GLenum, GLint *);
-
-typedef const GLubyte *(APIENTRY *PFNGLGETSTRINGIPROC)(GLenum, GLuint);
+typedef void (APIENTRY * PFNGLCLEARPROC)(GLbitfield);
+typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGPROC)(GLenum);
+typedef void (APIENTRY * PFNGLGETINTEGERVPROC)(GLenum,GLint*);
+typedef const GLubyte* (APIENTRY * PFNGLGETSTRINGIPROC)(GLenum,GLuint);
 
 #define VK_NULL_HANDLE 0
 
-typedef void *VkInstance;
-typedef void *VkPhysicalDevice;
+typedef void* VkInstance;
+typedef void* VkPhysicalDevice;
 typedef uint64_t VkSurfaceKHR;
 typedef uint32_t VkFlags;
 typedef uint32_t VkBool32;
 
-typedef enum VkStructureType {
+typedef enum VkStructureType
+{
     VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR = 1000004000,
     VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR = 1000005000,
     VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR = 1000006000,
@@ -120,7 +112,8 @@ typedef enum VkStructureType {
     VK_STRUCTURE_TYPE_MAX_ENUM = 0x7FFFFFFF
 } VkStructureType;
 
-typedef enum VkResult {
+typedef enum VkResult
+{
     VK_SUCCESS = 0,
     VK_NOT_READY = 1,
     VK_TIMEOUT = 2,
@@ -149,33 +142,31 @@ typedef enum VkResult {
 
 typedef struct VkAllocationCallbacks VkAllocationCallbacks;
 
-typedef struct VkExtensionProperties {
-    char extensionName[256];
-    uint32_t specVersion;
+typedef struct VkExtensionProperties
+{
+    char            extensionName[256];
+    uint32_t        specVersion;
 } VkExtensionProperties;
 
-typedef void (APIENTRY *PFN_vkVoidFunction)(void);
-
-typedef PFN_vkVoidFunction (APIENTRY *PFN_vkGetInstanceProcAddr)(VkInstance, const char *);
-
-typedef VkResult (APIENTRY *PFN_vkEnumerateInstanceExtensionProperties)(const char *, uint32_t *,
-                                                                        VkExtensionProperties *);
+typedef void (APIENTRY * PFN_vkVoidFunction)(void);
+typedef PFN_vkVoidFunction (APIENTRY * PFN_vkGetInstanceProcAddr)(VkInstance,const char*);
+typedef VkResult (APIENTRY * PFN_vkEnumerateInstanceExtensionProperties)(const char*,uint32_t*,VkExtensionProperties*);
 
 #define vkEnumerateInstanceExtensionProperties _glfw.vk.EnumerateInstanceExtensionProperties
 #define vkGetInstanceProcAddr _glfw.vk.GetInstanceProcAddr
 
 #if defined(_GLFW_COCOA)
-#include "cocoa_platform.h"
+ #include "cocoa_platform.h"
 #elif defined(_GLFW_WIN32)
-#include "win32_platform.h"
+ #include "win32_platform.h"
 #elif defined(_GLFW_X11)
-#include "x11_platform.h"
+ #include "x11_platform.h"
 #elif defined(_GLFW_WAYLAND)
-#include "wl_platform.h"
+ #include "wl_platform.h"
 #elif defined(_GLFW_MIR)
-#include "mir_platform.h"
+ #include "mir_platform.h"
 #else
-#error "No supported window creation API selected"
+ #error "No supported window creation API selected"
 #endif
 
 
@@ -251,17 +242,18 @@ typedef VkResult (APIENTRY *PFN_vkEnumerateInstanceExtensionProperties)(const ch
  *  to the framebuffer.  This is used to pass window creation parameters from
  *  shared code to the platform API.
  */
-struct _GLFWwndconfig {
-    int width;
-    int height;
-    const char *title;
-    GLFWbool resizable;
-    GLFWbool visible;
-    GLFWbool decorated;
-    GLFWbool focused;
-    GLFWbool autoIconify;
-    GLFWbool floating;
-    GLFWbool maximized;
+struct _GLFWwndconfig
+{
+    int           width;
+    int           height;
+    const char*   title;
+    GLFWbool      resizable;
+    GLFWbool      visible;
+    GLFWbool      decorated;
+    GLFWbool      focused;
+    GLFWbool      autoIconify;
+    GLFWbool      floating;
+    GLFWbool      maximized;
 };
 
 
@@ -271,18 +263,19 @@ struct _GLFWwndconfig {
  *  to the framebuffer.  This is used to pass context creation parameters from
  *  shared code to the platform API.
  */
-struct _GLFWctxconfig {
-    int client;
-    int source;
-    int major;
-    int minor;
-    GLFWbool forward;
-    GLFWbool debug;
-    GLFWbool noerror;
-    int profile;
-    int robustness;
-    int release;
-    _GLFWwindow *share;
+struct _GLFWctxconfig
+{
+    int           client;
+    int           source;
+    int           major;
+    int           minor;
+    GLFWbool      forward;
+    GLFWbool      debug;
+    GLFWbool      noerror;
+    int           profile;
+    int           robustness;
+    int           release;
+    _GLFWwindow*  share;
 };
 
 
@@ -294,47 +287,49 @@ struct _GLFWctxconfig {
  *  It is used to pass framebuffer parameters from shared code to the platform
  *  API and also to enumerate and select available framebuffer configs.
  */
-struct _GLFWfbconfig {
-    int redBits;
-    int greenBits;
-    int blueBits;
-    int alphaBits;
-    int depthBits;
-    int stencilBits;
-    int accumRedBits;
-    int accumGreenBits;
-    int accumBlueBits;
-    int accumAlphaBits;
-    int auxBuffers;
-    GLFWbool stereo;
-    int samples;
-    GLFWbool sRGB;
-    GLFWbool doublebuffer;
-    uintptr_t handle;
+struct _GLFWfbconfig
+{
+    int         redBits;
+    int         greenBits;
+    int         blueBits;
+    int         alphaBits;
+    int         depthBits;
+    int         stencilBits;
+    int         accumRedBits;
+    int         accumGreenBits;
+    int         accumBlueBits;
+    int         accumAlphaBits;
+    int         auxBuffers;
+    GLFWbool    stereo;
+    int         samples;
+    GLFWbool    sRGB;
+    GLFWbool    doublebuffer;
+    uintptr_t   handle;
 };
 
 
 /*! @brief Context structure.
  */
-struct _GLFWcontext {
-    int client;
-    int source;
-    int major, minor, revision;
-    GLFWbool forward, debug, noerror;
-    int profile;
-    int robustness;
-    int release;
+struct _GLFWcontext
+{
+    int                 client;
+    int                 source;
+    int                 major, minor, revision;
+    GLFWbool            forward, debug, noerror;
+    int                 profile;
+    int                 robustness;
+    int                 release;
 
     PFNGLGETSTRINGIPROC GetStringi;
     PFNGLGETINTEGERVPROC GetIntegerv;
-    PFNGLGETSTRINGPROC GetString;
+    PFNGLGETSTRINGPROC  GetString;
 
-    _GLFWmakecontextcurrentfun makeCurrent;
-    _GLFWswapbuffersfun swapBuffers;
-    _GLFWswapintervalfun swapInterval;
-    _GLFWextensionsupportedfun extensionSupported;
-    _GLFWgetprocaddressfun getProcAddress;
-    _GLFWdestroycontextfun destroy;
+    _GLFWmakecontextcurrentfun  makeCurrent;
+    _GLFWswapbuffersfun         swapBuffers;
+    _GLFWswapintervalfun        swapInterval;
+    _GLFWextensionsupportedfun  extensionSupported;
+    _GLFWgetprocaddressfun      getProcAddress;
+    _GLFWdestroycontextfun      destroy;
 
     // This is defined in the context API's context.h
     _GLFW_PLATFORM_CONTEXT_STATE;
@@ -345,50 +340,51 @@ struct _GLFWcontext {
 
 /*! @brief Window and context structure.
  */
-struct _GLFWwindow {
-    struct _GLFWwindow *next;
+struct _GLFWwindow
+{
+    struct _GLFWwindow* next;
 
     // Window settings and state
-    GLFWbool resizable;
-    GLFWbool decorated;
-    GLFWbool autoIconify;
-    GLFWbool floating;
-    GLFWbool closed;
-    void *userPointer;
-    GLFWvidmode videoMode;
-    _GLFWmonitor *monitor;
-    _GLFWcursor *cursor;
+    GLFWbool            resizable;
+    GLFWbool            decorated;
+    GLFWbool            autoIconify;
+    GLFWbool            floating;
+    GLFWbool            closed;
+    void*               userPointer;
+    GLFWvidmode         videoMode;
+    _GLFWmonitor*       monitor;
+    _GLFWcursor*        cursor;
 
-    int minwidth, minheight;
-    int maxwidth, maxheight;
-    int numer, denom;
+    int                 minwidth, minheight;
+    int                 maxwidth, maxheight;
+    int                 numer, denom;
 
-    GLFWbool stickyKeys;
-    GLFWbool stickyMouseButtons;
-    int cursorMode;
-    char mouseButtons[GLFW_MOUSE_BUTTON_LAST + 1];
-    char keys[GLFW_KEY_LAST + 1];
+    GLFWbool            stickyKeys;
+    GLFWbool            stickyMouseButtons;
+    int                 cursorMode;
+    char                mouseButtons[GLFW_MOUSE_BUTTON_LAST + 1];
+    char                keys[GLFW_KEY_LAST + 1];
     // Virtual cursor position when cursor is disabled
-    double virtualCursorPosX, virtualCursorPosY;
+    double              virtualCursorPosX, virtualCursorPosY;
 
-    _GLFWcontext context;
+    _GLFWcontext        context;
 
     struct {
-        GLFWwindowposfun pos;
-        GLFWwindowsizefun size;
-        GLFWwindowclosefun close;
-        GLFWwindowrefreshfun refresh;
-        GLFWwindowfocusfun focus;
-        GLFWwindowiconifyfun iconify;
-        GLFWframebuffersizefun fbsize;
-        GLFWmousebuttonfun mouseButton;
-        GLFWcursorposfun cursorPos;
-        GLFWcursorenterfun cursorEnter;
-        GLFWscrollfun scroll;
-        GLFWkeyfun key;
-        GLFWcharfun character;
-        GLFWcharmodsfun charmods;
-        GLFWdropfun drop;
+        GLFWwindowposfun        pos;
+        GLFWwindowsizefun       size;
+        GLFWwindowclosefun      close;
+        GLFWwindowrefreshfun    refresh;
+        GLFWwindowfocusfun      focus;
+        GLFWwindowiconifyfun    iconify;
+        GLFWframebuffersizefun  fbsize;
+        GLFWmousebuttonfun      mouseButton;
+        GLFWcursorposfun        cursorPos;
+        GLFWcursorenterfun      cursorEnter;
+        GLFWscrollfun           scroll;
+        GLFWkeyfun              key;
+        GLFWcharfun             character;
+        GLFWcharmodsfun         charmods;
+        GLFWdropfun             drop;
     } callbacks;
 
     // This is defined in the window API's platform.h
@@ -398,21 +394,22 @@ struct _GLFWwindow {
 
 /*! @brief Monitor structure.
  */
-struct _GLFWmonitor {
-    char *name;
+struct _GLFWmonitor
+{
+    char*           name;
 
     // Physical dimensions in millimeters.
-    int widthMM, heightMM;
+    int             widthMM, heightMM;
 
     // The window whose video mode is current on this monitor
-    _GLFWwindow *window;
+    _GLFWwindow*    window;
 
-    GLFWvidmode *modes;
-    int modeCount;
-    GLFWvidmode currentMode;
+    GLFWvidmode*    modes;
+    int             modeCount;
+    GLFWvidmode     currentMode;
 
-    GLFWgammaramp originalRamp;
-    GLFWgammaramp currentRamp;
+    GLFWgammaramp   originalRamp;
+    GLFWgammaramp   currentRamp;
 
     // This is defined in the window API's platform.h
     _GLFW_PLATFORM_MONITOR_STATE;
@@ -421,8 +418,9 @@ struct _GLFWmonitor {
 
 /*! @brief Cursor structure
  */
-struct _GLFWcursor {
-    _GLFWcursor *next;
+struct _GLFWcursor
+{
+    _GLFWcursor*    next;
 
     // This is defined in the window API's platform.h
     _GLFW_PLATFORM_CURSOR_STATE;
@@ -430,40 +428,41 @@ struct _GLFWcursor {
 
 /*! @brief Library global data.
  */
-struct _GLFWlibrary {
+struct _GLFWlibrary
+{
     struct {
-        _GLFWfbconfig framebuffer;
-        _GLFWwndconfig window;
-        _GLFWctxconfig context;
-        int refreshRate;
+        _GLFWfbconfig   framebuffer;
+        _GLFWwndconfig  window;
+        _GLFWctxconfig  context;
+        int             refreshRate;
     } hints;
 
-    _GLFWcursor *cursorListHead;
+    _GLFWcursor*        cursorListHead;
 
-    _GLFWwindow *windowListHead;
+    _GLFWwindow*        windowListHead;
 
-    _GLFWmonitor **monitors;
-    int monitorCount;
+    _GLFWmonitor**      monitors;
+    int                 monitorCount;
 
-    uint64_t timerOffset;
+    uint64_t            timerOffset;
 
     struct {
-        GLFWbool available;
-        void *handle;
-        char **extensions;
-        uint32_t extensionCount;
+        GLFWbool        available;
+        void*           handle;
+        char**          extensions;
+        uint32_t        extensionCount;
         PFN_vkEnumerateInstanceExtensionProperties EnumerateInstanceExtensionProperties;
         PFN_vkGetInstanceProcAddr GetInstanceProcAddr;
-        GLFWbool KHR_surface;
-        GLFWbool KHR_win32_surface;
-        GLFWbool KHR_xlib_surface;
-        GLFWbool KHR_xcb_surface;
-        GLFWbool KHR_wayland_surface;
-        GLFWbool KHR_mir_surface;
+        GLFWbool        KHR_surface;
+        GLFWbool        KHR_win32_surface;
+        GLFWbool        KHR_xlib_surface;
+        GLFWbool        KHR_xcb_surface;
+        GLFWbool        KHR_wayland_surface;
+        GLFWbool        KHR_mir_surface;
     } vk;
 
     struct {
-        GLFWmonitorfun monitor;
+        GLFWmonitorfun  monitor;
         GLFWjoystickfun joystick;
     } callbacks;
 
@@ -519,33 +518,33 @@ void _glfwPlatformTerminate(void);
  *
  *  @note The returned string must not change for the duration of the program.
  */
-const char *_glfwPlatformGetVersionString(void);
+const char* _glfwPlatformGetVersionString(void);
 
 /*! @copydoc glfwGetCursorPos
  *  @ingroup platform
  */
-void _glfwPlatformGetCursorPos(_GLFWwindow *window, double *xpos, double *ypos);
+void _glfwPlatformGetCursorPos(_GLFWwindow* window, double* xpos, double* ypos);
 
 /*! @copydoc glfwSetCursorPos
  *  @ingroup platform
  */
-void _glfwPlatformSetCursorPos(_GLFWwindow *window, double xpos, double ypos);
+void _glfwPlatformSetCursorPos(_GLFWwindow* window, double xpos, double ypos);
 
 /*! @brief Sets the specified cursor mode of the specified window.
  *  @param[in] window The window whose cursor mode to set.
  *  @ingroup platform
  */
-void _glfwPlatformSetCursorMode(_GLFWwindow *window, int mode);
+void _glfwPlatformSetCursorMode(_GLFWwindow* window, int mode);
 
 /*! @copydoc glfwGetKeyName
  *  @ingroup platform
  */
-const char *_glfwPlatformGetKeyName(int key, int scancode);
+const char* _glfwPlatformGetKeyName(int key, int scancode);
 
 /*! @copydoc glfwGetMonitors
  *  @ingroup platform
  */
-_GLFWmonitor **_glfwPlatformGetMonitors(int *count);
+_GLFWmonitor** _glfwPlatformGetMonitors(int* count);
 
 /*! @brief Checks whether two monitor objects represent the same monitor.
  *
@@ -555,36 +554,36 @@ _GLFWmonitor **_glfwPlatformGetMonitors(int *count);
  *  @c GLFW_FALSE otherwise.
  *  @ingroup platform
  */
-GLFWbool _glfwPlatformIsSameMonitor(_GLFWmonitor *first, _GLFWmonitor *second);
+GLFWbool _glfwPlatformIsSameMonitor(_GLFWmonitor* first, _GLFWmonitor* second);
 
 /*! @copydoc glfwGetMonitorPos
  *  @ingroup platform
  */
-void _glfwPlatformGetMonitorPos(_GLFWmonitor *monitor, int *xpos, int *ypos);
+void _glfwPlatformGetMonitorPos(_GLFWmonitor* monitor, int* xpos, int* ypos);
 
 /*! @copydoc glfwGetVideoModes
  *  @ingroup platform
  */
-GLFWvidmode *_glfwPlatformGetVideoModes(_GLFWmonitor *monitor, int *count);
+GLFWvidmode* _glfwPlatformGetVideoModes(_GLFWmonitor* monitor, int* count);
 
 /*! @ingroup platform
  */
-void _glfwPlatformGetVideoMode(_GLFWmonitor *monitor, GLFWvidmode *mode);
+void _glfwPlatformGetVideoMode(_GLFWmonitor* monitor, GLFWvidmode* mode);
 
 /*! @copydoc glfwGetGammaRamp
  *  @ingroup platform
  */
-void _glfwPlatformGetGammaRamp(_GLFWmonitor *monitor, GLFWgammaramp *ramp);
+void _glfwPlatformGetGammaRamp(_GLFWmonitor* monitor, GLFWgammaramp* ramp);
 
 /*! @copydoc glfwSetGammaRamp
  *  @ingroup platform
  */
-void _glfwPlatformSetGammaRamp(_GLFWmonitor *monitor, const GLFWgammaramp *ramp);
+void _glfwPlatformSetGammaRamp(_GLFWmonitor* monitor, const GLFWgammaramp* ramp);
 
 /*! @copydoc glfwSetClipboardString
  *  @ingroup platform
  */
-void _glfwPlatformSetClipboardString(_GLFWwindow *window, const char *string);
+void _glfwPlatformSetClipboardString(_GLFWwindow* window, const char* string);
 
 /*! @copydoc glfwGetClipboardString
  *  @ingroup platform
@@ -592,7 +591,7 @@ void _glfwPlatformSetClipboardString(_GLFWwindow *window, const char *string);
  *  @note The returned string must be valid until the next call to @ref
  *  _glfwPlatformGetClipboardString or @ref _glfwPlatformSetClipboardString.
  */
-const char *_glfwPlatformGetClipboardString(_GLFWwindow *window);
+const char* _glfwPlatformGetClipboardString(_GLFWwindow* window);
 
 /*! @copydoc glfwJoystickPresent
  *  @ingroup platform
@@ -602,17 +601,17 @@ int _glfwPlatformJoystickPresent(int joy);
 /*! @copydoc glfwGetJoystickAxes
  *  @ingroup platform
  */
-const float *_glfwPlatformGetJoystickAxes(int joy, int *count);
+const float* _glfwPlatformGetJoystickAxes(int joy, int* count);
 
 /*! @copydoc glfwGetJoystickButtons
  *  @ingroup platform
  */
-const unsigned char *_glfwPlatformGetJoystickButtons(int joy, int *count);
+const unsigned char* _glfwPlatformGetJoystickButtons(int joy, int* count);
 
 /*! @copydoc glfwGetJoystickName
  *  @ingroup platform
  */
-const char *_glfwPlatformGetJoystickName(int joy);
+const char* _glfwPlatformGetJoystickName(int joy);
 
 /*! @copydoc glfwGetTimerValue
  *  @ingroup platform
@@ -626,121 +625,119 @@ uint64_t _glfwPlatformGetTimerFrequency(void);
 
 /*! @ingroup platform
  */
-int _glfwPlatformCreateWindow(_GLFWwindow *window,
-                              const _GLFWwndconfig *wndconfig,
-                              const _GLFWctxconfig *ctxconfig,
-                              const _GLFWfbconfig *fbconfig);
+int _glfwPlatformCreateWindow(_GLFWwindow* window,
+                              const _GLFWwndconfig* wndconfig,
+                              const _GLFWctxconfig* ctxconfig,
+                              const _GLFWfbconfig* fbconfig);
 
 /*! @ingroup platform
  */
-void _glfwPlatformDestroyWindow(_GLFWwindow *window);
+void _glfwPlatformDestroyWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwSetWindowTitle
  *  @ingroup platform
  */
-void _glfwPlatformSetWindowTitle(_GLFWwindow *window, const char *title);
+void _glfwPlatformSetWindowTitle(_GLFWwindow* window, const char* title);
 
 /*! @copydoc glfwSetWindowIcon
  *  @ingroup platform
  */
-void _glfwPlatformSetWindowIcon(_GLFWwindow *window, int count, const GLFWimage *images);
+void _glfwPlatformSetWindowIcon(_GLFWwindow* window, int count, const GLFWimage* images);
 
 /*! @copydoc glfwGetWindowPos
  *  @ingroup platform
  */
-void _glfwPlatformGetWindowPos(_GLFWwindow *window, int *xpos, int *ypos);
+void _glfwPlatformGetWindowPos(_GLFWwindow* window, int* xpos, int* ypos);
 
 /*! @copydoc glfwSetWindowPos
  *  @ingroup platform
  */
-void _glfwPlatformSetWindowPos(_GLFWwindow *window, int xpos, int ypos);
+void _glfwPlatformSetWindowPos(_GLFWwindow* window, int xpos, int ypos);
 
 /*! @copydoc glfwGetWindowSize
  *  @ingroup platform
  */
-void _glfwPlatformGetWindowSize(_GLFWwindow *window, int *width, int *height);
+void _glfwPlatformGetWindowSize(_GLFWwindow* window, int* width, int* height);
 
 /*! @copydoc glfwSetWindowSize
  *  @ingroup platform
  */
-void _glfwPlatformSetWindowSize(_GLFWwindow *window, int width, int height);
+void _glfwPlatformSetWindowSize(_GLFWwindow* window, int width, int height);
 
 /*! @copydoc glfwSetWindowSizeLimits
  *  @ingroup platform
  */
-void _glfwPlatformSetWindowSizeLimits(_GLFWwindow *window, int minwidth, int minheight, int maxwidth, int maxheight);
+void _glfwPlatformSetWindowSizeLimits(_GLFWwindow* window, int minwidth, int minheight, int maxwidth, int maxheight);
 
 /*! @copydoc glfwSetWindowAspectRatio
  *  @ingroup platform
  */
-void _glfwPlatformSetWindowAspectRatio(_GLFWwindow *window, int numer, int denom);
+void _glfwPlatformSetWindowAspectRatio(_GLFWwindow* window, int numer, int denom);
 
 /*! @copydoc glfwGetFramebufferSize
  *  @ingroup platform
  */
-void _glfwPlatformGetFramebufferSize(_GLFWwindow *window, int *width, int *height);
+void _glfwPlatformGetFramebufferSize(_GLFWwindow* window, int* width, int* height);
 
 /*! @copydoc glfwGetWindowFrameSize
  *  @ingroup platform
  */
-void _glfwPlatformGetWindowFrameSize(_GLFWwindow *window, int *left, int *top, int *right, int *bottom);
+void _glfwPlatformGetWindowFrameSize(_GLFWwindow* window, int* left, int* top, int* right, int* bottom);
 
 /*! @copydoc glfwIconifyWindow
  *  @ingroup platform
  */
-void _glfwPlatformIconifyWindow(_GLFWwindow *window);
+void _glfwPlatformIconifyWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwRestoreWindow
  *  @ingroup platform
  */
-void _glfwPlatformRestoreWindow(_GLFWwindow *window);
+void _glfwPlatformRestoreWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwMaximizeWindow
  *  @ingroup platform
  */
-void _glfwPlatformMaximizeWindow(_GLFWwindow *window);
+void _glfwPlatformMaximizeWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwShowWindow
  *  @ingroup platform
  */
-void _glfwPlatformShowWindow(_GLFWwindow *window);
+void _glfwPlatformShowWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwHideWindow
  *  @ingroup platform
  */
-void _glfwPlatformHideWindow(_GLFWwindow *window);
+void _glfwPlatformHideWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwFocusWindow
  *  @ingroup platform
  */
-void _glfwPlatformFocusWindow(_GLFWwindow *window);
+void _glfwPlatformFocusWindow(_GLFWwindow* window);
 
 /*! @copydoc glfwSetWindowMonitor
  *  @ingroup platform
  */
-void
-_glfwPlatformSetWindowMonitor(_GLFWwindow *window, _GLFWmonitor *monitor, int xpos, int ypos, int width, int height,
-                              int refreshRate);
+void _glfwPlatformSetWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
 
 /*! @brief Returns whether the window is focused.
  *  @ingroup platform
  */
-int _glfwPlatformWindowFocused(_GLFWwindow *window);
+int _glfwPlatformWindowFocused(_GLFWwindow* window);
 
 /*! @brief Returns whether the window is iconified.
  *  @ingroup platform
  */
-int _glfwPlatformWindowIconified(_GLFWwindow *window);
+int _glfwPlatformWindowIconified(_GLFWwindow* window);
 
 /*! @brief Returns whether the window is visible.
  *  @ingroup platform
  */
-int _glfwPlatformWindowVisible(_GLFWwindow *window);
+int _glfwPlatformWindowVisible(_GLFWwindow* window);
 
 /*! @brief Returns whether the window is maximized.
  *  @ingroup platform
  */
-int _glfwPlatformWindowMaximized(_GLFWwindow *window);
+int _glfwPlatformWindowMaximized(_GLFWwindow* window);
 
 /*! @copydoc glfwPollEvents
  *  @ingroup platform
@@ -764,47 +761,44 @@ void _glfwPlatformPostEmptyEvent(void);
 
 /*! @ingroup platform
  */
-void _glfwPlatformSetCurrentContext(_GLFWwindow *context);
+void _glfwPlatformSetCurrentContext(_GLFWwindow* context);
 
 /*! @copydoc glfwGetCurrentContext
  *  @ingroup platform
  */
-_GLFWwindow *_glfwPlatformGetCurrentContext(void);
+_GLFWwindow* _glfwPlatformGetCurrentContext(void);
 
 /*! @copydoc glfwCreateCursor
  *  @ingroup platform
  */
-int _glfwPlatformCreateCursor(_GLFWcursor *cursor, const GLFWimage *image, int xhot, int yhot);
+int _glfwPlatformCreateCursor(_GLFWcursor* cursor, const GLFWimage* image, int xhot, int yhot);
 
 /*! @copydoc glfwCreateStandardCursor
  *  @ingroup platform
  */
-int _glfwPlatformCreateStandardCursor(_GLFWcursor *cursor, int shape);
+int _glfwPlatformCreateStandardCursor(_GLFWcursor* cursor, int shape);
 
 /*! @copydoc glfwDestroyCursor
  *  @ingroup platform
  */
-void _glfwPlatformDestroyCursor(_GLFWcursor *cursor);
+void _glfwPlatformDestroyCursor(_GLFWcursor* cursor);
 
 /*! @copydoc glfwSetCursor
  *  @ingroup platform
  */
-void _glfwPlatformSetCursor(_GLFWwindow *window, _GLFWcursor *cursor);
+void _glfwPlatformSetCursor(_GLFWwindow* window, _GLFWcursor* cursor);
 
 /*! @ingroup platform
  */
-char **_glfwPlatformGetRequiredInstanceExtensions(uint32_t *count);
+char** _glfwPlatformGetRequiredInstanceExtensions(uint32_t* count);
 
 /*! @ingroup platform
  */
-int
-_glfwPlatformGetPhysicalDevicePresentationSupport(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
+int _glfwPlatformGetPhysicalDevicePresentationSupport(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
 
 /*! @ingroup platform
  */
-VkResult
-_glfwPlatformCreateWindowSurface(VkInstance instance, _GLFWwindow *window, const VkAllocationCallbacks *allocator,
-                                 VkSurfaceKHR *surface);
+VkResult _glfwPlatformCreateWindowSurface(VkInstance instance, _GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
 
 
 //========================================================================
@@ -817,7 +811,7 @@ _glfwPlatformCreateWindowSurface(VkInstance instance, _GLFWwindow *window, const
  *  if it lost focus.
  *  @ingroup event
  */
-void _glfwInputWindowFocus(_GLFWwindow *window, GLFWbool focused);
+void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused);
 
 /*! @brief Notifies shared code of a window movement event.
  *  @param[in] window The window that received the event.
@@ -825,7 +819,7 @@ void _glfwInputWindowFocus(_GLFWwindow *window, GLFWbool focused);
  *  @param[in] ypos The new y-coordinate of the client area of the window.
  *  @ingroup event
  */
-void _glfwInputWindowPos(_GLFWwindow *window, int xpos, int ypos);
+void _glfwInputWindowPos(_GLFWwindow* window, int xpos, int ypos);
 
 /*! @brief Notifies shared code of a window resize event.
  *  @param[in] window The window that received the event.
@@ -833,7 +827,7 @@ void _glfwInputWindowPos(_GLFWwindow *window, int xpos, int ypos);
  *  @param[in] height The new height of the client area of the window.
  *  @ingroup event
  */
-void _glfwInputWindowSize(_GLFWwindow *window, int width, int height);
+void _glfwInputWindowSize(_GLFWwindow* window, int width, int height);
 
 /*! @brief Notifies shared code of a framebuffer resize event.
  *  @param[in] window The window that received the event.
@@ -841,7 +835,7 @@ void _glfwInputWindowSize(_GLFWwindow *window, int width, int height);
  *  @param[in] height The new height, in pixels, of the framebuffer.
  *  @ingroup event
  */
-void _glfwInputFramebufferSize(_GLFWwindow *window, int width, int height);
+void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height);
 
 /*! @brief Notifies shared code of a window iconification event.
  *  @param[in] window The window that received the event.
@@ -849,20 +843,20 @@ void _glfwInputFramebufferSize(_GLFWwindow *window, int width, int height);
  *  `GLFW_FALSE` if it was restored.
  *  @ingroup event
  */
-void _glfwInputWindowIconify(_GLFWwindow *window, GLFWbool iconified);
+void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified);
 
 /*! @brief Notifies shared code of a window damage event.
  *  @param[in] window The window that received the event.
  */
-void _glfwInputWindowDamage(_GLFWwindow *window);
+void _glfwInputWindowDamage(_GLFWwindow* window);
 
 /*! @brief Notifies shared code of a window close request event
  *  @param[in] window The window that received the event.
  *  @ingroup event
  */
-void _glfwInputWindowCloseRequest(_GLFWwindow *window);
+void _glfwInputWindowCloseRequest(_GLFWwindow* window);
 
-void _glfwInputWindowMonitorChange(_GLFWwindow *window, _GLFWmonitor *monitor);
+void _glfwInputWindowMonitorChange(_GLFWwindow* window, _GLFWmonitor* monitor);
 
 /*! @brief Notifies shared code of a physical key event.
  *  @param[in] window The window that received the event.
@@ -872,7 +866,7 @@ void _glfwInputWindowMonitorChange(_GLFWwindow *window, _GLFWmonitor *monitor);
  *  @param[in] mods The modifiers pressed when the event was generated.
  *  @ingroup event
  */
-void _glfwInputKey(_GLFWwindow *window, int key, int scancode, int action, int mods);
+void _glfwInputKey(_GLFWwindow* window, int key, int scancode, int action, int mods);
 
 /*! @brief Notifies shared code of a Unicode character input event.
  *  @param[in] window The window that received the event.
@@ -882,7 +876,7 @@ void _glfwInputKey(_GLFWwindow *window, int key, int scancode, int action, int m
  *  `GLFW_FALSE` otherwise.
  *  @ingroup event
  */
-void _glfwInputChar(_GLFWwindow *window, unsigned int codepoint, int mods, GLFWbool plain);
+void _glfwInputChar(_GLFWwindow* window, unsigned int codepoint, int mods, GLFWbool plain);
 
 /*! @brief Notifies shared code of a scroll event.
  *  @param[in] window The window that received the event.
@@ -890,7 +884,7 @@ void _glfwInputChar(_GLFWwindow *window, unsigned int codepoint, int mods, GLFWb
  *  @param[in] yoffset The scroll offset along the y-axis.
  *  @ingroup event
  */
-void _glfwInputScroll(_GLFWwindow *window, double xoffset, double yoffset);
+void _glfwInputScroll(_GLFWwindow* window, double xoffset, double yoffset);
 
 /*! @brief Notifies shared code of a mouse button click event.
  *  @param[in] window The window that received the event.
@@ -898,7 +892,7 @@ void _glfwInputScroll(_GLFWwindow *window, double xoffset, double yoffset);
  *  @param[in] action @ref GLFW_PRESS or @ref GLFW_RELEASE.
  *  @ingroup event
  */
-void _glfwInputMouseClick(_GLFWwindow *window, int button, int action, int mods);
+void _glfwInputMouseClick(_GLFWwindow* window, int button, int action, int mods);
 
 /*! @brief Notifies shared code of a cursor motion event.
  *  @param[in] window The window that received the event.
@@ -908,7 +902,7 @@ void _glfwInputMouseClick(_GLFWwindow *window, int button, int action, int mods)
  *  of the client area of the window.
  *  @ingroup event
  */
-void _glfwInputCursorPos(_GLFWwindow *window, double xpos, double ypos);
+void _glfwInputCursorPos(_GLFWwindow* window, double xpos, double ypos);
 
 /*! @brief Notifies shared code of a cursor enter/leave event.
  *  @param[in] window The window that received the event.
@@ -916,7 +910,7 @@ void _glfwInputCursorPos(_GLFWwindow *window, double xpos, double ypos);
  *  window, or `GLFW_FALSE` if it left it.
  *  @ingroup event
  */
-void _glfwInputCursorEnter(_GLFWwindow *window, GLFWbool entered);
+void _glfwInputCursorEnter(_GLFWwindow* window, GLFWbool entered);
 
 /*! @ingroup event
  */
@@ -924,7 +918,7 @@ void _glfwInputMonitorChange(void);
 
 /*! @ingroup event
  */
-void _glfwInputMonitorWindowChange(_GLFWmonitor *monitor, _GLFWwindow *window);
+void _glfwInputMonitorWindowChange(_GLFWmonitor* monitor, _GLFWwindow* window);
 
 /*! @brief Notifies shared code of an error.
  *  @param[in] error The error code most suitable for the error.
@@ -933,9 +927,7 @@ void _glfwInputMonitorWindowChange(_GLFWmonitor *monitor, _GLFWwindow *window);
  *  @ingroup event
  */
 #if defined(__GNUC__)
-
-void _glfwInputError(int error, const char *format, ...) __attribute__((format(printf, 2, 3)));
-
+void _glfwInputError(int error, const char* format, ...) __attribute__((format(printf, 2, 3)));
 #else
 void _glfwInputError(int error, const char* format, ...);
 #endif
@@ -946,7 +938,7 @@ void _glfwInputError(int error, const char* format, ...);
  *  @param[in] names The names of the dropped objects.
  *  @ingroup event
  */
-void _glfwInputDrop(_GLFWwindow *window, int count, const char **names);
+void _glfwInputDrop(_GLFWwindow* window, int count, const char** names);
 
 /*! @brief Notifies shared code of a joystick connection/disconnection event.
  *  @param[in] joy The joystick that was connected or disconnected.
@@ -962,18 +954,18 @@ void _glfwInputJoystickChange(int joy, int event);
 
 /*! @ingroup utility
  */
-const GLFWvidmode *_glfwChooseVideoMode(_GLFWmonitor *monitor,
-                                        const GLFWvidmode *desired);
+const GLFWvidmode* _glfwChooseVideoMode(_GLFWmonitor* monitor,
+                                        const GLFWvidmode* desired);
 
 /*! @brief Performs lexical comparison between two @ref GLFWvidmode structures.
  *  @ingroup utility
  */
-int _glfwCompareVideoModes(const GLFWvidmode *first, const GLFWvidmode *second);
+int _glfwCompareVideoModes(const GLFWvidmode* first, const GLFWvidmode* second);
 
 /*! @brief Splits a color depth into red, green and blue bit depths.
  *  @ingroup utility
  */
-void _glfwSplitBPP(int bpp, int *red, int *green, int *blue);
+void _glfwSplitBPP(int bpp, int* red, int* green, int* blue);
 
 /*! @brief Searches an extension string for the specified extension.
  *  @param[in] string The extension string to search.
@@ -981,7 +973,7 @@ void _glfwSplitBPP(int bpp, int *red, int *green, int *blue);
  *  @return `GLFW_TRUE` if the extension was found, or `GLFW_FALSE` otherwise.
  *  @ingroup utility
  */
-GLFWbool _glfwStringInExtensionString(const char *string, const char *extensions);
+GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions);
 
 /*! @brief Chooses the framebuffer config that best matches the desired one.
  *  @param[in] desired The desired framebuffer config.
@@ -991,8 +983,8 @@ GLFWbool _glfwStringInExtensionString(const char *string, const char *extensions
  *  NULL if none fulfilled the hard constraints of the desired values.
  *  @ingroup utility
  */
-const _GLFWfbconfig *_glfwChooseFBConfig(const _GLFWfbconfig *desired,
-                                         const _GLFWfbconfig *alternatives,
+const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
+                                         const _GLFWfbconfig* alternatives,
                                          unsigned int count);
 
 /*! @brief Retrieves the attributes of the current context.
@@ -1001,7 +993,7 @@ const _GLFWfbconfig *_glfwChooseFBConfig(const _GLFWfbconfig *desired,
  *  unusable.
  *  @ingroup utility
  */
-GLFWbool _glfwRefreshContextAttribs(const _GLFWctxconfig *ctxconfig);
+GLFWbool _glfwRefreshContextAttribs(const _GLFWctxconfig* ctxconfig);
 
 /*! @brief Checks whether the desired context attributes are valid.
  *  @param[in] ctxconfig The context attributes to check.
@@ -1013,15 +1005,15 @@ GLFWbool _glfwRefreshContextAttribs(const _GLFWctxconfig *ctxconfig);
  *  exists and whether all relevant options have supported and non-conflicting
  *  values.
  */
-GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig *ctxconfig);
+GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig);
 
 /*! @ingroup utility
  */
-void _glfwAllocGammaArrays(GLFWgammaramp *ramp, unsigned int size);
+void _glfwAllocGammaArrays(GLFWgammaramp* ramp, unsigned int size);
 
 /*! @ingroup utility
  */
-void _glfwFreeGammaArrays(GLFWgammaramp *ramp);
+void _glfwFreeGammaArrays(GLFWgammaramp* ramp);
 
 /*! @brief Allocates and returns a monitor object with the specified name
  *  and dimensions.
@@ -1031,16 +1023,16 @@ void _glfwFreeGammaArrays(GLFWgammaramp *ramp);
  *  @return The newly created object.
  *  @ingroup utility
  */
-_GLFWmonitor *_glfwAllocMonitor(const char *name, int widthMM, int heightMM);
+_GLFWmonitor* _glfwAllocMonitor(const char* name, int widthMM, int heightMM);
 
 /*! @brief Frees a monitor object and any data associated with it.
  *  @ingroup utility
   */
-void _glfwFreeMonitor(_GLFWmonitor *monitor);
+void _glfwFreeMonitor(_GLFWmonitor* monitor);
 
 /*! @ingroup utility
   */
-void _glfwFreeMonitors(_GLFWmonitor **monitors, int count);
+void _glfwFreeMonitors(_GLFWmonitor** monitors, int count);
 
 /*! @ingroup utility
  */
@@ -1056,6 +1048,6 @@ void _glfwTerminateVulkan(void);
 
 /*! @ingroup utility
  */
-const char *_glfwGetVulkanResultString(VkResult result);
+const char* _glfwGetVulkanResultString(VkResult result);
 
 #endif // _glfw3_internal_h_

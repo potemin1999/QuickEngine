@@ -8,11 +8,11 @@ if (NOT CMAKE_VERSION VERSION_LESS "3.0")
     # Until all major package systems have moved to CMake 3,
     # we stick with the older INSTALL_NAME_DIR mechanism
     cmake_policy(SET CMP0042 OLD)
-endif ()
+endif()
 
-if (POLICY CMP0022)
-    cmake_policy(SET CMP0022 NEW)
-endif ()
+if(POLICY CMP0022)
+  cmake_policy(SET CMP0022 NEW)
+endif()
 
 set(GLFW_VERSION_MAJOR "3")
 set(GLFW_VERSION_MINOR "2")
@@ -33,33 +33,33 @@ option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 
 if (WIN32)
     option(GLFW_USE_HYBRID_HPG "Force use of high-performance GPU on hybrid systems" OFF)
-endif ()
+endif()
 
 if (APPLE)
     option(GLFW_USE_CHDIR "Make glfwInit chdir to Contents/Resources" ON)
     option(GLFW_USE_MENUBAR "Populate the menu bar on first window creation" ON)
     option(GLFW_USE_RETINA "Use the full resolution of Retina displays" ON)
-endif ()
+endif()
 
 if (UNIX AND NOT APPLE)
     option(GLFW_USE_WAYLAND "Use Wayland for window creation" OFF)
-    option(GLFW_USE_MIR "Use Mir for window creation" OFF)
-endif ()
+    option(GLFW_USE_MIR     "Use Mir for window creation" OFF)
+endif()
 
 if (MSVC)
     option(USE_MSVC_RUNTIME_LIBRARY_DLL "Use MSVC runtime library DLL" ON)
-endif ()
+endif()
 
 if (BUILD_SHARED_LIBS)
     set(_GLFW_BUILD_DLL 1)
-endif ()
+endif()
 
 if (BUILD_SHARED_LIBS AND UNIX)
     # On Unix-like systems, shared libraries can use the soname system.
     set(GLFW_LIB_NAME glfw)
-else ()
+else()
     set(GLFW_LIB_NAME glfw3)
-endif ()
+endif()
 
 set(CMAKE_MODULE_PATH "${GLFW_SOURCE_DIR}/CMake/modules")
 
@@ -69,7 +69,7 @@ find_package(Vulkan QUIET)
 if (GLFW_BUILD_DOCS)
     set(DOXYGEN_SKIP_DOT TRUE)
     find_package(Doxygen)
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Set compiler specific flags
@@ -77,21 +77,21 @@ endif ()
 if (MSVC)
     if (NOT USE_MSVC_RUNTIME_LIBRARY_DLL)
         foreach (flag CMAKE_C_FLAGS
-                CMAKE_C_FLAGS_DEBUG
-                CMAKE_C_FLAGS_RELEASE
-                CMAKE_C_FLAGS_MINSIZEREL
-                CMAKE_C_FLAGS_RELWITHDEBINFO)
+                      CMAKE_C_FLAGS_DEBUG
+                      CMAKE_C_FLAGS_RELEASE
+                      CMAKE_C_FLAGS_MINSIZEREL
+                      CMAKE_C_FLAGS_RELWITHDEBINFO)
 
             if (${flag} MATCHES "/MD")
                 string(REGEX REPLACE "/MD" "/MT" ${flag} "${${flag}}")
-            endif ()
+            endif()
             if (${flag} MATCHES "/MDd")
                 string(REGEX REPLACE "/MDd" "/MTd" ${flag} "${${flag}}")
-            endif ()
+            endif()
 
-        endforeach ()
-    endif ()
-endif ()
+        endforeach()
+    endif()
+endif()
 
 if (MINGW)
     # Workaround for legacy MinGW not providing XInput and DirectInput
@@ -101,7 +101,7 @@ if (MINGW)
     check_include_file(xinput.h XINPUT_H_FOUND)
     if (NOT DINPUT_H_FOUND OR NOT XINPUT_H_FOUND)
         list(APPEND glfw_INCLUDE_DIRS "${GLFW_SOURCE_DIR}/deps/mingw")
-    endif ()
+    endif()
 
     # Enable link-time exploit mitigation features enabled by default on MSVC
     include(CheckCCompilerFlag)
@@ -111,22 +111,22 @@ if (MINGW)
     check_c_compiler_flag("" _GLFW_HAS_DEP)
     if (_GLFW_HAS_DEP)
         set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--nxcompat ${CMAKE_SHARED_LINKER_FLAGS}")
-    endif ()
+    endif()
 
     # Compatibility with address space layout randomization (ASLR)
     set(CMAKE_REQUIRED_FLAGS "-Wl,--dynamicbase")
     check_c_compiler_flag("" _GLFW_HAS_ASLR)
     if (_GLFW_HAS_ASLR)
         set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--dynamicbase ${CMAKE_SHARED_LINKER_FLAGS}")
-    endif ()
+    endif()
 
     # Compatibility with 64-bit address space layout randomization (ASLR)
     set(CMAKE_REQUIRED_FLAGS "-Wl,--high-entropy-va")
     check_c_compiler_flag("" _GLFW_HAS_64ASLR)
     if (_GLFW_HAS_64ASLR)
         set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--high-entropy-va ${CMAKE_SHARED_LINKER_FLAGS}")
-    endif ()
-endif ()
+    endif()
+endif()
 
 #--------------------------------------------------------------------
 # Detect and select backend APIs
@@ -144,13 +144,13 @@ elseif (UNIX)
     elseif (GLFW_USE_MIR)
         set(_GLFW_MIR 1)
         message(STATUS "Using Mir for window creation")
-    else ()
+    else()
         set(_GLFW_X11 1)
         message(STATUS "Using X11 for window creation")
-    endif ()
-else ()
+    endif()
+else()
     message(FATAL_ERROR "No supported platform was detected")
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Find and add Unix math and time libraries
@@ -161,20 +161,20 @@ if (UNIX AND NOT APPLE)
     if (RT_LIBRARY)
         list(APPEND glfw_LIBRARIES "${RT_LIBRARY}")
         list(APPEND glfw_PKG_LIBS "-lrt")
-    endif ()
+    endif()
 
     find_library(MATH_LIBRARY m)
     mark_as_advanced(MATH_LIBRARY)
     if (MATH_LIBRARY)
         list(APPEND glfw_LIBRARIES "${MATH_LIBRARY}")
         list(APPEND glfw_PKG_LIBS "-lm")
-    endif ()
+    endif()
 
     if (CMAKE_DL_LIBS)
         list(APPEND glfw_LIBRARIES "${CMAKE_DL_LIBS}")
         list(APPEND glfw_PKG_LIBS "-l${CMAKE_DL_LIBS}")
-    endif ()
-endif ()
+    endif()
+endif()
 
 #--------------------------------------------------------------------
 # Use Win32 for window creation
@@ -185,8 +185,8 @@ if (_GLFW_WIN32)
 
     if (GLFW_USE_HYBRID_HPG)
         set(_GLFW_USE_HYBRID_HPG 1)
-    endif ()
-endif ()
+    endif()
+endif()
 
 #--------------------------------------------------------------------
 # Use X11 for window creation
@@ -204,7 +204,7 @@ if (_GLFW_X11)
     # Check for XRandR (modern resolution switching and gamma control)
     if (NOT X11_Xrandr_FOUND)
         message(FATAL_ERROR "The RandR library and headers were not found")
-    endif ()
+    endif()
 
     list(APPEND glfw_INCLUDE_DIRS "${X11_Xrandr_INCLUDE_PATH}")
     list(APPEND glfw_LIBRARIES "${X11_Xrandr_LIB}")
@@ -213,7 +213,7 @@ if (_GLFW_X11)
     # Check for Xinerama (legacy multi-monitor support)
     if (NOT X11_Xinerama_FOUND)
         message(FATAL_ERROR "The Xinerama library and headers were not found")
-    endif ()
+    endif()
 
     list(APPEND glfw_INCLUDE_DIRS "${X11_Xinerama_INCLUDE_PATH}")
     list(APPEND glfw_LIBRARIES "${X11_Xinerama_LIB}")
@@ -226,31 +226,31 @@ if (_GLFW_X11)
 
         if (X11_Xxf86vm_LIB)
             list(APPEND glfw_LIBRARIES "${X11_Xxf86vm_LIB}")
-        else ()
+        else()
             # Backwards compatibility (see CMake bug 0006976)
             list(APPEND glfw_LIBRARIES Xxf86vm)
-        endif ()
+        endif()
 
         set(_GLFW_HAS_XF86VM TRUE)
-    endif ()
+    endif()
 
     # Check for Xkb (X keyboard extension)
     if (NOT X11_Xkb_FOUND)
         message(FATAL_ERROR "The X keyboard extension headers were not found")
-    endif ()
+    endif()
 
     list(APPEND glfw_INCLUDE_DIR "${X11_Xkb_INCLUDE_PATH}")
 
     # Check for Xcursor
     if (NOT X11_Xcursor_FOUND)
         message(FATAL_ERROR "The Xcursor libraries and headers were not found")
-    endif ()
+    endif()
 
     list(APPEND glfw_INCLUDE_DIR "${X11_Xcursor_INCLUDE_PATH}")
     list(APPEND glfw_LIBRARIES "${X11_Xcursor_LIB}")
     list(APPEND glfw_PKG_DEPS "xcursor")
 
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Use Wayland for window creation
@@ -272,7 +272,7 @@ if (_GLFW_WAYLAND)
     list(APPEND glfw_PKG_DEPS "xkbcommon")
     list(APPEND glfw_INCLUDE_DIRS "${XKBCOMMON_INCLUDE_DIRS}")
     list(APPEND glfw_LIBRARIES "${XKBCOMMON_LIBRARY}")
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Use Mir for window creation
@@ -288,7 +288,7 @@ if (_GLFW_MIR)
     list(APPEND glfw_PKG_DEPS "xkbcommon")
     list(APPEND glfw_INCLUDE_DIRS "${XKBCOMMON_INCLUDE_DIRS}")
     list(APPEND glfw_LIBRARIES "${XKBCOMMON_LIBRARY}")
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Use Cocoa for window creation and NSOpenGL for context creation
@@ -297,15 +297,15 @@ if (_GLFW_COCOA)
 
     if (GLFW_USE_MENUBAR)
         set(_GLFW_USE_MENUBAR 1)
-    endif ()
+    endif()
 
     if (GLFW_USE_CHDIR)
         set(_GLFW_USE_CHDIR 1)
-    endif ()
+    endif()
 
     if (GLFW_USE_RETINA)
         set(_GLFW_USE_RETINA 1)
-    endif ()
+    endif()
 
     # Set up library and include paths
     find_library(COCOA_FRAMEWORK Cocoa)
@@ -313,27 +313,27 @@ if (_GLFW_COCOA)
     find_library(CORE_FOUNDATION_FRAMEWORK CoreFoundation)
     find_library(CORE_VIDEO_FRAMEWORK CoreVideo)
     mark_as_advanced(COCOA_FRAMEWORK
-            IOKIT_FRAMEWORK
-            CORE_FOUNDATION_FRAMEWORK
-            CORE_VIDEO_FRAMEWORK)
+                     IOKIT_FRAMEWORK
+                     CORE_FOUNDATION_FRAMEWORK
+                     CORE_VIDEO_FRAMEWORK)
     list(APPEND glfw_LIBRARIES "${COCOA_FRAMEWORK}"
-            "${IOKIT_FRAMEWORK}"
-            "${CORE_FOUNDATION_FRAMEWORK}"
-            "${CORE_VIDEO_FRAMEWORK}")
+                               "${IOKIT_FRAMEWORK}"
+                               "${CORE_FOUNDATION_FRAMEWORK}"
+                               "${CORE_VIDEO_FRAMEWORK}")
 
     set(glfw_PKG_DEPS "")
     set(glfw_PKG_LIBS "-framework Cocoa -framework IOKit -framework CoreFoundation -framework CoreVideo")
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Export GLFW library dependencies
 #--------------------------------------------------------------------
-foreach (arg ${glfw_PKG_DEPS})
+foreach(arg ${glfw_PKG_DEPS})
     set(GLFW_PKG_DEPS "${GLFW_PKG_DEPS} ${arg}")
-endforeach ()
-foreach (arg ${glfw_PKG_LIBS})
+endforeach()
+foreach(arg ${glfw_PKG_LIBS})
     set(GLFW_PKG_LIBS "${GLFW_PKG_LIBS} ${arg}")
-endforeach ()
+endforeach()
 
 #--------------------------------------------------------------------
 # Create generated files
@@ -343,13 +343,13 @@ include(CMakePackageConfigHelpers)
 set(GLFW_CONFIG_PATH "lib${LIB_SUFFIX}/cmake/glfw3")
 
 configure_package_config_file(src/glfw3Config.cmake.in
-        src/glfw3Config.cmake
-        INSTALL_DESTINATION "${GLFW_CONFIG_PATH}"
-        NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+                              src/glfw3Config.cmake
+                              INSTALL_DESTINATION "${GLFW_CONFIG_PATH}"
+                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
 write_basic_package_version_file(src/glfw3ConfigVersion.cmake
-        VERSION ${GLFW_VERSION_FULL}
-        COMPATIBILITY SameMajorVersion)
+                                 VERSION ${GLFW_VERSION_FULL}
+                                 COMPATIBILITY SameMajorVersion)
 
 configure_file(src/glfw_config.h.in src/glfw_config.h @ONLY)
 
@@ -362,15 +362,15 @@ add_subdirectory(src)
 
 if (GLFW_BUILD_EXAMPLES)
     add_subdirectory(examples)
-endif ()
+endif()
 
 if (GLFW_BUILD_TESTS)
     add_subdirectory(tests)
-endif ()
+endif()
 
 if (DOXYGEN_FOUND AND GLFW_BUILD_DOCS)
     add_subdirectory(docs)
-endif ()
+endif()
 
 #--------------------------------------------------------------------
 # Install files other than the library
@@ -381,7 +381,7 @@ if (GLFW_INSTALL)
             FILES_MATCHING PATTERN glfw3.h PATTERN glfw3native.h)
 
     install(FILES "${GLFW_BINARY_DIR}/src/glfw3Config.cmake"
-            "${GLFW_BINARY_DIR}/src/glfw3ConfigVersion.cmake"
+                  "${GLFW_BINARY_DIR}/src/glfw3ConfigVersion.cmake"
             DESTINATION "${GLFW_CONFIG_PATH}")
 
     install(EXPORT glfwTargets FILE glfw3Targets.cmake
@@ -393,11 +393,11 @@ if (GLFW_INSTALL)
     # Only generate this target if no higher-level project already has
     if (NOT TARGET uninstall)
         configure_file(cmake_uninstall.cmake.in
-                cmake_uninstall.cmake IMMEDIATE @ONLY)
+                       cmake_uninstall.cmake IMMEDIATE @ONLY)
 
         add_custom_target(uninstall
-                "${CMAKE_COMMAND}" -P
-                "${GLFW_BINARY_DIR}/cmake_uninstall.cmake")
-    endif ()
-endif ()
+                          "${CMAKE_COMMAND}" -P
+                          "${GLFW_BINARY_DIR}/cmake_uninstall.cmake")
+    endif()
+endif()
 

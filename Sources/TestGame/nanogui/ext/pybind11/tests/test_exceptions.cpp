@@ -12,10 +12,8 @@
 // A type that should be raised as an exeption in Python
 class MyException : public std::exception {
 public:
-    explicit MyException(const char *m) : message{m} {}
-
-    virtual const char *what() const noexcept override { return message.c_str(); }
-
+    explicit MyException(const char * m) : message{m} {}
+    virtual const char * what() const noexcept override {return message.c_str();}
 private:
     std::string message = "";
 };
@@ -23,10 +21,8 @@ private:
 // A type that should be translated to a standard Python exception
 class MyException2 : public std::exception {
 public:
-    explicit MyException2(const char *m) : message{m} {}
-
-    virtual const char *what() const noexcept override { return message.c_str(); }
-
+    explicit MyException2(const char * m) : message{m} {}
+    virtual const char * what() const noexcept override {return message.c_str();}
 private:
     std::string message = "";
 };
@@ -34,10 +30,8 @@ private:
 // A type that is not derived from std::exception (and is thus unknown)
 class MyException3 {
 public:
-    explicit MyException3(const char *m) : message{m} {}
-
-    virtual const char *what() const noexcept { return message.c_str(); }
-
+    explicit MyException3(const char * m) : message{m} {}
+    virtual const char * what() const noexcept {return message.c_str();}
 private:
     std::string message = "";
 };
@@ -46,10 +40,8 @@ private:
 // and delegated to its exception translator
 class MyException4 : public std::exception {
 public:
-    explicit MyException4(const char *m) : message{m} {}
-
-    virtual const char *what() const noexcept override { return message.c_str(); }
-
+    explicit MyException4(const char * m) : message{m} {}
+    virtual const char * what() const noexcept override {return message.c_str();}
 private:
     std::string message = "";
 };
@@ -96,7 +88,6 @@ void throws_logic_error() {
 
 struct PythonCallInDestructor {
     PythonCallInDestructor(const py::dict &d) : d(d) {}
-
     ~PythonCallInDestructor() { d["good"] = true; }
 
     py::dict d;
@@ -104,7 +95,7 @@ struct PythonCallInDestructor {
 
 test_initializer custom_exceptions([](py::module &m) {
     // make a new custom exception and use it as a translation target
-    static py::exception <MyException> ex(m, "MyException");
+    static py::exception<MyException> ex(m, "MyException");
     py::register_exception_translator([](std::exception_ptr p) {
         try {
             if (p) std::rethrow_exception(p);
@@ -155,9 +146,10 @@ test_initializer custom_exceptions([](py::module &m) {
             PyErr_SetString(PyExc_ValueError, "foo");
         try {
             throw py::error_already_set();
-        } catch (const std::runtime_error &e) {
+        } catch (const std::runtime_error& e) {
             if ((err && e.what() != std::string("ValueError: foo")) ||
-                (!err && e.what() != std::string("Unknown internal error occurred"))) {
+                (!err && e.what() != std::string("Unknown internal error occurred")))
+            {
                 PyErr_Clear();
                 throw std::runtime_error("error message mismatch");
             }
@@ -173,7 +165,7 @@ test_initializer custom_exceptions([](py::module &m) {
             PythonCallInDestructor set_dict_in_destructor(d);
             PyErr_SetString(PyExc_ValueError, "foo");
             throw py::error_already_set();
-        } catch (const py::error_already_set &) {
+        } catch (const py::error_already_set&) {
             return true;
         }
         return false;

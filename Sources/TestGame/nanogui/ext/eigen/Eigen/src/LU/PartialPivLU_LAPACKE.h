@@ -33,9 +33,9 @@
 #ifndef EIGEN_PARTIALLU_LAPACK_H
 #define EIGEN_PARTIALLU_LAPACK_H
 
-namespace Eigen {
+namespace Eigen { 
 
-    namespace internal {
+namespace internal {
 
 /** \internal Specialization for the data types supported by LAPACKe */
 
@@ -71,15 +71,12 @@ struct partial_lu_impl<EIGTYPE, StorageOrder, lapack_int> \
   } \
 };
 
-        EIGEN_LAPACKE_LU_PARTPIV(double, double, d)
+EIGEN_LAPACKE_LU_PARTPIV(double, double, d)
+EIGEN_LAPACKE_LU_PARTPIV(float, float, s)
+EIGEN_LAPACKE_LU_PARTPIV(dcomplex, lapack_complex_double, z)
+EIGEN_LAPACKE_LU_PARTPIV(scomplex, lapack_complex_float,  c)
 
-        EIGEN_LAPACKE_LU_PARTPIV(float, float, s)
-
-        EIGEN_LAPACKE_LU_PARTPIV(dcomplex, lapack_complex_double, z)
-
-        EIGEN_LAPACKE_LU_PARTPIV(scomplex, lapack_complex_float, c)
-
-    } // end namespace internal
+} // end namespace internal
 
 } // end namespace Eigen
 

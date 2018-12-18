@@ -33,11 +33,11 @@
 #ifndef EIGEN_SAEIGENSOLVER_LAPACKE_H
 #define EIGEN_SAEIGENSOLVER_LAPACKE_H
 
-namespace Eigen {
+namespace Eigen { 
 
 /** \internal Specialization for the data types supported by LAPACKe */
 
-#define EIGEN_LAPACKE_EIG_SELFADJ(EIGTYPE, LAPACKE_TYPE, LAPACKE_RTYPE, LAPACKE_NAME, EIGCOLROW, LAPACKE_COLROW) \
+#define EIGEN_LAPACKE_EIG_SELFADJ(EIGTYPE, LAPACKE_TYPE, LAPACKE_RTYPE, LAPACKE_NAME, EIGCOLROW, LAPACKE_COLROW ) \
 template<> template<typename InputType> inline \
 SelfAdjointEigenSolver<Matrix<EIGTYPE, Dynamic, Dynamic, EIGCOLROW> >& \
 SelfAdjointEigenSolver<Matrix<EIGTYPE, Dynamic, Dynamic, EIGCOLROW> >::compute(const EigenBase<InputType>& matrix, int options) \
@@ -75,15 +75,15 @@ SelfAdjointEigenSolver<Matrix<EIGTYPE, Dynamic, Dynamic, EIGCOLROW> >::compute(c
 }
 
 
-EIGEN_LAPACKE_EIG_SELFADJ(double, double, double, dsyev, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_EIG_SELFADJ(float, float, float, ssyev, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_EIG_SELFADJ(double,   double,                double, dsyev, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_EIG_SELFADJ(float,    float,                 float,  ssyev, ColMajor, LAPACK_COL_MAJOR)
 EIGEN_LAPACKE_EIG_SELFADJ(dcomplex, lapack_complex_double, double, zheev, ColMajor, LAPACK_COL_MAJOR)
-EIGEN_LAPACKE_EIG_SELFADJ(scomplex, lapack_complex_float, float, cheev, ColMajor, LAPACK_COL_MAJOR)
+EIGEN_LAPACKE_EIG_SELFADJ(scomplex, lapack_complex_float,  float,  cheev, ColMajor, LAPACK_COL_MAJOR)
 
-EIGEN_LAPACKE_EIG_SELFADJ(double, double, double, dsyev, RowMajor, LAPACK_ROW_MAJOR)
-EIGEN_LAPACKE_EIG_SELFADJ(float, float, float, ssyev, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_EIG_SELFADJ(double,   double,                double, dsyev, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_EIG_SELFADJ(float,    float,                 float,  ssyev, RowMajor, LAPACK_ROW_MAJOR)
 EIGEN_LAPACKE_EIG_SELFADJ(dcomplex, lapack_complex_double, double, zheev, RowMajor, LAPACK_ROW_MAJOR)
-EIGEN_LAPACKE_EIG_SELFADJ(scomplex, lapack_complex_float, float, cheev, RowMajor, LAPACK_ROW_MAJOR)
+EIGEN_LAPACKE_EIG_SELFADJ(scomplex, lapack_complex_float,  float,  cheev, RowMajor, LAPACK_ROW_MAJOR)
 
 } // end namespace Eigen
 

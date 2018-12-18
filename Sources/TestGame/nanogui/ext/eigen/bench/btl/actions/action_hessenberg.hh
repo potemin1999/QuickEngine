@@ -18,7 +18,6 @@
 //
 #ifndef ACTION_HESSENBERG
 #define ACTION_HESSENBERG
-
 #include "utilities.h"
 #include "STL_interface.hh"
 #include <string>
@@ -33,70 +32,74 @@ class Action_hessenberg {
 
 public :
 
-    // Ctor
+  // Ctor
 
-    Action_hessenberg(int size) : _size(size) {
-        MESSAGE("Action_hessenberg Ctor");
+  Action_hessenberg( int size ):_size(size)
+  {
+    MESSAGE("Action_hessenberg Ctor");
 
-        // STL vector initialization
-        init_matrix<pseudo_random>(X_stl, _size);
+    // STL vector initialization
+    init_matrix<pseudo_random>(X_stl,_size);
 
-        init_matrix<null_function>(C_stl, _size);
-        init_matrix<null_function>(resu_stl, _size);
+    init_matrix<null_function>(C_stl,_size);
+    init_matrix<null_function>(resu_stl,_size);
 
-        // generic matrix and vector initialization
-        Interface::matrix_from_stl(X_ref, X_stl);
-        Interface::matrix_from_stl(X, X_stl);
-        Interface::matrix_from_stl(C, C_stl);
+    // generic matrix and vector initialization
+    Interface::matrix_from_stl(X_ref,X_stl);
+    Interface::matrix_from_stl(X,X_stl);
+    Interface::matrix_from_stl(C,C_stl);
 
-        _cost = 0;
-        for (int j = 0; j < _size - 2; ++j) {
-            double r = std::max(0, _size - j - 1);
-            double b = std::max(0, _size - j - 2);
-            _cost += 6 + 3 * b + r * r * 4 + r * _size * 4;
-        }
+    _cost = 0;
+    for (int j=0; j<_size-2; ++j)
+    {
+      double r = std::max(0,_size-j-1);
+      double b = std::max(0,_size-j-2);
+      _cost += 6 + 3*b + r*r*4 + r*_size*4;
     }
+  }
 
-    // invalidate copy ctor
+  // invalidate copy ctor
 
-    Action_hessenberg(const Action_hessenberg &) {
-        INFOS("illegal call to Action_hessenberg Copy Ctor");
-        exit(1);
-    }
+  Action_hessenberg( const  Action_hessenberg & )
+  {
+    INFOS("illegal call to Action_hessenberg Copy Ctor");
+    exit(1);
+  }
 
-    // Dtor
+  // Dtor
 
-    ~Action_hessenberg(void) {
+  ~Action_hessenberg( void ){
 
-        MESSAGE("Action_hessenberg Dtor");
+    MESSAGE("Action_hessenberg Dtor");
 
-        // deallocation
-        Interface::free_matrix(X_ref, _size);
-        Interface::free_matrix(X, _size);
-        Interface::free_matrix(C, _size);
-    }
+    // deallocation
+    Interface::free_matrix(X_ref,_size);
+    Interface::free_matrix(X,_size);
+    Interface::free_matrix(C,_size);
+  }
 
-    // action name
+  // action name
 
-    static inline std::string name(void) {
-        return "hessenberg_" + Interface::name();
-    }
+  static inline std::string name( void )
+  {
+    return "hessenberg_"+Interface::name();
+  }
 
-    double nb_op_base(void) {
-        return _cost;
-    }
+  double nb_op_base( void ){
+    return _cost;
+  }
 
-    inline void initialize(void) {
-        Interface::copy_matrix(X_ref, X, _size);
-    }
+  inline void initialize( void ){
+    Interface::copy_matrix(X_ref,X,_size);
+  }
 
-    inline void calculate(void) {
-        Interface::hessenberg(X, C, _size);
-    }
+  inline void calculate( void ) {
+      Interface::hessenberg(X,C,_size);
+  }
 
-    void check_result(void) {
-        // calculation check
-        Interface::matrix_to_stl(C, resu_stl);
+  void check_result( void ){
+    // calculation check
+    Interface::matrix_to_stl(C,resu_stl);
 
 //     STL_interface<typename Interface::real_type>::hessenberg(X_stl,C_stl,_size);
 //
@@ -108,20 +111,20 @@ public :
 //       exit(0);
 //     }
 
-    }
+  }
 
 private :
 
-    typename Interface::stl_matrix X_stl;
-    typename Interface::stl_matrix C_stl;
-    typename Interface::stl_matrix resu_stl;
+  typename Interface::stl_matrix X_stl;
+  typename Interface::stl_matrix C_stl;
+  typename Interface::stl_matrix resu_stl;
 
-    typename Interface::gene_matrix X_ref;
-    typename Interface::gene_matrix X;
-    typename Interface::gene_matrix C;
+  typename Interface::gene_matrix X_ref;
+  typename Interface::gene_matrix X;
+  typename Interface::gene_matrix C;
 
-    int _size;
-    double _cost;
+  int _size;
+  double _cost;
 };
 
 template<class Interface>
@@ -129,73 +132,77 @@ class Action_tridiagonalization {
 
 public :
 
-    // Ctor
+  // Ctor
 
-    Action_tridiagonalization(int size) : _size(size) {
-        MESSAGE("Action_tridiagonalization Ctor");
+  Action_tridiagonalization( int size ):_size(size)
+  {
+    MESSAGE("Action_tridiagonalization Ctor");
 
-        // STL vector initialization
-        init_matrix<pseudo_random>(X_stl, _size);
-
-        for (int i = 0; i < _size; ++i) {
-            for (int j = 0; j < i; ++j)
-                X_stl[i][j] = X_stl[j][i];
-        }
-
-        init_matrix<null_function>(C_stl, _size);
-        init_matrix<null_function>(resu_stl, _size);
-
-        // generic matrix and vector initialization
-        Interface::matrix_from_stl(X_ref, X_stl);
-        Interface::matrix_from_stl(X, X_stl);
-        Interface::matrix_from_stl(C, C_stl);
-
-        _cost = 0;
-        for (int j = 0; j < _size - 2; ++j) {
-            double r = std::max(0, _size - j - 1);
-            double b = std::max(0, _size - j - 2);
-            _cost += 6. + 3. * b + r * r * 8.;
-        }
+    // STL vector initialization
+    init_matrix<pseudo_random>(X_stl,_size);
+    
+    for(int i=0; i<_size; ++i)
+    {
+      for(int j=0; j<i; ++j)
+        X_stl[i][j] = X_stl[j][i];
     }
+    
+    init_matrix<null_function>(C_stl,_size);
+    init_matrix<null_function>(resu_stl,_size);
 
-    // invalidate copy ctor
+    // generic matrix and vector initialization
+    Interface::matrix_from_stl(X_ref,X_stl);
+    Interface::matrix_from_stl(X,X_stl);
+    Interface::matrix_from_stl(C,C_stl);
 
-    Action_tridiagonalization(const Action_tridiagonalization &) {
-        INFOS("illegal call to Action_tridiagonalization Copy Ctor");
-        exit(1);
+    _cost = 0;
+    for (int j=0; j<_size-2; ++j)
+    {
+      double r = std::max(0,_size-j-1);
+      double b = std::max(0,_size-j-2);
+      _cost += 6. + 3.*b + r*r*8.;
     }
+  }
 
-    // Dtor
+  // invalidate copy ctor
 
-    ~Action_tridiagonalization(void) {
+  Action_tridiagonalization( const  Action_tridiagonalization & )
+  {
+    INFOS("illegal call to Action_tridiagonalization Copy Ctor");
+    exit(1);
+  }
 
-        MESSAGE("Action_tridiagonalization Dtor");
+  // Dtor
 
-        // deallocation
-        Interface::free_matrix(X_ref, _size);
-        Interface::free_matrix(X, _size);
-        Interface::free_matrix(C, _size);
-    }
+  ~Action_tridiagonalization( void ){
 
-    // action name
+    MESSAGE("Action_tridiagonalization Dtor");
 
-    static inline std::string name(void) { return "tridiagonalization_" + Interface::name(); }
+    // deallocation
+    Interface::free_matrix(X_ref,_size);
+    Interface::free_matrix(X,_size);
+    Interface::free_matrix(C,_size);
+  }
 
-    double nb_op_base(void) {
-        return _cost;
-    }
+  // action name
 
-    inline void initialize(void) {
-        Interface::copy_matrix(X_ref, X, _size);
-    }
+  static inline std::string name( void ) { return "tridiagonalization_"+Interface::name(); }
 
-    inline void calculate(void) {
-        Interface::tridiagonalization(X, C, _size);
-    }
+  double nb_op_base( void ){
+    return _cost;
+  }
 
-    void check_result(void) {
-        // calculation check
-        Interface::matrix_to_stl(C, resu_stl);
+  inline void initialize( void ){
+    Interface::copy_matrix(X_ref,X,_size);
+  }
+
+  inline void calculate( void ) {
+      Interface::tridiagonalization(X,C,_size);
+  }
+
+  void check_result( void ){
+    // calculation check
+    Interface::matrix_to_stl(C,resu_stl);
 
 //     STL_interface<typename Interface::real_type>::tridiagonalization(X_stl,C_stl,_size);
 //
@@ -207,20 +214,20 @@ public :
 //       exit(0);
 //     }
 
-    }
+  }
 
 private :
 
-    typename Interface::stl_matrix X_stl;
-    typename Interface::stl_matrix C_stl;
-    typename Interface::stl_matrix resu_stl;
+  typename Interface::stl_matrix X_stl;
+  typename Interface::stl_matrix C_stl;
+  typename Interface::stl_matrix resu_stl;
 
-    typename Interface::gene_matrix X_ref;
-    typename Interface::gene_matrix X;
-    typename Interface::gene_matrix C;
+  typename Interface::gene_matrix X_ref;
+  typename Interface::gene_matrix X;
+  typename Interface::gene_matrix C;
 
-    int _size;
-    double _cost;
+  int _size;
+  double _cost;
 };
 
 #endif

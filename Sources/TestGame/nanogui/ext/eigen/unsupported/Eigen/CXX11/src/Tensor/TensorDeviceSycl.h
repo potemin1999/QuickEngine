@@ -17,7 +17,7 @@
 
 namespace Eigen {
 
-#define ConvertToActualTypeSycl(Scalar, buf_acc) reinterpret_cast<typename cl::sycl::global_ptr<Scalar>::pointer_t>((&(*buf_acc.get_pointer())))
+  #define ConvertToActualTypeSycl(Scalar, buf_acc) reinterpret_cast<typename cl::sycl::global_ptr<Scalar>::pointer_t>((&(*buf_acc.get_pointer())))
 
   template <typename Scalar, typename read_accessor, typename write_accessor> class MemCopyFunctor {
   public:

@@ -41,14 +41,16 @@ static int swap_tear;
 static int swap_interval;
 static double frame_rate;
 
-static void usage(void) {
+static void usage(void)
+{
     printf("Usage: iconify [-h] [-f]\n");
     printf("Options:\n");
     printf("  -f create full screen window\n");
     printf("  -h show this help\n");
 }
 
-static void update_window_title(GLFWwindow *window) {
+static void update_window_title(GLFWwindow* window)
+{
     char title[256];
 
     sprintf(title, "Tearing detector (interval %i%s, %0.1f Hz)",
@@ -59,36 +61,46 @@ static void update_window_title(GLFWwindow *window) {
     glfwSetWindowTitle(window, title);
 }
 
-static void set_swap_interval(GLFWwindow *window, int interval) {
+static void set_swap_interval(GLFWwindow* window, int interval)
+{
     swap_interval = interval;
     glfwSwapInterval(swap_interval);
     update_window_title(window);
 }
 
-static void error_callback(int error, const char *description) {
+static void error_callback(int error, const char* description)
+{
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
     glViewport(0, 0, width, height);
 }
 
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
     if (action != GLFW_PRESS)
         return;
 
-    switch (key) {
-        case GLFW_KEY_UP: {
+    switch (key)
+    {
+        case GLFW_KEY_UP:
+        {
             if (swap_interval + 1 > swap_interval)
                 set_swap_interval(window, swap_interval + 1);
             break;
         }
 
-        case GLFW_KEY_DOWN: {
-            if (swap_tear) {
+        case GLFW_KEY_DOWN:
+        {
+            if (swap_tear)
+            {
                 if (swap_interval - 1 < swap_interval)
                     set_swap_interval(window, swap_interval - 1);
-            } else {
+            }
+            else
+            {
                 if (swap_interval - 1 >= 0)
                     set_swap_interval(window, swap_interval - 1);
             }
@@ -101,17 +113,20 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     int ch, width, height;
     float position;
     unsigned long frame_count = 0;
     double last_time, current_time;
     int fullscreen = GLFW_FALSE;
-    GLFWmonitor *monitor = NULL;
-    GLFWwindow *window;
+    GLFWmonitor* monitor = NULL;
+    GLFWwindow* window;
 
-    while ((ch = getopt(argc, argv, "fh")) != -1) {
-        switch (ch) {
+    while ((ch = getopt(argc, argv, "fh")) != -1)
+    {
+        switch (ch)
+        {
             case 'h':
                 usage();
                 exit(EXIT_SUCCESS);
@@ -127,8 +142,9 @@ int main(int argc, char **argv) {
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    if (fullscreen) {
-        const GLFWvidmode *mode;
+    if (fullscreen)
+    {
+        const GLFWvidmode* mode;
 
         monitor = glfwGetPrimaryMonitor();
         mode = glfwGetVideoMode(monitor);
@@ -140,13 +156,16 @@ int main(int argc, char **argv) {
 
         width = mode->width;
         height = mode->height;
-    } else {
+    }
+    else
+    {
         width = 640;
         height = 480;
     }
 
     window = glfwCreateWindow(width, height, "", monitor, NULL);
-    if (!window) {
+    if (!window)
+    {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -167,7 +186,8 @@ int main(int argc, char **argv) {
     glOrtho(-1.f, 1.f, -1.f, 1.f, 1.f, -1.f);
     glMatrixMode(GL_MODELVIEW);
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         glClear(GL_COLOR_BUFFER_BIT);
 
         position = cosf((float) glfwGetTime() * 4.f) * 0.75f;
@@ -179,7 +199,8 @@ int main(int argc, char **argv) {
         frame_count++;
 
         current_time = glfwGetTime();
-        if (current_time - last_time > 1.0) {
+        if (current_time - last_time > 1.0)
+        {
             frame_rate = frame_count / (current_time - last_time);
             frame_count = 0;
             last_time = current_time;

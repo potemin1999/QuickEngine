@@ -221,12 +221,11 @@ template<class T, std::size_t N> struct array_size<const array<T,N>& > {
 
 // The compiler supports c++11, and we're not targetting cuda: use std::array as Eigen::array
 #include <array>
-
 namespace Eigen {
 
-    template<typename T, std::size_t N> using array = std::array<T, N>;
+template <typename T, std::size_t N> using array = std::array<T, N>;
 
-    namespace internal {
+namespace internal {
 /* std::get is only constexpr in C++14, not yet in C++11
  *     - libstdc++ from version 4.7 onwards has it nevertheless,
  *                                          so use that
@@ -243,18 +242,13 @@ namespace Eigen {
 #define STD_GET_ARR_HACK             std::template get<I, T, N>(a)
 #endif
 
-        template<std::size_t I, class T, std::size_t N>
-        constexpr inline T &array_get(std::array<T, N> &a) { return (T &) STD_GET_ARR_HACK; }
-
-        template<std::size_t I, class T, std::size_t N>
-        constexpr inline T &&array_get(std::array<T, N> &&a) { return (T &&) STD_GET_ARR_HACK; }
-
-        template<std::size_t I, class T, std::size_t N>
-        constexpr inline T const &array_get(std::array<T, N> const &a) { return (T const &) STD_GET_ARR_HACK; }
+template<std::size_t I, class T, std::size_t N> constexpr inline T&       array_get(std::array<T,N>&       a) { return (T&)       STD_GET_ARR_HACK; }
+template<std::size_t I, class T, std::size_t N> constexpr inline T&&      array_get(std::array<T,N>&&      a) { return (T&&)      STD_GET_ARR_HACK; }
+template<std::size_t I, class T, std::size_t N> constexpr inline T const& array_get(std::array<T,N> const& a) { return (T const&) STD_GET_ARR_HACK; }
 
 #undef STD_GET_ARR_HACK
 
-    }  // end namespace internal
+}  // end namespace internal
 }  // end namespace Eigen
 
 #endif

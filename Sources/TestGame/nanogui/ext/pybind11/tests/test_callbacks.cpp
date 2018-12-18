@@ -25,18 +25,16 @@ std::string test_callback3(const std::function<int(int)> &func) {
 }
 
 std::function<int(int)> test_callback4() {
-    return [](int i) { return i + 1; };
+    return [](int i) { return i+1; };
 }
 
 py::cpp_function test_callback5() {
-    return py::cpp_function([](int i) { return i + 1; },
-                            py::arg("number"));
+    return py::cpp_function([](int i) { return i+1; },
+       py::arg("number"));
 }
 
 int dummy_function(int i) { return i + 1; }
-
 int dummy_function2(int i, int j) { return i + j; }
-
 std::function<int(int)> roundtrip(std::function<int(int)> f, bool expect_none = false) {
     if (expect_none && f) {
         throw std::runtime_error("Expected None to be converted to empty std::function");
@@ -62,23 +60,19 @@ struct Payload {
     Payload() {
         print_default_created(this);
     }
-
     ~Payload() {
         print_destroyed(this);
     }
-
     Payload(const Payload &) {
         print_copy_created(this);
     }
-
     Payload(Payload &&) {
         print_move_created(this);
     }
 };
 
 /// Something to trigger a conversion error
-struct Unregistered {
-};
+struct Unregistered {};
 
 test_initializer callbacks([](py::module &m) {
     m.def("test_callback1", &test_callback1);
@@ -95,45 +89,45 @@ test_initializer callbacks([](py::module &m) {
     });
 
     m.def("test_dict_unpacking", [](py::function f) {
-        auto d1 = py::dict("key"_a = "value", "a"_a = 1);
+        auto d1 = py::dict("key"_a="value", "a"_a=1);
         auto d2 = py::dict();
-        auto d3 = py::dict("b"_a = 2);
+        auto d3 = py::dict("b"_a=2);
         return f("positional", 1, **d1, **d2, **d3);
     });
 
     m.def("test_keyword_args", [](py::function f) {
-        return f("x"_a = 10, "y"_a = 20);
+        return f("x"_a=10, "y"_a=20);
     });
 
     m.def("test_unpacking_and_keywords1", [](py::function f) {
         auto args = py::make_tuple(2);
-        auto kwargs = py::dict("d"_a = 4);
-        return f(1, *args, "c"_a = 3, **kwargs);
+        auto kwargs = py::dict("d"_a=4);
+        return f(1, *args, "c"_a=3, **kwargs);
     });
 
     m.def("test_unpacking_and_keywords2", [](py::function f) {
-        auto kwargs1 = py::dict("a"_a = 1);
-        auto kwargs2 = py::dict("c"_a = 3, "d"_a = 4);
+        auto kwargs1 = py::dict("a"_a=1);
+        auto kwargs2 = py::dict("c"_a=3, "d"_a=4);
         return f("positional", *py::make_tuple(1), 2, *py::make_tuple(3, 4), 5,
-                 "key"_a = "value", **kwargs1, "b"_a = 2, **kwargs2, "e"_a = 5);
+                 "key"_a="value", **kwargs1, "b"_a=2, **kwargs2, "e"_a=5);
     });
 
     m.def("test_unpacking_error1", [](py::function f) {
-        auto kwargs = py::dict("x"_a = 3);
-        return f("x"_a = 1, "y"_a = 2, **kwargs); // duplicate ** after keyword
+        auto kwargs = py::dict("x"_a=3);
+        return f("x"_a=1, "y"_a=2, **kwargs); // duplicate ** after keyword
     });
 
     m.def("test_unpacking_error2", [](py::function f) {
-        auto kwargs = py::dict("x"_a = 3);
-        return f(**kwargs, "x"_a = 1); // duplicate keyword after **
+        auto kwargs = py::dict("x"_a=3);
+        return f(**kwargs, "x"_a=1); // duplicate keyword after **
     });
 
     m.def("test_arg_conversion_error1", [](py::function f) {
-        f(234, Unregistered(), "kw"_a = 567);
+        f(234, Unregistered(), "kw"_a=567);
     });
 
     m.def("test_arg_conversion_error2", [](py::function f) {
-        f(234, "expected_name"_a = Unregistered(), "kw"_a = 567);
+        f(234, "expected_name"_a=Unregistered(), "kw"_a=567);
     });
 
     /* Test cleanup of lambda closure */
@@ -148,7 +142,7 @@ test_initializer callbacks([](py::module &m) {
     /* Test if passing a function pointer from C++ -> Python -> C++ yields the original pointer */
     m.def("dummy_function", &dummy_function);
     m.def("dummy_function2", &dummy_function2);
-    m.def("roundtrip", &roundtrip, py::arg("f"), py::arg("expect_none") = false);
+    m.def("roundtrip", &roundtrip, py::arg("f"), py::arg("expect_none")=false);
     m.def("test_dummy_function", &test_dummy_function);
     // Export the payload constructor statistics for testing purposes:
     m.def("payload_cstats", &ConstructorStats::get<Payload>);

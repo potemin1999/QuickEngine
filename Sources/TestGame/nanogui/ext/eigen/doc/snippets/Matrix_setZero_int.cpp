@@ -1,4 +1,3 @@
 VectorXf v;
 v.setZero(3);
-cout << v <<
-endl;
+cout << v << endl;

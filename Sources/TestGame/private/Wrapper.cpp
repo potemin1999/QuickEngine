@@ -47,13 +47,16 @@ void init() {
         engine->resize(engine->windowWidth, engine->windowHeight);
         check_gl_error("resize");
 
+        printf("Gonna compile shaders\n");
         engine->compileShaders();
         check_gl_error("compile shaders");
+        printf("Shaders compiled\n");
 
         // init game itself
         onInit();
+        printf("onInit completed\n");
     } catch (exception &e) {
-        printf("FATAL INIT EXCEPTION : %s\n", e.what());
+        printf("FATAL INIT EXCEPTION: %s\n", e.what());
     }
 }
 
@@ -159,5 +162,7 @@ int runEngine() {
 }
 
 int main(int argc, char **args) {
+    printf("Running from %s\n\n", args[0]);
+
     return runEngine();
 }

@@ -8,7 +8,6 @@
 // with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #define EIGEN_MPL2_ONLY
-
 #include <Eigen/Dense>
 #include <Eigen/SparseCore>
 #include <Eigen/SparseLU>
@@ -17,6 +16,7 @@
 #include <Eigen/IterativeLinearSolvers>
 #include <Eigen/Eigen>
 
-int main() {
-    return 0;
+int main()
+{
+  return 0;
 }
