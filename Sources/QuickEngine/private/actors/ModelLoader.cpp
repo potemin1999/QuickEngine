@@ -13,15 +13,13 @@
 
 std::map<std::string, Model *> QE::loadedModels;
 
-void ModelLoader::load_object(GameObject *container, const char *path, const char *name) {
-    ModelLoader::load_object(container, (char *) path, (char *) name);
+Model *ModelLoader::load_object(const char *path, const char *name) {
+    return ModelLoader::load_object((char *) path, (char *) name);
 }
 
-void ModelLoader::load_object(GameObject *container, char *path, char *name) {
-    int vertex_count = 0;
-    float p_scale = 1.0f;
-    float n_scale = 1.0f;
-
+// TODO: look for memory leaks here
+Model *ModelLoader::load_object(char *path, char *name) {
+    Model *model;
     char path_c[1024];
     QE::getEngineRootDir(path_c, sizeof(path_c));
     string _path = string(path_c);
@@ -33,15 +31,27 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
     std::replace(_path.begin(), _path.end(), '/', '\\');
 #endif
 
+    // TODO: realize why this doesn't work
+    // return cached copy if model is already loaded
+//    if ((model = loadedModels[_path]) != nullptr) {
+//        printf("Returning cached model for %s\n", _path.c_str());
+//        return model;
+//    }
+
+    model = new Model();
+
     printf("Loading model from file %s\n", _path.c_str());
-    ifstream file(_path);//"models\\"+string(path)+string(name));
+    ifstream file(_path); // "models/" + string(path) + string(name);
     string just_path = string(path_c).append(path);
+
+    int vertex_count = 0;
 
     if (!file) {
         printf("couldn't open model file \"%s\"\n", _path.data());// string(path).c_str(), string(name).c_str());
-        return;
+        return nullptr;
     }
-    struct vert {
+
+    struct vertex {
         float xyz[3];
     };
     struct tex {
@@ -50,7 +60,8 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
     struct norm {
         float xyz[3];
     };
-    vector<vert> vertices;
+
+    vector<vertex> vertices;
     vector<tex> textures;
     vector<norm> normals;
     vector<Mesh> meshes;
@@ -76,16 +87,16 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
         } else if (line.find("vn") == 0) {
             split(line, ' ', tokens);
             norm n{};
-            n.xyz[0] = n_scale * strtof(tokens[1].c_str(), nullptr);
-            n.xyz[1] = n_scale * strtof(tokens[2].c_str(), nullptr);
-            n.xyz[2] = n_scale * strtof(tokens[3].c_str(), nullptr);
+            n.xyz[0] = strtof(tokens[1].c_str(), nullptr);
+            n.xyz[1] = strtof(tokens[2].c_str(), nullptr);
+            n.xyz[2] = strtof(tokens[3].c_str(), nullptr);
             normals.push_back(n);
         } else if (line.find('v') == 0) {
             split(line, ' ', tokens);
-            vert v{};
-            v.xyz[0] = p_scale * strtof(tokens[1].c_str(), nullptr);
-            v.xyz[1] = p_scale * strtof(tokens[2].c_str(), nullptr);
-            v.xyz[2] = p_scale * strtof(tokens[3].c_str(), nullptr);
+            vertex v{};
+            v.xyz[0] = strtof(tokens[1].c_str(), nullptr);
+            v.xyz[1] = strtof(tokens[2].c_str(), nullptr);
+            v.xyz[2] = strtof(tokens[3].c_str(), nullptr);
             vertices.push_back(v);
         } else if (line.find("mtllib") == 0) {
             split(line, ' ', mtl_path);
@@ -107,7 +118,7 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
         } else if (line.find("g ") == 0 || line.find("s ") == 0) {
             if (!out_array.empty()) {
                 Mesh &last = meshes[meshes.size() - 1];
-                last.vert_count = vertex_count;
+                last.vertCount = vertex_count;
                 printf("gonna gen vba and vao\n");
                 EU::genVBOandVAO(&out_array[0], sizeof(out_array[0]) * out_array.size(), last.data);
                 printf("data created to link %i\n", last.data);
@@ -124,7 +135,7 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
             m.material = new Material;
             *m.material = *last_mat;
             meshes.push_back(m);
-            log("    creating mesh group %s, uses material %s\n", m.name, last_mat->name);
+            log("creating mesh group %s, uses material %s\n", m.name, last_mat->name);
         } else if (line.find('o') == 0) {
 
         } else if (line.find('f') == 0) {
@@ -132,7 +143,7 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
             for (int i = 1; i < 4; i++) {
 
                 split(tokens[i], '/', items);
-                vert &v = vertices[atoi(items[0].c_str()) - 1];
+                vertex &v = vertices[atoi(items[0].c_str()) - 1];
                 tex &t = textures[atoi(items[1].c_str()) - 1];
                 norm &n = normals[atoi(items[2].c_str()) - 1];
 
@@ -148,10 +159,9 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
     }
     if (!out_array.empty()) {
         if (meshes.empty()) {
-            container->meshes = new Mesh();
         } else {
             Mesh &last = meshes[meshes.size() - 1];
-            last.vert_count = vertex_count;
+            last.vertCount = vertex_count;
             printf("gonna gen vba and vao\n");
             EU::genVBOandVAO(&out_array[0], sizeof(out_array[0]) * out_array.size(), last.data);
             printf("data created to link %i\n", last.data);
@@ -159,13 +169,16 @@ void ModelLoader::load_object(GameObject *container, char *path, char *name) {
             out_array.clear();
         }
     }
-    container->meshes = new Mesh[meshes.size()];
-    container->mesh_count = meshes.size();
-    for (int i = 0; i < container->mesh_count; i++) {
-        *(container->meshes + i) = meshes[i];
+    model->meshes = new Mesh[meshes.size()];
+    model->meshCount = (int) meshes.size();
+    for (int i = 0; i < model->meshCount; i++) {
+        model->meshes[i] = meshes[i];
     }
     file.close();
     printf("done\n");
+
+    loadedModels[_path] = model;
+    return model;
 }
 
 

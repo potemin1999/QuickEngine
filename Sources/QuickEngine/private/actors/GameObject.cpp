@@ -1,9 +1,3 @@
-//
-// Created by ilya on 9/26/18.
-//
-
-#include <GameObject.h>
-
 #include "GameObject.h"
 
 GameObject::GameObject(World *world) {
@@ -11,8 +5,6 @@ GameObject::GameObject(World *world) {
 }
 
 GameObject::~GameObject() {
-    mesh_count = 0;
-    delete meshes;
 }
 
 void GameObject::setPos(glm::vec3 pos) {

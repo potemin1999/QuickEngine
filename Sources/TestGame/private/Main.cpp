@@ -114,7 +114,7 @@ void initGUI() {
 }
 
 void onInit() {
-//    initGUI();
+    initGUI();
     initCamera();
     printf("camera initialized\n");
 
@@ -140,6 +140,6 @@ void onTick(float deltaTime) {
     engine->camera->setPos(engine->camera->getAttachedTo()->getPos() + engine->camera->getOffsetPos());
     engine->tick(deltaTime);
 
-//    screen->cursorPosCallbackEvent(engine->mouseX, engine->mouseY);
-//    screen->drawAll();
+    screen->cursorPosCallbackEvent(engine->mouseX, engine->mouseY);
+    screen->drawAll();
 }

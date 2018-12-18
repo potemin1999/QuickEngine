@@ -73,7 +73,6 @@ void GeometryPass::compileShaders() {
 }
 
 void GeometryPass::doDraw() {
-    //glBindFramebuffer(GL_FRAMEBUFFER,0);
     f_MainFramebuffer->use();
     s_MainShader->use();
     glEnable(GL_DEPTH_TEST);
@@ -88,8 +87,12 @@ void GeometryPass::doDraw() {
     // TODO: rewrite this shit
     for (auto obj : *camera->getAttachedTo()->getWorld()->getObjects()) {
         auto o = obj.second;
-        for (int i = 0; i < o->mesh_count; i++) {
-            Mesh *m = (o->meshes + i);
+
+        if (o->model == nullptr)
+            continue;
+
+        for (int i = 0; i < o->model->meshCount; i++) {
+            Mesh &m = o->model->meshes[i];
             glm::mat4 mM;
 
             if (o->rigidBody)
@@ -105,29 +108,29 @@ void GeometryPass::doDraw() {
 
             s_MainShader->uniform1i("u_AmbientTex", 0);
             glActiveTexture(GL_TEXTURE0);
-            if (m->material->t_Ambient == nullptr) {
+            if (m.material->t_Ambient == nullptr) {
 //                printf("ERROR: mesh object %s has null ambient texture\n", m->name);
                 continue;
             } else {
-                glBindTexture(GL_TEXTURE_2D, m->material->t_Ambient->id);
+                glBindTexture(GL_TEXTURE_2D, m.material->t_Ambient->id);
                 //printf(" ambient texture binded on link %i\n", m->material->t_Ambient->id);
             }
             s_MainShader->uniform1i("u_NormalTex", 1);
             //glUniform1i(*u_MainNormalTex, 1);
             glActiveTexture(GL_TEXTURE1);
-            if (m->material->t_Normal != nullptr) {
-                glBindTexture(GL_TEXTURE_2D, m->material->t_Normal->id);
+            if (m.material->t_Normal != nullptr) {
+                glBindTexture(GL_TEXTURE_2D, m.material->t_Normal->id);
                 //printf(" normal texture binded on link %i\n", m->material->t_Ambient->id);
             } else {
                 continue;
                 //printf(" normal texture binded on link %i\n", m->material->t_Ambient->id);
             }
 
-            glBindVertexArray((GLuint) m->data);
+            glBindVertexArray((GLuint) m.data);
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
             glEnableVertexAttribArray(2);
-            glDrawArrays(GL_TRIANGLES, 0, m->vert_count);
+            glDrawArrays(GL_TRIANGLES, 0, m.vertCount);
             glDisableVertexAttribArray(0);
             glDisableVertexAttribArray(1);
             glDisableVertexAttribArray(2);

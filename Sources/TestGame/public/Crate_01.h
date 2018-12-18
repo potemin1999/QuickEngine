@@ -6,7 +6,7 @@
 class Crate_01 : public GameObject {
 public:
     Crate_01(World *world) : GameObject(world) {
-        ModelLoader::load_object(this, "", "crate_01.obj");
+        this->model = ModelLoader::load_object("", "crate_01.obj");
 
         glm::tquat rot = this->getRotation();
         btQuaternion rotation(rot.x, rot.y, rot.z, rot.w);
