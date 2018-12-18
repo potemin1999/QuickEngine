@@ -4,85 +4,26 @@ set(TEST_GAME_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/libs/include/glad/glad.cpp
         private/Main.cpp
         private/Wrapper.cpp
-        public/Crate_01.h private/Player.cpp public/Player.h public/Main.h)
-
-
-SET(NANOGUI_SOURCE_FILES
-#        nanogui/ext/nanovg/src/nanovg.c
-#
-#        nanogui/src/button.cpp
-#        nanogui/src/checkbox.cpp
-#        nanogui/src/colorpicker.cpp
-#        nanogui/src/colorwheel.cpp
-#        nanogui/src/combobox.cpp
-#        nanogui/src/common.cpp
-##        nanogui/src/darwin.mm
-#        nanogui/src/glcanvas.cpp
-#        nanogui/src/glutil.cpp
-#        nanogui/src/graph.cpp
-#        nanogui/src/imagepanel.cpp
-#        nanogui/src/imageview.cpp
-#        nanogui/src/label.cpp
-#        nanogui/src/layout.cpp
-#        nanogui/src/messagedialog.cpp
-#        nanogui/src/nanogui_resources.cpp
-#        nanogui/src/popup.cpp
-#        nanogui/src/popupbutton.cpp
-#        nanogui/src/progressbar.cpp
-#        nanogui/src/screen.cpp
-#        nanogui/src/serializer.cpp
-#        nanogui/src/slider.cpp
-#        nanogui/src/stackedwidget.cpp
-#        nanogui/src/tabheader.cpp
-#        nanogui/src/tabwidget.cpp
-#        nanogui/src/textbox.cpp
-#        nanogui/src/theme.cpp
-#        nanogui/src/vscrollpanel.cpp
-#        nanogui/src/widget.cpp
-#        nanogui/src/window.cpp
-#
-#        nanogui/include/nanogui/glutil.h
-#        nanogui/include/nanogui/common.h
-#        nanogui/include/nanogui/widget.h
-#        nanogui/include/nanogui/theme.h
-#        nanogui/include/nanogui/layout.h
-#        nanogui/include/nanogui/screen.h
-#        nanogui/include/nanogui/label.h
-#        nanogui/include/nanogui/window.h
-#        nanogui/include/nanogui/popup.h
-#        nanogui/include/nanogui/checkbox.h
-#        nanogui/include/nanogui/button.h
-#        nanogui/include/nanogui/popupbutton.h
-#        nanogui/include/nanogui/combobox.h
-#        nanogui/include/nanogui/progressbar.h
-#        nanogui/include/nanogui/slider.h
-#        nanogui/include/nanogui/messagedialog.h
-#        nanogui/include/nanogui/textbox.h
-#        nanogui/include/nanogui/imagepanel.h
-#        nanogui/include/nanogui/imageview.h
-#        nanogui/include/nanogui/vscrollpanel.h
-#        nanogui/include/nanogui/colorwheel.h
-#        nanogui/include/nanogui/colorpicker.h
-#        nanogui/include/nanogui/graph.h
-#        nanogui/include/nanogui/stackedwidget.h
-#        nanogui/include/nanogui/tabheader.h
-#        nanogui/include/nanogui/tabwidget.h
-#        nanogui/include/nanogui/glcanvas.h
-#        nanogui/include/nanogui/formhelper.h
-#        nanogui/include/nanogui/toolbutton.h
-#        nanogui/include/nanogui/opengl.h
-#        nanogui/include/nanogui/nanogui.h
-#        nanogui/include/nanogui/serializer/core.h
-#        nanogui/include/nanogui/serializer/opengl.h
-#        nanogui/include/nanogui/serializer/sparse.h
+        private/Player.cpp
         )
 
+# include game headers
+include_directories("${TEST_GAME_SOURCE_DIR}/public")
+# include engine headers
+include_directories("${PROJECT_SOURCE_DIR}/Sources/QuickEngine/public")
+# include libraries
+include_directories("${PROJECT_SOURCE_DIR}/libs/includeRakNet")
+include_directories("${PROJECT_SOURCE_DIR}/libs/include")
+include_directories("${PROJECT_SOURCE_DIR}/libs/bullet")
+# include nanoVG
+include_directories("Sources/TestGame/nanogui/include/nanovg")
+# include nanogui dependencies
 include_directories("nanogui/ext/coro")
 include_directories("nanogui/ext/eigen")
 include_directories("nanogui/ext/nanovg/src")
 include_directories("nanogui/include")
 
-add_executable(${TEST_GAME} ${NANOGUI_SOURCE_FILES} ${TEST_GAME_SOURCE_FILES})
+add_executable(${TEST_GAME} ${TEST_GAME_SOURCE_FILES})
 set_target_properties(${TEST_GAME}
         PROPERTIES
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
@@ -93,31 +34,55 @@ set_target_properties(${TEST_GAME}
 
 add_library(glfw3 SHARED IMPORTED)
 if (WIN32)
-    set_target_properties(glfw3 PROPERTIES IMPORTED_LOCATION "${GPR}/glfw3.dll")
-    set_target_properties(glfw3 PROPERTIES IMPORTED_IMPLIB "${GPR}/glfw3dll.lib")
+    set_target_properties(glfw3 PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/glfw3.dll")
+    set_target_properties(glfw3 PROPERTIES IMPORTED_IMPLIB "${LIBS_DIR}/glfw3dll.lib")
 endif (WIN32)
 if (UNIX)
-    set_target_properties(glfw3 PROPERTIES IMPORTED_LOCATION "${GPR}/libglfw.so")
+    set_target_properties(glfw3 PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libglfw.so")
 endif (UNIX)
 
 add_library(NanoGUI SHARED IMPORTED)
 if (WIN32)
-    # TODO: FIX THIS
+    set_target_properties(NanoGUI PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libnanogui.dll")
+    set_target_properties(NanoGUI PROPERTIES IMPORTED_IMPLIB "${LIBS_DIR}/libnanogui.dll.a")
 endif (WIN32)
 if (UNIX)
     set_target_properties(NanoGUI PROPERTIES IMPORTED_LOCATION "${GPR}/libnanogui.so")
 endif (UNIX)
 
 
-target_include_directories(${TEST_GAME} PRIVATE "${SOURCE_DIR}/QuickEngine/Core/public")
-target_include_directories(${TEST_GAME} PRIVATE "${SOURCE_DIR}/QuickEngine/Engine/public")
-target_include_directories(${TEST_GAME} PRIVATE "${SOURCE_DIR}/QuickEngine/Renderer/public")
-target_include_directories(${TEST_GAME} PRIVATE "${TEST_GAME_SOURCE_DIR}/public")
-target_link_libraries(${TEST_GAME} QeCore)
+if (WIN32)
+    add_library(BulletDynamics STATIC IMPORTED)
+    set_target_properties(BulletDynamics PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libBulletDynamics.a")
+endif (WIN32)
+if (UNIX)
+    add_library(BulletDynamics SHARED IMPORTED)
+    set_target_properties(BulletDynamics PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libBulletDynamics.so")
+endif (UNIX)
+
+
+if (WIN32)
+    add_library(BulletCollision STATIC IMPORTED)
+    set_target_properties(BulletCollision PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libBulletCollision.a")
+endif (WIN32)
+if (UNIX)
+    add_library(BulletCollision SHARED IMPORTED)
+    set_target_properties(BulletCollision PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libBulletCollision.so")
+endif (UNIX)
+
+
+if (WIN32)
+    add_library(LinearMath STATIC IMPORTED)
+    set_target_properties(LinearMath PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libLinearMath.a")
+endif (WIN32)
+if (UNIX)
+    add_library(LinearMath SHARED IMPORTED)
+    set_target_properties(LinearMath PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libLinearMath.so")
+endif (UNIX)
+
+
+target_link_libraries(${TEST_GAME} BulletDynamics BulletCollision LinearMath)
 target_link_libraries(${TEST_GAME} QeEngine)
-target_link_libraries(${TEST_GAME} QeRenderer)
 target_link_libraries(${TEST_GAME} ${CMAKE_DL_LIBS})
-
-
 target_link_libraries(${TEST_GAME} glfw3)
 target_link_libraries(${TEST_GAME} NanoGUI)

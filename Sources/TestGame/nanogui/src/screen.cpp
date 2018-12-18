@@ -24,11 +24,14 @@
 #  undef APIENTRY
 
 #  define WIN32_LEAN_AND_MEAN
+
 #  include <windows.h>
 
 #  define GLFW_EXPOSE_NATIVE_WGL
 #  define GLFW_EXPOSE_NATIVE_WIN32
+
 #  include <GLFW/glfw3native.h>
+
 #endif
 
 /* Allow enforcing the GL2 implementation of NanoVG */
@@ -41,7 +44,8 @@ NAMESPACE_BEGIN(nanogui)
     std::map<GLFWwindow *, Screen *> __nanogui_screens;
 
 #if defined(NANOGUI_GLAD)
-    static bool gladInitialized = false;
+    //    static bool gladInitialized = false;
+        static bool gladInitialized = true;
 #endif
 
 /* Calculate pixel ratio for hi-dpi devices. */
@@ -50,21 +54,21 @@ NAMESPACE_BEGIN(nanogui)
         HWND hWnd = glfwGetWin32Window(window);
         HMONITOR monitor = nullptr;
 #if defined(MONITOR_DEFAULTTONEAREST)
-            monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
+        monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 #else
-            static HMONITOR (WINAPI *MonitorFromWindow_)(HWND, DWORD) = nullptr;
-            static bool MonitorFromWindow_tried = false;
-            if (!MonitorFromWindow_tried) {
-                auto user32 = LoadLibrary(TEXT("user32"));
-                if (user32)
-                    MonitorFromWindow_ = (decltype(MonitorFromWindow_)) GetProcAddress(user32, "MonitorFromWindow");
-                MonitorFromWindow_tried = true;
-            }
-            if (MonitorFromWindow_)
-                monitor = MonitorFromWindow_(hWnd, 2);
+        static HMONITOR (WINAPI *MonitorFromWindow_)(HWND, DWORD) = nullptr;
+        static bool MonitorFromWindow_tried = false;
+        if (!MonitorFromWindow_tried) {
+            auto user32 = LoadLibrary(TEXT("user32"));
+            if (user32)
+                MonitorFromWindow_ = (decltype(MonitorFromWindow_)) GetProcAddress(user32, "MonitorFromWindow");
+            MonitorFromWindow_tried = true;
+        }
+        if (MonitorFromWindow_)
+            monitor = MonitorFromWindow_(hWnd, 2);
 #endif  // defined(MONITOR_DEFAULTTONEAREST)
         /* The following function only exists on Windows 8.1+, but we don't want to make that a dependency */
-        static HRESULT (WINAPI *GetDpiForMonitor_)(HMONITOR, UINT, UINT*, UINT*) = nullptr;
+        static HRESULT (WINAPI *GetDpiForMonitor_)(HMONITOR, UINT, UINT *, UINT *) = nullptr;
         static bool GetDpiForMonitor_tried = false;
 
         if (!GetDpiForMonitor_tried) {
@@ -128,6 +132,15 @@ NAMESPACE_BEGIN(nanogui)
                                          mGLFWWindow(window),
                                          mCursor(Cursor::Arrow),
                                          mBackground(0.3f, 0.3f, 0.32f, 1.f) {
+#if defined(NANOGUI_GLAD)
+        if (!gladInitialized) {
+            gladInitialized = true;
+            if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+                throw std::runtime_error("Could not initialize GLAD!");
+            glGetError(); // pull and ignore unhandled errors like GL_INVALID_ENUM
+        }
+#endif
+
         initialize(mGLFWWindow, true);
     }
 

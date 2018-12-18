@@ -15,6 +15,7 @@ bool b = true;
 World *world1;
 
 void createObjects() {
+    printf("creating floor\n");
     // create floor
     for (int x = -5; x <= 5; x++)
         for (int z = -5; z <= 5; z++) {
@@ -23,6 +24,7 @@ void createObjects() {
             world1->addObject(n);
         }
 
+    printf("dropping crates\n");
     // drop some crates
     int startX = 0, startY = 20, startZ = 15;
     for (int x = 0; x < 1; x++)
@@ -34,19 +36,23 @@ void createObjects() {
             }
 
 
+    printf("naming your world\n");
     // add nowhere sign
     auto nowhereSign = new NowhereSign_01(world1);
     nowhereSign->setPos(glm::vec3(3, 0, 0));
     world1->addObject(nowhereSign);
 
 
+    printf("creating you\n");
     auto player = new Player(world1);
     player->setPos(glm::vec3(0, 1, 0));
     world1->addObject(player);
 
+    printf("attaching camera to you\n");
     // attach camera to player
     engine->camera->attachTo(player);
     engine->camera->setOffsetPos(glm::vec3(0, 1.7, 0));
+    printf("done!\n");
 }
 
 void initCamera() {
@@ -108,8 +114,9 @@ void initGUI() {
 }
 
 void onInit() {
-    initGUI();
+//    initGUI();
     initCamera();
+    printf("camera initialized\n");
 
     // init world
     world1 = new World(0);
@@ -133,6 +140,6 @@ void onTick(float deltaTime) {
     engine->camera->setPos(engine->camera->getAttachedTo()->getPos() + engine->camera->getOffsetPos());
     engine->tick(deltaTime);
 
-    screen->cursorPosCallbackEvent(engine->mouseX, engine->mouseY);
-    screen->drawAll();
+//    screen->cursorPosCallbackEvent(engine->mouseX, engine->mouseY);
+//    screen->drawAll();
 }

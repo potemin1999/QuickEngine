@@ -8,6 +8,7 @@ class FloorModel : public GameObject {
 public:
     FloorModel(World *world) : GameObject(world) {
         ModelLoader::load_object(this, "", "floor_01.obj");
+            printf("object loaded\n");
 
         glm::tquat rot = this->getRotation();
         btQuaternion rotation(rot.x, rot.y, rot.z, rot.w);
