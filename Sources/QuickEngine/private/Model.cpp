@@ -1,5 +1,7 @@
-//
-// Created by maxim on 12/18/2018.
-//
 
 #include "Model.h"
+
+Model::Model(Mesh *meshes, int meshCount) {
+    this->meshes = meshes;
+    this->meshCount = meshCount;
+}

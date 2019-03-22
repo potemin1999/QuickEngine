@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "World.h"
 #include <btBulletDynamicsCommon.h>
+#include "Model.h"
 
 
 namespace QE {
@@ -25,8 +26,9 @@ namespace QE {
 
         ~GameObject();
 
-        Mesh *meshes;
-        unsigned long mesh_count;
+//        Mesh *meshes;
+//        unsigned long mesh_count;
+        Model *model = nullptr;
         btRigidBody *rigidBody = nullptr;
 
         void setPos(glm::vec3 pos);

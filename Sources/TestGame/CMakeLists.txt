@@ -47,7 +47,7 @@ if (WIN32)
     set_target_properties(NanoGUI PROPERTIES IMPORTED_IMPLIB "${LIBS_DIR}/libnanogui.dll.a")
 endif (WIN32)
 if (UNIX)
-    set_target_properties(NanoGUI PROPERTIES IMPORTED_LOCATION "${GPR}/libnanogui.so")
+    set_target_properties(NanoGUI PROPERTIES IMPORTED_LOCATION "${LIBS_DIR}/libnanogui.so")
 endif (UNIX)
 
 

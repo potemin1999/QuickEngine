@@ -7,8 +7,6 @@
 #include "Crate_02.h"
 #include "FloorModel.h"
 
-bool lockCursor = true;
-
 Player::Player(World *world) : GameObject(world) {
     // create portable world
     portableWorld = new World(1);
@@ -28,7 +26,7 @@ Player::Player(World *world) : GameObject(world) {
     }
 
 
-    ModelLoader::load_object(this, "", "crate_01.obj");
+    ModelLoader::load_object("", "crate_01.obj");
 
     glm::tquat rot = this->getRotation();
     btQuaternion rotation(rot.x, rot.y, rot.z, rot.w);

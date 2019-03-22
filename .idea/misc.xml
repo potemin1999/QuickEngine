@@ -10,5 +10,8 @@
     <libraryRoots>
       <file path="$PROJECT_DIR$/libs" />
     </libraryRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/Sources/TestGame/nanogui" />
+    </excludeRoots>
   </component>
 </project>
