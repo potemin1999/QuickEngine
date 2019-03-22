@@ -19,7 +19,7 @@ namespace QE {
 
     public:
 
-        int id;
+        unsigned int id;
         char *source;
         int width = -1;
         int height = -1;

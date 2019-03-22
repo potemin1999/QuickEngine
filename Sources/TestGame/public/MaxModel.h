@@ -6,7 +6,7 @@
 
 class MaxModel : public GameObject {
 public:
-    MaxModel(World *world) : GameObject(world) {
+    explicit MaxModel(World *world) : GameObject(world) {
         this->model = ModelLoader::load_object("characters/max/", "max_caulfield.obj");
     };
 };

@@ -6,7 +6,7 @@ class Player : public GameObject {
 public:
     bool isInSecondWorld = false;
 
-    Player(World *world);
+    explicit Player(World *world);
 
     World *portableWorld;
 

@@ -2,7 +2,6 @@
 #include "Main.h"
 #include "FloorModel.h"
 #include "Crate_01.h"
-#include "MaxModel.h"
 #include "NowhereSign_01.h"
 #include "Player.h"
 

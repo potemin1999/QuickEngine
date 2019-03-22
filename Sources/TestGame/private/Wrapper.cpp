@@ -65,8 +65,6 @@ void loop() {
         float lastTime = 0;
         float currentTime = 0;
         float dT = 0;
-        float mouseDx = 0;
-        float mouseDy = 0;
         while (!glfwWindowShouldClose(window)) {
             dT = (currentTime = float(glfwGetTime())) - lastTime;
             lastTime = currentTime;

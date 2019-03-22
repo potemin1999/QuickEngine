@@ -2,7 +2,6 @@
 
 #include <ModelLoader.h>
 #include "Boot.h"
-#include "glfw/glfw3.h"
 #include "Crate_01.h"
 #include "Crate_02.h"
 #include "FloorModel.h"

@@ -5,8 +5,6 @@
 #ifndef QUICKENGINE_LOG_H
 #define QUICKENGINE_LOG_H
 
-//#include "../../../renderer/private/defines.h"
-
 inline void log(const char *format, ...) {
 #ifdef LOG
     va_list args;

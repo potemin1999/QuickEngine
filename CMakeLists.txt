@@ -10,7 +10,7 @@ set(BUILD_NAME QuickEngine)
 set(BUILD_PATH ${PROJECT_SOURCE_DIR}/build)
 set(BIN_BUILD_PATH ${PROJECT_SOURCE_DIR}/build/bin)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -lm")
 
 if (MINGW)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc -lstdc++ -lpthread")

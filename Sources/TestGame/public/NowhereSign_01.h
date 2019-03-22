@@ -6,7 +6,7 @@
 
 class NowhereSign_01 : public GameObject {
 public:
-    NowhereSign_01(World *world) : GameObject(world) {
+    explicit NowhereSign_01(World *world) : GameObject(world) {
         this->model = ModelLoader::load_object("", "nowhere.obj");
     };
 };

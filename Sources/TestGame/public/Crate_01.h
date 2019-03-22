@@ -5,7 +5,7 @@
 
 class Crate_01 : public GameObject {
 public:
-    Crate_01(World *world) : GameObject(world) {
+   explicit  Crate_01(World *world) : GameObject(world) {
         this->model = ModelLoader::load_object("", "crate_01.obj");
 
         glm::tquat rot = this->getRotation();
